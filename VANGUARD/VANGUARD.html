@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>VANGUARD — Camos UEM</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../index/css/styles.css">
+<style>
+        /* =========================================
+           VARIABLES Y CONFIGURACIÓN BASE
+           ========================================= */
+        :root {
+            --bg: #071026;
+            --surface: #0f1724;
+            --muted: #98a0b3;
+            --accent: #7c3aed;
+            --accent-2: #06b6d4;
+            --glass: rgba(255, 255, 255, 0.04);
+            --radius: 12px;
+            --container: 1100px;
+            --ff: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+        }
+
+        * { box-sizing: border-box; }
+        
+        html, body { 
+            height: 100%; 
+            background-color: #05060a !important; /* Force dark background */
+        }
+
+        body {
+            margin: 0;
+            color: white;
+            background-color: var(--bg-dark);
+            font-family: var(--ff);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            padding: 20px;
+            justify-content: center;
+        }
+
+        a { color: var(--accent-2); text-decoration: none; transition: color 0.2s; }
+        a:hover { color: var(--accent); }
+
+        h1, h2, h3, h4 { color: #f4f7fb; }
+        .container { max-width: var(--container); margin: 0 auto; padding: 24px; }
+        .muted { color: var(--muted); font-size: 14px; }
+
+        /* =========================================
+           HEADER Y NAVEGACIÓN
+           ========================================= */
+        .site-header { 
+            backdrop-filter: blur(6px); 
+            background: rgba(6, 9, 14, 0.45); 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+        }
+
+        .nav { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; }
+
+        /* Menú Lateral (Hamburguesa) */
+        .left-menu { position: relative; margin-right: 12px; display: flex; align-items: center; }
+        .menu-toggle { display: none; }
+        .menu-btn { 
+            width: 44px; height: 40px; display: flex; flex-direction: column; 
+            justify-content: center; gap: 5px; cursor: pointer; padding: 8px; border-radius: 8px; 
+        }
+        .menu-btn span { display: block; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius: 2px; transition: 0.3s; }
+        
+        .dropdown-menu { 
+            position: absolute; left: 0; top: 56px; min-width: 200px; 
+            background: linear-gradient(180deg, rgba(15, 23, 36, 0.98), rgba(11, 15, 25, 0.96)); 
+            border-radius: 10px; padding: 8px; box-shadow: 0 8px 24px rgba(2, 6, 23, 0.6); 
+            opacity: 0; transform: translateY(-6px) scale(0.98); pointer-events: none; 
+            transition: all 180ms ease-in-out; border: 1px solid rgba(255, 255, 255, 0.03); z-index: 60; 
+        }
+        .dropdown-menu a { display: block; padding: 8px 10px; color: var(--muted); border-radius: 6px; }
+        .dropdown-menu a:hover { background: rgba(255, 255, 255, 0.02); color: #fff; }
+
+        .menu-toggle:checked + .menu-btn + .dropdown-menu { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+        .menu-toggle:checked + .menu-btn span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .menu-toggle:checked + .menu-btn span:nth-child(2) { opacity: 0; }
+        .menu-toggle:checked + .menu-btn span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+        /* Branding */
+        .brand { display: flex; align-items: center; gap: 12px; }
+        .logo { 
+            width: 48px; height: 48px; border-radius: 10px; 
+            background: linear-gradient(135deg, var(--accent), var(--accent-2)); 
+            display: flex; align-items: center; justify-content: center; font-weight: 700; 
+        }
+        .site-name { font-weight: 700; }
+        .site-tag { display: block; color: var(--muted); font-size: 12px; }
+
+        /* Enlaces de Navegación */
+        .nav-links { display: flex; gap: 16px; list-style: none; margin: 0; padding: 0; align-items: center; }
+        .nav-links a { color: var(--muted); padding: 8px 10px; border-radius: 8px; }
+        .nav-links a:hover { color: #fff; }
+
+        /* Selector de Idioma */
+        .lang-switch { position: relative; display: inline-block; }
+        .lang-switch summary { 
+            list-style: none; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            gap: 6px; 
+            padding: 8px 10px; 
+            color: var(--muted); 
+        }
+
+        .lang-switch summary::-webkit-details-marker { display: none; }
+        .lang-list { 
+            position: absolute; left: 50%; right: auto; top: 44px; min-width: 140px; transform: translateX(-50%);
+            background: linear-gradient(180deg, rgba(15, 23, 36, 0.98), rgba(11, 15, 25, 0.96)); 
+            padding: 6px; border-radius: 10px; box-shadow: 0 8px 24px rgba(2, 6, 23, 0.6); 
+            border: 1px solid rgba(255, 255, 255, 0.03); display: none; z-index: 70; transform-origin: top center; transition: all 160ms ease-in-out; 
+        }
+        .lang-switch[open] .lang-list { display: block; }
+        .lang-list li { list-style: none; }
+
+        
+        .btn { 
+            background: transparent; padding: 8px 12px; border-radius: 8px; 
+            border: 1px solid rgba(255,255,255,0.06); color: inherit; 
+        }
+        .btn:hover { background: var(--accent); color: white; border-color: transparent; }
+
+        /* =========================================
+           SECCIONES DE CONTENIDO
+           ========================================= */
+        .section-title { margin: 36px 0 18px; font-size: 22px; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Características */
+        .features .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .feature { 
+            background: var(--glass); padding: 20px; border-radius: 12px; 
+            border: 1px solid rgba(255, 255, 255, 0.03); 
+        }
+
+        /* Proyectos y Meta Cards */
+        .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 18px; }
+        
+        .meta-card { 
+            background: #0b0f14; border-radius: 18px; padding: 18px; 
+            border: 1px solid rgba(255, 255, 255, 0.03); 
+            box-shadow: 0 18px 40px rgba(2, 6, 23, 0.7); 
+            overflow: hidden; display: flex; flex-direction: column; align-items: center;
+            transition: transform 220ms cubic-bezier(.18,.9,.2,1), box-shadow 220ms ease;
+            cursor: pointer;
+        }
+
+        .meta-media { 
+            width: 100%; height: 180px; border-radius: 12px; 
+            background-image: radial-gradient(circle at 50% 10%, rgba(255,255,255,0.02), transparent 25%), 
+                              linear-gradient(180deg,#0b1118,#04101a) !important;
+            box-shadow: inset 0 30px 60px rgba(0,0,0,0.6); 
+            position: relative; overflow: hidden;
+        }
+
+        .meta-overlay { 
+            position: absolute; inset: 0; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; text-align: center; padding: 18px; z-index: 2;
+        }
+
+        .meta-title { font-size: 28px; letter-spacing: 6px; margin: 6px 0; font-weight: 700; }
+        .meta-title span { 
+            background: linear-gradient(90deg, #ffd166, #ff7b00); 
+            -webkit-background-clip: text; background-clip: text; color: transparent; 
+        }
+
+        /* Ajustes para tarjetas pequeñas (Project Cards) */
+        .small-card { padding: 12px; }
+        .small-card .meta-media { height: 120px; margin-bottom: 0; }
+        .meta-title.small { font-size: 16px; letter-spacing: 2px; }
+
+        .meta-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 34px 70px rgba(2, 6, 23, 0.78);
+            border-color: rgba(124, 58, 237, 0.16);
+        }
+
+        /* =========================================
+           FOOTER
+           ========================================= */
+        .site-footer { 
+            padding: 28px 0; border-top: 1px solid rgba(255, 255, 255, 0.03); 
+            margin-top: 48px; background: transparent; color: var(--muted); 
+        }
+        .footer-grid { display: flex; justify-content: space-between; align-items: center; }
+        .footer-grid a { color: var(--muted); margin-left: 12px; }
+
+        /* =========================================
+           RESPONSIVE
+           ========================================= */
+        @media (max-width: 980px) {
+            .projects-grid, .features .grid { grid-template-columns: repeat(2, 1fr); }
+            .meta-media { height: 140px; }
+        }
+
+        @media (max-width: 640px) {
+            .nav-links { display: none; }
+            .projects-grid, .features .grid { grid-template-columns: 1fr; }
+            .meta-title { font-size: 22px; letter-spacing: 3px; }
+        }
+    </style>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav container">
+          <div class="left-menu">
+              <input type="checkbox" id="menuToggle" class="menu-toggle">
+              <label for="menuToggle" class="menu-btn" aria-hidden="true">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+              </label>
+              <div class="dropdown-menu" role="menu" aria-label="Características">
+                  <a href="../index/Camos UEM.html">Inicio</a>
+                  <a href="../uem/Camuflajes UEM.html">SEGUIMIENTO</a>
+                  <a href="../WARZONE/project-a.html">Project A</a>
+                  <a href="../MW II/project-b.html">Project B</a>
+                  <a href="../MW III/project-c.html">Project C</a>
+                  <a href="../BLACK OPS 6/project-d.html">Project D</a>
+                  <a href="../BLACK OPS7/project-e.html">Project E</a>
+                  <a href="../CODM/project-f.html">Project F</a>
+              </div>
+          </div>
+      <div class="brand">
+        <div class="logo">CU</div>
+        <div class="brand-text">
+          <span class="site-name">Camos UEM</span>
+          <small class="site-tag">VANGUARD</small>
+        </div>
+      </div>
+      <div>
+          <a class="btn ghost" href="../index/Camos UEM.html">Volver</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="UEM-breadcrumbs-container">
+    <div class="container">
+      <div itemscope="itemscope" itemtype="https://schema.org/BreadcrumbList" class="UEM-breadcrumbs">
+        <nav>
+          <a href="../index/Camos UEM.html">Camos UEM</a> /
+          <a href="project-g.html">Camuflajes UEM</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <main class="container" style="padding-top:36px;padding-bottom:60px;">
+    <section class="seguimiento">
+      <div class="meta-card" style="max-width:860px;margin:0 auto;">
+        <div class="meta-media" style="height:300px;background-image:linear-gradient(180deg,rgba(3,6,10,0.6),rgba(3,6,10,0.9));background-size:cover;background-position:center;">
+          <div class="meta-overlay">
+            <h1 class="meta-title" style="font-size:32px;letter-spacing:6px;">VANGUARD</h1>
+            <p class="meta-sub">BLACK OPS I Aquí puedes poner detalles, capturas y enlaces.</p>
+            <div style="margin-top:18px;"><a class="btn primary" href="#">Ver más</a></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <strong>Camos UEM</strong>
+        <p class="muted">Hecho con ❤️.</p>
+      </div>
+      <div class="links">
+        <a href="#">Términos</a>
+        <a href="#">Privacidad</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

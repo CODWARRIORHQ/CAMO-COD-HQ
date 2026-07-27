@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Mapa - Camos UEM</title>
+    <style>
+        body { background-color: #05060a; color: white; font-family: sans-serif; padding: 40px; }
+        .container { max-width: 800px; margin: 0 auto; border: 1px solid #333; padding: 30px; border-radius: 12px; background: #0f1229; }
+        h1 { color: #ffff00; font-family: 'Fredoka One', cursive; margin-top: 0; }
+        .info-group { margin-bottom: 20px; }
+        .data-label { color: #79e487; font-weight: bold; font-size: 0.9em; }
+        .data-value { color: #0cdddd; font-size: 1.3em; font-weight: bold; margin-top: 5px; }
+        
+        /* BOTÓN DE DESCARGA */
+        .download-btn {
+            display: inline-flex; align-items: center; gap: 15px; 
+            background-color: #0cdddd; color: #05060a; padding: 15px 30px; 
+            border-radius: 10px; text-decoration: none; font-weight: bold; 
+            margin-top: 20px; transition: 0.3s;
+        }
+        .download-btn:hover { background-color: #ffff00; transform: scale(1.05); }
+        .arrow { font-size: 24px; }
+
+        .back-btn { display: inline-block; margin-top: 30px; color: #777; text-decoration: none; font-size: 0.9em; }
+        .back-btn:hover { color: white; }
+    </style>
+</head>
+<body>
+    <div class="container" id="detalleContent">
+        Cargando datos del mapa...
+    </div>
+
+    <script src="datos mapas.js"></script>
+
+    <script>
+        // 1. Sacar el ID de la URL
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get('id');
+
+        // 2. Función para dibujar la info
+        function render() {
+            // Buscamos el mapa en la lista global
+            const lista = window.mapsData || [];
+            const mapa = lista[id];
+
+            if (mapa) {
+                document.getElementById('detalleContent').innerHTML = `
+                    <div class="info-group">
+                        <div class="data-label">NOMBRE DEL MAPA:</div>
+                        <h1>${mapa.title}</h1>
+                    </div>
+
+                    <div class="info-group">
+                        <div class="data-label">AUTOR DEL MAPA:</div>
+                        <div class="data-value">${mapa.author}</div>
+                    </div>
+
+                    <div class="info-group">
+                        <div class="data-label">XP QUE SE GANA EN EL MAPA:</div>
+                        <div class="data-value">${mapa.xp}</div>
+                    </div>
+
+                    <hr style="border:0; border-top:1px solid #333;">
+
+                    <a href="${mapa.url}" class="download-btn" target="_blank">
+                    <span class="arrow">↓</span> DESCARGAR MAPA
+                    </a>
+
+                    <br>
+                    <a href="mapas.html" class="back-btn">← Volver a la lista</a>
+                `;
+            } else {
+                document.getElementById('detalleContent').innerHTML = "<h1>Mapa no encontrado</h1>";
+            }
+        }
+
+        // Ejecutar al cargar
+        window.onload = render;
+    </script>
+</body>
+</html>

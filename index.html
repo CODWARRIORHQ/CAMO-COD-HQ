@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>BO3 - TOTAL SYSTEM OVERRIDE</title>
+<style>
+
+  :root {
+    --orange: #ff7300;
+    --cyan: #00ffff;
+    --red: #ff0000;
+  }
+  
+  html, body {
+    width: 100%; 
+    height: 100%; 
+    margin: 0;
+    background: #000; 
+    overflow: hidden;
+    font-family: 'Arial Black', sans-serif;
+  }
+
+  canvas { 
+    position: absolute; 
+    inset: 0; 
+  }
+
+  #zombieCanvas { 
+    opacity: 0.15; 
+    filter: blur(1px); 
+  }
+
+  #noiseCanvas { 
+    opacity: 0.05; 
+    pointer-events: none; 
+    z-index: 300; 
+  }
+
+  /* SCANLINES & CRT */
+  .scanlines {
+    position: absolute; 
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, rgba(0, 255, 255, 0.03) 51%);
+    background-size: 100% 4px;
+    z-index: 50; 
+    pointer-events: none;
+  }
+
+  #hud-log {
+    position: absolute; 
+    bottom: 20px; 
+    left: 20px;
+    color: var(--cyan); 
+    font-family: 'Courier New', monospace;
+    font-size: 11px; z-index: 150; 
+    pointer-events: none;
+  }
+
+  #alert-msg {
+    position: absolute; 
+    top: 20%; 
+    left: 50%; 
+    transform: translateX(-50%);
+    color: var(--red); font-size: 2rem; 
+    display: none;
+    z-index: 400; 
+    text-shadow: 0 0 20px var(--red);
+    animation: blink 0.15s infinite;
+  }
+
+  @keyframes blink { 
+    0%, 100% { opacity: 1; } 
+    50% { opacity: 0; } 
+  }
+
+  .glitch-mode {
+    animation: shake 0.1s infinite;
+    filter: invert(1) hue-rotate(90deg) contrast(3) !important;
+  }
+
+  @keyframes shake {
+    0% { transform: translate(5px, -5px); }
+    25% { transform: translate(-5px, 5px); }
+    100% { transform: translate(-2px, -8px); }
+  }
+
+  .zombie-side {
+    position: absolute; 
+    bottom: 0; 
+    height: 80%;
+    opacity: 0.12; 
+    filter: grayscale(1) brightness(0.4);
+    pointer-events: none; 
+    transition: all 0.5s;
+  }
+
+  .left-z { 
+    left: -50px; 
+    transform: scaleX(-1); 
+  }
+
+  .right-z { 
+    right: -50px; 
+  }
+
+  .core-container {
+    position: absolute; 
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;
+    z-index: 200; 
+    cursor: pointer;
+  }
+
+  .core-circle {
+    width: 320px; 
+    height: 320px;
+    border: 1px solid rgba(0, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    position: relative;
+  }
+
+  .loader-svg {
+    position: absolute; 
+    top: 0; 
+    left: 0;
+    transform: rotate(-90deg); 
+    visibility: hidden;
+  }
+
+  .loader-circle {
+    fill: none; 
+    stroke: var(--cyan); 
+    stroke-width: 8;
+    stroke-dasharray: 942; 
+    stroke-dashoffset: 942;
+  }
+
+  .core-inner {
+    width: 80%; 
+    height: 80%;
+    border: 10px double var(--orange);
+    border-radius: 50%;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    animation: pulse 1s infinite ease-in-out;
+  }
+
+  .btn-text {
+    color: var(--orange); 
+    font-size: 1.8rem; 
+    letter-spacing: 5px;
+    text-shadow: 0 0 15px var(--orange); 
+    user-select: none;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 115, 0, 0.2); }
+    50% { transform: scale(1.08); box-shadow: 0 0 50px rgba(255, 115, 0, 0.5); }
+  }
+
+  .vignette { 
+    position: absolute; 
+    inset: 0; 
+    background: radial-gradient(circle, transparent 30%, black 150%); 
+    z-index: 60; 
+    }
+
+</style>
+</head>
+<body>
+
+  <div class="scanlines"></div>
+    <canvas id="noiseCanvas"></canvas>
+      <div id="hud-log"></div>
+        <div id="alert-msg">WARNING: SYSTEM OVERLOAD</div>
+          <canvas id="zombieCanvas"></canvas>
+            <canvas id="mainCanvas"></canvas>
+
+
+<div class="overlay">
+  <div class="vignette"></div>
+  <div id="enterButton" class="core-container">
+    <div class="core-circle">
+      <svg class="loader-svg" width="320" height="320" id="loader">
+        <circle class="loader-circle" cx="160" cy="160" r="150" id="loadingBar"></circle>
+      </svg>
+      <div class="core-inner">
+        <span class="btn-text" id="btnText">ENTRAR</span>
+      </div>
+    </div>
+    <div class="status-text" id="status" style="color:var(--cyan); margin-top:20px; letter-spacing:5px; font-size:10px; text-align:center;">NEURAL LINK: STANDBY</div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('mainCanvas');
+const zCanvas = document.getElementById('zombieCanvas');
+const nCanvas = document.getElementById('noiseCanvas');
+const ctx = canvas.getContext('2d');
+const zCtx = zCanvas.getContext('2d');
+const nCtx = nCanvas.getContext('2d');
+
+let width, height, particles = [];
+let mouse = { x: -100, y: -100 };
+let isOverloading = false;
+let loading = false;
+
+const symbols = "010101☠☣☢"; 
+const logMsgs = ["Accessing Mainframe...", "Breaching Firewall...", "Redirecting to Tracking...", "Memory Corruption Detected", "Bypassing Security Layer"];
+
+window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+
+// 1. Busca la función resize y déjala así para que cubra TODA la pantalla
+function resize() {
+  width = canvas.width = zCanvas.width = nCanvas.width = window.innerWidth;
+  height = canvas.height = zCanvas.height = nCanvas.height = window.innerHeight;
+  // Esto arregla que la lluvia de código se vea en toda la pantalla
+  window.drops = new Array(Math.floor(width / 20)).fill(0);
+}
+
+function drawNoise() {
+    const idata = nCtx.createImageData(width, height);
+    const buffer = new Uint32Array(idata.data.buffer);
+    for (let i = 0; 
+        i < buffer.length; i++) {
+        if (Math.random() > 0.92) buffer[i] = 0xffffffff;
+    }
+    nCtx.putImageData(idata, 0, 0);
+}
+
+class Ember {
+  constructor() { 
+    this.reset(); 
+  }
+
+  reset() {
+    this.x = Math.random() * width; this.y = height + 20;
+    this.vx = (Math.random() - 0.5) * 2; this.vy = -Math.random() * 2 - 1;
+    this.size = Math.random() * 3; this.alpha = 1;
+    this.color = isOverloading ? '255, 0, 0' : '255, 115, 0';
+  }
+
+  update() {
+    let dx = mouse.x - this.x; 
+    let dy = mouse.y - this.y;
+    let dist = Math.sqrt(dx*dx + dy*dy);
+    if(dist < 200) { 
+      this.x += dx * 0.03; 
+      this.y += dy * 0.03; 
+    }
+
+    this.x += this.vx; 
+    this.y += this.vy;
+    this.alpha -= 0.002;
+    if (this.alpha <= 0) this.reset();
+  }
+
+  draw() {
+    ctx.fillStyle = `rgba(${this.color}, ${this.alpha})`;
+    ctx.fillRect(this.x, this.y, this.size, this.size);
+  }
+}
+
+// 3. Asegúrate de que drawZombieCode use el ancho total
+function drawZombieCode() {
+  zCtx.fillStyle = 'rgba(0, 0, 0, 0.15)'; 
+  zCtx.fillRect(0, 0, width, height);
+  zCtx.fillStyle = isOverloading ? '#ff0000' : '#00ffff'; 
+  zCtx.font = '14px Courier New';
+
+  if(!window.drops) window.drops = new Array(Math.floor(width / 20)).fill(0);
+
+  window.drops.forEach((y, i) => {
+    zCtx.fillText(symbols[Math.floor(Math.random()*symbols.length)], i * 20, y * 20);
+    if(y * 20 > height && Math.random() > 0.98) window.drops[i] = 0;
+    window.drops[i]++;
+  });
+}
+
+const enterBtn = document.getElementById('enterButton');
+const hudLog = document.getElementById('hud-log');
+const alertMsg = document.getElementById('alert-msg');
+const btnLabel = document.getElementById('btnText');
+const loadingBar = document.getElementById('loadingBar');
+
+let audioCtx;
+function playSound(f, type = 'square', vol = 0.01) {
+  if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  let o = audioCtx.createOscillator();
+  let g = audioCtx.createGain();
+  o.type = type; 
+  o.frequency.value = f;
+  g.gain.setValueAtTime(vol, audioCtx.currentTime);
+  o.connect(g); 
+  g.connect(audioCtx.destination);
+  o.start(); 
+  o.stop(audioCtx.currentTime + 0.05);
+}
+
+enterBtn.addEventListener('click', () => {
+  if (loading) return;
+  loading = true;
+  document.getElementById('loader').style.visibility = "visible";
+  document.getElementById('status').innerText = "ESTABLISHING UEM LINK...";
+  let progress = 0;
+  let interval = setInterval(() => {
+    progress += Math.random() * 2;
+
+    if(progress > 75) {
+        isOverloading = true;
+        alertMsg.style.display = "block";
+    }
+
+    if(progress >= 100) {
+      progress = 100;
+      clearInterval(interval);
+      playSound(100, 'sawtooth', 0.1);
+      // REDIRECCIÓN FINAL AQUÍ
+      setTimeout(() => {
+          window.location.href = "index/Camos UEM.html";
+      }, 600);
+    }
+
+    btnLabel.innerText = Math.floor(progress) + "%";
+    loadingBar.style.strokeDashoffset = 942 - (942 * (progress / 100));
+
+    if(Math.random() > 0.85) {
+      playSound(isOverloading ? 60 : 400 + progress);
+      let p = document.createElement('div');
+      p.innerText = ">> " + logMsgs[Math.floor(Math.random()*logMsgs.length)];
+      hudLog.prepend(p);
+      setTimeout(() => document.body.classList.remove('glitch-mode'), 40);
+    }
+  }, 50);
+});
+
+// 2. Busca la función init y aumenta el número de partículas
+function init() {
+  resize();
+  // He subido de 100 a 800 partículas para un efecto más denso
+  for(let i=0; 
+  i<800; i++) particles.push(new Ember()); 
+  loop();
+}
+
+function loop() {
+  ctx.clearRect(0,0,width,height);
+  drawNoise();
+  drawZombieCode();
+  particles.forEach(p => { 
+    p.update(); 
+    p.draw(); 
+  });
+  requestAnimationFrame(loop);
+}
+
+window.onresize = resize;
+init();
+</script>
+</body>
+</html>

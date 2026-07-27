@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UEM Maps</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One|Griffy&display=swap" rel="stylesheet">
+    <style>
+* { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        html, body { 
+            height: 100%; 
+            background-color: #05060a !important; /* Force dark background */
+        }
+
+        /* HEADER */
+        .header {
+            background-color: #0f1229;
+            border-bottom: 2px solid #2c2c2c;
+            padding: 15px 50px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: auto;
+            max-width: 1560px;
+        }
+
+        .nav { 
+            display: flex !important; 
+            align-items: center !important; 
+            justify-content: space-between !important; 
+            padding: 12px 0; 
+        }
+        /* Forzar alineado izquierdo igual que la página de inicio */
+        .site-header .nav { display:flex !important; }
+        .site-header .nav > .nav-left { display:flex !important; align-items:center !important; gap:12px !important; margin-right:auto !important; }
+        .site-header .nav .brand { display:flex !important; align-items:center !important; gap:12px !important; margin:0 !important; }
+        .site-header .nav > *:not(.nav-left) { margin-left: 0 !important; }
+        /* Force left alignment like the homepage */
+        .nav-left { display:flex; align-items:center; gap:12px; }
+        .brand { display:flex; align-items:center; gap:12px; margin:0; }
+        .nav .brand-text { margin-left: 0; }
+
+        body {
+            margin: 0;
+            color: white;
+            background-color: var(--bg-dark);
+            font-family: var(--ff);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            padding: 20px;
+            justify-content: center;
+        }
+
+        :root {
+            --bg: #071026;
+            --surface: #0f1724;
+            --muted: #98a0b3;
+            --accent: #7c3aed;
+            --accent-2: #06b6d4;
+            --glass: rgba(255, 255, 255, 0.04);
+            --radius: 12px;
+            --container: 1100px;
+            --ff: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+        }
+
+        /* Branding */
+        .brand { display: flex; align-items: center; gap: 12px; }
+        .logo { 
+            width: 48px; height: 48px; border-radius: 10px; 
+            background: linear-gradient(135deg, var(--accent), var(--accent-2)); 
+            display: flex; align-items: center; justify-content: center; font-weight: 700; 
+        }
+
+        .site-name { font-weight: 700; }
+        .site-tag { display: block; color: var(--muted); font-size: 12px; }
+        .btn { 
+            background: transparent; padding: 8px 12px; border-radius: 8px; 
+            border: 1px solid rgba(255,255,255,0.06); color: inherit; 
+        }
+        .btn:hover { background: var(--accent); color: white; border-color: transparent; }
+        a { color: var(--accent-2); text-decoration: none; transition: color 0.2s; }
+        a:hover { color: var(--accent); }
+
+        .search-container {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 15px;
+            background-color: #1a1f3a;
+            border: 2px solid #333;
+            color: #888;
+            font-family: "Courier New", monospace;
+            font-size: 13px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: #ffff00;
+            color: #fff;
+            outline: none;
+        }
+
+        .filters-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background: linear-gradient(135deg, rgba(26, 31, 58, 0.8) 0%, rgba(40, 45, 75, 0.8) 100%);
+            border: 2px solid #666;
+            color: #ffff00;
+            padding: 8px 14px 8px 12px;
+            font-family: "Courier New", monospace;
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: none;
+        }
+
+        select:hover {
+            border-color: #ffff00;
+            background: linear-gradient(135deg, rgba(26, 31, 58, 1) 0%, rgba(50, 60, 100, 1) 100%);
+            box-shadow: 0 0 12px rgba(255, 255, 0, 0.3), inset 0 0 8px rgba(255, 255, 0, 0.06);
+            color: #fff;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #ffff00;
+            box-shadow: 0 0 12px rgba(255, 255, 0, 0.25), inset 0 0 6px rgba(255,255,255,0.02);
+            color: #fff;
+        }
+
+        select option {
+            background-color: #0a0e27;
+            color: #ffff00;
+            padding: 6px 10px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            white-space: nowrap;
+            user-select: none;
+            padding: 8px 14px;
+            border: 2px solid #666;
+            border-radius: 6px;
+            background: linear-gradient(135deg, rgba(26, 31, 58, 0.8) 0%, rgba(40, 45, 75, 0.8) 100%);
+            transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .checkbox-wrapper:hover {
+            border-color: #ffff00;
+            background: linear-gradient(135deg, rgba(26, 31, 58, 1) 0%, rgba(50, 60, 100, 1) 100%);
+            box-shadow: 0 0 12px rgba(255, 255, 0, 0.3), inset 0 0 8px rgba(255, 255, 0, 0.1);
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #ffff00;
+            cursor: pointer;
+            border: 2px solid #999;
+            border-radius: 4px;
+            background-color: #1a1f3a;
+            transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+
+        input[type="checkbox"]:hover {
+            border-color: #ffff00;
+            box-shadow: 0 0 8px rgba(255, 255, 0, 0.5);
+            background-color: #252d5a;
+        }
+
+        input[type="checkbox"]:checked {
+            background-color: #ffff00;
+            border-color: #ffff00;
+            box-shadow: 0 0 15px rgba(255, 255, 0, 0.8), inset 0 0 4px rgba(0, 0, 0, 0.3);
+        }
+
+        input[type="checkbox"]:checked::after {
+            content: "✓";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #000;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+                .nav-container { max-width: var(--container); margin: 0 auto; padding: 24px; }
+
+
+        .maps-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .map-card {
+            background: linear-gradient(135deg, rgba(15, 18, 41, 0.9) 0%, rgba(30, 35, 60, 0.7) 100%);
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 8px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-height: 120px;
+            max-height: 140px;
+            justify-content: space-between;
+            transition: all 0.18s ease;
+        }
+
+        .map-card:hover {
+            border-color: #ffff00;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .map-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .map-title {
+    flex: 1;
+    font-size: 20px;
+    font-weight: bold;
+    color: #e0e0e0;
+    font-family: "Fredoka One", "Griffy", cursive;
+    text-shadow: 
+        0px 2px 0 #2a0a0a,
+        1px 3px 0 #3f1010,
+        2px 4px 0 #541616,
+        3px 5px 0 #691c1c,
+        4px 6px 0 #3a0e0e,
+        5px 7px 3px rgba(0, 0, 0, 0.4);
+    line-height: 1.05;
+    margin-bottom: 2px;
+    letter-spacing: 1px;
+}
+
+        /* recommended-badge removed as requested */
+
+        .favorite-btn {
+            background: none;
+            border: none;
+            color: #ffee00;
+            font-size: 22px;
+            cursor: pointer;
+            padding: 0 2px;
+            flex-shrink: 0;
+            transition: all 0.16s;
+            line-height: 1;
+        }
+
+        .favorite-btn:hover {
+            transform: scale(1.2);
+            text-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+        }
+
+        .map-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            font-size: 14px;
+            color: #79e487;
+            border-top: 1px solid #333;
+            padding-top: 6px;
+        }
+
+        .map-info div {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .map-author, .map-xp {
+            color: #0cdddd;
+            font-weight: bold;
+        }
+
+        /* PAGINATION */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+            padding: 20px;
+            background-color: #0f1229;
+            border: 2px solid #333;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+
+        .pagination button, .pagination span {
+            padding: 8px 12px;
+            border: 1px solid #666;
+            background-color: #1a1f3a;
+            color: #aaa;
+            cursor: pointer;
+            border-radius: 4px;
+            font-family: "Courier New", monospace;
+            font-weight: bold;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .pagination button:hover {
+            border-color: #ffff00;
+            color: #ffff00;
+            box-shadow: 0 0 8px rgba(255, 255, 0, 0.3);
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination .page-number {
+            border: none;
+            background: none;
+            cursor: default;
+        }
+
+        .pagination .page-number.active {
+            background-color: #ffff00;
+            color: #000;
+            border-color: #ffff00;
+        }
+
+        .page-info {
+            color: #ffff00;
+            font-weight: bold;
+            margin: 0 10px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1600px) {
+            .maps-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        @media (max-width: 1200px) {
+            .maps-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
+            .container { padding: 15px; }
+            .header { padding: 12px 15px; }
+        }
+
+        @media (max-width: 768px) {
+            .maps-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .container { padding: 12px; }
+            .header { flex-direction: column; padding: 12px; }
+            .search-container { width: 100%; min-width: unset; }
+            .filters-group { width: 100%; flex-direction: column; }
+            .map-card { padding: 10px; gap: 8px; min-height: 110px; max-height: 130px; }
+            .map-title { font-size: 17px; }
+            .favorite-btn { font-size: 20px; }
+            .map-info { font-size: 12px; }
+        }
+
+        @media (max-width: 480px) {
+            .maps-grid { grid-template-columns: 1fr; }
+            .container { padding: 10px; }
+            .map-card { min-height: auto; max-height: none; }
+            .map-title { font-size: 14px; }
+            .pagination { padding: 15px 10px; gap: 5px; }
+            .pagination button, .pagination span { padding: 6px 10px; font-size: 10px; }
+        }
+
+            /* Menú desplegable (botón) */
+            .left-menu { position: relative; margin-right: 12px; display: flex; align-items: center; }
+            .menu-toggle { display: none; }
+            .menu-btn { 
+                width: 44px; 
+                height: 40px; 
+                display: flex; 
+                flex-direction: column; 
+                justify-content: center; 
+                gap: 5px; 
+                cursor: pointer; 
+                padding: 8px; 
+                border-radius: 8px; 
+            }
+
+            .menu-btn span { 
+                display: block; 
+                height: 3px; 
+                background: linear-gradient(90deg, var(--accent), var(--accent-2)); 
+                border-radius: 2px; 
+                transition: 0.3s; 
+            }
+
+            .dropdown-menu { 
+                position: absolute; 
+                left: 0; 
+                top: 56px; 
+                min-width: 180px; 
+                background: linear-gradient(180deg, rgba(15, 23, 36, 0.98), rgba(11, 15, 25, 0.96)); 
+                border-radius: 10px; 
+                padding: 8px; 
+                box-shadow: 0 8px 24px rgba(2, 6, 23, 0.6); 
+                opacity: 0; 
+                transform: translateY(-6px) scale(0.98); 
+                pointer-events: none; 
+                transition: all 160ms ease-in-out; 
+                border: 1px solid rgba(255, 255, 255, 0.03); 
+                z-index: 60; 
+            }
+            .dropdown-menu a { display: block; padding: 8px 10px; color: var(--muted); border-radius: 6px; }
+            .dropdown-menu a:hover { background: rgba(255, 255, 255, 0.02); color: #fff; }
+
+            .menu-toggle:checked + .menu-btn + .dropdown-menu { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+                pointer-events: auto; 
+            }
+
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <nav class="nav container">
+            <div class="nav-left" style="display:flex;align-items:center;gap:12px;">
+            <div class="left-menu">
+                <input type="checkbox" id="menuToggle" class="menu-toggle">
+                <label for="menuToggle" class="menu-btn" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </label>
+                <div class="dropdown-menu" role="menu" aria-label="Características">
+                    <a href="../../index/Camos UEM.html">Inicio</a>
+                    <a href="../../uem/Camuflajes UEM.html">SEGUIMIENTO</a>
+                    <a href="../../WARZONE/project-a.html">Project A</a>
+                    <a href="../../MWII/project-b.html">Project B</a>
+                    <a href="../../MWIII/project-c.html">Project C</a>
+                    <a href="../../BLACK OPS 6/project-d.html">Project D</a>
+                    <a href="../../BLACK OPS7/project-e.html">Project E</a>
+                    <a href="../../CODM/project-f.html">Project F</a>
+                </div>
+            </div>
+        <div class="brand">
+            <div class="logo">CU</div>
+                <div class="brand-text">
+                    <span class="site-name">Camos UEM</span>
+                    <small class="site-tag">Proyecto A</small>
+                </div>
+            </div>
+            </div>
+        <div>
+            <a class="btn ghost" href="../../index/Camos UEM.html">Volver</a>
+        </div>
+        </nav>
+    </header>
+
+    <div class="UEM-breadcrumbs-container">
+        <div class="container">
+            <div itemscope="itemscope" itemtype="https://schema.org/BreadcrumbList" class="UEM-breadcrumbs">
+                <nav>
+                    <a href="../../index/Camos UEM.html">Camos UEM</a> /
+                    <a href="../Camuflajes UEM.html">Camuflajes UEM</a> /
+                    <a href="mapas.html">Mapas Para UEM</a> 
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="CONSULTA DE BUSQUEDA..." id="searchInput">
+        </div>
+        <div class="filters-group">
+            <select id="xpFilter">
+                <option value="">TODOS LOS NIVELES DE XP</option>
+                <option value="N/A">N/A</option>
+                <option value="0.05">0.05</option>
+                <option value="0.2">0.2</option>
+                <option value="0.28">0.28</option>
+                <option value="0.31">0.31</option>
+                <option value="0.33">0.33</option>
+                <option value="0.4">0.4</option>
+                <option value="0.41">0.41</option>
+                <option value="0.5">0.5</option>
+                <option value="0.6">0.6</option>
+                <option value="0.61">0.61</option>
+                <option value="0.8">0.8</option>
+                <option value="0.81">0.81</option>
+                <option value="0.82">0.82</option>
+                <option value="1">1</option>
+                <option value="1.03">1.03</option>
+            </select>
+            <div class="checkbox-group">
+                <label class="checkbox-wrapper">
+                    <input type="checkbox" id="brokenCheckbox">
+                    MAPAS ROTOS
+                </label>
+                <label class="checkbox-wrapper">
+                    <input type="checkbox" id="fullOkCheckbox">
+                    TOTALMENTE OK
+                </label>
+                <label class="checkbox-wrapper">
+                    <input type="checkbox" id="favoritesCheckbox">
+                    ★ MAPAS COMPLETADOS
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="container">
+        <div class="maps-grid" id="mapsGrid"></div>
+        <div class="pagination" id="pagination"></div>
+    </div>
+
+    <script src="datos mapas.js"></script>
+    <script>
+        // Usar datos perezosos desde datos mapas.js (no duplicar la generación grande)
+        // datos mapas.js expone: window.baseMaps, window.mapsData (Proxy), window.TOTAL_MAPS, window.getMap, window.getMapsSlice
+        const mapsData = window.mapsData;
+        const TOTAL_MAPS = window.TOTAL_MAPS || (mapsData.length || 0);
+        
+        
+        // Estado
+        let favorites = new Set();
+        let searchTerm = "";
+        let showFavoritesOnly = false;
+        let showBroken = false;
+        let showFullOk = false;
+        let currentPage = 1;
+        const mapsPerPage = 50; // 5 columnas x 10 filas
+
+        function getFilteredMaps() {
+            const selectedXP = document.getElementById("xpFilter").value; // Capturamos la XP seleccionada
+
+            return mapsData.filter(map => {
+                const idx = mapsData.indexOf(map);
+                
+                // Filtro de Búsqueda
+                const matchSearch = !searchTerm || 
+                    map.title.toLowerCase().includes(searchTerm) ||
+                    map.author.toLowerCase().includes(searchTerm) ||
+                    map.tags.some(t => t.toLowerCase().includes(searchTerm));
+
+                // Filtro de XP (NUEVO)
+                // Usamos startsWith para que "0.33000001" coincida con "0.33"
+                const matchXP = !selectedXP || String(map.xp).startsWith(selectedXP);
+
+                // Lógica de Favoritos
+                if (!showFavoritesOnly && favorites.has(idx)) return false;
+                if (showFavoritesOnly && !favorites.has(idx)) return false;
+
+                // Filtros de Etiquetas (Rotos / OK)
+                const activeStatus = [];
+                if (showBroken) activeStatus.push('mapas rotos');
+                if (showFullOk) activeStatus.push('totalmente ok');
+
+                let matchStatus = true;
+                if (activeStatus.length > 0) {
+                    matchStatus = map.tags.some(t => activeStatus.includes(t.toLowerCase()));
+                }
+
+                // Ahora incluimos matchXP en el resultado final
+                return matchSearch && matchStatus && matchXP;
+            });
+        }
+
+        function renderMaps() {
+    const filtered = getFilteredMaps();
+    const totalPages = Math.ceil(filtered.length / mapsPerPage);
+
+    // ... (mantén tu lógica de validación de página actual)
+
+    const grid = document.getElementById("mapsGrid");
+    grid.innerHTML = "";
+
+    const startIdx = (currentPage - 1) * mapsPerPage;
+    const endIdx = startIdx + mapsPerPage;
+    const pageMaps = filtered.slice(startIdx, endIdx);
+
+    // Dentro de renderMaps en mapas.html
+pageMaps.forEach((map) => {
+    const idx = mapsData.indexOf(map);
+    const card = document.createElement("div");
+    card.className = "map-card";
+    card.style.cursor = "pointer"; // Que parezca un botón
+
+    card.innerHTML = `
+        <div class="map-header">
+            <div class="map-title">${map.title}</div>
+            <button class="favorite-btn" data-idx="${idx}">${favorites.has(idx) ? '★' : '☆'}</button>
+        </div>
+        <div class="map-info">
+            <div>AUTHOR: <span class="map-author">${map.author}</span></div>
+            <div>XP: <span class="map-xp">${map.xp}</span></div>
+        </div>
+    `;
+
+    // AL HACER CLIC: Redirigir a la descripción
+    card.addEventListener("click", (e) => {
+        if (!e.target.classList.contains('favorite-btn')) {
+            window.location.href = "detalle.html?id=" + idx;
+        }
+    });
+
+    grid.appendChild(card);
+});
+
+    renderPagination(totalPages);
+}
+
+        function renderPagination(totalPages) {
+            const paginationDiv = document.getElementById("pagination");
+            paginationDiv.innerHTML = "";
+
+            if (totalPages <= 1) return;
+
+            // Botón anterior
+            const prevBtn = document.createElement("button");
+            prevBtn.textContent = "« ANTERIOR";
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.addEventListener("click", () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderMaps();
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                }
+            });
+            paginationDiv.appendChild(prevBtn);
+
+            // Información de página
+            const infoSpan = document.createElement("span");
+            infoSpan.className = "page-info";
+            infoSpan.textContent = `Página ${currentPage} de ${totalPages}`;
+            paginationDiv.appendChild(infoSpan);
+
+            // Botones de números de página (mostrar algunos)
+            const maxPageButtons = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
+            let endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
+            if (endPage - startPage < maxPageButtons - 1) {
+                startPage = Math.max(1, endPage - maxPageButtons + 1);
+            }
+
+            if (startPage > 1) {
+                const firstBtn = document.createElement("button");
+                firstBtn.className = "page-number";
+                firstBtn.textContent = "1";
+                firstBtn.addEventListener("click", () => {
+                    currentPage = 1;
+                    renderMaps();
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                });
+                paginationDiv.appendChild(firstBtn);
+
+                if (startPage > 2) {
+                    const dots = document.createElement("span");
+                    dots.textContent = "...";
+                    dots.style.color = "#aaa";
+                    paginationDiv.appendChild(dots);
+                }
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                const pageBtn = document.createElement("button");
+                pageBtn.className = "page-number" + (i === currentPage ? " active" : "");
+                pageBtn.textContent = i;
+                pageBtn.addEventListener("click", () => {
+                    currentPage = i;
+                    renderMaps();
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                });
+                paginationDiv.appendChild(pageBtn);
+            }
+
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    const dots = document.createElement("span");
+                    dots.textContent = "...";
+                    dots.style.color = "#aaa";
+                    paginationDiv.appendChild(dots);
+                }
+
+                const lastBtn = document.createElement("button");
+                lastBtn.className = "page-number";
+                lastBtn.textContent = totalPages;
+                lastBtn.addEventListener("click", () => {
+                    currentPage = totalPages;
+                    renderMaps();
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                });
+                paginationDiv.appendChild(lastBtn);
+            }
+
+            // Botón siguiente
+            const nextBtn = document.createElement("button");
+            nextBtn.textContent = "SIGUIENTE »";
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.addEventListener("click", () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderMaps();
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                }
+            });
+            paginationDiv.appendChild(nextBtn);
+        }
+
+        // Event listeners
+        document.getElementById("searchInput").addEventListener("input", (e) => {
+            searchTerm = e.target.value.toLowerCase();
+            currentPage = 1;
+            renderMaps();
+        });
+
+        document.getElementById("favoritesCheckbox").addEventListener("change", (e) => {
+            showFavoritesOnly = e.target.checked;
+            currentPage = 1;
+            renderMaps();
+        });
+
+        // Nuevo listener para el filtro de XP
+        document.getElementById("xpFilter").addEventListener("change", () => {
+            currentPage = 1; // Reiniciamos a la página 1
+            renderMaps();    // Volvemos a dibujar
+        });
+
+        document.getElementById("brokenCheckbox").addEventListener("change", (e) => {
+            showBroken = e.target.checked;
+            currentPage = 1;
+            renderMaps();
+        });
+
+        document.getElementById("fullOkCheckbox").addEventListener("change", (e) => {
+            showFullOk = e.target.checked;
+            currentPage = 1;
+            renderMaps();
+        });
+
+        // Inicializar
+        renderMaps();
+    </script>
+</body>
+</html>

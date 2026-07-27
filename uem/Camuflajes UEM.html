@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Camos UEM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+
+    <style>
+        /* =========================================
+            VARIABLES Y CONFIGURACIÓN BASE
+           ========================================= */
+        :root {
+            --bg: #071026;
+            --surface: #0f1724;
+            --muted: #98a0b3;
+            --accent: #7c3aed;
+            --accent-2: #06b6d4;
+            --glass: rgba(255, 255, 255, 0.04);
+            --radius: 12px;
+            --container: 1100px;
+            --ff: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+        }
+
+        * { box-sizing: border-box; }
+        
+        html, body { 
+            height: 100%; 
+            background-color: #05060a !important; /* Force dark background */
+        }
+
+        body {
+            margin: 0;
+            color: white;
+            font-family: var(--ff);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            padding: 20px;
+        }
+
+        a { color: var(--accent-2); text-decoration: none; transition: color 0.2s; }
+        a:hover { color: var(--accent); }
+
+        h1, h2, h3, h4 { color: #f4f7fb; }
+        .container { max-width: var(--container); margin: 0 auto; padding: 24px; }
+        .muted { color: var(--muted); font-size: 14px; }
+
+        /* =========================================
+            HEADER Y NAVEGACIÓN
+           ========================================= */
+        .site-header { 
+            backdrop-filter: blur(6px); 
+            background: rgba(6, 9, 14, 0.45); 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+        }
+
+        .nav { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; }
+
+        /* Menú Lateral */
+        .left-menu { position: relative; margin-right: 12px; display: flex; align-items: center; }
+        .menu-toggle { display: none; }
+        .menu-btn { 
+            width: 44px; height: 40px; display: flex; flex-direction: column; 
+            justify-content: center; gap: 5px; cursor: pointer; padding: 8px; border-radius: 8px; 
+        }
+        .menu-btn span { display: block; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius: 2px; transition: 0.3s; }
+        
+        .dropdown-menu { 
+            position: absolute; left: 0; top: 56px; min-width: 200px; 
+            background: linear-gradient(180deg, rgba(15, 23, 36, 0.98), rgba(11, 15, 25, 0.96)); 
+            border-radius: 10px; padding: 8px; box-shadow: 0 8px 24px rgba(2, 6, 23, 0.6); 
+            opacity: 0; transform: translateY(-6px) scale(0.98); pointer-events: none; 
+            transition: all 180ms ease-in-out; border: 1px solid rgba(255, 255, 255, 0.03); z-index: 60; 
+        }
+        .dropdown-menu a { display: block; padding: 8px 10px; color: var(--muted); border-radius: 6px; }
+        .dropdown-menu a:hover { background: rgba(255, 255, 255, 0.02); color: #fff; }
+
+        .menu-toggle:checked + .menu-btn + .dropdown-menu { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+        .menu-toggle:checked + .menu-btn span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .menu-toggle:checked + .menu-btn span:nth-child(2) { opacity: 0; }
+        .menu-toggle:checked + .menu-btn span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+        /* Branding */
+        .brand { display: flex; align-items: center; gap: 12px; }
+        .logo { 
+            width: 48px; height: 48px; border-radius: 10px; 
+            background: linear-gradient(135deg, var(--accent), var(--accent-2)); 
+            display: flex; align-items: center; justify-content: center; font-weight: 700; 
+        }
+        .site-name { font-weight: 700; }
+        .site-tag { display: block; color: var(--muted); font-size: 12px; }
+
+        .nav-links { display: flex; gap: 16px; list-style: none; margin: 0; padding: 0; align-items: center; }
+        .nav-links a { color: var(--muted); padding: 8px 10px; border-radius: 8px; }
+        .nav-links a:hover { color: #fff; }
+
+        .lang-switch summary { 
+            list-style: none; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            gap: 6px; 
+            padding: 8px 10px; 
+            color: var(--muted); 
+        }
+
+        .lang-switch summary::-webkit-details-marker { display: none; }
+        .lang-list { 
+            position: absolute; left: 50%; right: auto; top: 44px; min-width: 140px; transform: translateX(-50%);
+            background: linear-gradient(180deg, rgba(15, 23, 36, 0.98), rgba(11, 15, 25, 0.96)); 
+            padding: 6px; border-radius: 10px; box-shadow: 0 8px 24px rgba(2, 6, 23, 0.6); 
+            border: 1px solid rgba(255, 255, 255, 0.03); display: none; z-index: 70; transform-origin: top center; transition: all 160ms ease-in-out; 
+        }
+        .lang-switch[open] .lang-list { display: block; }
+        .lang-list li { list-style: none; }
+
+        
+        .btn { 
+            background: transparent; padding: 8px 12px; border-radius: 8px; 
+            border: 1px solid rgba(255,255,255,0.06); color: inherit; 
+        }
+        .btn:hover { background: var(--accent); color: white; border-color: transparent; }
+
+        /* Características */
+        .features .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .feature { 
+           background: var(--glass); padding: 20px; border-radius: 12px; 
+           border: 1px solid rgba(255, 255, 255, 0.03); 
+        }
+
+        /* Proyectos y Meta Cards */
+        .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 18px; }
+        
+.meta-card {
+    display: block;
+    width: 100%;
+    max-width: 2000px;
+    border-radius: 15px;
+    overflow: hidden;
+    text-decoration: none;
+    background-color: #000;
+    border: 1px solid #222;
+    transition: transform 0.3s ease;
+    margin-bottom: 32px;
+}
+/* Contenedor de la imagen y capas */
+.meta-media {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+/* Estado normal de la imagen */
+.card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.4);
+    transition: filter 0.4s ease, transform 0.4s ease;
+}
+
+/* EFECTO HOVER */
+.meta-card:hover .card-img {
+    filter: brightness(1.1);
+    transform: scale(1.05);
+}
+
+/* Título Camuflajes */
+.meta-overlay {
+    position: absolute;
+    z-index: 2;
+    text-align: center;
+    pointer-events: none;
+}
+.meta-title {
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 0;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+}
+
+.highlight {
+    color: #ff8c00;
+}
+
+/* Barra transparente (Estilo Warzone) */
+.meta-footer-transparent {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 12px 0;
+    background-color: rgba(0, 0, 0, 0.2) !important; 
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    text-align: center;
+    z-index: 3;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.meta-sub {
+    color: #ffffff;
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.meta-title span { 
+    background: linear-gradient(90deg, #ffd166, #ff7b00); 
+    -webkit-background-clip: text; background-clip: text; color: transparent; 
+}
+
+.small-card { padding: 12px; }
+        .small-card .meta-media { height: 120px; margin-bottom: 0; }
+        .meta-title.small { font-size: 16px; letter-spacing: 2px; }
+
+        .meta-card:hover {
+           transform: scale(1.05);
+           box-shadow: 0 34px 70px rgba(2, 6, 23, 0.78);
+           border-color: rgba(124, 58, 237, 0.16);
+        }
+
+        .site-footer {
+            padding: 28px 0; border-top: 1px solid rgba(255, 255, 255, 0.03); 
+            margin-top: 100px; background: transparent; color: var(--muted); 
+        }
+        .footer-grid { display: flex; justify-content: space-between; align-items: center; }
+        .footer-grid a { color: var(--muted); margin-left: 12px; }
+
+        @media (max-width: 980px) {
+            .projects-grid, .features .grid { grid-template-columns: repeat(2, 1fr); }
+            .meta-media { height: 140px; }
+        }
+
+        @media (max-width: 640px) {
+            .nav-links { display: none; }
+            .projects-grid, .features .grid { grid-template-columns: 1fr; }
+            .meta-title { font-size: 22px; letter-spacing: 3px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <nav class="nav container">
+            <div class="left-menu">
+                <input type="checkbox" id="menuToggle" class="menu-toggle">
+                <label for="menuToggle" class="menu-btn" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </label>
+                <div class="dropdown-menu" role="menu" aria-label="Características">
+                    <a href="../index/Camos UEM.html">Inicio <span style="font-size: 11px; color: #7c3aed;">2000</span></a>
+                    <a href="../WARZONE/project-a.html">Project A <span style="font-size: 11px; color: #7c3aed;">2002</span></a>
+                    <a href="../MW II/project-b.html">Project B <span style="font-size: 11px; color: #7c3aed;">2003</span></a>
+                    <a href="../MW III/project-c.html">Project C <span style="font-size: 11px; color: #7c3aed;">2004</span></a>
+                    <a href="../BLACK OPS 6/project-d.html">Project D <span style="font-size: 11px; color: #7c3aed;">2005</span></a>
+                    <a href="../BLACK OPS7/project-e.html">Project E <span style="font-size: 11px; color: #7c3aed;">2006</span></a>
+                    <a href="../CODM/project-f.html">Project F <span style="font-size: 11px; color: #7c3aed;">2007</span></a>
+                </div>
+            </div>
+        <div class="brand">
+            <div class="logo">CU</div>
+                <div class="brand-text">
+                    <span class="site-name">Camos UEM</span>
+                    <small class="site-tag">Proyecto A</small>
+                </div>
+            </div>
+        <div>
+            <a class="btn ghost" href="../index/Camos UEM.html">Volver</a>
+        </div>
+        </nav>
+    </header>
+
+    <div class="UEM-breadcrumbs-container">
+        <div class="container">
+            <div itemscope="itemscope" itemtype="https://schema.org/BreadcrumbList" class="UEM-breadcrumbs">
+                <nav>
+                    <a href="../index/Camos UEM.html">Camos UEM</a> /
+                    <a href="Camuflajes UEM.html">Camuflajes UEM</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+        <section id="seguimiento" class="container seguimiento">
+<a href="con UEM/card.html" class="meta-card" aria-label="Ir a SEGUIMIENTO">
+    <div class="meta-media">
+        <img src="con titulo uem.png" alt="Camuflajes UEM" class="card-img">
+        
+        <div class="meta-overlay">
+            <h3 class="meta-title">CAMUFLAJES <span class="highlight">UEM</span></h3>
+        </div>
+
+        <div class="meta-footer-transparent">
+            <p class="meta-sub">Black Ops III (Ultimate Experience Mod)</p>
+        </div>
+    </div>
+</a>
+<a href="sin UEM/mapas.html" class="meta-card" aria-label="Ir a SEGUIMIENTO">
+    <div class="meta-media">
+        <img src="sin titulo uem.png" alt="Camuflajes" class="card-img">
+        
+        <div class="meta-overlay">
+            <h3 class="meta-title">SIN TITULO <span class="highlight">UEM</span></h3>
+        </div>
+
+        <div class="meta-footer-transparent">
+            <p class="meta-sub">Black Ops III (Ultimate Experience Mod)</p>
+        </div>
+    </div>
+</a>
+        </section>
+
+    <footer class="site-footer">
+        <div class="container footer-grid">
+        <div>
+            <strong>Camos UEM</strong>
+            <p class="muted">Hecho con ❤️.</p>
+        </div>
+        <div class="links">
+            <a href="#">Términos</a>
+            <a href="#">Privacidad</a>
+        </div>
+        </div>
+    </footer>
+</body>
+</html>

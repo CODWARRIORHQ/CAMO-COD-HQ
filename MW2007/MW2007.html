@@ -69,15 +69,59 @@
         }
         .menu-btn span { display: block; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius: 2px; transition: 0.3s; }
         
-        .dropdown-menu { 
-            position: absolute; left: 0; top: 56px; min-width: 200px; 
+        .dropdown-menu { /* menu de jugos lateraal izquierdo*/
+            position: absolute; 
+            left: 0; 
+            top: 56px; 
+            min-width: 423px; /* ligeramente más grande */
+            max-width: min(640px, 92vw); /* evita desbordes en pantallas pequeñas */
             background: linear-gradient(180deg, rgba(15, 23, 36, 0.98), rgba(11, 15, 25, 0.96)); 
-            border-radius: 10px; padding: 8px; box-shadow: 0 8px 24px rgba(2, 6, 23, 0.6); 
-            opacity: 0; transform: translateY(-6px) scale(0.98); pointer-events: none; 
-            transition: all 180ms ease-in-out; border: 1px solid rgba(255, 255, 255, 0.03); z-index: 60; 
+            border-radius: 10px; 
+            padding: 8px; 
+            box-shadow: 0 8px 24px rgba(2, 6, 23, 0.6); 
+            opacity: 0; 
+            transform: translateY(-6px) scale(0.98); pointer-events: none; 
+            transition: all 180ms ease-in-out; 
+            border: 1px solid rgba(255, 255, 255, 0.03); 
+            z-index: 60; 
         }
-        .dropdown-menu a { display: block; padding: 8px 10px; color: var(--muted); border-radius: 6px; }
-        .dropdown-menu a:hover { background: rgba(255, 255, 255, 0.02); color: #fff; }
+        
+        /* Hacer el menú desplazable si hay muchos items */
+        .dropdown-menu {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 6px; /* espacio para el scrollbar */
+        }
+
+        /* Scrollbar minimalista (opcional) */
+        .dropdown-menu::-webkit-scrollbar { width: 8px; }
+        .dropdown-menu::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 8px; }
+
+        /* En pantallas pequeñas, mostrar el menú como panel ancho y fijo para que sea completamente visible */
+        @media (max-width: 640px) {
+            .dropdown-menu {
+                position: fixed;
+                left: 8px;
+                right: 8px;
+                top: 64px;
+                min-width: auto; /* permitir que use el ancho disponible */
+                max-width: calc(100% - 20px);
+                border-radius: 12px;
+                box-shadow: 0 24px 60px rgba(2,6,23,0.7);
+            }
+        }
+
+        .dropdown-menu a { 
+            display: block; 
+            padding: 8px 10px; 
+            color: var(--muted); 
+            border-radius: 6px; 
+        }
+
+        .dropdown-menu a:hover { 
+            background: rgba(255, 255, 255, 0.02); 
+            color: #fff; 
+        }
 
         .menu-toggle:checked + .menu-btn + .dropdown-menu { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
         .menu-toggle:checked + .menu-btn span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
@@ -218,13 +262,29 @@
                   <span></span>
               </label>
               <div class="dropdown-menu" role="menu" aria-label="Características">
-                  <a href="../index/Camos UEM.html">Inicio</a>
-                  <a href="##">Project A</a>
-                  <a href="##">Project B</a>
-                  <a href="##">Project C</a>
-                  <a href="##">Project D</a>
-                  <a href="##">Project E</a>
-                  <a href="##">Project F</a>
+                  <a role="menuitem" href="../MW2007/MW2007.html">CALL OF DUTY4: MODERN WARFARE <span style="font-size: 11px; color: #7c3aed;">2007</span></a>
+                    <a role="menuitem" href="../MW2/MW2.html">CALL OF DUTY: MODERN WARFARE 2 <span style="font-size: 11px; color: #7c3aed;">2009</span></a>
+                    <a role="menuitem" href="../BLACK OPS I/BOI.html">CALL OF DUTY: BLACK OPS <span style="font-size: 11px; color: #7c3aed;">2010</span></a>
+                    <a role="menuitem" href="../MW3/MW3.html">CALL OF DUTY: MODERN WARFARE 3 <span style="font-size: 11px; color: #7c3aed;">2011</span></a>
+                    <a role="menuitem" href="../BLACK OPS II/BOII.html">CALL OF DUTY: BLACK OPS II <span style="font-size: 11px; color: #7c3aed;">2012</span></a>
+                    <a role="menuitem" href="../GHOSTS/GHOSTS.html">CALL OF DUTY: GHOSTS <span style="font-size: 11px; color: #7c3aed;">2013</span></a>
+                    <a role="menuitem" href="../ADVANCED/ADVANCED.html">CALL OF DUTY: ADVANCED WARFARE <span style="font-size: 11px; color: #7c3aed;">2014</span></a>
+                    <a role="menuitem" href="../BLACK OPS III/BOIII.html">CALL OF DUTY: BLACK OPS III <span style="font-size: 11px; color: #7c3aed;">2015</span></a>
+                    <a role="menuitem" href="../INFINITE/INFINITE.html">CALL OF DUTY: INFINITE WARFARE <span style="font-size: 11px; color: #7c3aed;">2016</span></a>
+                    <a role="menuitem" href="../MWREMASTERED/MWREMASTERED.html">CALL OF DUTY: MODERN WARFARE REMASTERED <span style="font-size: 11px; color: #7c3aed;">2016</span></a>
+                    <a role="menuitem" href="../WWII/WWII.html">CALL OF DUTY: WWII <span style="font-size: 11px; color: #7c3aed;">2017</span></a>
+                    <a role="menuitem" href="../BLACK OPS IIII/BOIIII.html">CALL OF DUTY: BLACK OPS IIII <span style="font-size: 11px; color: #7c3aed;">2018</span></a>
+                    <a role="menuitem" href="../CODM/CODM.html">CALL OF DUTY: MOBILE <span style="font-size: 11px; color: #7c3aed;">2019</span></a>
+                    <a role="menuitem" href="../MW 2019/MW.html">CALL OF DUTY: MODERN WARFARE (2019) <span style="font-size: 11px; color: #7c3aed;">2019</span></a>
+                    <a role="menuitem" href="../MW 2 REMASTERED/MW2REMASTERED.html">CALL OF DUTY: MODERN WARFARE 2 REMASTERED <span style="font-size: 11px; color: #7c3aed;">2020</span></a>
+                    <a role="menuitem" href="../COLD WAR/COLDWAR.html">CALL OF DUTY: BLACK OPS COLD WAR <span style="font-size: 11px; color: #7c3aed;">2020</span></a>
+                    <a role="menuitem" href="../VANGUARD/VANGUARD.html">CALL OF DUTY: VANGUARD <span style="font-size: 11px; color: #7c3aed;">2021</span></a>
+                    <a role="menuitem" href="../MW II/MWII.html">CALL OF DUTY: MODERN WARFARE II (2022) <span style="font-size: 11px; color: #7c3aed;">2022</span></a>
+                    <a role="menuitem" href="../MW III/MWIII.html">CALL OF DUTY: MODERN WARFARE III (2023) <span style="font-size: 11px; color: #7c3aed;">2023</span></a>
+                    <a role="menuitem" href="../BLACK OPS 6/BO6.html">CALL OF DUTY: BLACK OPS 6 <span style="font-size: 11px; color: #7c3aed;">2024</span></a>
+                    <a role="menuitem" href="../BLACK OPS 7/BO7.html">CALL OF DUTY: BLACK OPS 7 <span style="font-size: 11px; color: #7c3aed;">2025</span></a>
+                    <a role="menuitem" href="../MW 4/MW4.html"> PROXIMAMENTECALL OF DUTY: MODERN WARFARE 4 (2026) <span style="font-size: 11px; color: #7c3aed;">2026</span></a>
+                    <a role="menuitem" href="../WARZONE/WARZONE.html">WARZONE SIEMPRE EL PRIMERO DE TODOS</a>
               </div>
           </div>
       <div class="brand">
@@ -277,5 +337,41 @@
       </div>
     </div>
   </footer>
+    <script>
+    // Cerrar el menú al hacer clic fuera, con la tecla Esc, y al hacer scroll en móviles
+        (function(){
+            const menuToggle = document.getElementById('menuToggle');
+            const leftMenu = document.querySelector('.left-menu');
+            if(!menuToggle) return;
+            // Cerrar al clicar fuera del contenedor del menú
+            document.addEventListener('click', (e) => {
+                if (!leftMenu.contains(e.target)) {
+                    menuToggle.checked = false;
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Cerrar con Esc
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    menuToggle.checked = false;
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Cerrar al hacer scroll (solo en móviles)
+            window.addEventListener('scroll', () => {
+                try {
+                    if (window.innerWidth <= 640 && menuToggle.checked) {
+                        menuToggle.checked = false;
+                        menuToggle.setAttribute('aria-expanded', 'false');
+                    }
+                } catch (err) {
+                    // no bloquear si ocurre algún error
+                    console.warn('menu scroll close error', err);
+                }
+            }, { passive: true });
+        })();
+        </script>
 </body>
 </html>

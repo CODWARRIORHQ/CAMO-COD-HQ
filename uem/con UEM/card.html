@@ -165,21 +165,46 @@
             pointer-events: auto; 
         }
 
-        .dropdown-menu { 
+        .dropdown-menu { /* menu de jugos lateraal izquierdo*/
             position: absolute; 
             left: 0; 
             top: 56px; 
-            min-width: 200px; 
+            min-width: 423px; /* ligeramente más grande */
+            max-width: min(640px, 92vw); /* evita desbordes en pantallas pequeñas */
             background: linear-gradient(180deg, rgba(15, 23, 36, 0.98), rgba(11, 15, 25, 0.96)); 
             border-radius: 10px; 
             padding: 8px; 
             box-shadow: 0 8px 24px rgba(2, 6, 23, 0.6); 
             opacity: 0; 
-            transform: translateY(-6px) scale(0.98); 
-            pointer-events: none; 
+            transform: translateY(-6px) scale(0.98); pointer-events: none; 
             transition: all 180ms ease-in-out; 
             border: 1px solid rgba(255, 255, 255, 0.03); 
             z-index: 60; 
+        }
+        
+        /* Hacer el menú desplazable si hay muchos items */
+        .dropdown-menu {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 6px; /* espacio para el scrollbar */
+        }
+
+        /* Scrollbar minimalista (opcional) */
+        .dropdown-menu::-webkit-scrollbar { width: 8px; }
+        .dropdown-menu::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 8px; }
+
+        /* En pantallas pequeñas, mostrar el menú como panel ancho y fijo para que sea completamente visible */
+        @media (max-width: 640px) {
+            .dropdown-menu {
+                position: fixed;
+                left: 8px;
+                right: 8px;
+                top: 64px;
+                min-width: auto; /* permitir que use el ancho disponible */
+                max-width: calc(100% - 20px);
+                border-radius: 12px;
+                box-shadow: 0 24px 60px rgba(2,6,23,0.7);
+            }
         }
 
         .dropdown-menu a { 
@@ -649,14 +674,30 @@
                 <span></span>
             </label>
             <div class="dropdown-menu" role="menu" aria-label="Características">
-                <a href="../../index/Camos UEM.html">Inicio</a>
-                <a href="../../uem/Camuflajes UEM.html">SEGUIMIENTO</a>
-                <a href="../../WARZONE/project-a.html">Project A</a>
-                <a href="../../MWII/project-b.html">Project B</a>
-                <a href="../../MWIII/project-c.html">Project C</a>
-                <a href="../../BLACK OPS 6/project-d.html">Project D</a>
-                <a href="../../BLACK OPS7/project-e.html">Project E</a>
-                <a href="../../CODM/project-f.html">Project F</a>
+                <a role="menuitem" href="../../index/Camos UEM.html">Proyectos</a>
+                    <a role="menuitem" href="../../MW2007/MW2007.html">CALL OF DUTY4: MODERN WARFARE <span style="font-size: 11px; color: #7c3aed;">2007</span></a>
+                    <a role="menuitem" href="../../MW2/MW2.html">CALL OF DUTY: MODERN WARFARE 2 <span style="font-size: 11px; color: #7c3aed;">2009</span></a>
+                    <a role="menuitem" href="../../BLACK OPS I/BOI.html">CALL OF DUTY: BLACK OPS <span style="font-size: 11px; color: #7c3aed;">2010</span></a>
+                    <a role="menuitem" href="../../MW3/MW3.html">CALL OF DUTY: MODERN WARFARE 3 <span style="font-size: 11px; color: #7c3aed;">2011</span></a>
+                    <a role="menuitem" href="../../BLACK OPS II/BOII.html">CALL OF DUTY: BLACK OPS II <span style="font-size: 11px; color: #7c3aed;">2012</span></a>
+                    <a role="menuitem" href="../../GHOSTS/GHOSTS.html">CALL OF DUTY: GHOSTS <span style="font-size: 11px; color: #7c3aed;">2013</span></a>
+                    <a role="menuitem" href="../../ADVANCED/ADVANCED.html">CALL OF DUTY: ADVANCED WARFARE <span style="font-size: 11px; color: #7c3aed;">2014</span></a>
+                    <a role="menuitem" href="../../BLACK OPS III/BOIII.html">CALL OF DUTY: BLACK OPS III <span style="font-size: 11px; color: #7c3aed;">2015</span></a>
+                    <a role="menuitem" href="../../INFINITE/INFINITE.html">CALL OF DUTY: INFINITE WARFARE <span style="font-size: 11px; color: #7c3aed;">2016</span></a>
+                    <a role="menuitem" href="../../MWREMASTERED/MWREMASTERED.html">CALL OF DUTY: MODERN WARFARE REMASTERED <span style="font-size: 11px; color: #7c3aed;">2016</span></a>
+                    <a role="menuitem" href="../../WWII/WWII.html">CALL OF DUTY: WWII <span style="font-size: 11px; color: #7c3aed;">2017</span></a>
+                    <a role="menuitem" href="../../BLACK OPS IIII/BOIIII.html">CALL OF DUTY: BLACK OPS IIII <span style="font-size: 11px; color: #7c3aed;">2018</span></a>
+                    <a role="menuitem" href="../../CODM/CODM.html">CALL OF DUTY: MOBILE <span style="font-size: 11px; color: #7c3aed;">2019</span></a>
+                    <a role="menuitem" href="../../MW 2019/MW.html">CALL OF DUTY: MODERN WARFARE (2019) <span style="font-size: 11px; color: #7c3aed;">2019</span></a>
+                    <a role="menuitem" href="../../MW 2 REMASTERED/MW2REMASTERED.html">CALL OF DUTY: MODERN WARFARE 2 REMASTERED <span style="font-size: 11px; color: #7c3aed;">2020</span></a>
+                    <a role="menuitem" href="../../COLD WAR/COLDWAR.html">CALL OF DUTY: BLACK OPS COLD WAR <span style="font-size: 11px; color: #7c3aed;">2020</span></a>
+                    <a role="menuitem" href="../../VANGUARD/VANGUARD.html">CALL OF DUTY: VANGUARD <span style="font-size: 11px; color: #7c3aed;">2021</span></a>
+                    <a role="menuitem" href="../../MW II/MWII.html">CALL OF DUTY: MODERN WARFARE II (2022) <span style="font-size: 11px; color: #7c3aed;">2022</span></a>
+                    <a role="menuitem" href="../../MW III/MWIII.html">CALL OF DUTY: MODERN WARFARE III (2023) <span style="font-size: 11px; color: #7c3aed;">2023</span></a>
+                    <a role="menuitem" href="../../BLACK OPS 6/BO6.html">CALL OF DUTY: BLACK OPS 6 <span style="font-size: 11px; color: #7c3aed;">2024</span></a>
+                    <a role="menuitem" href="../../BLACK OPS 7/BO7.html">CALL OF DUTY: BLACK OPS 7 <span style="font-size: 11px; color: #7c3aed;">2025</span></a>
+                    <a role="menuitem" href="../../MW 4/MW4.html"> PROXIMAMENTECALL OF DUTY: MODERN WARFARE 4 (2026) <span style="font-size: 11px; color: #7c3aed;">2026</span></a>
+                    <a role="menuitem" href="../../WARZONE/WARZONE.html">WARZONE SIEMPRE EL PRIMERO DE TODOS</a>
             </div>
         </div>
         <div class="brand">
@@ -759,7 +800,7 @@
         <div class="category-header"><h1>Fusil de asalto</h1></div>
         <div class="weapons-grid">
             <div class="weapon-card" data-name="AK-47">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>Ak-47</h2><img src="../../ARMAS/AK-47.png" class="weapon-img"></div>     
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>Ak-47</h2><img src="##" class="weapon-img"></div>     
                 <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                     <div class="skin" data-title="0xp" style="background-image: url(../camuflajes/camo_1_oro.png);"></div>
@@ -787,7 +828,7 @@
             </div>
 
             <div class="weapon-card" data-name="Comando">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>Comando</h2><img src="../../ARMAS/commando.png" class="weapon-img"></div>
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>Comando</h2><img src="##" class="weapon-img"></div>
                 <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                     <div class="skin" data-title="0xp" style="background-image: url(../camuflajes/camo_1_oro.png);"></div>
@@ -815,7 +856,7 @@
             </div>
 
             <div class="weapon-card" data-name="Fal">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>Fal</h2><img src="../../ARMAS/fal.png" class="weapon-img"></div>
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>Fal</h2><img src="##" class="weapon-img"></div>
                 <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                     <div class="skin" data-title="0xp" style="background-image: url(../camuflajes/camo_1_oro.png);"></div>
@@ -843,7 +884,7 @@
             </div>
 
             <div class="weapon-card" data-name="Scar-H">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>Scar-H</h2><img src="../../ARMAS/scar-h.png" class="weapon-img"></div>
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>Scar-H</h2><img src="##" class="weapon-img"></div>
                 <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                     <div class="skin" data-title="0xp" style="background-image: url(../camuflajes/camo_1_oro.png);"></div>
@@ -871,7 +912,7 @@
             </div>
 
             <div class="weapon-card" data-name="STG-44">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>STG-44</h2><img src="../../ARMAS/stg-44.png" class="weapon-img"></div>
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>STG-44</h2><img src="##" class="weapon-img"></div>
                 <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                     <div class="skin" data-title="0xp" style="background-image: url(../camuflajes/camo_1_oro.png);"></div>
@@ -899,7 +940,7 @@
             </div>
 
             <div class="weapon-card" data-name="AUG HBAR">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>AUG HBAR</h2><img src="../../ARMAS/aug-hbar.png" class="weapon-img"></div>
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>AUG HBAR</h2><img src="##" class="weapon-img"></div>
                 <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                     <div class="skin" data-title="0xp" style="background-image: url(../camuflajes/camo_1_oro.png);"></div>
@@ -927,7 +968,7 @@
             </div>
 
             <div class="weapon-card" data-name="RAM-7">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>RAM-7</h2><img src="../../ARMAS/ram-7.png" class="weapon-img"></div>
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>RAM-7</h2><img src="##" class="weapon-img"></div>
                 <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                     <div class="skin" data-title="0xp" style="background-image: url(../camuflajes/camo_1_oro.png);"></div>
@@ -955,7 +996,7 @@
             </div>
 
             <div class="weapon-card" data-name="M13">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>M13</h2><img src="../../ARMAS/m13.png" class="weapon-img"></div>
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>M13</h2><img src="##" class="weapon-img"></div>
                 <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                     <div class="skin" data-title="0xp" style="background-image: url(../camuflajes/camo_1_oro.png);"></div>
@@ -983,7 +1024,7 @@
             </div>
 
             <div class="weapon-card" data-name="ACR Vengeance">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>ACR Vengeance</h2><img src="../../ARMAS/acr.png" class="weapon-img"></div>
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>ACR Vengeance</h2><img src="##" class="weapon-img"></div>
                 <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                     <div class="skin" data-title="0xp" style="background-image: url(../camuflajes/camo_1_oro.png);"></div>
@@ -1016,7 +1057,7 @@
         <div class="category-header"><h1>Subfusil</h1></div>
         <div class="weapons-grid">
             <div class="weapon-card" data-name="PPSH-41">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>PPSH-41</h2><img src="../../ARMAS/PPSh-41.png" class="weapon-img"></div>
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>PPSH-41</h2><img src="##" class="weapon-img"></div>
                 <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                     <div class="skin" data-title="0xp" style="background-image: url(../camuflajes/camo_1_oro.png);"></div>
@@ -1044,7 +1085,7 @@
             </div>
 
             <div class="weapon-card" data-name="UMP45">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>UMP45</h2><img src="../../ARMAS/ump45.png" class="weapon-img"></div>
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>UMP45</h2><img src="##" class="weapon-img"></div>
                 <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                     <div class="skin" data-title="0xp" style="background-image: url(../camuflajes/camo_1_oro.png);"></div>
@@ -1072,7 +1113,7 @@
             </div>
 
             <div class="weapon-card" data-name="Vector">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>Vector</h2><img src="../../ARMAS/Vector.png" class="weapon-img"></div>
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>Vector</h2><img src="##" class="weapon-img"></div>
                 <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                     <div class="skin" data-title="0xp" style="background-image: url(../camuflajes/camo_1_oro.png);"></div>
@@ -1100,7 +1141,7 @@
             </div>
 
             <div class="weapon-card" data-name="MP-7">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>MP-7</h2><img src="../../ARMAS/mp7.png" class="weapon-img"></div>
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>MP-7</h2><img src="##" class="weapon-img"></div>
                 <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                     <div class="skin" data-title="0xp" style="background-image: url(../camuflajes/camo_1_oro.png);"></div>
@@ -1128,7 +1169,7 @@
             </div>
 
             <div class="weapon-card" data-name="MP5 Suppressed">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>MP5 Suppressed</h2><img src="../../ARMAS/MP5 Suppressed.png" class="weapon-img"></div>
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>MP5 Suppressed</h2><img src="##" class="weapon-img"></div>
                 <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                     <div class="skin" data-title="0xp" style="background-image: url(../camuflajes/camo_1_oro.png);"></div>
@@ -1156,7 +1197,7 @@
             </div>
 
             <div class="weapon-card" data-name="MP-40">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>MP-40</h2><img src="../../ARMAS/mp40.png" class="weapon-img"></div>
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>MP-40</h2><img src="##" class="weapon-img"></div>
                 <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                     <div class="skin" data-title="0xp" style="background-image: url(../camuflajes/camo_1_oro.png);"></div>
@@ -1636,6 +1677,43 @@ document.addEventListener('DOMContentLoaded', () => {
     // Buscador y Selectores (Tus funciones originales)
     document.getElementById('weaponSearch').addEventListener('input', filtrarTodo);
 });
+
+
+    // Cerrar el menú al hacer clic fuera, con la tecla Esc, y al hacer scroll en móviles
+        (function(){
+            const menuToggle = document.getElementById('menuToggle');
+            const leftMenu = document.querySelector('.left-menu');
+            if(!menuToggle) return;
+            // Cerrar al clicar fuera del contenedor del menú
+            document.addEventListener('click', (e) => {
+                if (!leftMenu.contains(e.target)) {
+                    menuToggle.checked = false;
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Cerrar con Esc
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    menuToggle.checked = false;
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Cerrar al hacer scroll (solo en móviles)
+            window.addEventListener('scroll', () => {
+                try {
+                    if (window.innerWidth <= 640 && menuToggle.checked) {
+                        menuToggle.checked = false;
+                        menuToggle.setAttribute('aria-expanded', 'false');
+                    }
+                } catch (err) {
+                    // no bloquear si ocurre algún error
+                    console.warn('menu scroll close error', err);
+                }
+            }, { passive: true });
+        })();
+        
 </script>
 </body>
 </html>

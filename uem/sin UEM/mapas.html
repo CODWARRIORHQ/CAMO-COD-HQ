@@ -420,6 +420,7 @@
                 cursor: pointer; 
                 padding: 8px; 
                 border-radius: 8px; 
+                transition: background-color 0.3s ease;
             }
 
             .menu-btn span { 
@@ -427,7 +428,7 @@
                 height: 3px; 
                 background: linear-gradient(90deg, var(--accent), var(--accent-2)); 
                 border-radius: 2px; 
-                transition: 0.3s; 
+                transition: transform 0.3s ease, opacity 0.3s ease; 
             }
 
             .dropdown-menu { /* menu de jugos lateraal izquierdo*/
@@ -490,6 +491,10 @@
                 pointer-events: auto; 
             }
 
+            .menu-toggle:checked + .menu-btn span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+            .menu-toggle:checked + .menu-btn span:nth-child(2) { opacity: 0; }
+            .menu-toggle:checked + .menu-btn span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
     </style>
 </head>
 <body>
@@ -497,7 +502,7 @@
         <nav class="nav container">
             <div class="nav-left" style="display:flex;align-items:center;gap:12px;">
             <div class="left-menu">
-                <input type="checkbox" id="menuToggle" class="menu-toggle">
+                <input type="checkbox" id="menuToggle" class="menu-toggle" aria-expanded="false">
                 <label for="menuToggle" class="menu-btn" aria-hidden="true">
                     <span></span>
                     <span></span>
@@ -842,6 +847,10 @@ pageMaps.forEach((map) => {
                     menuToggle.checked = false;
                     menuToggle.setAttribute('aria-expanded', 'false');
                 }
+            });
+
+            menuToggle.addEventListener('change', () => {
+                menuToggle.setAttribute('aria-expanded', menuToggle.checked ? 'true' : 'false');
             });
 
             // Cerrar con Esc

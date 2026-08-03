@@ -22,7 +22,7 @@
             --accent-2: #06b6d4;
             --glass: rgba(255, 255, 255, 0.04);
             --radius: 12px;
-            --container: 1100px;
+            --container: 1600px;
             --ff: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
         }
 
@@ -48,33 +48,96 @@
 
         /* Aseguramos que el contenedor principal no pegue a los bordes */
         .main-container { 
-            width: 95%; 
-            max-width: 1200px; 
+            width: 100%; 
+            max-width: 1600px; 
             margin: 0 auto; 
             display: flex;
             flex-direction: column;
         }
 
-        /* Ajuste de la sección de controles (Buscador y Filtros) */
-        .controls-section {
+        /* HEADER */
+        .header {
+            background-color: #0f1229;
+            border-bottom: 2px solid #2c2c2c;
+            padding: 15px 50px;
             display: flex;
-            gap: 12px;
-            margin-bottom: 25px;
-            border-radius: 20px; /* Bordes más redondeados para ir a juego con la cápsula */
-            position: sticky;
-            top: 125px; /* Ajustado para que no tape la barra superior si haces scroll */
-            z-index: 90;
-            width: 100%; /* Para que ocupe todo el ancho del contenedor ajustado */
-            box-sizing: border-box;
+            gap: 15px;
             align-items: center;
-            background-color: var(--bg-dark); /* Añade fondo para que no se transparente el contenido al pasar */
-            padding: 10px 0; /* Añade un poco de margen interno superior e inferior */
+            flex-wrap: wrap;
+            margin: auto;
+            max-width: 1560px;
         }
 
-        .controls-section {
-            position: relative; /* Ya no te seguirá al hacer scroll */
-            top: 0;
-            /* ... resto de estilos ... */
+        .header .search-container {
+            flex: 1;
+            min-width: 250px;
+            width: 100%;
+        }
+
+        .header .search-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .header .search-input {
+            width: 100%;
+            padding: 10px 15px;
+            background-color: #1a1f3a;
+            border: 2px solid #333;
+            color: #888;
+            font-family: "Courier New", monospace;
+            font-size: 13px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .header .search-input:focus {
+            border-color: #ffff00;
+            color: #fff;
+            outline: none;
+        }
+
+        .header .filters-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .header .btn-settings {
+            background: transparent;
+            border: 2px solid #666;
+            color: #ffff00;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .header .btn-settings:hover {
+            border-color: #ffff00;
+            background: rgba(255, 255, 0, 0.08);
+        }
+
+        .header .wz-label {
+            flex-basis: 100%;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #ffff00;
+        }
+
+        .UEM-breadcrumbs-container {
+            margin-top: 18px;
+            margin-bottom: 18px;
+        }
+
+        .UEM-breadcrumbs-container {
+            margin-top: 18px;
+            margin-bottom: 18px;
         }
 
         /* Ajuste del Grid de armas para que no se desparrame */
@@ -138,6 +201,7 @@
         }
 
         /* Menú desplegable (botón) */
+        .left-menu { position: relative; margin-right: 12px; display: flex; align-items: center; }
         .menu-toggle { display: none; }
         .menu-btn { 
             width: 44px; 
@@ -149,6 +213,7 @@
             cursor: pointer; 
             padding: 8px; 
             border-radius: 8px; 
+            transition: background-color 0.3s ease;
         }
 
         .menu-btn span { 
@@ -156,7 +221,7 @@
             height: 3px; 
             background: linear-gradient(90deg, var(--accent), var(--accent-2)); 
             border-radius: 2px; 
-            transition: 0.3s; 
+            transition: transform 0.3s ease, opacity 0.3s ease; 
         }
 
         .menu-toggle:checked + .menu-btn + .dropdown-menu { 
@@ -164,6 +229,10 @@
             transform: translateY(0) scale(1); 
             pointer-events: auto; 
         }
+
+        .menu-toggle:checked + .menu-btn span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .menu-toggle:checked + .menu-btn span:nth-child(2) { opacity: 0; }
+        .menu-toggle:checked + .menu-btn span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
         .dropdown-menu { /* menu de jugos lateraal izquierdo*/
             position: absolute; 
@@ -176,8 +245,9 @@
             padding: 8px; 
             box-shadow: 0 8px 24px rgba(2, 6, 23, 0.6); 
             opacity: 0; 
-            transform: translateY(-6px) scale(0.98); pointer-events: none; 
-            transition: all 180ms ease-in-out; 
+            transform: translateY(-10px) scale(0.96); 
+            pointer-events: none; 
+            transition: opacity 180ms ease, transform 180ms ease; 
             border: 1px solid rgba(255, 255, 255, 0.03); 
             z-index: 60; 
         }
@@ -337,19 +407,53 @@
             position: sticky; 
             top: 0; 
             z-index: 100; 
+            padding: 8px 0;
+            margin-bottom: 24px;
+        }
+
+        .UEM-breadcrumbs-container {
+            margin-top: 16px;
         }
 
         .nav { 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
+            display: flex !important; 
+            align-items: center !important; 
+            justify-content: space-between !important; 
             padding: 12px 0; 
+            gap: 18px;
+        }
+        /* Forzar alineado izquierdo igual que la página de inicio */
+        .site-header .nav { display:flex !important; }
+        .site-header .nav > .nav-left { display:flex !important; align-items:center !important; gap:12px !important; margin-right:auto !important; }
+        .site-header .nav .brand { display:flex !important; align-items:center !important; gap:12px !important; margin:0 !important; }
+        .site-header .nav > *:not(.nav-left) { margin-left: 0 !important; }
+        /* Force left alignment like the homepage */
+        .nav-left { display:flex; align-items:center; gap:12px; }
+        .brand { display:flex; align-items:center; gap:12px; margin:0; }
+        .nav .brand-text { margin-left: 0; }
+
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .left-menu {
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .site-header .container {
+            max-width: 100%;
+            width: 100%;
+            padding: 12px 24px;
         }
 
         .container { 
-            max-width: var(--container); 
+            max-width: 1600px; 
             margin: 0 auto; 
-            padding: 24px; 
+            padding: 20px; 
         }
 
         /* Branding */
@@ -662,19 +766,18 @@
 </head>
 <body>
 
-    <div class="main-container">
-
     <header class="site-header">
-    <nav class="nav container">
-        <div class="left-menu">
-            <input type="checkbox" id="menuToggle" class="menu-toggle">
-            <label for="menuToggle" class="menu-btn" aria-hidden="true">
-                <span></span>
-                <span></span>
-                <span></span>
-            </label>
-            <div class="dropdown-menu" role="menu" aria-label="Características">
-                <a role="menuitem" href="../../index/Camos UEM.html">Proyectos</a>
+        <nav class="nav container">
+            <div class="nav-left" style="display:flex;align-items:center;gap:12px;">
+            <div class="left-menu">
+                <input type="checkbox" id="menuToggle" class="menu-toggle" aria-expanded="false">
+                <label for="menuToggle" class="menu-btn" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </label>
+                <div class="dropdown-menu" role="menu" aria-label="Características">
+                    <a role="menuitem" href="../../index/Camos UEM.html">Proyectos</a>
                     <a role="menuitem" href="../../MW2007/MW2007.html">CALL OF DUTY4: MODERN WARFARE <span style="font-size: 11px; color: #7c3aed;">2007</span></a>
                     <a role="menuitem" href="../../MW2/MW2.html">CALL OF DUTY: MODERN WARFARE 2 <span style="font-size: 11px; color: #7c3aed;">2009</span></a>
                     <a role="menuitem" href="../../BLACK OPS I/BOI.html">CALL OF DUTY: BLACK OPS <span style="font-size: 11px; color: #7c3aed;">2010</span></a>
@@ -698,30 +801,31 @@
                     <a role="menuitem" href="../../BLACK OPS 7/BO7.html">CALL OF DUTY: BLACK OPS 7 <span style="font-size: 11px; color: #7c3aed;">2025</span></a>
                     <a role="menuitem" href="../../MW 4/MW4.html"> PROXIMAMENTECALL OF DUTY: MODERN WARFARE 4 (2026) <span style="font-size: 11px; color: #7c3aed;">2026</span></a>
                     <a role="menuitem" href="../../WARZONE/WARZONE.html">WARZONE SIEMPRE EL PRIMERO DE TODOS</a>
+                </div>
             </div>
-        </div>
         <div class="brand">
-        <div class="logo">CU</div>
-        <div class="brand-text">
-            <span class="site-name">Camos UEM</span>
-            <small class="site-tag">Proyecto A</small>
+            <div class="logo">CU</div>
+                <div class="brand-text">
+                    <span class="site-name">Camos UEM</span>
+                    <small class="site-tag">Proyecto A</small>
+                </div>
+            </div>
+            </div>
+        <div>
+            <a class="btn ghost" href="../../index/Camos UEM.html">Volver</a>
         </div>
-    </div>
-    <div>
-        <a class="btn ghost" href="../../index/Camos UEM.html">Volver</a>
-        </div>
-    </nav>
+        </nav>
     </header>
 
     <div class="UEM-breadcrumbs-container">
         <div class="container">
-        <div itemscope="itemscope" itemtype="https://schema.org/BreadcrumbList" class="UEM-breadcrumbs">
-            <nav>
-            <a href="../../index/Camos UEM.html">Camos UEM</a> /
-            <a href="../Camuflajes UEM.html">Camuflajes UEM</a> /
-            <a href="card.html">card</a>
-            </nav>
-        </div>
+            <div itemscope="itemscope" itemtype="https://schema.org/BreadcrumbList" class="UEM-breadcrumbs">
+                <nav>
+                    <a href="../../index/Camos UEM.html">Camos UEM</a> /
+                    <a href="../Camuflajes UEM.html">Camuflajes UEM</a> /
+                    <a href="mapas.html">Mapas Para UEM</a> 
+                </nav>
+            </div>
         </div>
     </div>
 
@@ -747,6 +851,7 @@
                     <div class="option-item" data-val="smg">SUBFUSIL</div>
                     <div class="option-item" data-val="snipers">SNIPERS</div>
                     <div class="option-item" data-val="pistols">PISTOLAS</div>
+                    <div class="option-item" data-val="melee">MELEE</div>
                 </div>
             </div>
 
@@ -791,6 +896,7 @@
             <div class="stat-card"><span>SMG</span><span id="smg-stat">0%</span></div>
             <div class="stat-card"><span>SNIPERS</span><span id="snipers-stat">0%</span></div>
             <div class="stat-card"><span>PISTOLS</span><span id="pistols-stat">0%</span></div>
+            <div class="stat-card"><span>MELEE</span><span id="melee-stat">0%</span></div>
         </div>
     </div>
 </div>
@@ -854,6 +960,7 @@
                     <div class="skin mastery-preview" data-title="51,000xp" style="background-image: url(../camuflajes/camo_21_diamantes_electrificados.png);"></div>
                 </div>
             </div>
+            
 
             <div class="weapon-card" data-name="Fal">
                 <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>Fal</h2><img src="##" class="weapon-img"></div>
@@ -1457,7 +1564,41 @@
                     <div class="skin mastery-preview" data-title="51,000xp" style="background-image: url(../camuflajes/camo_21_diamantes_electrificados.png);"></div>
                 </div>
             </div>
+        </div>
+    </div>
 
+                <div class="category-group" data-category="melee">
+        <div class="category-header"><h1>MELEE</h1></div>
+        <div class="weapons-grid">
+            <div class="weapon-card" data-name="melee">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>melee</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                    <div class="skin" data-title="0xp" style="background-image: url(../camuflajes/camo_1_oro.png);"></div>
+                    <div class="skin" data-title="2,000xp" style="background-image: url(../camuflajes/camo_2_diamante.png);"></div>
+                    <div class="skin" data-title="3,500xp" style="background-image: url(../camuflajes/camo_3_escarcha.png);"></div>
+                    <div class="skin" data-title="5,000xp" style="background-image: url(../camuflajes/camo_4_Marea_Negra.png);"></div>
+                    <div class="skin" data-title="6,500xp" style="background-image: url(../camuflajes/camo_5_Cubierta_de_nebulosa.png);"></div>
+                    <div class="skin" data-title="8,000xp" style="background-image: url(../camuflajes/camo_6_Medianoche_liquido.png);"></div>
+                    <div class="skin" data-title="10,000xp" style="background-image: url(../camuflajes/camo_7_Helado_estelar.png);"></div>
+                    <div class="skin" data-title="12,000xp" style="background-image: url(../camuflajes/camo_8_Estrella_de_galaxias.png);"></div>
+                    <div class="skin" data-title="14,000xp" style="background-image: url(../camuflajes/camo_9_camuflaje_de_sangre.png);"></div>
+                    <div class="skin" data-title="16,000xp" style="background-image: url(../camuflajes/camo_10_esmeralda_encantada.png);"></div>
+                    <div class="skin" data-title="18,000xp" style="background-image: url(../camuflajes/camo_11_velo_de_orion.png);"></div>
+                    <div class="skin" data-title="20,000xp" style="background-image: url(../camuflajes/camo_12_eclipse_estelar.png);"></div>
+                    <div class="skin" data-title="23,000xp" style="background-image: url(../camuflajes/camo_13_profundidad_profunda.png);"></div>
+                    <div class="skin" data-title="26,000xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="29,000xp" style="background-image: url(../camuflajes/camo_15_tormenta_roja_astral.png);"></div>
+                    <div class="skin" data-title="32,000xp" style="background-image: url(../camuflajes/camo_16_aurora_verde.png);"></div>
+                    <div class="skin" data-title="35,000xp" style="background-image: url(../camuflajes/camo_17_cosmos_blanco.png);"></div>
+                    <div class="skin" data-title="39,000xp" style="background-image: url(../camuflajes/camo_18_Drift_de_Andrómeda.png);"></div>
+                    <div class="skin" data-title="43,000xp" style="background-image: url(../camuflajes/camo_19_resplandor_acido.png);"></div>
+                    <div class="skin" data-title="47,000xp" style="background-image: url(../camuflajes/camo_20_amatista_galactica.png);"></div>
+                    <div class="skin mastery-preview" data-title="51,000xp" style="background-image: url(../camuflajes/camo_21_diamantes_electrificados.png);"></div>
+                </div>
+            </div>
+
+            </div>
         </div>
             <footer id="contact" class="site-footer">
         <div class="container footer-grid">
@@ -1684,6 +1825,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const menuToggle = document.getElementById('menuToggle');
             const leftMenu = document.querySelector('.left-menu');
             if(!menuToggle) return;
+
+            // Mantener aria-expanded actualizado
+            menuToggle.addEventListener('change', () => {
+                menuToggle.setAttribute('aria-expanded', menuToggle.checked ? 'true' : 'false');
+            });
+
             // Cerrar al clicar fuera del contenedor del menú
             document.addEventListener('click', (e) => {
                 if (!leftMenu.contains(e.target)) {

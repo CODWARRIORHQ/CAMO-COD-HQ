@@ -894,48 +894,48 @@
             transform: rotate(45deg); 
         }
 
-        @media (max-width: 1140px) {
-            .site-header .nav,
-            .search-row,
-            .stats-grid,
-            .expand-panel {
-                gap: 12px;
-            }
-
+        @media (max-width: 1200px) {
             .site-header .nav {
                 flex-wrap: wrap;
+                gap: 12px;
+                justify-content: space-between;
+            }
+
+            .nav-left,
+            .nav-actions,
+            .brand {
+                min-width: 0;
             }
 
             .nav-left {
                 flex: 1 1 100%;
-                min-width: 0;
             }
 
             .brand {
                 flex: 1 1 auto;
-                min-width: 0;
-            }
-
-            .nav-actions {
-                width: 100%;
-                justify-content: flex-end;
             }
 
             .search-row {
+                display: flex;
                 flex-wrap: wrap;
+                gap: 10px;
             }
 
             .search-row > * {
                 min-width: 0;
+                flex: 1 1 100%;
             }
 
-            .search-row .wz-input {
-                width: 100%;
+            .search-row .btn-settings {
+                width: auto;
+                align-self: flex-end;
             }
 
             .expand-panel {
                 display: grid;
                 grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+                width: 100%;
             }
 
             .custom-select {
@@ -973,15 +973,23 @@
 
         @media (max-width: 900px) {
             .weapons-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr !important;
+            }
+
+            .weapon-card {
+                width: 100%;
             }
 
             .stats-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-template-columns: 1fr;
             }
 
             .master-panel {
                 padding: 18px;
+            }
+
+            .expand-panel {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -990,6 +998,7 @@
                 padding: 12px;
             }
 
+            .site-header .nav,
             .site-header .container,
             .container,
             .wzhub-filter-card,
@@ -998,16 +1007,24 @@
                 padding-right: 12px;
             }
 
+            .site-header .nav {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .nav-left,
+            .nav-actions {
+                width: 100%;
+            }
+
             .search-row {
+                flex-direction: column;
+                align-items: stretch;
                 gap: 10px;
             }
 
             .search-row .btn-settings {
                 width: 100%;
-            }
-
-            .expand-panel {
-                grid-template-columns: 1fr;
             }
 
             .category-header h1 {
@@ -1039,10 +1056,11 @@
             }
 
             .dropdown-menu {
-                top: 72px;
-                max-width: calc(100% - 16px);
+                position: fixed;
                 left: 8px;
                 right: 8px;
+                top: 72px;
+                max-width: calc(100% - 16px);
             }
         }
 

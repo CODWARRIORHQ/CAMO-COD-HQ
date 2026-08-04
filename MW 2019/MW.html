@@ -832,14 +832,17 @@
         }
 
         .expand-panel { 
-            display: none; 
+            display: none !important; 
             grid-template-columns: 1fr 1fr; 
             gap: 15px; 
             margin-top: 15px; 
         }
 
         .expand-panel.open { 
-            display: grid; 
+            display: grid !important; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+            margin-top: 15px; 
         }
 
         .custom-select { 
@@ -931,7 +934,7 @@
                 align-self: flex-end;
             }
 
-            .expand-panel {
+            .expand-panel.open {
                 display: grid;
                 grid-template-columns: repeat(2, minmax(0, 1fr));
                 gap: 12px;

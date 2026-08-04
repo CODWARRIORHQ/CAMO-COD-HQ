@@ -832,17 +832,27 @@
         }
 
         .expand-panel { 
-            display: none !important; 
+            display: none; 
+            visibility: hidden; 
+            opacity: 0; 
+            max-height: 0; 
+            overflow: hidden; 
             grid-template-columns: 1fr 1fr; 
             gap: 15px; 
             margin-top: 15px; 
+            transition: opacity 0.2s ease, max-height 0.2s ease; 
         }
 
         .expand-panel.open { 
             display: grid !important; 
+            visibility: visible !important; 
+            opacity: 1 !important; 
+            max-height: 1000px !important; 
+            overflow: visible !important; 
             grid-template-columns: 1fr 1fr; 
             gap: 15px; 
             margin-top: 15px; 
+            transition: opacity 0.2s ease, max-height 0.2s ease; 
         }
 
         .custom-select { 

@@ -418,18 +418,37 @@
         .nav { 
             display: flex !important; 
             align-items: center !important; 
-            justify-content: space-between !important; 
-            padding: 12px 0; 
-            gap: 18px;
+            justify-content: flex-start !important; 
+            padding: 8px 0 !important; 
+            gap: 12px !important;
         }
         /* Forzar alineado izquierdo igual que la página de inicio */
         .site-header .nav { display:flex !important; }
-        .site-header .nav > .nav-left { display:flex !important; align-items:center !important; gap:12px !important; margin-right:auto !important; }
-        .site-header .nav .brand { display:flex !important; align-items:center !important; gap:12px !important; margin:0 !important; }
+        .site-header .nav > .nav-left { display:flex !important; align-items:center !important; gap:12px !important; margin-right:20px !important; }
+        .site-header .nav .brand { display:flex !important; align-items:center !important; gap:10px !important; margin:0 !important; padding:4px 10px !important; background:rgba(12, 17, 27, 0.92) !important; border:1px solid rgba(255,255,255,0.08) !important; border-radius:12px !important; box-shadow:0 8px 18px rgba(0,0,0,0.25) !important; }
         .site-header .nav > *:not(.nav-left) { margin-left: 0 !important; }
+        .site-header .nav > div:last-child { margin-left: auto !important; display:flex !important; align-items:center !important; }
         /* Force left alignment like the homepage */
         .nav-left { display:flex; align-items:center; gap:12px; }
-        .brand { display:flex; align-items:center; gap:12px; margin:0; }
+        .brand { 
+            display:flex; 
+            align-items:center; 
+            gap:12px; 
+            margin:0; 
+            padding: 6px 12px; 
+            background: rgba(12, 17, 27, 0.92); 
+            border: 1px solid rgba(255,255,255,0.08); 
+            border-radius: 14px; 
+            box-shadow: 0 8px 18px rgba(0,0,0,0.25); 
+        }
+        .brand-text {
+            display:flex;
+            flex-direction:column;
+            align-items:flex-start;
+            text-align:left;
+            min-width:150px;
+            gap:2px;
+        }
         .nav .brand-text { margin-left: 0; }
 
 
@@ -460,7 +479,13 @@
         .brand { 
             display: flex; 
             align-items: center; 
-            gap: 12px; 
+            gap: 20px; 
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
         }
 
         * { 
@@ -468,14 +493,15 @@
         }
 
         .logo { 
-            width: 48px; 
-            height: 48px; 
-            border-radius: 10px; 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 9px; 
             background: linear-gradient(135deg, var(--accent), var(--accent-2)); 
             display: flex; 
             align-items: center; 
             justify-content: center; 
             font-weight: 700; 
+            flex-shrink: 0;
         }
         .logo-img {
             width: 100%;
@@ -486,11 +512,17 @@
 
 
         .btn.ghost { 
-            background: transparent; 
-            padding: 8px 12px; 
-            border-radius: 8px; 
-            border: 1px solid rgba(255,255,255,0.06); 
+            background: rgba(12, 17, 27, 0.92) !important; 
+            padding: 9px 14px; 
+            border-radius: 10px; 
+            border: 1px solid rgba(255,255,255,0.08); 
             color: inherit; 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+            min-width: 78px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .btn:hover { 
@@ -505,14 +537,22 @@
             transition: color 0.2s; 
         }
 
-        .site-name { 
-            font-weight: 700; 
+        .site-name {
+            display: block;
+            font-weight: 700;
+            line-height: 1;
+            font-size: 16px;
+            letter-spacing: 0.2px;
         }
 
         .site-tag {
             display: block;
-            color: var(--muted); 
-            font-size: 12px; 
+            color: var(--muted);
+            font-size: 10px;
+            line-height: 1.2;
+            margin: 0;
+            margin-top: 2px;
+            white-space: nowrap;
         }
 
         /* Modifica esta regla en tu <style> */
@@ -774,8 +814,8 @@
 <body>
 
     <header class="site-header">
-        <nav class="nav container">
-            <div class="nav-left" style="display:flex;align-items:center;gap:12px;">
+        <nav class="nav container" style="display:flex; align-items:center; justify-content:flex-start; gap:10px; width:100%; padding:6px 0;">
+            <div class="nav-left" style="display:flex; align-items:center; gap:10px; flex:1; min-width:0;">
             <div class="left-menu">
                 <input type="checkbox" id="menuToggle" class="menu-toggle" aria-expanded="false">
                 <label for="menuToggle" class="menu-btn" aria-hidden="true">
@@ -810,16 +850,16 @@
                     <a role="menuitem" href="../../WARZONE/WARZONE.html">WARZONE SIEMPRE EL PRIMERO DE TODOS</a>
                 </div>
             </div>
-        <div class="brand">
-            <div class="logo"><img src="../../MW 2019/logo.png" alt="CAMO COD HQ logo" class="logo-img"></div>
-                <div class="brand-text">
-                    <span class="site-name">CAMO COD HQ</span>
-                    <small class="site-tag">Tu hub de camuflajes</small>
+        <div class="brand" style="display:flex; align-items:center; gap:8px; margin:0; padding:3px 8px; background:rgba(12,17,27,0.92); border:1px solid rgba(255,255,255,0.08); border-radius:10px; box-shadow:0 8px 18px rgba(0,0,0,0.25);">
+            <div class="logo" style="width:36px; height:36px; flex-shrink:0; border-radius:8px;"><img src="../../MW 2019/logo.png" alt="CAMO COD HQ logo" class="logo-img"></div>
+                <div class="brand-text" style="display:flex; flex-direction:column; align-items:flex-start; text-align:left; gap:1px;">
+                    <span class="site-name" style="display:block; font-weight:700; line-height:1; font-size:14px; letter-spacing:0.2px;">CAMO COD HQ</span>
+                    <small class="site-tag" style="display:block; margin:0; line-height:1.2; font-size:9px; white-space:nowrap;">Tu hub de camuflajes</small>
                 </div>
             </div>
             </div>
-        <div>
-            <a class="btn ghost" href="../../index/Camos UEM.html">Volver</a>
+        <div style="margin-left:auto; display:flex; align-items:center; flex-shrink:0;">
+            <a class="btn ghost" href="../../index/Camos UEM.html" style="display:inline-flex; align-items:center; justify-content:center; min-width:74px; padding:8px 12px; border-radius:8px; box-shadow:0 8px 20px rgba(0,0,0,0.25); height:36px; background:rgba(12,17,27,0.92); border:1px solid rgba(255,255,255,0.08);">Volver</a>
         </div>
         </nav>
     </header>

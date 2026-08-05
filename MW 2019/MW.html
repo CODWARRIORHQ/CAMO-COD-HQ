@@ -336,8 +336,10 @@
             grid-auto-rows: 52px;
             grid-auto-flow: row;
             gap: 5px;
-            background: #0d0d0d;
-            padding: 8px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.45));
+            border: 1px solid rgba(255,255,255,0.07);
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.55), 0 0 0 1px rgba(255, 157, 0, 0.05);
+            padding: 10px;
             border-radius: 8px;
             margin: 0 auto auto;
             justify-content: center;
@@ -360,16 +362,26 @@
             border-radius: 4px;
             border: 1px solid var(--border-gray);
             cursor: pointer;
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.04), inset 0 0 18px rgba(0,0,0,0.45);
+            transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+        }
+
+        .skin:hover {
+            transform: translateY(-1px);
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 0 1px rgba(255, 157, 0, 0.7), 0 10px 18px rgba(0,0,0,0.35);
         }
 
         /* Placeholders visuales: deben verse igual que las skins reales */
         .skin.placeholder {
-            background-color: #1a1a1a;
+            background-color: #101010;
             background-size: cover;
             background-position: center;
             border-radius: 4px;
-            border: 1px solid var(--border-gray);
+            border: 1px dashed rgba(255,255,255,0.13);
             pointer-events: none;
+            opacity: 0.58;
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.5);
         }
 
         /* Cuadros grandes para categoría 11 */
@@ -386,6 +398,10 @@
             gap: 6px;
             margin-bottom: 8px;
             justify-content: center;
+            padding: 8px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.35));
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 8px;
         }
 
         .camo-toggle-item {
@@ -402,7 +418,7 @@
             background: rgba(255,255,255,0.04);
             cursor: pointer;
             transition: background 0.2s, transform 0.2s, border-color 0.2s, color 0.2s;
-            overflow: hidden;
+            overflow: visible;
         }
 
         .camo-toggle-item img.camo-toggle-thumb {
@@ -421,10 +437,37 @@
             inset: 0;
             background: rgba(0,0,0,0.45);
             transition: background 0.2s;
+            border-radius: inherit;
+            pointer-events: none;
         }
 
         .camo-toggle-item:hover::before {
             background: rgba(0,0,0,0.2);
+        }
+
+        .camo-toggle-item .camo-toggle-tooltip {
+            position: absolute;
+            top: -34px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #000;
+            color: #ff9d00;
+            padding: 6px 8px;
+            border: 1px solid #ff9d00;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.03em;
+            line-height: 1;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+            z-index: 2000;
+        }
+
+        .camo-toggle-item:hover .camo-toggle-tooltip {
+            opacity: 1;
         }
 
         .camo-toggle-item .camo-toggle-text {
@@ -469,34 +512,33 @@
             text-shadow: 0px 0px 5px rgba(0,0,0,0.8); /* Sombra para que resalte */
         }
 
-        /* Esto hace que aparezca el cuadrito negro con el nombre */
+        /* Etiqueta dentro del propio cuadro, igual que una mini notificación */
         .skin:hover::before {
-            content: attr(data-title); /* Lee lo que escribiste en el HTML */
+            content: attr(data-title);
             position: absolute;
-            bottom: 125%;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #000;
-            color: #ff9d00; /* Color naranja como tus tarjetas */
-            padding: 9px 10px;
-            border-radius: 20px;
-            border: 1px solid #ff9d00;
-            font-size: 15px;
+            left: 3px;
+            right: 3px;
+            bottom: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.85);
+            color: #ff9d00;
+            padding: 4px 5px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 157, 0, 0.85);
+            font-size: 10px;
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: 0.03em;
             white-space: nowrap;
-            z-index: 1000;
+            z-index: 3;
+            pointer-events: none;
         }
 
-        /* Esto dibuja la flechita pequeña debajo del cartel */
+        /* Quitamos la flecha externa para que la etiqueta quede integrada al cuadro */
         .skin:hover::after {
-            content: "";
-            position: absolute;
-            bottom: 110%;
-            left: 50%;
-            transform: translateX(-50%);
-            border-width: 6px;
-            border-style: solid;
-            border-color: #ff9d00 transparent transparent transparent;
-            z-index: 1000;
+            content: none;
         }
 
         /* =========================================
@@ -523,6 +565,13 @@
             padding: 12px 0; 
             gap: 18px;
         }
+
+        .nav > div:last-child {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+        }
+
         /* Forzar alineado izquierdo igual que la página de inicio */
         .site-header .nav { display:flex !important; }
         .site-header .nav > .nav-left { display:flex !important; align-items:center !important; gap:12px !important; margin-right:auto !important; }
@@ -1029,13 +1078,25 @@
             }
 
             .site-header .nav {
-                flex-direction: column;
-                align-items: stretch;
+                flex-direction: row !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+                gap: 12px;
             }
 
             .nav-left,
             .nav-actions {
-                width: 100%;
+                width: auto;
+            }
+
+            .nav-left {
+                flex: 1 1 auto;
+                min-width: 0;
+            }
+
+            .nav > div:last-child {
+                margin-left: auto;
+                flex-shrink: 0;
             }
 
             .search-row {
@@ -1136,7 +1197,7 @@
             </div>
         </div>
             </div>
-        <div>
+        <div style="margin-left:auto; display:flex; align-items:center;">
             <a class="btn ghost" href="../index/Camos UEM.html">Volver</a>
         </div>
         </nav>
@@ -2192,6 +2253,9 @@
             for (let i = 1; i <= 11; i++) {
                 const item = document.createElement('div');
                 item.className = 'camo-toggle-item';
+                const tooltip = document.createElement('span');
+                tooltip.className = 'camo-toggle-tooltip';
+                tooltip.textContent = `Categoría ${i}`;
                 const toggleImage = section.dataset[`toggle${i}`];
                 if (toggleImage) {
                     const thumb = document.createElement('img');
@@ -2201,6 +2265,7 @@
                     item.appendChild(thumb);
                     item.classList.add('has-image');
                 }
+                item.appendChild(tooltip);
                 item.innerHTML += `<span class="camo-toggle-text">${i}</span>`;
                 item.title = `Abrir categoría ${i}`;
                 item.addEventListener('click', (e) => {

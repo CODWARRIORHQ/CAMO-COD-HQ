@@ -290,6 +290,39 @@
         }
         .btn:hover { background: var(--accent); color: white; border-color: transparent; }
 
+        .auth-button { cursor: pointer; font: inherit; }
+        .auth-button.is-authenticated { color: var(--accent-2); }
+
+        .auth-modal {
+            width: min(420px, calc(100% - 32px));
+            padding: 0;
+            color: #fff;
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+        }
+
+        .auth-modal::backdrop { background: rgba(0, 0, 0, 0.72); }
+        .auth-content { display: grid; gap: 16px; padding: 24px; }
+        .auth-content h2 { margin: 0; }
+        .auth-fields { display: grid; gap: 12px; }
+        .auth-fields [hidden] { display: none !important; }
+        .auth-fields label { display: grid; gap: 6px; color: var(--muted); font-size: 13px; }
+        .auth-fields input {
+            width: 100%;
+            padding: 10px 12px;
+            color: #fff;
+            background: #05060a;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 8px;
+        }
+        .auth-fields input:focus { border-color: var(--accent-2); outline: none; }
+        .auth-actions { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+        .auth-switch { padding: 0; color: var(--accent-2); background: none; border: 0; cursor: pointer; }
+        .auth-message { min-height: 18px; margin: 0; color: var(--accent-2); font-size: 13px; }
+        .auth-message.is-error { color: #ff7676; }
+        .auth-close { justify-self: end; padding: 0; color: var(--muted); background: none; border: 0; cursor: pointer; font-size: 22px; }
+
         /* =========================================
             SECCIONES DE CONTENIDO
            ========================================= */
@@ -537,6 +570,7 @@
                 </div>
             </div>
             <ul class="nav-links">
+                <li><a href="leaderboard.html">Leaderboard</a></li>
                 <li><a href="#features" data-i18n="nav.features">Características</a></li>
                 <li><a href="#projects" data-i18n="nav.projects">Proyectos</a></li>
                 <li><a href="#contact" data-i18n="nav.contact">Contacto</a></li>
@@ -553,9 +587,34 @@
                         </ul>
                     </details>
                 </li>
+                <li><button class="btn auth-button" type="button" data-auth-open>Iniciar sesión</button></li>
             </ul>
         </nav>
     </header>
+
+    <dialog class="auth-modal" id="authModal">
+        <form class="auth-content" id="authForm">
+            <button class="auth-close" type="button" data-auth-close aria-label="Cerrar">&times;</button>
+            <h2 id="authTitle">Iniciar sesión</h2>
+            <div class="auth-fields">
+                <label id="authUsernameField" for="authUsername" hidden>Nombre de usuario
+                    <input id="authUsername" name="username" type="text" autocomplete="nickname" minlength="3" maxlength="24">
+                </label>
+                <label id="authEmailField" for="authEmail">Correo electrónico
+                    <input id="authEmail" name="email" type="email" autocomplete="email" required>
+                </label>
+                <label for="authPassword">Contraseña
+                    <input id="authPassword" name="password" type="password" autocomplete="current-password" minlength="6" required>
+                </label>
+            </div>
+            <p class="auth-message" id="authMessage" role="status"></p>
+            <div class="auth-actions">
+                <button class="auth-switch" id="authSwitch" type="button">Crear una cuenta</button>
+                <button class="auth-switch" id="authSignOut" type="button" hidden>Cerrar sesión</button>
+                <button class="btn" id="authSubmit" type="submit">Entrar</button>
+            </div>
+        </form>
+    </dialog>
 
     <main>
         <section id="features" class="container features">
@@ -783,6 +842,9 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="auth.js"></script>
     <script>
         const translations = {
             es: {

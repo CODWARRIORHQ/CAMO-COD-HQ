@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UEM AVANZADO - Con Buscador y Filtros</title>
+    <title>Call of Duty: Modern Warfare 2019</title>
     <style>
 
         :root {
@@ -330,13 +330,20 @@
 
         .camo-section {
             display: grid;
-            grid-template-columns: repeat(10, 1fr) 2fr; 
-            grid-template-rows: repeat(2, 1fr);
-            gap: 6px;
-            background: #0d0d0d;
+            width: 100%;
+            max-width: 100%;
+            grid-template-columns: repeat(10, 52px);
+            grid-auto-rows: 52px;
+            grid-auto-flow: row;
+            gap: 5px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.45));
+            border: 1px solid rgba(255,255,255,0.07);
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.55), 0 0 0 1px rgba(255, 157, 0, 0.05);
             padding: 10px;
-            border-radius: 10px;
-            margin-top: auto;
+            border-radius: 8px;
+            margin: 0 auto auto;
+            justify-content: center;
+            overflow-wrap: anywhere;
         }
 
         .highlight {
@@ -347,12 +354,163 @@
         .skin {
             position: relative;
             aspect-ratio: 1/1;
+            min-height: 52px;
+            min-width: 52px;
             background-color: #1a1a1a;
             background-size: cover;
             background-position: center;
             border-radius: 4px;
             border: 1px solid var(--border-gray);
             cursor: pointer;
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.04), inset 0 0 18px rgba(0,0,0,0.45);
+            transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+        }
+
+        .skin:hover {
+            transform: translateY(-1px);
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 0 1px rgba(255, 157, 0, 0.7), 0 10px 18px rgba(0,0,0,0.35);
+        }
+
+        /* Placeholders visuales: deben verse igual que las skins reales */
+        .skin.placeholder {
+            background-color: #101010;
+            background-size: cover;
+            background-position: center;
+            border-radius: 4px;
+            border: 1px dashed rgba(255,255,255,0.13);
+            pointer-events: none;
+            opacity: 0.58;
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.5);
+        }
+
+        /* Cuadros grandes para categoría 11 */
+        .skin.large {
+            grid-column: span 2;
+            grid-row: span 2;
+            min-width: 104px;
+            min-height: 104px;
+        }
+
+        .camo-toggle-row {
+            display: grid;
+            grid-template-columns: repeat(11, 42px);
+            gap: 6px;
+            margin-bottom: 8px;
+            justify-content: center;
+            padding: 8px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.35));
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 8px;
+        }
+
+        .camo-toggle-item {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 4px;
+            border: 1px solid var(--border-gray);
+            color: var(--muted);
+            font-size: 12px;
+            background: rgba(255,255,255,0.04);
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s, border-color 0.2s, color 0.2s;
+            overflow: visible;
+        }
+
+        .camo-toggle-item img.camo-toggle-thumb {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none;
+            opacity: 0.9;
+        }
+
+        .camo-toggle-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            transition: background 0.2s;
+            border-radius: inherit;
+            pointer-events: none;
+        }
+
+        .camo-toggle-item:hover::before {
+            background: rgba(0,0,0,0.2);
+        }
+
+        .camo-toggle-item .camo-toggle-tooltip {
+            position: absolute;
+            top: -34px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #000;
+            color: #ff9d00;
+            padding: 6px 8px;
+            border: 1px solid #ff9d00;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.03em;
+            line-height: 1;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+            z-index: 2000;
+        }
+
+        .camo-toggle-item:hover .camo-toggle-tooltip {
+            opacity: 1;
+        }
+
+        .camo-toggle-item .camo-toggle-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        .camo-toggle-item.has-image .camo-toggle-text {
+            color: #fff;
+        }
+
+        .camo-toggle-item:hover {
+            color: white;
+        }
+
+        .camo-toggle-item.active {
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+            transform: translateY(-1px);
+        }
+
+        .camo-toggle-item.completed::after {
+            content: "✓";
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            color: var(--accent-orange);
+            font-size: 18px;
+            font-weight: 900;
+            text-shadow: 0 0 5px rgba(0,0,0,0.8);
+            pointer-events: none;
+        }
+
+        .camo-toggle-text {
+            font-size: 12px;
+            line-height: 1;
+            letter-spacing: 0.05em;
+            display: none;
+        }
+
+        .camo-section.collapsed {
+            display: none;
         }
 
         .skin.checked::after {
@@ -368,34 +526,33 @@
             text-shadow: 0px 0px 5px rgba(0,0,0,0.8); /* Sombra para que resalte */
         }
 
-        /* Esto hace que aparezca el cuadrito negro con el nombre */
+        /* Etiqueta dentro del propio cuadro, igual que una mini notificación */
         .skin:hover::before {
-            content: attr(data-title); /* Lee lo que escribiste en el HTML */
+            content: attr(data-title);
             position: absolute;
-            bottom: 125%;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #000;
-            color: #ff9d00; /* Color naranja como tus tarjetas */
-            padding: 9px 10px;
-            border-radius: 20px;
-            border: 1px solid #ff9d00;
-            font-size: 15px;
+            left: 3px;
+            right: 3px;
+            bottom: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.85);
+            color: #ff9d00;
+            padding: 4px 5px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 157, 0, 0.85);
+            font-size: 10px;
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: 0.03em;
             white-space: nowrap;
-            z-index: 1000;
+            z-index: 3;
+            pointer-events: none;
         }
 
-        /* Esto dibuja la flechita pequeña debajo del cartel */
+        /* Quitamos la flecha externa para que la etiqueta quede integrada al cuadro */
         .skin:hover::after {
-            content: "";
-            position: absolute;
-            bottom: 110%;
-            left: 50%;
-            transform: translateX(-50%);
-            border-width: 6px;
-            border-style: solid;
-            border-color: #ff9d00 transparent transparent transparent;
-            z-index: 1000;
+            content: none;
         }
 
         /* =========================================
@@ -418,37 +575,25 @@
         .nav { 
             display: flex !important; 
             align-items: center !important; 
-            justify-content: flex-start !important; 
-            padding: 8px 0 !important; 
-            gap: 12px !important;
+            justify-content: space-between !important; 
+            padding: 12px 0; 
+            gap: 18px;
         }
+
+        .nav > div:last-child {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+        }
+
         /* Forzar alineado izquierdo igual que la página de inicio */
         .site-header .nav { display:flex !important; }
-        .site-header .nav > .nav-left { display:flex !important; align-items:center !important; gap:12px !important; margin-right:20px !important; }
-        .site-header .nav .brand { display:flex !important; align-items:center !important; gap:10px !important; margin:0 !important; padding:4px 10px !important; background:transparent !important; border:none !important; border-width:0 !important; border-radius:12px !important; box-shadow:none !important; }
+        .site-header .nav > .nav-left { display:flex !important; align-items:center !important; gap:12px !important; margin-right:auto !important; }
+        .site-header .nav .brand { display:flex !important; align-items:center !important; gap:12px !important; margin:0 !important; }
         .site-header .nav > *:not(.nav-left) { margin-left: 0 !important; }
-        .site-header .nav > div:last-child { margin-left: auto !important; display:flex !important; align-items:center !important; }
         /* Force left alignment like the homepage */
         .nav-left { display:flex; align-items:center; gap:12px; }
-        .brand { 
-            display:flex; 
-            align-items:center; 
-            gap:12px; 
-            margin:0; 
-            padding: 6px 12px; 
-            background: transparent; 
-            border: none; 
-            border-radius: 14px; 
-            box-shadow: none; 
-        }
-        .brand-text {
-            display:flex;
-            flex-direction:column;
-            align-items:flex-start;
-            text-align:left;
-            min-width:150px;
-            gap:2px;
-        }
+        .brand { display:flex; align-items:center; gap:12px; margin:0; }
         .nav .brand-text { margin-left: 0; }
 
 
@@ -479,13 +624,7 @@
         .brand { 
             display: flex; 
             align-items: center; 
-            gap: 20px; 
-        }
-
-        .brand-text {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
+            gap: 12px; 
         }
 
         * { 
@@ -493,16 +632,17 @@
         }
 
         .logo { 
-            width: 40px; 
-            height: 40px; 
-            border-radius: 9px; 
+            width: 48px; 
+            height: 48px; 
+            border-radius: 10px; 
             background: linear-gradient(135deg, var(--accent), var(--accent-2)); 
             display: flex; 
             align-items: center; 
             justify-content: center; 
+            overflow: hidden;
             font-weight: 700; 
-            flex-shrink: 0;
         }
+
         .logo-img {
             width: 100%;
             height: 100%;
@@ -510,29 +650,16 @@
             display: block;
         }
 
-
         .btn.ghost { 
-            background: #000000 !important; 
-            padding: 9px 14px; 
-            border-radius: 10px; 
-            border: 1px solid rgba(255,255,255,0.08); 
+            background: transparent; 
+            padding: 8px 12px; 
+            border-radius: 8px; 
+            border: 1px solid rgba(255,255,255,0.06); 
             color: inherit; 
-            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-            min-width: 78px;
-            height: 40px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn.ghost:hover { 
-            background: #3b82f6 !important; 
-            color: white; 
-            border-color: transparent; 
         }
 
         .btn:hover { 
-            background: #3b82f6 !important; 
+            background: var(--accent); 
             color: white; 
             border-color: transparent; 
         }
@@ -543,22 +670,14 @@
             transition: color 0.2s; 
         }
 
-        .site-name {
-            display: block;
-            font-weight: 700;
-            line-height: 1;
-            font-size: 16px;
-            letter-spacing: 0.2px;
+        .site-name { 
+            font-weight: 700; 
         }
 
         .site-tag {
             display: block;
-            color: var(--muted);
-            font-size: 10px;
-            line-height: 1.2;
-            margin: 0;
-            margin-top: 2px;
-            white-space: nowrap;
+            color: var(--muted); 
+            font-size: 12px; 
         }
 
         /* Modifica esta regla en tu <style> */
@@ -591,13 +710,52 @@
         }
 
         .mastery-preview {
-            grid-column: 11;
-            grid-row: 1 / span 2;
+            grid-column: span 2;
+            grid-row: span 2;
             height: 100%;
             border: 1px solid var(--accent-orange);
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+        }
+
+        .mastery-preview-2 {
+            grid-column: span 2;
+            grid-row: span 2;
+            height: 100%;
+            border: 1px solid #7c3aed;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .mastery-preview-3 {
+            grid-column: span 2;
+            grid-row: span 2;
+            height: 100%;
+            border: 1px solid #06b6d4;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .mastery-preview-4 {
+            grid-column: span 2;
+            grid-row: span 2;
+            height: 100%;
+            border: 1px solid #ff9d00;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .camo-section:not([data-current-category='11']) .skin.mastery-preview,
+        .camo-section:not([data-current-category='11']) .skin.mastery-preview-2,
+        .camo-section:not([data-current-category='11']) .skin.mastery-preview-3,
+        .camo-section:not([data-current-category='11']) .skin.mastery-preview-4 {
+            grid-column: span 1 !important;
+            grid-row: span 1 !important;
+            height: auto !important;
         }
 
         /* Estilos específicos para la tarjeta de filtro */
@@ -746,13 +904,26 @@
 
         .expand-panel { 
             display: none; 
+            visibility: hidden; 
+            opacity: 0; 
+            max-height: 0; 
+            overflow: hidden; 
             grid-template-columns: 1fr 1fr; 
             gap: 15px; 
             margin-top: 15px; 
+            transition: opacity 0.2s ease, max-height 0.2s ease; 
         }
 
         .expand-panel.open { 
-            display: grid; 
+            display: grid !important; 
+            visibility: visible !important; 
+            opacity: 1 !important; 
+            max-height: 1000px !important; 
+            overflow: visible !important; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+            margin-top: 15px; 
+            transition: opacity 0.2s ease, max-height 0.2s ease; 
         }
 
         .custom-select { 
@@ -807,21 +978,195 @@
             transform: rotate(45deg); 
         }
 
-        @media (max-width: 1024px) { 
-            .weapons-grid { grid-template-columns: repeat(2, 1fr); 
-        } }
+        @media (max-width: 1200px) {
+            .site-header .nav {
+                flex-wrap: wrap;
+                gap: 12px;
+                justify-content: space-between;
+            }
 
-        @media (max-width: 650px) { 
-            .weapons-grid { grid-template-columns: 1fr; 
-        } }
+            .nav-left,
+            .nav-actions,
+            .brand {
+                min-width: 0;
+            }
+
+            .nav-left {
+                flex: 1 1 100%;
+            }
+
+            .brand {
+                flex: 1 1 auto;
+            }
+
+            .search-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .search-row > * {
+                min-width: 0;
+                flex: 1 1 100%;
+            }
+
+            .search-row .btn-settings {
+                width: auto;
+                align-self: flex-end;
+            }
+
+            .expand-panel.open {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+                width: 100%;
+            }
+
+            .custom-select {
+                width: 100%;
+            }
+
+            .category-header h1 {
+                font-size: 24px;
+            }
+
+            .weapon-header {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .weapon-header img {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .camo-section {
+                grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
+            }
+
+            .camo-toggle-row {
+                grid-template-columns: repeat(auto-fit, minmax(38px, 1fr));
+            }
+
+            .skin,
+            .camo-toggle-item {
+                min-width: 44px;
+                min-height: 44px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .weapons-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            .weapon-card {
+                width: 100%;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .master-panel {
+                padding: 18px;
+            }
+
+            .expand-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+            body {
+                padding: 12px;
+            }
+
+            .site-header .nav,
+            .site-header .container,
+            .container,
+            .wzhub-filter-card,
+            .master-panel {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            .site-header .nav {
+                flex-direction: row !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+                gap: 12px;
+            }
+
+            .nav-left,
+            .nav-actions {
+                width: auto;
+            }
+
+            .nav-left {
+                flex: 1 1 auto;
+                min-width: 0;
+            }
+
+            .nav > div:last-child {
+                margin-left: auto;
+                flex-shrink: 0;
+            }
+
+            .search-row {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+
+            .search-row .btn-settings {
+                width: 100%;
+            }
+
+            .category-header h1 {
+                font-size: 20px;
+            }
+
+            .weapon-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .camo-section {
+                grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+                gap: 4px;
+            }
+
+            .skin,
+            .camo-toggle-item {
+                min-width: 40px;
+                min-height: 40px;
+            }
+
+            .skin.checked::after {
+                font-size: 12px;
+            }
+
+            .dropdown-menu {
+                position: fixed;
+                left: 8px;
+                right: 8px;
+                top: 72px;
+                max-width: calc(100% - 16px);
+            }
+        }
 
     </style>
 </head>
 <body>
 
     <header class="site-header">
-        <nav class="nav container" style="display:flex; align-items:center; justify-content:flex-start; gap:10px; width:100%; padding:6px 0;">
-            <div class="nav-left" style="display:flex; align-items:center; gap:10px; flex:1; min-width:0;">
+        <nav class="nav container">
+            <div class="nav-left" style="display:flex;align-items:center;gap:12px;">
             <div class="left-menu">
                 <input type="checkbox" id="menuToggle" class="menu-toggle" aria-expanded="false">
                 <label for="menuToggle" class="menu-btn" aria-hidden="true">
@@ -830,43 +1175,44 @@
                     <span></span>
                 </label>
                 <div class="dropdown-menu" role="menu" aria-label="Características">
-                    <a role="menuitem" href="../../index/Camos UEM.html">Proyectos</a>
-                    <a role="menuitem" href="../../index/leaderboard.html">Leaderboard</a>
-                    <a role="menuitem" href="../../MW2007/MW2007.html">CALL OF DUTY4: MODERN WARFARE <span style="font-size: 11px; color: #7c3aed;">2007</span></a>
-                    <a role="menuitem" href="../../MW2/MW2.html">CALL OF DUTY: MODERN WARFARE 2 <span style="font-size: 11px; color: #7c3aed;">2009</span></a>
-                    <a role="menuitem" href="../../BLACK OPS I/BOI.html">CALL OF DUTY: BLACK OPS <span style="font-size: 11px; color: #7c3aed;">2010</span></a>
-                    <a role="menuitem" href="../../MW3/MW3.html">CALL OF DUTY: MODERN WARFARE 3 <span style="font-size: 11px; color: #7c3aed;">2011</span></a>
-                    <a role="menuitem" href="../../BLACK OPS II/BOII.html">CALL OF DUTY: BLACK OPS II <span style="font-size: 11px; color: #7c3aed;">2012</span></a>
-                    <a role="menuitem" href="../../GHOSTS/GHOSTS.html">CALL OF DUTY: GHOSTS <span style="font-size: 11px; color: #7c3aed;">2013</span></a>
-                    <a role="menuitem" href="../../ADVANCED/ADVANCED.html">CALL OF DUTY: ADVANCED WARFARE <span style="font-size: 11px; color: #7c3aed;">2014</span></a>
-                    <a role="menuitem" href="../../BLACK OPS III/BOIII.html">CALL OF DUTY: BLACK OPS III <span style="font-size: 11px; color: #7c3aed;">2015</span></a>
-                    <a role="menuitem" href="../../INFINITE/INFINITE.html">CALL OF DUTY: INFINITE WARFARE <span style="font-size: 11px; color: #7c3aed;">2016</span></a>
-                    <a role="menuitem" href="../../MWREMASTERED/MWREMASTERED.html">CALL OF DUTY: MODERN WARFARE REMASTERED <span style="font-size: 11px; color: #7c3aed;">2016</span></a>
-                    <a role="menuitem" href="../../WWII/WWII.html">CALL OF DUTY: WWII <span style="font-size: 11px; color: #7c3aed;">2017</span></a>
-                    <a role="menuitem" href="../../BLACK OPS IIII/BOIIII.html">CALL OF DUTY: BLACK OPS IIII <span style="font-size: 11px; color: #7c3aed;">2018</span></a>
-                    <a role="menuitem" href="../../CODM/CODM.html">CALL OF DUTY: MOBILE <span style="font-size: 11px; color: #7c3aed;">2019</span></a>
-                    <a role="menuitem" href="../../MW 2019/MW.html">CALL OF DUTY: MODERN WARFARE (2019) <span style="font-size: 11px; color: #7c3aed;">2019</span></a>
-                    <a role="menuitem" href="../../MW 2 REMASTERED/MW2REMASTERED.html">CALL OF DUTY: MODERN WARFARE 2 REMASTERED <span style="font-size: 11px; color: #7c3aed;">2020</span></a>
-                    <a role="menuitem" href="../../COLD WAR/COLDWAR.html">CALL OF DUTY: BLACK OPS COLD WAR <span style="font-size: 11px; color: #7c3aed;">2020</span></a>
-                    <a role="menuitem" href="../../VANGUARD/VANGUARD.html">CALL OF DUTY: VANGUARD <span style="font-size: 11px; color: #7c3aed;">2021</span></a>
-                    <a role="menuitem" href="../../MW II/MWII.html">CALL OF DUTY: MODERN WARFARE II (2022) <span style="font-size: 11px; color: #7c3aed;">2022</span></a>
-                    <a role="menuitem" href="../../MW III/MWIII.html">CALL OF DUTY: MODERN WARFARE III (2023) <span style="font-size: 11px; color: #7c3aed;">2023</span></a>
-                    <a role="menuitem" href="../../BLACK OPS 6/BO6.html">CALL OF DUTY: BLACK OPS 6 <span style="font-size: 11px; color: #7c3aed;">2024</span></a>
-                    <a role="menuitem" href="../../BLACK OPS 7/BO7.html">CALL OF DUTY: BLACK OPS 7 <span style="font-size: 11px; color: #7c3aed;">2025</span></a>
-                    <a role="menuitem" href="../../MW 4/MW4.html"> PROXIMAMENTECALL OF DUTY: MODERN WARFARE 4 (2026) <span style="font-size: 11px; color: #7c3aed;">2026</span></a>
-                    <a role="menuitem" href="../../WARZONE/WARZONE.html">WARZONE SIEMPRE EL PRIMERO DE TODOS</a>
+                    <a role="menuitem" href="../index/Camos UEM.html">Proyectos</a>
+                    <a role="menuitem" href="../MW2007/MW2007.html">CALL OF DUTY4: MODERN WARFARE <span style="font-size: 11px; color: #7c3aed;">2007</span></a>
+                    <a role="menuitem" href="../MW2/MW2.html">CALL OF DUTY: MODERN WARFARE 2 <span style="font-size: 11px; color: #7c3aed;">2009</span></a>
+                    <a role="menuitem" href="../BLACK OPS I/BOI.html">CALL OF DUTY: BLACK OPS <span style="font-size: 11px; color: #7c3aed;">2010</span></a>
+                    <a role="menuitem" href="../MW3/MW3.html">CALL OF DUTY: MODERN WARFARE 3 <span style="font-size: 11px; color: #7c3aed;">2011</span></a>
+                    <a role="menuitem" href="../BLACK OPS II/BOII.html">CALL OF DUTY: BLACK OPS II <span style="font-size: 11px; color: #7c3aed;">2012</span></a>
+                    <a role="menuitem" href="../GHOSTS/GHOSTS.html">CALL OF DUTY: GHOSTS <span style="font-size: 11px; color: #7c3aed;">2013</span></a>
+                    <a role="menuitem" href="../ADVANCED/ADVANCED.html">CALL OF DUTY: ADVANCED WARFARE <span style="font-size: 11px; color: #7c3aed;">2014</span></a>
+                    <a role="menuitem" href="../BLACK OPS III/BOIII.html">CALL OF DUTY: BLACK OPS III <span style="font-size: 11px; color: #7c3aed;">2015</span></a>
+                    <a role="menuitem" href="../INFINITE/INFINITE.html">CALL OF DUTY: INFINITE WARFARE <span style="font-size: 11px; color: #7c3aed;">2016</span></a>
+                    <a role="menuitem" href="../MWREMASTERED/MWREMASTERED.html">CALL OF DUTY: MODERN WARFARE REMASTERED <span style="font-size: 11px; color: #7c3aed;">2016</span></a>
+                    <a role="menuitem" href="../WWII/WWII.html">CALL OF DUTY: WWII <span style="font-size: 11px; color: #7c3aed;">2017</span></a>
+                    <a role="menuitem" href="../BLACK OPS IIII/BOIIII.html">CALL OF DUTY: BLACK OPS IIII <span style="font-size: 11px; color: #7c3aed;">2018</span></a>
+                    <a role="menuitem" href="../CODM/CODM.html">CALL OF DUTY: MOBILE <span style="font-size: 11px; color: #7c3aed;">2019</span></a>
+                    <a role="menuitem" href="../MW 2019/MW.html">CALL OF DUTY: MODERN WARFARE (2019) <span style="font-size: 11px; color: #7c3aed;">2019</span></a>
+                    <a role="menuitem" href="../MW 2 REMASTERED/MW2REMASTERED.html">CALL OF DUTY: MODERN WARFARE 2 REMASTERED <span style="font-size: 11px; color: #7c3aed;">2020</span></a>
+                    <a role="menuitem" href="../COLD WAR/COLDWAR.html">CALL OF DUTY: BLACK OPS COLD WAR <span style="font-size: 11px; color: #7c3aed;">2020</span></a>
+                    <a role="menuitem" href="../VANGUARD/VANGUARD.html">CALL OF DUTY: VANGUARD <span style="font-size: 11px; color: #7c3aed;">2021</span></a>
+                    <a role="menuitem" href="../MW II/MWII.html">CALL OF DUTY: MODERN WARFARE II (2022) <span style="font-size: 11px; color: #7c3aed;">2022</span></a>
+                    <a role="menuitem" href="../MW III/MWIII.html">CALL OF DUTY: MODERN WARFARE III (2023) <span style="font-size: 11px; color: #7c3aed;">2023</span></a>
+                    <a role="menuitem" href="../BLACK OPS 6/BO6.html">CALL OF DUTY: BLACK OPS 6 <span style="font-size: 11px; color: #7c3aed;">2024</span></a>
+                    <a role="menuitem" href="../BLACK OPS 7/BO7.html">CALL OF DUTY: BLACK OPS 7 <span style="font-size: 11px; color: #7c3aed;">2025</span></a>
+                    <a role="menuitem" href="../MW 4/MW4.html"> PROXIMAMENTECALL OF DUTY: MODERN WARFARE 4 (2026) <span style="font-size: 11px; color: #7c3aed;">2026</span></a>
+                    <a role="menuitem" href="../WARZONE/WARZONE.html">WARZONE SIEMPRE EL PRIMERO DE TODOS</a>
                 </div>
             </div>
-        <div class="brand" style="display:flex; align-items:center; gap:8px; margin:0; padding:3px 8px; background:transparent; border:0; border-radius:10px; box-shadow:none;">
-            <div class="logo" style="width:36px; height:36px; flex-shrink:0; border-radius:8px;"><img src="../../MW 2019/logo.png" alt="CAMO COD HQ logo" class="logo-img"></div>
-                <div class="brand-text" style="display:flex; flex-direction:column; align-items:flex-start; text-align:left; gap:1px;">
-                    <span class="site-name" style="display:block; font-weight:700; line-height:1; font-size:14px; letter-spacing:0.2px;">CAMO COD HQ</span>
-                    <small class="site-tag" style="display:block; margin:0; line-height:1.2; font-size:9px; white-space:nowrap;">Tu hub de camuflajes</small>
-                </div>
+        <div class="brand">
+            <div class="logo">
+                <img src="logo.png" alt="CAMO COD HQ logo" class="logo-img">
             </div>
+            <div class="brand-text">
+                <span class="site-name">CAMO COD HQ</span>
+                <small class="site-tag">Tu hub de camuflajes</small>
             </div>
-        <div style="margin-left:auto; display:flex; align-items:center; flex-shrink:0;">
-            <a class="btn ghost" href="../../index/Camos UEM.html" style="display:inline-flex; align-items:center; justify-content:center; min-width:74px; padding:8px 12px; border-radius:8px; box-shadow:0 8px 20px rgba(0,0,0,0.25); height:36px; border:1px solid rgba(255,255,255,0.08);">Volver</a>
+        </div>
+            </div>
+        <div style="margin-left:auto; display:flex; align-items:center;">
+            <a class="btn ghost" href="../index/Camos UEM.html">Volver</a>
         </div>
         </nav>
     </header>
@@ -875,9 +1221,8 @@
         <div class="container">
             <div itemscope="itemscope" itemtype="https://schema.org/BreadcrumbList" class="UEM-breadcrumbs">
                 <nav>
-                    <a href="../../index/Camos UEM.html">Camos UEM</a> /
-                    <a href="../Camuflajes UEM.html">Camuflajes UEM</a> /
-                    <a href="mapas.html">Mapas Para UEM</a> 
+                    <a href="../../index/Camos UEM.html">CAMO COD HQ</a> /
+                    <a href="../Camuflajes UEM.html">MW2019</a> 
                 </nav>
             </div>
         </div>
@@ -925,8 +1270,7 @@
 <div class="master-panel closed" id="masterPanel">
     <div class="panel-header" onclick="toggleMaster()">
     <div style="display: flex; align-items: center; gap: 20px;">
-        <img src="../camuflajes/camo_22.png" alt="Icono" style="width: 80px; height: 80px; object-fit: contain;">
-        <h1>Apocalypse Tracker</h1>
+        <h1>Seguimientos Completo</h1>
     </div>
 
     <svg class="arrow-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
@@ -937,7 +1281,7 @@
     <div class="master-content">
         <div class="global-progress-container">
             <div class="global-info-row">
-                <span style="font-size: 11px; font-weight: 800; color: #555;">SYSTEM STATUS: ONLINE</span>
+                <span style="font-size: 11px; font-weight: 800; color: #555;">SISTEMA DE STATS: ONLINE</span>
                 <span style="font-weight: 900;"><span id="globalPctText">0%</span></span>
             </div>
             <div class="global-progress-bar">
@@ -962,56 +1306,240 @@
             <div class="weapon-card" data-name="AK-47">
                 <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>Ak-47</h2><img src="##" class="weapon-img"></div>     
                 <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                    <div class="skin" data-title="0xp" style="background-image: url(../camuflajes/camo_1_oro.png);"></div>
-                    <div class="skin" data-title="2,000xp" style="background-image: url(../camuflajes/camo_2_diamante.png);"></div>
-                    <div class="skin" data-title="3,500xp" style="background-image: url(../camuflajes/camo_3_escarcha.png);"></div>
-                    <div class="skin" data-title="5,000xp" style="background-image: url(../camuflajes/camo_4_Marea_Negra.png);"></div>
-                    <div class="skin" data-title="6,500xp" style="background-image: url(../camuflajes/camo_5_Cubierta_de_nebulosa.png);"></div>
-                    <div class="skin" data-title="8,000xp" style="background-image: url(../camuflajes/camo_6_Medianoche_liquido.png);"></div>
-                    <div class="skin" data-title="10,000xp" style="background-image: url(../camuflajes/camo_7_Helado_estelar.png);"></div>
-                    <div class="skin" data-title="12,000xp" style="background-image: url(../camuflajes/camo_8_Estrella_de_galaxias.png);"></div>
-                    <div class="skin" data-title="14,000xp" style="background-image: url(../camuflajes/camo_9_camuflaje_de_sangre.png);"></div>
-                    <div class="skin" data-title="16,000xp" style="background-image: url(../camuflajes/camo_10_esmeralda_encantada.png);"></div>
-                    <div class="skin" data-title="18,000xp" style="background-image: url(../camuflajes/camo_11_velo_de_orion.png);"></div>
-                    <div class="skin" data-title="20,000xp" style="background-image: url(../camuflajes/camo_12_eclipse_estelar.png);"></div>
-                    <div class="skin" data-title="23,000xp" style="background-image: url(../camuflajes/camo_13_profundidad_profunda.png);"></div>
-                    <div class="skin" data-title="26,000xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
-                    <div class="skin" data-title="29,000xp" style="background-image: url(../camuflajes/camo_15_tormenta_roja_astral.png);"></div>
-                    <div class="skin" data-title="32,000xp" style="background-image: url(../camuflajes/camo_16_aurora_verde.png);"></div>
-                    <div class="skin" data-title="35,000xp" style="background-image: url(../camuflajes/camo_17_cosmos_blanco.png);"></div>
-                    <div class="skin" data-title="39,000xp" style="background-image: url(../camuflajes/camo_18_Drift_de_Andrómeda.png);"></div>
-                    <div class="skin" data-title="43,000xp" style="background-image: url(../camuflajes/camo_19_resplandor_acido.png);"></div>
-                    <div class="skin" data-title="47,000xp" style="background-image: url(../camuflajes/camo_20_amatista_galactica.png);"></div>
-                    <div class="skin mastery-preview" data-title="51,000xp" style="background-image: url(../camuflajes/camo_21_diamantes_electrificados.png);"></div>        
+                <div class="camo-section" data-toggle1="Camuflajes/DEVGRU.png" 
+                                        data-toggle2="../camuflajes/camo_2_diamante.png" 
+                                        data-toggle3="../camuflajes/camo_3_escarcha.png" 
+                                        data-toggle4="../camuflajes/camo_4_Marea_Negra.png" 
+                                        data-toggle5="../camuflajes/camo_5_Cubierta_de_nebulosa.png" 
+                                        data-toggle6="../camuflajes/camo_6_Medianoche_liquido.png" 
+                                        data-toggle7="../camuflajes/camo_7_Helado_estelar.png" 
+                                        data-toggle8="../camuflajes/camo_8_Estrella_de_galaxias.png" 
+                                        data-toggle9="../camuflajes/camo_9_camuflaje_de_sangre.png" 
+                                        data-toggle10="../camuflajes/camo_10_esmeralda_encantada.png" 
+                                        data-toggle11="../camuflajes/camo_11_velo_de_orion.png">
+                    <div class="skin" data-title="1xp" style="background-image: url(Camuflajes/DEVGRU.png);"></div>
+                    <div class="skin" data-title="2xp" style="background-image: url(../camuflajes/camo_2_diamante.png);"></div>
+                    <div class="skin" data-title="3xp" style="background-image: url(../camuflajes/camo_3_escarcha.png);"></div>
+                    <div class="skin" data-title="4xp" style="background-image: url(../camuflajes/camo_4_Marea_Negra.png);"></div>
+                    <div class="skin" data-title="5xp" style="background-image: url(../camuflajes/camo_5_Cubierta_de_nebulosa.png);"></div>
+                    <div class="skin" data-title="6xp" style="background-image: url(../camuflajes/camo_6_Medianoche_liquido.png);"></div>
+                    <div class="skin" data-title="7xp" style="background-image: url(../camuflajes/camo_7_Helado_estelar.png);"></div>
+                    <div class="skin" data-title="8xp" style="background-image: url(../camuflajes/camo_8_Estrella_de_galaxias.png);"></div>
+                    <div class="skin" data-title="9xp" style="background-image: url(../camuflajes/camo_9_camuflaje_de_sangre.png);"></div>
+                    <div class="skin" data-title="10xp" style="background-image: url(../camuflajes/camo_10_esmeralda_encantada.png);"></div>
+                    <div class="skin" data-title="11xp" style="background-image: url(../camuflajes/camo_11_velo_de_orion.png);"></div>
+                    <div class="skin" data-title="12xp" style="background-image: url(../camuflajes/camo_12_eclipse_estelar.png);"></div>
+                    <div class="skin" data-title="13xp" style="background-image: url(../camuflajes/camo_13_profundidad_profunda.png);"></div>
+                    <div class="skin" data-title="14xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="15xp" style="background-image: url(../camuflajes/camo_15_tormenta_roja_astral.png);"></div>
+                    <div class="skin" data-title="16xp" style="background-image: url(../camuflajes/camo_16_aurora_verde.png);"></div>
+                    <div class="skin" data-title="17xp" style="background-image: url(../camuflajes/camo_17_cosmos_blanco.png);"></div>
+                    <div class="skin" data-title="18xp" style="background-image: url(../camuflajes/camo_18_Drift_de_Andrómeda.png);"></div>
+                    <div class="skin" data-title="19xp" style="background-image: url(../camuflajes/camo_19_resplandor_acido.png);"></div>
+                    <div class="skin" data-title="20xp" style="background-image: url(../camuflajes/camo_20_amatista_galactica.png);"></div>
+                    <div class="skin" data-title="21xp" style="background-image: url(../camuflajes/camo_21_diamantes_electrificados.png);"></div>
+                    <div class="skin" data-title="22xp" style="background-image: url(../camuflajes/camo_22.png);"></div>
+                    <div class="skin" data-title="23xp" style="background-image: url(../camuflajes/camo_23.png);"></div>
+                    <div class="skin" data-title="24xp" style="background-image: url(../camuflajes/camo_24.png);"></div>
+                    <div class="skin" data-title="25xp" style="background-image: url(../camuflajes/camo_25.png);"></div>
+                    <div class="skin" data-title="26xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="27xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="28xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="29xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="30xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="31xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="32xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="33xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="34xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="35xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="36xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="37xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="38xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="39xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="40xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="41xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="42xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="43xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="44xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="45xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="46xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="47xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="48xp" style="background-image: url(../camuflajes/camo_19_resplandor_acido.png);"></div>
+                    <div class="skin" data-title="49xp" style="background-image: url(../camuflajes/camo_20_amatista_galactica.png);"></div>
+                    <div class="skin" data-title="50xp" style="background-image: url(../camuflajes/camo_21_diamantes_electrificados.png);"></div>
+                    <div class="skin" data-title="51xp" style="background-image: url(../camuflajes/camo_20_amatista_galactica.png);"></div>
+                    <div class="skin" data-title="52xp" style="background-image: url(../camuflajes/camo_21_diamantes_electrificados.png);"></div>
+                    <div class="skin" data-title="53xp" style="background-image: url(../camuflajes/camo_22.png);"></div>
+                    <div class="skin" data-title="54xp" style="background-image: url(../camuflajes/camo_23.png);"></div>
+                    <div class="skin" data-title="55xp" style="background-image: url(../camuflajes/camo_24.png);"></div>
+                    <div class="skin" data-title="56xp" style="background-image: url(../camuflajes/camo_25.png);"></div>
+                    <div class="skin" data-title="57xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="58xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="59xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="60xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="61xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="62xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="63xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="64xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="65xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="66xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="67xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="68xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="69xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="70xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="71xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="72xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="73xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="74xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="75xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="76xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="77xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="78xp" style="background-image: url(../camuflajes/camo_19_resplandor_acido.png);"></div>
+                    <div class="skin" data-title="79xp" style="background-image: url(../camuflajes/camo_20_amatista_galactica.png);"></div>
+                    <div class="skin" data-title="80xp" style="background-image: url(../camuflajes/camo_21_diamantes_electrificados.png);"></div>
+                    <div class="skin" data-title="81xp" style="background-image: url(../camuflajes/camo_20_amatista_galactica.png);"></div>
+                    <div class="skin" data-title="82xp" style="background-image: url(../camuflajes/camo_21_diamantes_electrificados.png);"></div>
+                    <div class="skin" data-title="83xp" style="background-image: url(../camuflajes/camo_22.png);"></div>
+                    <div class="skin" data-title="84xp" style="background-image: url(../camuflajes/camo_23.png);"></div>
+                    <div class="skin" data-title="85xp" style="background-image: url(../camuflajes/camo_24.png);"></div>
+                    <div class="skin" data-title="86xp" style="background-image: url(../camuflajes/camo_25.png);"></div>
+                    <div class="skin" data-title="87xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="88xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="89xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="90xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="91xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="92xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="93xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="94xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="95xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="96xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="97xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="98xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="99xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin mastery-preview" data-title="100xp" style="background-image: url(Camuflajes/ORO.png);"></div>
+                    <div class="skin mastery-preview-2" data-title="Nuevo grande" style="background-image: url(../camuflajes/camo_21_diamantes_electrificados.png);"></div>
+                    <div class="skin mastery-preview-3" data-title="Nuevo grande 2" style="background-image: url(../camuflajes/camo_21_diamantes_electrificados.png);"></div>
+                    <div class="skin mastery-preview-4" data-title="Nuevo grande 3" style="background-image: url(../camuflajes/camo_21_diamantes_electrificados.png);"></div>
                 </div>
             </div>
 
             <div class="weapon-card" data-name="Comando">
                 <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>Comando</h2><img src="##" class="weapon-img"></div>
                 <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                    <div class="skin" data-title="0xp" style="background-image: url(../camuflajes/camo_1_oro.png);"></div>
-                    <div class="skin" data-title="2,000xp" style="background-image: url(../camuflajes/camo_2_diamante.png);"></div>
-                    <div class="skin" data-title="3,500xp" style="background-image: url(../camuflajes/camo_3_escarcha.png);"></div>
-                    <div class="skin" data-title="5,000xp" style="background-image: url(../camuflajes/camo_4_Marea_Negra.png);"></div>
-                    <div class="skin" data-title="6,500xp" style="background-image: url(../camuflajes/camo_5_Cubierta_de_nebulosa.png);"></div>
-                    <div class="skin" data-title="8,000xp" style="background-image: url(../camuflajes/camo_6_Medianoche_liquido.png);"></div>
-                    <div class="skin" data-title="10,000xp" style="background-image: url(../camuflajes/camo_7_Helado_estelar.png);"></div>
-                    <div class="skin" data-title="12,000xp" style="background-image: url(../camuflajes/camo_8_Estrella_de_galaxias.png);"></div>
-                    <div class="skin" data-title="14,000xp" style="background-image: url(../camuflajes/camo_9_camuflaje_de_sangre.png);"></div>
-                    <div class="skin" data-title="16,000xp" style="background-image: url(../camuflajes/camo_10_esmeralda_encantada.png);"></div>
-                    <div class="skin" data-title="18,000xp" style="background-image: url(../camuflajes/camo_11_velo_de_orion.png);"></div>
-                    <div class="skin" data-title="20,000xp" style="background-image: url(../camuflajes/camo_12_eclipse_estelar.png);"></div>
-                    <div class="skin" data-title="23,000xp" style="background-image: url(../camuflajes/camo_13_profundidad_profunda.png);"></div>
-                    <div class="skin" data-title="26,000xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
-                    <div class="skin" data-title="29,000xp" style="background-image: url(../camuflajes/camo_15_tormenta_roja_astral.png);"></div>
-                    <div class="skin" data-title="32,000xp" style="background-image: url(../camuflajes/camo_16_aurora_verde.png);"></div>
-                    <div class="skin" data-title="35,000xp" style="background-image: url(../camuflajes/camo_17_cosmos_blanco.png);"></div>
-                    <div class="skin" data-title="39,000xp" style="background-image: url(../camuflajes/camo_18_Drift_de_Andrómeda.png);"></div>
-                    <div class="skin" data-title="43,000xp" style="background-image: url(../camuflajes/camo_19_resplandor_acido.png);"></div>
-                    <div class="skin" data-title="47,000xp" style="background-image: url(../camuflajes/camo_20_amatista_galactica.png);"></div>
-                    <div class="skin mastery-preview" data-title="51,000xp" style="background-image: url(../camuflajes/camo_21_diamantes_electrificados.png);"></div>
+                <div class="camo-section" data-toggle1="Camuflajes/DEVGRU.png" 
+                                        data-toggle2="../camuflajes/camo_2_diamante.png" 
+                                        data-toggle3="../camuflajes/camo_3_escarcha.png" 
+                                        data-toggle4="../camuflajes/camo_4_Marea_Negra.png" 
+                                        data-toggle5="../camuflajes/camo_5_Cubierta_de_nebulosa.png" 
+                                        data-toggle6="../camuflajes/camo_6_Medianoche_liquido.png" 
+                                        data-toggle7="../camuflajes/camo_7_Helado_estelar.png" 
+                                        data-toggle8="../camuflajes/camo_8_Estrella_de_galaxias.png" 
+                                        data-toggle9="../camuflajes/camo_9_camuflaje_de_sangre.png" 
+                                        data-toggle10="../camuflajes/camo_10_esmeralda_encantada.png" 
+                                        data-toggle11="../camuflajes/camo_11_velo_de_orion.png">
+                    <div class="skin" data-title="1xp" style="background-image: url(Camuflajes/DEVGRU.png);"></div>
+                    <div class="skin" data-title="2xp" style="background-image: url(../camuflajes/camo_2_diamante.png);"></div>
+                    <div class="skin" data-title="3xp" style="background-image: url(../camuflajes/camo_3_escarcha.png);"></div>
+                    <div class="skin" data-title="4xp" style="background-image: url(../camuflajes/camo_4_Marea_Negra.png);"></div>
+                    <div class="skin" data-title="5xp" style="background-image: url(../camuflajes/camo_5_Cubierta_de_nebulosa.png);"></div>
+                    <div class="skin" data-title="6xp" style="background-image: url(../camuflajes/camo_6_Medianoche_liquido.png);"></div>
+                    <div class="skin" data-title="7xp" style="background-image: url(../camuflajes/camo_7_Helado_estelar.png);"></div>
+                    <div class="skin" data-title="8xp" style="background-image: url(../camuflajes/camo_8_Estrella_de_galaxias.png);"></div>
+                    <div class="skin" data-title="9xp" style="background-image: url(../camuflajes/camo_9_camuflaje_de_sangre.png);"></div>
+                    <div class="skin" data-title="10xp" style="background-image: url(../camuflajes/camo_10_esmeralda_encantada.png);"></div>
+                    <div class="skin" data-title="11xp" style="background-image: url(../camuflajes/camo_11_velo_de_orion.png);"></div>
+                    <div class="skin" data-title="12xp" style="background-image: url(../camuflajes/camo_12_eclipse_estelar.png);"></div>
+                    <div class="skin" data-title="13xp" style="background-image: url(../camuflajes/camo_13_profundidad_profunda.png);"></div>
+                    <div class="skin" data-title="14xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="15xp" style="background-image: url(../camuflajes/camo_15_tormenta_roja_astral.png);"></div>
+                    <div class="skin" data-title="16xp" style="background-image: url(../camuflajes/camo_16_aurora_verde.png);"></div>
+                    <div class="skin" data-title="17xp" style="background-image: url(../camuflajes/camo_17_cosmos_blanco.png);"></div>
+                    <div class="skin" data-title="18xp" style="background-image: url(../camuflajes/camo_18_Drift_de_Andrómeda.png);"></div>
+                    <div class="skin" data-title="19xp" style="background-image: url(../camuflajes/camo_19_resplandor_acido.png);"></div>
+                    <div class="skin" data-title="20xp" style="background-image: url(../camuflajes/camo_20_amatista_galactica.png);"></div>
+                    <div class="skin" data-title="21xp" style="background-image: url(../camuflajes/camo_21_diamantes_electrificados.png);"></div>
+                    <div class="skin" data-title="22xp" style="background-image: url(../camuflajes/camo_22.png);"></div>
+                    <div class="skin" data-title="23xp" style="background-image: url(../camuflajes/camo_23.png);"></div>
+                    <div class="skin" data-title="24xp" style="background-image: url(../camuflajes/camo_24.png);"></div>
+                    <div class="skin" data-title="25xp" style="background-image: url(../camuflajes/camo_25.png);"></div>
+                    <div class="skin" data-title="26xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="27xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="28xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="29xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="30xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="31xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="32xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="33xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="34xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="35xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="36xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="37xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="38xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="39xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="40xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="41xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="42xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="43xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="44xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="45xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="46xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="47xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="48xp" style="background-image: url(../camuflajes/camo_19_resplandor_acido.png);"></div>
+                    <div class="skin" data-title="49xp" style="background-image: url(../camuflajes/camo_20_amatista_galactica.png);"></div>
+                    <div class="skin" data-title="50xp" style="background-image: url(../camuflajes/camo_21_diamantes_electrificados.png);"></div>
+                    <div class="skin" data-title="51xp" style="background-image: url(../camuflajes/camo_20_amatista_galactica.png);"></div>
+                    <div class="skin" data-title="52xp" style="background-image: url(../camuflajes/camo_21_diamantes_electrificados.png);"></div>
+                    <div class="skin" data-title="53xp" style="background-image: url(../camuflajes/camo_22.png);"></div>
+                    <div class="skin" data-title="54xp" style="background-image: url(../camuflajes/camo_23.png);"></div>
+                    <div class="skin" data-title="55xp" style="background-image: url(../camuflajes/camo_24.png);"></div>
+                    <div class="skin" data-title="56xp" style="background-image: url(../camuflajes/camo_25.png);"></div>
+                    <div class="skin" data-title="57xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="58xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="59xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="60xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="61xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="62xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="63xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="64xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="65xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="66xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="67xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="68xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="69xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="70xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="71xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="72xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="73xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="74xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="75xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="76xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="77xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="78xp" style="background-image: url(../camuflajes/camo_19_resplandor_acido.png);"></div>
+                    <div class="skin" data-title="79xp" style="background-image: url(../camuflajes/camo_20_amatista_galactica.png);"></div>
+                    <div class="skin" data-title="80xp" style="background-image: url(../camuflajes/camo_21_diamantes_electrificados.png);"></div>
+                    <div class="skin" data-title="81xp" style="background-image: url(../camuflajes/camo_20_amatista_galactica.png);"></div>
+                    <div class="skin" data-title="82xp" style="background-image: url(../camuflajes/camo_21_diamantes_electrificados.png);"></div>
+                    <div class="skin" data-title="83xp" style="background-image: url(../camuflajes/camo_22.png);"></div>
+                    <div class="skin" data-title="84xp" style="background-image: url(../camuflajes/camo_23.png);"></div>
+                    <div class="skin" data-title="85xp" style="background-image: url(../camuflajes/camo_24.png);"></div>
+                    <div class="skin" data-title="86xp" style="background-image: url(../camuflajes/camo_25.png);"></div>
+                    <div class="skin" data-title="87xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="88xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="89xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="90xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="91xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="92xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="93xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="94xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="95xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="96xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="97xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="98xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin" data-title="99xp" style="background-image: url(../camuflajes/camo_14_Vorágine_amarilla.png);"></div>
+                    <div class="skin mastery-preview" data-title="100xp" style="background-image: url(Camuflajes/ORO.png);"></div>
+                    <div class="skin mastery-preview-2" data-title="Nuevo grande" style="background-image: url(../camuflajes/camo_21_diamantes_electrificados.png);"></div>
+                    <div class="skin mastery-preview-3" data-title="Nuevo grande 2" style="background-image: url(../camuflajes/camo_21_diamantes_electrificados.png);"></div>
+                    <div class="skin mastery-preview-4" data-title="Nuevo grande 3" style="background-image: url(../camuflajes/camo_21_diamantes_electrificados.png);"></div>
                 </div>
             </div>
             
@@ -1674,41 +2202,7 @@
     let filtroCatActual = "all";
     let filtroEstadoActual = "all";
 
-    // 2. LÓGICA DE PROGRESO (Sin cambios en tus clases originales)
-    function inicializarCamuflajes() {
-        document.querySelectorAll('.weapon-card').forEach(card => {
-            const skins = card.querySelectorAll('.skin');
-            const progressBar = card.querySelector('.bar-fill');
-            const pctVal = card.querySelector('.pct-val');
-
-            skins.forEach((skin, i) => {
-                skin.onclick = (e) => {
-                    e.stopPropagation();
-                    
-                    if (i === 0) {
-                        skin.classList.toggle('checked');
-                        if (!skin.classList.contains('checked')) {
-                            skins.forEach((s, idx) => { if (idx > 0) s.classList.remove('checked'); });
-                        }
-                    } else {
-                        skins.forEach((s, idx) => {
-                            if (idx <= i) s.classList.add('checked');
-                            else s.classList.remove('checked');
-                        });
-                    }
-                    
-                    const checkedCount = card.querySelectorAll('.skin.checked').length;
-                    const percent = Math.round((checkedCount / skins.length) * 100);
-                    if(progressBar) progressBar.style.width = percent + '%';
-                    if(pctVal) pctVal.textContent = percent;
-                    
-                    if (filtroEstadoActual !== 'all') filtrarTodo();
-                };
-            });
-        });
-    }
-
-    // 3. LÓGICA DE LOS SELECTORES WZHUB (Corregida para no romper el layout)
+    // 2. LÓGICA DE LOS SELECTORES WZHUB (Corregida para no romper el layout)
     function inicializarSelectores() {
         document.querySelectorAll('.custom-select').forEach(select => {
             const header = select.querySelector('.select-header');
@@ -1736,7 +2230,149 @@
         });
     }
 
-    // 4. FUNCIÓN DE FILTRADO (ARREGLADA: Evita que las tarjetas se vuelvan pequeñas)
+    function asignarCategorias(section) {
+        const skins = Array.from(section.querySelectorAll('.skin'));
+        const skinsPerCat = 10;
+
+        // Reset categories
+        skins.forEach(s => delete s.dataset.category);
+
+        let idx = 0;
+        // Assign 1..10 => exactly up to 10 skins each (if available)
+        for (let cat = 1; cat <= 10; cat++) {
+            for (let i = 0; i < skinsPerCat; i++) {
+                if (skins[idx]) {
+                    skins[idx].dataset.category = String(cat);
+                    idx++;
+                }
+            }
+        }
+
+        // Remaining skins (if any) go to category 11
+        for (; idx < skins.length; idx++) {
+            skins[idx].dataset.category = '11';
+        }
+    }
+
+    function obtenerSkinsDeSeguimiento(card) {
+        const section = card.querySelector('.camo-section');
+        const category = section && section.dataset.currentCategory;
+
+        if (category) {
+            return Array.from(section.querySelectorAll(`.skin[data-category="${category}"]`));
+        }
+
+        return Array.from(card.querySelectorAll('.skin'));
+    }
+
+    function actualizarCategorias(section) {
+        const card = section.closest('.weapon-card');
+        if (!card) return;
+
+        card.querySelectorAll('.camo-toggle-item').forEach(item => {
+            const category = item.dataset.category;
+            const categorySkins = Array.from(section.querySelectorAll(`.skin[data-category="${category}"]`));
+            const completed = categorySkins.length > 0 && categorySkins.every(skin => skin.classList.contains('checked'));
+            item.classList.toggle('completed', completed);
+        });
+    }
+
+    function mostrarCategoria(section, category) {
+        section.dataset.currentCategory = category;
+
+        // Eliminar placeholders previos
+        section.querySelectorAll('.skin.placeholder').forEach(ph => ph.remove());
+
+        const skins = Array.from(section.querySelectorAll('.skin'));
+
+        // Limpiar clases grandes previas
+        skins.forEach(s => s.classList.remove('large'));
+
+        if (category !== '11') {
+            // Mostrar solo las skins reales de la categoría
+            skins.forEach(skin => {
+                skin.style.display = (skin.dataset && skin.dataset.category === category) ? '' : 'none';
+            });
+        } else {
+            // Categoría 11: mostrar solo las 5 últimas skins y en grande
+            const cat11 = skins.filter(s => s.dataset && s.dataset.category === '11');
+            const last5 = cat11.slice(-5);
+
+            // Ocultar todos
+            skins.forEach(skin => skin.style.display = 'none');
+
+            // Mostrar y marcar grandes los últimos 5
+            last5.forEach(skin => {
+                skin.style.display = '';
+                skin.classList.add('large');
+            });
+        }
+    }
+
+    function inicializarCamoCollapsibles() {
+        document.querySelectorAll('.camo-section').forEach(section => {
+            asignarCategorias(section);
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'camo-collapsible';
+
+            const toggleRow = document.createElement('div');
+            toggleRow.className = 'camo-toggle-row';
+
+            const buttons = [];
+            for (let i = 1; i <= 11; i++) {
+                const item = document.createElement('div');
+                item.className = 'camo-toggle-item';
+                item.dataset.category = String(i);
+                const tooltip = document.createElement('span');
+                tooltip.className = 'camo-toggle-tooltip';
+                tooltip.textContent = `Categoría ${i}`;
+                const toggleImage = section.dataset[`toggle${i}`];
+                if (toggleImage) {
+                    const thumb = document.createElement('img');
+                    thumb.className = 'camo-toggle-thumb';
+                    thumb.src = toggleImage;
+                    thumb.alt = `Imagen categoría ${i}`;
+                    item.appendChild(thumb);
+                    item.classList.add('has-image');
+                }
+                item.appendChild(tooltip);
+                item.innerHTML += `<span class="camo-toggle-text">${i}</span>`;
+                item.title = `Abrir categoría ${i}`;
+                item.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isActive = item.classList.contains('active');
+
+                    if (isActive) {
+                        item.classList.remove('active');
+                        section.classList.add('collapsed');
+                        return;
+                    }
+
+                    buttons.forEach(btn => btn.classList.remove('active'));
+                    item.classList.add('active');
+                    section.classList.remove('collapsed');
+                    mostrarCategoria(section, String(i));
+                });
+                buttons.push(item);
+                toggleRow.appendChild(item);
+            }
+
+            section.parentNode.insertBefore(wrapper, section);
+            wrapper.appendChild(toggleRow);
+            wrapper.appendChild(section);
+
+            actualizarCategorias(section);
+
+            section.classList.add('collapsed');
+
+            toggleRow.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        });
+    }
+
+    // 3. FUNCIÓN DE FILTRADO (ARREGLADA: Evita que las tarjetas se vuelvan pequeñas)
     function filtrarTodo() {
         const busqueda = document.getElementById('weaponSearch').value.toLowerCase();
 
@@ -1769,13 +2405,36 @@
         });
     }
 
-    // 5. INICIALIZACIÓN
+    // 4. INICIALIZACIÓN
     document.addEventListener('DOMContentLoaded', () => {
-        inicializarCamuflajes();
         inicializarSelectores();
+        inicializarCamoCollapsibles();
         document.getElementById('weaponSearch').addEventListener('input', filtrarTodo);
         document.addEventListener('click', () => {
             document.querySelectorAll('.custom-select').forEach(s => s.classList.remove('active'));
+        });
+
+        document.querySelectorAll('.skin').forEach(skin => {
+            skin.onclick = (e) => {
+                e.stopPropagation();
+                const card = skin.closest('.weapon-card');
+                const skins = obtenerSkinsDeSeguimiento(card);
+                const index = skins.indexOf(skin);
+
+                if (index === 0) {
+                    skin.classList.toggle('checked');
+                    if (!skin.classList.contains('checked')) {
+                        skins.forEach(item => item.classList.remove('checked'));
+                    }
+                } else {
+                    skins.forEach((item, itemIndex) => {
+                        item.classList.toggle('checked', itemIndex <= index);
+                    });
+                }
+
+                actualizarCategorias(card.querySelector('.camo-section'));
+                actualizarTodo();
+            };
         });
     });
 
@@ -1784,12 +2443,7 @@
         document.getElementById('masterPanel').classList.toggle('closed'); 
     }
 
-    // 1. Alternar apertura del panel maestro
-    function toggleMaster() { 
-        document.getElementById('masterPanel').classList.toggle('closed'); 
-    }
-
-    // 2. Función principal que actualiza TODO (Armas + Global)
+    // 1. Función principal que actualiza TODO (Armas + Global)
     function actualizarTodo() {
         const todasLasArmas = document.querySelectorAll('.weapon-card');
         const groups = document.querySelectorAll('.category-group');
@@ -1840,39 +2494,6 @@
     if(globalFill) globalFill.style.width = promedioGlobal + '%';
     if(globalText) globalText.innerText = promedioGlobal + '%';
 }
-
-// 3. Inicialización de eventos al cargar la página
-document.addEventListener('DOMContentLoaded', () => {
-    // Evento para los clics en los camuflajes (Skins)
-    document.querySelectorAll('.skin').forEach((skin, i) => {
-        skin.onclick = (e) => {
-            e.stopPropagation();
-            const card = skin.closest('.weapon-card');
-            const skins = card.querySelectorAll('.skin');
-            const index = Array.from(skins).indexOf(skin);
-
-            // Lógica de marcado secuencial
-            if (index === 0) {
-                skin.classList.toggle('checked');
-                if (!skin.classList.contains('checked')) {
-                    skins.forEach(s => s.classList.remove('checked'));
-                }
-            } else {
-                skins.forEach((s, idx) => {
-                    if (idx <= index) s.classList.add('checked');
-                    else s.classList.remove('checked');
-                });
-            }
-
-            // Llamar a la actualización vinculada
-            actualizarTodo();
-        };
-    });
-
-    // Buscador y Selectores (Tus funciones originales)
-    document.getElementById('weaponSearch').addEventListener('input', filtrarTodo);
-});
-
 
     // Cerrar el menú al hacer clic fuera, con la tecla Esc, y al hacer scroll en móviles
         (function(){

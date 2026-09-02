@@ -41,6 +41,7 @@
             -moz-osx-font-smoothing: grayscale;
             padding: 20px;
             justify-content: center;
+            overflow-x: hidden;
         }
 
         a { 
@@ -495,7 +496,30 @@
         }
 
         @media (max-width: 640px) {
-            .nav-links { display: none; }
+            .nav {
+                flex-wrap: wrap;
+                row-gap: 8px;
+            }
+
+            .nav-links {
+                display: flex;
+                flex: 1 0 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 4px;
+                margin: 0;
+                padding-top: 4px;
+                border-top: 1px solid rgba(255, 255, 255, 0.08);
+            }
+
+            .nav-links a,
+            .nav-links .btn {
+                padding: 7px 8px;
+                font-size: 12px;
+            }
+
+            .section-title { overflow-wrap: anywhere; }
+
             .projects-grid, .features .grid { grid-template-columns: 1fr; }
             .meta-title { font-size: 22px; letter-spacing: 3px; }
         }

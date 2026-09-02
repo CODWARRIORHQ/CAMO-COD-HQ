@@ -2059,6 +2059,8 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../index/supabase-config.js"></script>
 <script>
     // 1. VARIABLES GLOBALES DE FILTRADO
     let filtroCatActual = "all";
@@ -2202,6 +2204,66 @@
         }
     }
 
+    async function sincronizarProgresoConCuenta() {
+        const config = window.CAMO_SUPABASE_CONFIG || {};
+        if (!config.url || !config.anonKey || !window.supabase) return;
+
+        try {
+            const client = window.supabase.createClient(config.url, config.anonKey);
+            const { data: userData } = await client.auth.getUser();
+            const user = userData.user;
+            if (!user) return;
+
+            const { data: remoteData, error } = await client
+                .from('camo_progress')
+                .select('progress')
+                .eq('user_id', user.id)
+                .maybeSingle();
+
+            if (error) throw error;
+
+            if (remoteData?.progress) {
+                aplicarProgreso(remoteData.progress);
+                actualizarTodo();
+            } else {
+                await guardarProgresoEnCuenta(client, user.id);
+            }
+
+            window.camoProgressSync = { client, userId: user.id };
+        } catch (error) {
+            console.warn('No se pudo sincronizar el progreso con Supabase', error);
+        }
+    }
+
+    function obtenerProgresoActual() {
+        const progreso = {};
+        document.querySelectorAll('.weapon-card[data-name]').forEach(card => {
+            progreso[card.dataset.name] = Array.from(card.querySelectorAll('.skin'))
+                .map((skin, index) => skin.classList.contains('checked') ? index : null)
+                .filter(index => index !== null);
+        });
+        return progreso;
+    }
+
+    function aplicarProgreso(progreso) {
+        document.querySelectorAll('.weapon-card[data-name]').forEach(card => {
+            const indices = progreso[card.dataset.name] || [];
+            card.querySelectorAll('.skin').forEach((skin, index) => {
+                skin.classList.toggle('checked', indices.includes(index));
+            });
+            actualizarCategorias(card.querySelector('.camo-section'));
+        });
+    }
+
+    async function guardarProgresoEnCuenta(client, userId) {
+        const { error } = await client.from('camo_progress').upsert({
+            user_id: userId,
+            progress: obtenerProgresoActual(),
+            updated_at: new Date().toISOString()
+        });
+        if (error) throw error;
+    }
+
     function inicializarCamoCollapsibles() {
         document.querySelectorAll('.camo-section').forEach(section => {
             asignarCategorias(section);
@@ -2304,6 +2366,7 @@
         inicializarCamoCollapsibles();
         restaurarProgreso();
         actualizarTodo();
+        sincronizarProgresoConCuenta();
         document.querySelector('.btn-settings')?.addEventListener('click', () => {
             document.getElementById('advPanel').classList.toggle('open');
         });
@@ -2334,6 +2397,12 @@
                 actualizarCategorias(card.querySelector('.camo-section'));
                 actualizarTodo();
                 guardarProgreso();
+                const sync = window.camoProgressSync;
+                if (sync) {
+                    guardarProgresoEnCuenta(sync.client, sync.userId).catch(error => {
+                        console.warn('No se pudo guardar el progreso en Supabase', error);
+                    });
+                }
             };
         });
     });

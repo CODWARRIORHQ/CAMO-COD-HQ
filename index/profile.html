@@ -35,6 +35,9 @@
         .game-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; padding:14px; }
         .game { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:14px; min-height:112px; padding:16px; border:1px solid var(--border); border-radius:8px; background:rgba(5,6,10,.42); }
         .game.favorite { border-color:var(--cyan); box-shadow:inset 3px 0 0 var(--cyan); }
+        .game.best { border-color:var(--gold); }
+        .game-icon { display:inline-grid; place-items:center; width:34px; height:34px; margin-right:9px; border:1px solid rgba(255,255,255,.16); border-radius:7px; color:var(--cyan); font-size:11px; font-weight:800; vertical-align:middle; }
+        .game-status { display:block; margin-top:7px; color:var(--muted); font-size:11px; }
         .game-title { font-weight:700; } .game-meta { display:block; margin-top:5px; color:var(--muted); font-size:13px; } .game-score { color:var(--gold); text-align:right; font-weight:800; }
         .message { color:var(--muted); }
         .action-row { display:flex; justify-content:flex-start; margin-top:28px; }
@@ -74,6 +77,8 @@
             .profile-meta { display:flex; flex-wrap:wrap; gap:22px; color:var(--muted); font-size:13px; }
             .profile-meta strong { color:#fff; }
             .achievement-badge { display:inline-flex; align-items:center; gap:6px; margin-left:10px; padding:5px 9px; border:1px solid rgba(255,204,51,.45); border-radius:999px; color:var(--gold); font-size:12px; vertical-align:middle; }
+            #profileBadges { display:inline-flex; flex-wrap:wrap; gap:6px; }
+            #profileBadges .achievement-badge { margin-left:0; }
             .medals { margin:0 14px 14px; padding:14px 16px; border:1px solid var(--border); border-radius:8px; }
             .medal-options { display:grid; gap:8px; }
             .medal-options label { justify-content:flex-start; }
@@ -200,7 +205,9 @@
                 }
                 return ['completion'];
             })();
-            const earnedMedals = { completion: completed >= total, category: completed >= total, streak: completed >= 100, top3: Number(currentPlayer?.rankText?.slice(1)) <= 3, bronze: completed >= 100, silver: completed >= 250, gold: completed >= 500, diamond: completed >= total };
+            const profileGameNames = ['Modern Warfare 2019', 'Black Ops 6', 'Black Ops 7', 'Modern Warfare III', 'Warzone'];
+            const profileGameProgress = profile?.game_progress || {};
+            const earnedMedals = { completion: completed >= total, category: completed >= total, streak: completed >= 100, top3: Number(currentPlayer?.rankText?.slice(1)) <= 3, bronze: completed >= 100, silver: completed >= 250, gold: completed >= 500, diamond: completed >= total, ...Object.fromEntries(profileGameNames.map(name => [`game:${name}`, (profileGameProgress[name] || (name === 'Modern Warfare 2019' ? completed : 0)) >= total])) };
             const badgeData = [
                 ['completion', 'Maestro del camuflaje'],
                 ['category', 'Categoría completa'],
@@ -209,15 +216,15 @@
                 ['diamond', 'Nivel diamante'],
                 ['gold', 'Nivel oro'],
                 ['silver', 'Nivel plata'],
-                ['bronze', 'Nivel bronce']
-            ].find(([key]) => selectedMedals.includes(key) && earnedMedals[key]);
-            document.querySelector('#profileBadge')?.remove();
-            if (badgeData) {
-                const badgeElement = document.createElement('span');
-                badgeElement.id = 'profileBadge';
-                badgeElement.className = 'achievement-badge';
-                badgeElement.textContent = `★ ${badgeData[1]}`;
-                profileHeading.appendChild(badgeElement);
+                ['bronze', 'Nivel bronce'],
+                ...profileGameNames.map(name => [`game:${name}`, `${name} completado`])
+            ].filter(([key]) => selectedMedals.includes(key) && earnedMedals[key]).slice(0, 4);
+            document.querySelector('#profileBadges')?.remove();
+            if (badgeData.length) {
+                const badgesElement = document.createElement('span');
+                badgesElement.id = 'profileBadges';
+                badgeData.forEach(([, name]) => { const badgeElement = document.createElement('span'); badgeElement.className = 'achievement-badge'; badgeElement.textContent = `★ ${name}`; badgesElement.appendChild(badgeElement); });
+                profileHeading.appendChild(badgesElement);
             }
             let profileMeta = document.querySelector('#profileMeta');
             if (!profileMeta) {
@@ -257,7 +264,7 @@
                 if (!medalsInput) {
                     const medalsRow = document.createElement('div');
                     medalsRow.className = 'medal-options';
-                    medalsRow.innerHTML = '<span class="stat-label">Medallas visibles</span><label><input id="selectedMedals" type="checkbox" value="completion"> Maestro del camuflaje</label><label><input type="checkbox" value="category"> Categoría completa</label><label><input type="checkbox" value="streak"> Racha de progreso</label><label><input type="checkbox" value="top3"> Top 3 del leaderboard</label><label><input type="checkbox" value="bronze"> Nivel bronce</label><label><input type="checkbox" value="silver"> Nivel plata</label><label><input type="checkbox" value="gold"> Nivel oro</label><label><input type="checkbox" value="diamond"> Nivel diamante</label>';
+                    medalsRow.innerHTML = '<span class="stat-label">Medallas visibles (máximo 4)</span><label><input id="selectedMedals" type="checkbox" value="completion"> Maestro del camuflaje</label><label><input type="checkbox" value="category"> Categoría completa</label><label><input type="checkbox" value="streak"> Racha de progreso</label><label><input type="checkbox" value="top3"> Top 3 del leaderboard</label><label><input type="checkbox" value="bronze"> Nivel bronce</label><label><input type="checkbox" value="silver"> Nivel plata</label><label><input type="checkbox" value="gold"> Nivel oro</label><label><input type="checkbox" value="diamond"> Nivel diamante</label>' + profileGameNames.map(name => `<label><input type="checkbox" value="game:${name}"> ${name} completado</label>`).join('');
                     editor.insertBefore(medalsRow, saveButton);
                     medalsInput = medalsRow.querySelector('#selectedMedals');
                 }
@@ -267,6 +274,11 @@
                 privacyInput.checked = profile?.is_public !== false;
                 favoriteInput.value = profile?.favorite_game || 'Modern Warfare 2019';
                 editor.querySelectorAll('.medal-options input[type="checkbox"]').forEach(input => { input.checked = selectedMedals.includes(input.value) && earnedMedals[input.value]; });
+                editor.querySelectorAll('.medal-options input[type="checkbox"]').forEach(input => input.addEventListener('change', () => {
+                    const checked = editor.querySelectorAll('.medal-options input[type="checkbox"]:checked').length;
+                    if (checked > 4) input.checked = false;
+                    editor.querySelectorAll('.medal-options input[type="checkbox"]').forEach(item => { item.disabled = !isOwner || !earnedMedals[item.value] || (checked >= 4 && !item.checked); });
+                }));
             const { data: sessionData } = await client.auth.getUser();
             const isOwner = sessionData.user?.id === userId;
             colorInput.disabled = !isOwner;
@@ -280,7 +292,7 @@
             } else {
                 colorInput.addEventListener('input', () => applyColor(colorInput.value));
                 saveButton.addEventListener('click', async () => {
-                    const selected = Array.from(editor.querySelectorAll('.medal-options input:checked')).map(input => input.value).filter(key => earnedMedals[key]);
+                    const selected = Array.from(editor.querySelectorAll('.medal-options input:checked')).map(input => input.value).filter(key => earnedMedals[key]).slice(0, 4);
                     const earnedAt = { ...(profile?.medal_earned_at || {}) };
                     Object.keys(earnedMedals).forEach(key => { if (earnedMedals[key] && !earnedAt[key]) earnedAt[key] = new Date().toISOString(); });
                     const { error } = await client.from('profiles').update({ accent_color: colorInput.value, icon_url: iconInput.value || null, is_public: privacyInput.checked, favorite_game: favoriteInput.value, selected_medals: selected, medal_earned_at: earnedAt, updated_at: new Date().toISOString() }).eq('user_id', userId);
@@ -339,7 +351,10 @@
             const favoriteGame = profile?.favorite_game || 'Modern Warfare 2019';
             const gameCatalog = profile?.game_progress || {};
             const gameNames = ['Modern Warfare 2019', 'Black Ops 6', 'Black Ops 7', 'Modern Warfare III', 'Warzone'];
-            const gamesMarkup = gameNames.map(name => { const value = gameCatalog[name] || (name === 'Modern Warfare 2019' ? completed : 0); const percent = Math.min(Math.round(value / total * 100), 100); const favoriteLabel = name === favoriteGame ? ' · Favorito' : ''; const favoriteClass = name === favoriteGame ? ' favorite' : ''; return `<div class="game${favoriteClass}"><span><span class="game-title">${name}${favoriteLabel}</span><span class="game-meta">${value} / ${total} camuflajes</span><span class="game-progress"><span style="width:${percent}%"></span></span></span><span class="game-score">${percent}%</span></div>`; }).join('');
+            const gameValues = gameNames.map(name => gameCatalog[name] || (name === 'Modern Warfare 2019' ? completed : 0));
+            const bestValue = Math.max(...gameValues);
+            const gameCodes = { 'Modern Warfare 2019': 'MW', 'Black Ops 6': 'BO6', 'Black Ops 7': 'BO7', 'Modern Warfare III': 'MW3', Warzone: 'WZ' };
+            const gamesMarkup = gameNames.map((name, index) => { const value = gameValues[index]; const percent = Math.min(Math.round(value / total * 100), 100); const favoriteLabel = name === favoriteGame ? ' · Favorito' : ''; const favoriteClass = name === favoriteGame ? ' favorite' : ''; const bestClass = value === bestValue && value > 0 ? ' best' : ''; const status = percent === 100 ? 'Completado' : percent > 0 ? 'En progreso' : 'Sin comenzar'; return `<div class="game${favoriteClass}${bestClass}"><span><span class="game-icon">${gameCodes[name]}</span><span class="game-title">${name}${favoriteLabel}</span><span class="game-meta">${value} / ${total} camuflajes</span><span class="game-progress"><span style="width:${percent}%"></span></span><span class="game-status">${status}</span></span><span class="game-score">${percent}%</span></div>`; }).join('');
             gameStats.innerHTML = `<div class="games-header"><h2>Progreso por juego</h2><span>${gameNames.length} juegos registrados</span></div><div class="game-grid">${gamesMarkup}</div>`;
         };
         render().catch(() => { document.querySelector('#gameStats').innerHTML = '<p class="message">No se pudieron cargar las estadísticas.</p>'; });

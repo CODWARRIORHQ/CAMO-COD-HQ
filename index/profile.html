@@ -57,6 +57,7 @@
         .compare-list li:last-child { border-bottom:0; padding-bottom:0; }
         .compare-list strong { color:#fff; }
         .profile-editor { display:grid; gap:12px; margin-top:28px; padding:18px; border:1px solid var(--border); border-radius:10px; background:rgba(16,23,34,.85); }
+        .profile-editor[hidden] { display:none !important; }
         .profile-editor.visible { display:grid; }
         .profile-editor h2 { margin:0; font-size:18px; }
         .profile-editor input:disabled,
@@ -167,6 +168,8 @@
         };
         const render = async () => {
             const gameStats = document.querySelector('#gameStats');
+            const profileEditor = document.querySelector('#profileEditor');
+            profileEditor.hidden = true;
             const compareSearch = document.querySelector('#comparePlayerSearch');
             const compareOptions = document.querySelector('#comparePlayerOptions');
             if (!client || !userId) { gameStats.innerHTML = '<p class="message">Perfil no disponible.</p>'; return; }
@@ -192,7 +195,7 @@
                 profileIcon.alt = 'Icono del usuario';
                 profileIcon.hidden = false;
             }
-            const editor = document.querySelector('#profileEditor');
+            const editor = profileEditor;
             const saveButton = document.querySelector('#saveProfileStyle');
             const colorInput = document.querySelector('#accentColor');
             const iconInput = document.querySelector('#profileIcon');
@@ -235,6 +238,16 @@
             }
             const formatDate = value => value ? new Intl.DateTimeFormat('es-ES', { dateStyle: 'long' }).format(new Date(value)) : 'No disponible';
             profileMeta.innerHTML = `<span>Registro: <strong>${formatDate(profile?.created_at)}</strong></span><span>Juego favorito: <strong>${profile?.favorite_game || 'Modern Warfare 2019'}</strong></span>`;
+            const publicMedals = document.querySelector('#publicMedals');
+            publicMedals?.remove();
+            if (badgeData.length) {
+                const medalsSection = document.createElement('section');
+                medalsSection.id = 'publicMedals';
+                medalsSection.className = 'medals';
+                medalsSection.setAttribute('aria-label', 'Medallas visibles');
+                medalsSection.innerHTML = badgeData.map(([, name]) => `<span class="achievement-badge">★ ${name}</span>`).join('');
+                profileMeta.before(medalsSection);
+            }
                 let privacyInput = document.querySelector('#profilePublic');
                 if (!privacyInput) {
                     const privacyRow = document.createElement('div');
@@ -281,6 +294,7 @@
                 }));
             const { data: sessionData } = await client.auth.getUser();
             const isOwner = sessionData.user?.id === userId;
+            editor.hidden = !isOwner;
             colorInput.disabled = !isOwner;
             iconInput.disabled = !isOwner;
                 privacyInput.disabled = !isOwner;

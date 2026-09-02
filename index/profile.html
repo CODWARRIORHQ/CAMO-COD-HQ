@@ -78,6 +78,12 @@
             .chart text { fill:var(--muted); font-size:11px; }
             .medal-options { display:grid; gap:8px; }
             .medal-options label { justify-content:flex-start; }
+            .profile-avatar { width:88px; height:88px; border-radius:50%; object-fit:cover; border:2px solid var(--accent); }
+            .profile-bio { margin:18px 0 0; max-width:680px; color:var(--muted); }
+            .rank-change { color:var(--cyan); font-size:14px; font-weight:700; }
+            .game-progress { height:7px; margin-top:10px; overflow:hidden; border-radius:5px; background:rgba(255,255,255,.1); }
+            .game-progress span { display:block; height:100%; background:linear-gradient(90deg,var(--accent),var(--cyan)); }
+            .medal-date { color:var(--muted); font-size:11px; }
             @media (max-width:600px) { .record-grid { grid-template-columns:1fr; } }
         @media (max-width:600px) { body { padding:12px; } main { padding:44px 0; } .summary { grid-template-columns:1fr; } .game { grid-template-columns:minmax(0,1fr) 90px; padding:16px; } .compare-grid { grid-template-columns:1fr; } }
     </style>
@@ -164,7 +170,7 @@
             const compareOptions = document.querySelector('#comparePlayerOptions');
             if (!client || !userId) { gameStats.innerHTML = '<p class="message">Perfil no disponible.</p>'; return; }
             const [{ data: profile }, { data: allProfiles }] = await Promise.all([
-                client.from('leaderboard_stats').select('username,completed,is_public,favorite_game,selected_medals,created_at,accent_color,icon_url').eq('user_id', userId).maybeSingle(),
+                client.from('leaderboard_stats').select('username,completed,is_public,favorite_game,selected_medals,created_at,accent_color,icon_url,avatar_url,bio,platform,country,level,status,game_progress,medal_earned_at,previous_rank').eq('user_id', userId).maybeSingle(),
                 client.from('leaderboard_stats').select('user_id,username,completed')
             ]);
             const currentPlayer = profile ? { ...profile, user_id: userId, rankText: '-' } : null;
@@ -176,6 +182,8 @@
             const completed = profile?.completed || 0;
             document.querySelector('#profileName').textContent = profile?.username || 'Jugador';
             applyColor(profile?.accent_color);
+            const rankChange = profile?.previous_rank && currentPlayer?.rankText !== '-' ? Number(profile.previous_rank) - Number(currentPlayer.rankText.slice(1)) : 0;
+            if (rankChange) document.querySelector('#profileRank').insertAdjacentHTML('afterend', `<span class="rank-change">${rankChange > 0 ? '↑' : '↓'} ${Math.abs(rankChange)}</span>`);
             const iconUrl = profile?.icon_url;
             if (iconUrl) {
                 const profileIcon = document.querySelector('#profileNameIcon');
@@ -189,12 +197,23 @@
             const iconInput = document.querySelector('#profileIcon');
             const styleMessage = document.querySelector('#profileStyleMessage');
             const profileHeading = document.querySelector('.profile-heading');
-            const selectedMedals = Array.isArray(profile?.selected_medals) ? profile.selected_medals : ['completion'];
-            const earnedMedals = { completion: completed >= total, dedication: completed >= 250, hunter: completed >= 500 };
+            const selectedMedals = (() => {
+                if (Array.isArray(profile?.selected_medals)) return profile.selected_medals;
+                if (typeof profile?.selected_medals === 'string') {
+                    try { const parsed = JSON.parse(profile.selected_medals); return Array.isArray(parsed) ? parsed : []; } catch (error) { return []; }
+                }
+                return ['completion'];
+            })();
+            const earnedMedals = { completion: completed >= total, category: completed >= total, streak: completed >= 100, top3: Number(currentPlayer?.rankText?.slice(1)) <= 3, bronze: completed >= 100, silver: completed >= 250, gold: completed >= 500, diamond: completed >= total };
             const badgeData = [
                 ['completion', 'Maestro del camuflaje'],
-                ['hunter', 'Cazador de camuflajes'],
-                ['dedication', 'Operador dedicado']
+                ['category', 'Categoría completa'],
+                ['streak', 'Racha de progreso'],
+                ['top3', 'Top 3 del leaderboard'],
+                ['diamond', 'Nivel diamante'],
+                ['gold', 'Nivel oro'],
+                ['silver', 'Nivel plata'],
+                ['bronze', 'Nivel bronce']
             ].find(([key]) => selectedMedals.includes(key) && earnedMedals[key]);
             document.querySelector('#profileBadge')?.remove();
             if (badgeData) {
@@ -213,6 +232,12 @@
             }
             const formatDate = value => value ? new Intl.DateTimeFormat('es-ES', { dateStyle: 'long' }).format(new Date(value)) : 'No disponible';
             profileMeta.innerHTML = `<span>Registro: <strong>${formatDate(profile?.created_at)}</strong></span><span>Juego favorito: <strong>${profile?.favorite_game || 'Modern Warfare 2019'}</strong></span>`;
+            profileMeta.innerHTML += `<span>Plataforma: <strong>${profile?.platform || 'PC'}</strong></span><span>País: <strong>${profile?.country || 'No indicado'}</strong></span><span>Nivel: <strong>${profile?.level || 1}</strong></span><span>Estado: <strong>${profile?.status || 'En progreso'}</strong></span>`;
+            document.querySelector('#profileAvatar')?.remove();
+            if (profile?.avatar_url) { const avatar = document.createElement('img'); avatar.id = 'profileAvatar'; avatar.className = 'profile-avatar'; avatar.src = profile.avatar_url; avatar.alt = 'Avatar de usuario'; profileHeading.prepend(avatar); }
+            let profileBio = document.querySelector('#profileBio');
+            if (!profileBio) { profileBio = document.createElement('p'); profileBio.id = 'profileBio'; profileBio.className = 'profile-bio'; profileHeading.after(profileBio); }
+            profileBio.textContent = profile?.bio || 'Sin biografía todavía.';
                 let privacyInput = document.querySelector('#profilePublic');
                 if (!privacyInput) {
                     const privacyRow = document.createElement('div');
@@ -229,11 +254,26 @@
                     editor.insertBefore(favoriteRow, saveButton);
                     favoriteInput = favoriteRow.querySelector('#favoriteGame');
                 }
+                const addField = (id, label, type, options = '') => {
+                    let input = document.querySelector(`#${id}`);
+                    if (!input) {
+                        const row = document.createElement('div'); row.className = 'customization-row';
+                        row.innerHTML = `<label for="${id}">${label}</label><${type} id="${id}">${options}</${type}>`;
+                        editor.insertBefore(row, saveButton); input = row.querySelector(`#${id}`);
+                    }
+                    return input;
+                };
+                const bioInput = addField('profileBioInput', 'Biografía', 'textarea');
+                const avatarInput = addField('avatarInput', 'Avatar (URL)', 'input');
+                const platformInput = addField('platformInput', 'Plataforma', 'select', '<option>PC</option><option>PlayStation</option><option>Xbox</option>');
+                const countryInput = addField('countryInput', 'País o región', 'input');
+                const levelInput = addField('levelInput', 'Nivel', 'input');
+                const statusInput = addField('statusInput', 'Estado', 'select', '<option>Activo</option><option>Completista</option><option>En progreso</option>');
                 let medalsInput = document.querySelector('#selectedMedals');
                 if (!medalsInput) {
                     const medalsRow = document.createElement('div');
                     medalsRow.className = 'medal-options';
-                    medalsRow.innerHTML = '<span class="stat-label">Medallas visibles</span><label><input id="selectedMedals" type="checkbox" value="completion"> Maestro del camuflaje</label><label><input type="checkbox" value="dedication"> Operador dedicado</label><label><input type="checkbox" value="hunter"> Cazador de camuflajes</label>';
+                    medalsRow.innerHTML = '<span class="stat-label">Medallas visibles</span><label><input id="selectedMedals" type="checkbox" value="completion"> Maestro del camuflaje</label><label><input type="checkbox" value="category"> Categoría completa</label><label><input type="checkbox" value="streak"> Racha de progreso</label><label><input type="checkbox" value="top3"> Top 3 del leaderboard</label><label><input type="checkbox" value="bronze"> Nivel bronce</label><label><input type="checkbox" value="silver"> Nivel plata</label><label><input type="checkbox" value="gold"> Nivel oro</label><label><input type="checkbox" value="diamond"> Nivel diamante</label>';
                     editor.insertBefore(medalsRow, saveButton);
                     medalsInput = medalsRow.querySelector('#selectedMedals');
                 }
@@ -242,6 +282,12 @@
             iconInput.value = profile?.icon_url || '';
                 privacyInput.checked = profile?.is_public !== false;
                 favoriteInput.value = profile?.favorite_game || 'Modern Warfare 2019';
+                bioInput.value = profile?.bio || '';
+                avatarInput.value = profile?.avatar_url || '';
+                platformInput.value = profile?.platform || 'PC';
+                countryInput.value = profile?.country || '';
+                levelInput.value = profile?.level || 1;
+                statusInput.value = profile?.status || 'En progreso';
                 editor.querySelectorAll('.medal-options input[type="checkbox"]').forEach(input => { input.checked = selectedMedals.includes(input.value); });
             const { data: sessionData } = await client.auth.getUser();
             const isOwner = sessionData.user?.id === userId;
@@ -249,6 +295,7 @@
             iconInput.disabled = !isOwner;
                 privacyInput.disabled = !isOwner;
                 favoriteInput.disabled = !isOwner;
+                [bioInput, avatarInput, platformInput, countryInput, levelInput, statusInput].forEach(input => { input.disabled = !isOwner; });
                 editor.querySelectorAll('.medal-options input').forEach(input => { input.disabled = !isOwner; });
             saveButton.disabled = !isOwner;
             if (!isOwner) {
@@ -257,7 +304,9 @@
                 colorInput.addEventListener('input', () => applyColor(colorInput.value));
                 saveButton.addEventListener('click', async () => {
                     const selected = Array.from(editor.querySelectorAll('.medal-options input:checked')).map(input => input.value);
-                    const { error } = await client.from('profiles').update({ accent_color: colorInput.value, icon_url: iconInput.value || null, is_public: privacyInput.checked, favorite_game: favoriteInput.value, selected_medals: selected, updated_at: new Date().toISOString() }).eq('user_id', userId);
+                    const earnedAt = { ...(profile?.medal_earned_at || {}) };
+                    Object.keys(earnedMedals).forEach(key => { if (earnedMedals[key] && !earnedAt[key]) earnedAt[key] = new Date().toISOString(); });
+                    const { error } = await client.from('profiles').update({ accent_color: colorInput.value, icon_url: iconInput.value || null, avatar_url: avatarInput.value.trim() || null, is_public: privacyInput.checked, favorite_game: favoriteInput.value, selected_medals: selected, medal_earned_at: earnedAt, bio: bioInput.value.trim(), platform: platformInput.value, country: countryInput.value.trim(), level: Math.max(1, Number(levelInput.value) || 1), status: statusInput.value, updated_at: new Date().toISOString() }).eq('user_id', userId);
                     styleMessage.textContent = error ? 'No se pudo guardar el color.' : 'Color guardado.';
                     if (!error) {
                         applyColor(colorInput.value);
@@ -308,9 +357,14 @@
                 setComparison(currentPlayer, opponent);
             });
             document.querySelector('#shareProfileBtn').addEventListener('click', shareProfile);
-            const medalCatalog = { completion: ['Maestro del camuflaje', 'Juego completado al 100%'], dedication: ['Operador dedicado', 'Más de 250 camuflajes'], hunter: ['Cazador de camuflajes', 'Más de 500 camuflajes'] };
-            const visibleMedals = selectedMedals.filter(key => earnedMedals[key]).map(key => `<article class="medal"><span class="medal-icon" aria-hidden="true">★</span><span><span class="medal-title">${medalCatalog[key][0]}</span><br><span class="medal-meta">${medalCatalog[key][1]}</span></span></article>`).join('');
+            const medalCatalog = { completion: ['Maestro del camuflaje', 'Juego completado al 100%'], category: ['Categoría completa', 'Categoría de armas completada'], streak: ['Racha de progreso', 'Más de 100 camuflajes'], top3: ['Top 3 del leaderboard', 'Entre los tres mejores jugadores'], bronze: ['Nivel bronce', 'Más de 100 camuflajes'], silver: ['Nivel plata', 'Más de 250 camuflajes'], gold: ['Nivel oro', 'Más de 500 camuflajes'], diamond: ['Nivel diamante', 'Juego completado al 100%'] };
+            const actionRow = document.querySelector('.action-row');
+            if (!actionRow.querySelector('[href="medals.html"]')) actionRow.insertAdjacentHTML('beforeend', '<a class="btn" href="medals.html">Ver todas las medallas</a>');
+            const visibleMedals = selectedMedals.filter(key => earnedMedals[key]).map(key => `<article class="medal"><span class="medal-icon" aria-hidden="true">★</span><span><span class="medal-title">${medalCatalog[key][0]}</span><br><span class="medal-meta">${medalCatalog[key][1]}</span><br><span class="medal-date">${medalDates[key] ? `Conseguida el ${formatDate(medalDates[key])}` : 'Conseguida recientemente'}</span></span></article>`).join('');
             gameStats.innerHTML = `<div class="game"><span><span class="game-title">${profile?.favorite_game || 'Modern Warfare 2019'}</span><br><span class="game-meta">${total} camuflajes en total</span></span><span class="game-score">${completed} / ${total}</span></div><section class="medals" aria-label="Medallas especiales">${visibleMedals || '<p class="message">Aún no hay medallas seleccionadas.</p>'}</section>`;
+            const gameCatalog = profile?.game_progress || {};
+            const gameNames = ['Modern Warfare 2019', 'Black Ops 6', 'Black Ops 7', 'Modern Warfare III', 'Warzone'];
+            gameStats.insertAdjacentHTML('afterbegin', `<section class="games" aria-label="Progreso por juego">${gameNames.map(name => { const value = gameCatalog[name] || (name === 'Modern Warfare 2019' ? completed : 0); const percent = Math.min(Math.round(value / total * 100), 100); return `<div class="game"><span><span class="game-title">${name}</span><br><span class="game-meta">${value} / ${total} camuflajes</span><span class="game-progress"><span style="width:${percent}%"></span></span></span><span class="game-score">${percent}%</span></div>`; }).join('')}</section>`);
             if (isOwner) {
                 const today = new Date();
                 today.setUTCHours(0, 0, 0, 0);

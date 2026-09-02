@@ -413,6 +413,12 @@
                 rank.className = 'rank';
                 rank.textContent = `#${index + 1}`;
                 rankCell.appendChild(rank);
+                if (player.previous_rank && Number(player.previous_rank) !== index + 1) {
+                    const change = document.createElement('small');
+                    change.textContent = Number(player.previous_rank) > index + 1 ? ' ↑' : ' ↓';
+                    change.style.color = Number(player.previous_rank) > index + 1 ? '#22c55e' : '#ef4444';
+                    rankCell.appendChild(change);
+                }
 
                 const playerLink = document.createElement('a');
                 playerLink.className = 'player';
@@ -443,7 +449,7 @@
             if (!client) { message.textContent = 'Supabase no está configurado.'; return; }
             const [{ error: profileError }, { data: progressRows, error: progressError }] = await Promise.all([
                 client.from('profiles').select('user_id, username').limit(1),
-                client.from('leaderboard_stats').select('user_id, username, completed, accent_color, icon_url')
+                client.from('leaderboard_stats').select('user_id, username, completed, accent_color, icon_url, previous_rank')
             ]);
             if (profileError || progressError) throw profileError || progressError;
             const scores = (progressRows || []).sort((a, b) => b.completed - a.completed);

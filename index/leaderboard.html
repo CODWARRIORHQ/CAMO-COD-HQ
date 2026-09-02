@@ -96,6 +96,139 @@
         h1 { margin: 0; font-size: clamp(36px, 7vw, 72px); line-height: 0.95; }
         .intro { max-width: 620px; margin: 18px 0 40px; color: var(--muted); line-height: 1.6; }
 
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+            margin: 0 0 28px;
+        }
+
+        .stat-card {
+            padding: 18px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: rgba(16, 23, 34, 0.85);
+        }
+
+        .stat-card .label {
+            color: var(--muted);
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .stat-card .value {
+            display: block;
+            margin-top: 12px;
+            color: #fff;
+            font-size: clamp(22px, 3vw, 30px);
+            font-weight: 800;
+        }
+
+        .podium {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            margin: 0 0 28px;
+        }
+
+        .podium-card {
+            padding: 18px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: linear-gradient(180deg, rgba(23, 31, 48, 0.96), rgba(12, 17, 27, 0.9));
+            text-align: center;
+        }
+
+        .podium-card.gold { border-color: rgba(255, 204, 51, 0.4); }
+        .podium-card.silver { border-color: rgba(191, 201, 214, 0.4); }
+        .podium-card.bronze { border-color: rgba(205, 127, 50, 0.4); }
+
+        .podium-rank {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .podium-card.gold .podium-rank { background: rgba(255, 204, 51, 0.2); color: var(--gold); }
+        .podium-card.silver .podium-rank { background: rgba(191, 201, 214, 0.2); color: #dfe7ef; }
+        .podium-card.bronze .podium-rank { background: rgba(205, 127, 50, 0.2); color: #e29b5a; }
+
+        .podium-name {
+            display: block;
+            margin: 12px 0 6px;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .podium-score {
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            margin: 20px 0 24px;
+        }
+
+        .search-box {
+            flex: 1 1 260px;
+            min-width: 220px;
+        }
+
+        .search-box input,
+        .sort-box select {
+            width: 100%;
+            padding: 12px 14px;
+            color: #fff;
+            background: rgba(11, 17, 26, 0.9);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font: inherit;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-button,
+        .sort-box {
+            flex: 0 0 auto;
+        }
+
+        .filter-button {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: transparent;
+            color: #fff;
+            cursor: pointer;
+            font: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .filter-button.active {
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            border-color: transparent;
+            color: white;
+        }
+
+        .sort-box {
+            min-width: 180px;
+        }
+
         .leaderboard {
             overflow: hidden;
             border: 1px solid var(--border);
@@ -161,6 +294,28 @@
         <h1>Leaderboard</h1>
         <p class="intro">Clasificación global de camuflajes completados por la comunidad.</p>
 
+        <div class="stats-grid" id="statsGrid" aria-live="polite"></div>
+        <div class="podium" id="podium" aria-live="polite"></div>
+
+        <div class="toolbar" aria-label="Herramientas del leaderboard">
+            <div class="search-box">
+                <input id="leaderboardSearch" type="text" placeholder="Buscar jugador..." aria-label="Buscar jugador" />
+            </div>
+            <div class="filters" aria-label="Filtros de rango">
+                <button class="filter-button active" type="button" data-limit="10">Top 10</button>
+                <button class="filter-button" type="button" data-limit="25">Top 25</button>
+                <button class="filter-button" type="button" data-limit="50">Top 50</button>
+                <button class="filter-button" type="button" data-limit="all">Todos</button>
+            </div>
+            <div class="sort-box">
+                <select id="leaderboardSort" aria-label="Ordenar por">
+                    <option value="completed">Total de camuflajes</option>
+                    <option value="progress">Progreso %</option>
+                    <option value="position">Posición global</option>
+                </select>
+            </div>
+        </div>
+
         <section class="leaderboard" aria-labelledby="leaderboard-title">
             <h2 id="leaderboard-title" hidden>Clasificación de jugadores</h2>
             <div class="leaderboard-header">
@@ -177,18 +332,70 @@
         const config = window.CAMO_SUPABASE_CONFIG || {};
         const client = config.url && config.anonKey ? window.supabase.createClient(config.url, config.anonKey) : null;
         const countProgress = progress => Object.values(progress || {}).reduce((total, indices) => total + (Array.isArray(indices) ? indices.length : 0), 0);
-        const loadLeaderboard = async () => {
-            const message = document.querySelector('#leaderboardMessage');
-            if (!client) { message.textContent = 'Supabase no está configurado.'; return; }
-            const [{ error: profileError }, { data: progressRows, error: progressError }] = await Promise.all([
-                client.from('profiles').select('user_id, username').limit(1),
-                client.from('leaderboard_stats').select('user_id, username, completed, accent_color, icon_url')
-            ]);
-            if (profileError || progressError) throw profileError || progressError;
-            const scores = (progressRows || []).sort((a, b) => b.completed - a.completed);
-            message.remove();
+        const state = { limit: 10, sortBy: 'completed', search: '' };
+
+        const renderTopStats = (scores) => {
+            const statsGrid = document.querySelector('#statsGrid');
+            const podium = document.querySelector('#podium');
+            const activePlayers = scores.length;
+            const bestPlayer = scores[0] || null;
+            const average = activePlayers ? Math.round(scores.reduce((sum, player) => sum + player.completed, 0) / activePlayers) : 0;
+            const totalCompleted = scores.reduce((sum, player) => sum + player.completed, 0);
+
+            const statCards = [
+                { label: 'Jugadores activos', value: activePlayers },
+                { label: 'Media global', value: average },
+                { label: 'Mejor jugador', value: bestPlayer ? bestPlayer.username : '—' },
+                { label: 'Total camuflajes', value: totalCompleted }
+            ];
+
+            statsGrid.innerHTML = statCards.map(card => `
+                <div class="stat-card">
+                    <span class="label">${card.label}</span>
+                    <span class="value">${card.value}</span>
+                </div>
+            `).join('');
+
+            const podiumPlayers = scores.slice(0, 3);
+            podium.innerHTML = podiumPlayers.map((player, index) => {
+                const rank = ['oro', 'plata', 'bronce'][index];
+                const label = ['1º', '2º', '3º'][index];
+                const className = index === 0 ? 'gold' : index === 1 ? 'silver' : 'bronze';
+                return `
+                    <div class="podium-card ${className}">
+                        <div class="podium-rank">${label}</div>
+                        <span class="podium-name">${player.username}</span>
+                        <div class="podium-score">${player.completed} camuflajes</div>
+                    </div>
+                `;
+            }).join('');
+        };
+
+        const renderLeaderboard = (scores) => {
             const board = document.querySelector('.leaderboard');
-            scores.forEach((player, index) => {
+            const message = document.querySelector('#leaderboardMessage');
+            const searchValue = state.search.trim().toLowerCase();
+            const filtered = (scores || []).filter(player => {
+                if (!searchValue) return true;
+                return (player.username || '').toLowerCase().includes(searchValue);
+            });
+
+            const sorted = filtered.slice().sort((a, b) => {
+                if (state.sortBy === 'progress') return (b.completed / 668) - (a.completed / 668);
+                if (state.sortBy === 'position') return a.completed - b.completed;
+                return b.completed - a.completed;
+            });
+
+            const limited = state.limit === 'all' ? sorted : sorted.slice(0, Number(state.limit));
+            message.remove();
+            const existingRows = board.querySelectorAll('.leaderboard-row');
+            existingRows.forEach(row => row.remove());
+            if (!limited.length) {
+                board.insertAdjacentHTML('beforeend', '<p class="message">No hay jugadores que coincidan con tu búsqueda.</p>');
+                return;
+            }
+
+            limited.forEach((player, index) => {
                 const row = document.createElement('div');
                 row.className = 'leaderboard-row';
 
@@ -229,8 +436,43 @@
                 row.append(rankCell, playerLink, score);
                 board.appendChild(row);
             });
-            if (!scores.length) board.insertAdjacentHTML('beforeend', '<p class="message">Todavía no hay jugadores registrados.</p>');
         };
+
+        const loadLeaderboard = async () => {
+            const message = document.querySelector('#leaderboardMessage');
+            if (!client) { message.textContent = 'Supabase no está configurado.'; return; }
+            const [{ error: profileError }, { data: progressRows, error: progressError }] = await Promise.all([
+                client.from('profiles').select('user_id, username').limit(1),
+                client.from('leaderboard_stats').select('user_id, username, completed, accent_color, icon_url')
+            ]);
+            if (profileError || progressError) throw profileError || progressError;
+            const scores = (progressRows || []).sort((a, b) => b.completed - a.completed);
+            renderTopStats(scores);
+            const searchInput = document.querySelector('#leaderboardSearch');
+            const sortSelect = document.querySelector('#leaderboardSort');
+            const filterButtons = document.querySelectorAll('.filter-button');
+
+            searchInput.addEventListener('input', (event) => {
+                state.search = event.target.value;
+                renderLeaderboard(scores);
+            });
+
+            sortSelect.addEventListener('change', (event) => {
+                state.sortBy = event.target.value;
+                renderLeaderboard(scores);
+            });
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    state.limit = button.dataset.limit;
+                    filterButtons.forEach(item => item.classList.toggle('active', item === button));
+                    renderLeaderboard(scores);
+                });
+            });
+
+            renderLeaderboard(scores);
+        };
+
         loadLeaderboard().catch(() => { document.querySelector('#leaderboardMessage').textContent = 'No se pudo cargar la clasificación.'; });
     </script>
 </body>

@@ -60,6 +60,11 @@
         .profile-editor select:disabled { opacity:.55; cursor:not-allowed; }
         .profile-editor .customization-row { display:flex; align-items:center; justify-content:space-between; gap:12px; }
         .profile-icon-option { width:34px; height:34px; object-fit:contain; vertical-align:middle; }
+            .medals { display:flex; flex-wrap:wrap; gap:12px; margin-top:28px; }
+            .medal { display:flex; align-items:center; gap:10px; padding:14px 16px; border:1px solid rgba(255,204,51,.35); border-radius:10px; background:rgba(255,204,51,.08); }
+            .medal-icon { font-size:24px; }
+            .medal-title { color:var(--gold); font-weight:800; }
+            .medal-meta { color:var(--muted); font-size:12px; }
         @media (max-width:600px) { body { padding:12px; } main { padding:44px 0; } .summary { grid-template-columns:1fr; } .game { grid-template-columns:minmax(0,1fr) 90px; padding:16px; } .compare-grid { grid-template-columns:1fr; } }
     </style>
 </head>
@@ -145,7 +150,7 @@
             const compareOptions = document.querySelector('#comparePlayerOptions');
             if (!client || !userId) { gameStats.innerHTML = '<p class="message">Perfil no disponible.</p>'; return; }
             const [{ data: profile }, { data: allProfiles }] = await Promise.all([
-                client.from('leaderboard_stats').select('username,completed,accent_color,icon_url').eq('user_id', userId).maybeSingle(),
+                client.from('leaderboard_stats').select('username,completed,is_public,accent_color,icon_url').eq('user_id', userId).maybeSingle(),
                 client.from('leaderboard_stats').select('user_id,username,completed')
             ]);
             const currentPlayer = profile ? { ...profile, user_id: userId, rankText: '-' } : null;
@@ -169,20 +174,30 @@
             const colorInput = document.querySelector('#accentColor');
             const iconInput = document.querySelector('#profileIcon');
             const styleMessage = document.querySelector('#profileStyleMessage');
+                let privacyInput = document.querySelector('#profilePublic');
+                if (!privacyInput) {
+                    const privacyRow = document.createElement('div');
+                    privacyRow.className = 'customization-row';
+                    privacyRow.innerHTML = '<label for="profilePublic">Perfil público</label><input id="profilePublic" type="checkbox">';
+                    editor.insertBefore(privacyRow, saveButton);
+                    privacyInput = privacyRow.querySelector('#profilePublic');
+                }
             editor.classList.add('visible');
             colorInput.value = validColor(profile?.accent_color) ? profile.accent_color : '#06b6d4';
             iconInput.value = profile?.icon_url || '';
+                privacyInput.checked = profile?.is_public !== false;
             const { data: sessionData } = await client.auth.getUser();
             const isOwner = sessionData.user?.id === userId;
             colorInput.disabled = !isOwner;
             iconInput.disabled = !isOwner;
+                privacyInput.disabled = !isOwner;
             saveButton.disabled = !isOwner;
             if (!isOwner) {
                 styleMessage.textContent = 'Inicia sesión con este perfil para guardar cambios.';
             } else {
                 colorInput.addEventListener('input', () => applyColor(colorInput.value));
                 saveButton.addEventListener('click', async () => {
-                    const { error } = await client.from('profiles').update({ accent_color: colorInput.value, icon_url: iconInput.value || null, updated_at: new Date().toISOString() }).eq('user_id', userId);
+                    const { error } = await client.from('profiles').update({ accent_color: colorInput.value, icon_url: iconInput.value || null, is_public: privacyInput.checked, updated_at: new Date().toISOString() }).eq('user_id', userId);
                     styleMessage.textContent = error ? 'No se pudo guardar el color.' : 'Color guardado.';
                     if (!error) {
                         applyColor(colorInput.value);
@@ -232,7 +247,8 @@
                 setComparison(currentPlayer, opponent);
             });
             document.querySelector('#shareProfileBtn').addEventListener('click', shareProfile);
-            gameStats.innerHTML = `<div class="game"><span><span class="game-title">Modern Warfare 2019</span><br><span class="game-meta">${total} camuflajes en total</span></span><span class="game-score">${completed} / ${total}</span></div>`;
+            const medals = completed >= total ? '<section class="medals" aria-label="Medallas especiales"><article class="medal"><span class="medal-icon" aria-hidden="true">★</span><span><span class="medal-title">Maestro del camuflaje</span><br><span class="medal-meta">Juego completado al 100%</span></span></article></section>' : '';
+            gameStats.innerHTML = `<div class="game"><span><span class="game-title">Modern Warfare 2019</span><br><span class="game-meta">${total} camuflajes en total</span></span><span class="game-score">${completed} / ${total}</span></div>${medals}`;
         };
         render().catch(() => { document.querySelector('#gameStats').innerHTML = '<p class="message">No se pudieron cargar las estadísticas.</p>'; });
     </script>

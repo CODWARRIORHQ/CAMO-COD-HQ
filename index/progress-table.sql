@@ -6,6 +6,8 @@ create table if not exists public.camo_progress (
 
 alter table public.camo_progress enable row level security;
 
+grant select, insert, update on public.camo_progress to authenticated;
+
 create policy "Users can read their own progress"
 on public.camo_progress for select
 to authenticated

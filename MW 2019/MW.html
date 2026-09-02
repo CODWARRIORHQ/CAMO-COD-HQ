@@ -2230,11 +2230,10 @@
             if (hasRemoteProgress) {
                 aplicarProgreso(remoteProgress);
                 actualizarTodo();
-            } else {
-                await guardarProgresoEnCuenta(client, user.id);
             }
 
             window.camoProgressSync = { client, userId: user.id };
+            await guardarProgresoEnCuenta(client, user.id);
         } catch (error) {
             console.warn('No se pudo sincronizar el progreso con Supabase', error);
         }

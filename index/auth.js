@@ -88,6 +88,7 @@
         const { error } = await client.from('profiles').upsert({
             user_id: user.id,
             username,
+            created_at: user.created_at,
             updated_at: new Date().toISOString()
         });
         if (error) console.warn('No se pudo guardar el perfil', error);

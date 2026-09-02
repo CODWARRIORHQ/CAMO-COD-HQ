@@ -3,6 +3,9 @@ create table if not exists public.profiles (
     username text not null unique,
     accent_color text not null default '#06b6d4',
     is_public boolean not null default true,
+    favorite_game text not null default 'Modern Warfare 2019',
+    selected_medals jsonb not null default '["completion"]'::jsonb,
+    created_at timestamptz not null default now(),
     icon_url text,
     avatar_url text,
     calling_card_url text,
@@ -11,6 +14,9 @@ create table if not exists public.profiles (
 
 alter table public.profiles add column if not exists accent_color text not null default '#06b6d4';
 alter table public.profiles add column if not exists is_public boolean not null default true;
+alter table public.profiles add column if not exists favorite_game text not null default 'Modern Warfare 2019';
+alter table public.profiles add column if not exists selected_medals jsonb not null default '["completion"]'::jsonb;
+alter table public.profiles add column if not exists created_at timestamptz not null default now();
 alter table public.profiles add column if not exists icon_url text;
 alter table public.profiles add column if not exists avatar_url text;
 alter table public.profiles add column if not exists calling_card_url text;
@@ -21,6 +27,7 @@ grant select on public.profiles to anon, authenticated;
 grant insert, update on public.profiles to authenticated;
 
 drop policy if exists "Public can read usernames" on public.profiles;
+drop policy if exists "Public can read public profiles" on public.profiles;
 create policy "Public can read public profiles"
 on public.profiles for select
 to anon, authenticated

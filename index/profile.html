@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#05060a">
     <title>Perfil | CAMO COD HQ</title>
     <style>
         :root { --bg:#05060a; --surface:#101722; --muted:#98a0b3; --accent:#7c3aed; --cyan:#06b6d4; --gold:#ffcc33; --border:rgba(255,255,255,.1); }
         * { box-sizing:border-box; }
-        body { min-height:100vh; margin:0; padding:20px; color:#fff; background:radial-gradient(circle at top,#101b31 0,var(--bg) 48%); font-family:Inter,system-ui,sans-serif; }
+        html { min-height:100%; background:#05060a; color-scheme:dark; }
+        body { min-height:100vh; margin:0; padding:20px; color:#fff; background:radial-gradient(circle at top,#101b31 0,var(--bg) 48%); font-family:Inter,system-ui,sans-serif; overscroll-behavior:none; }
         a { color:inherit; text-decoration:none; }
         .container { width:min(100%,1100px); margin:0 auto; }
         .nav { display:flex; justify-content:space-between; align-items:center; gap:20px; min-height:72px; border-bottom:1px solid var(--border); }
@@ -78,7 +80,8 @@
             .profile-meta { display:flex; flex-wrap:wrap; gap:22px; color:var(--muted); font-size:13px; }
             .profile-meta strong { color:#fff; }
             .achievement-badge { display:inline-flex; align-items:center; gap:6px; margin-left:10px; padding:5px 9px; border:1px solid rgba(255,204,51,.45); border-radius:999px; color:var(--gold); font-size:12px; vertical-align:middle; }
-            #profileBadges { display:inline-flex; flex-wrap:wrap; gap:6px; }
+            .profile-heading { flex-wrap:wrap; }
+            #profileBadges { display:flex; flex-basis:100%; flex-wrap:wrap; gap:6px; margin:8px 0 0 72px; }
             #profileBadges .achievement-badge { margin-left:0; }
             .medals { margin:0 14px 14px; padding:14px 16px; border:1px solid var(--border); border-radius:8px; }
             .medal-options { display:grid; gap:8px; }
@@ -87,7 +90,7 @@
             .game-progress { display:block; width:100%; height:8px; margin-top:12px; overflow:hidden; border:1px solid rgba(255,255,255,.08); border-radius:999px; background:#05060a; }
             .game-progress span { display:block; width:0; max-width:100%; height:100%; border-radius:inherit; background:linear-gradient(90deg,var(--cyan),#38d6c5); box-shadow:0 0 10px rgba(6,182,212,.35); transition:width .35s ease; }
             .medal-date { color:var(--muted); font-size:11px; }
-        @media (max-width:600px) { body { padding:12px; } main { padding:44px 0; } .summary { grid-template-columns:1fr; } .game-grid { grid-template-columns:1fr; padding:10px; } .game { min-height:100px; } .compare-grid { grid-template-columns:1fr; } }
+        @media (max-width:600px) { body { padding:12px; } main { padding:44px 0; } .profile-heading { display:grid; grid-template-columns:auto minmax(0,1fr); align-items:center; gap:10px; } .profile-heading h1 { min-width:0; font-size:clamp(32px,10vw,48px); overflow-wrap:anywhere; } #profileBadges { grid-column:1 / -1; margin:4px 0 0; gap:5px; } #profileBadges .achievement-badge { max-width:100%; padding:4px 7px; font-size:11px; } .summary { grid-template-columns:1fr; } .game-grid { grid-template-columns:1fr; padding:10px; } .game { min-height:100px; } .compare-grid { grid-template-columns:1fr; } }
     </style>
 </head>
 <body>
@@ -238,16 +241,6 @@
             }
             const formatDate = value => value ? new Intl.DateTimeFormat('es-ES', { dateStyle: 'long' }).format(new Date(value)) : 'No disponible';
             profileMeta.innerHTML = `<span>Registro: <strong>${formatDate(profile?.created_at)}</strong></span><span>Juego favorito: <strong>${profile?.favorite_game || 'Modern Warfare 2019'}</strong></span>`;
-            const publicMedals = document.querySelector('#publicMedals');
-            publicMedals?.remove();
-            if (badgeData.length) {
-                const medalsSection = document.createElement('section');
-                medalsSection.id = 'publicMedals';
-                medalsSection.className = 'medals';
-                medalsSection.setAttribute('aria-label', 'Medallas visibles');
-                medalsSection.innerHTML = badgeData.map(([, name]) => `<span class="achievement-badge">★ ${name}</span>`).join('');
-                profileMeta.before(medalsSection);
-            }
                 let privacyInput = document.querySelector('#profilePublic');
                 if (!privacyInput) {
                     const privacyRow = document.createElement('div');

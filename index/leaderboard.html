@@ -124,6 +124,8 @@
         .leaderboard-row { border-bottom: 1px solid var(--border); }
         .leaderboard-row:last-child { border-bottom: 0; }
         .rank { color: var(--accent-2); font-weight: 900; }
+        .rank-cell { display: flex; align-items: center; gap: 10px; min-width: 0; }
+        .rank-icon { width: 34px; height: 34px; object-fit: contain; }
         .player { font-weight: 700; }
         .score { color: var(--gold); font-weight: 800; text-align: right; }
         .player { color: var(--cyan); }
@@ -134,7 +136,8 @@
             .nav { min-height: 68px; }
             main { padding: 44px 0; }
             .leaderboard-header,
-            .leaderboard-row { grid-template-columns: 48px minmax(0, 1fr) 110px; padding: 16px; }
+            .leaderboard-row { grid-template-columns: 72px minmax(0, 1fr) 110px; padding: 16px; }
+            .rank-icon { width: 28px; height: 28px; }
         }
     </style>
 </head>
@@ -187,7 +190,32 @@
             scores.forEach((player, index) => {
                 const row = document.createElement('div');
                 row.className = 'leaderboard-row';
-                row.innerHTML = `<span class="rank">#${index + 1}</span><a class="player" href="profile.html?user=${encodeURIComponent(player.user_id)}">${player.username}</a><span class="score">${player.completed} camuflajes</span>`;
+
+                const rankCell = document.createElement('span');
+                rankCell.className = 'rank-cell';
+                if (index < 3) {
+                    const rankIcon = document.createElement('img');
+                    rankIcon.className = 'rank-icon';
+                    rankIcon.src = `rank icon/leaderboards-rank-${index + 1}.png`;
+                    rankIcon.alt = `Rango ${index + 1}`;
+                    rankCell.appendChild(rankIcon);
+                }
+
+                const rank = document.createElement('span');
+                rank.className = 'rank';
+                rank.textContent = `#${index + 1}`;
+                rankCell.appendChild(rank);
+
+                const playerLink = document.createElement('a');
+                playerLink.className = 'player';
+                playerLink.href = `profile.html?user=${encodeURIComponent(player.user_id)}`;
+                playerLink.textContent = player.username;
+
+                const score = document.createElement('span');
+                score.className = 'score';
+                score.textContent = `${player.completed} camuflajes`;
+
+                row.append(rankCell, playerLink, score);
                 board.appendChild(row);
             });
             if (!scores.length) board.insertAdjacentHTML('beforeend', '<p class="message">Todavía no hay jugadores registrados.</p>');

@@ -20,38 +20,77 @@
         main { padding:64px 0; }
         .eyebrow { margin:0 0 10px; color:var(--cyan); font-size:12px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
         h1 { margin:0; font-size:clamp(36px,7vw,72px); line-height:.95; }
+        .profile-heading { display:flex; align-items:center; gap:18px; }
+        .profile-rank-icon { width:72px; height:72px; object-fit:contain; }
+        .rank-stat { display:flex; align-items:center; gap:12px; }
+        .rank-stat-icon { width:42px; height:42px; object-fit:contain; }
         .summary { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:40px; }
         .stat { padding:22px; border:1px solid var(--border); border-radius:10px; background:rgba(16,23,34,.85); }
         .stat-label { color:var(--muted); font-size:12px; text-transform:uppercase; } .stat-value { display:block; margin-top:8px; color:var(--gold); font-size:28px; font-weight:800; }
         .games { margin-top:28px; border:1px solid var(--border); border-radius:10px; overflow:hidden; background:rgba(16,23,34,.85); }
-        .game { display:grid; grid-template-columns:minmax(0,1fr) 120px 120px; gap:16px; padding:18px 22px; border-bottom:1px solid var(--border); }
+        .game { display:grid; grid-template-columns:minmax(0,1fr) 120px; gap:16px; padding:18px 22px; border-bottom:1px solid var(--border); }
         .game:last-child { border-bottom:0; } .game-title { font-weight:700; } .game-meta { color:var(--muted); } .game-score { color:var(--gold); text-align:right; font-weight:800; }
         .message { color:var(--muted); }
-        @media (max-width:600px) { body { padding:12px; } main { padding:44px 0; } .summary { grid-template-columns:1fr; } .game { grid-template-columns:minmax(0,1fr) 90px; padding:16px; } .game-score:last-child { display:none; } }
+        .profile-editor { display:none; gap:12px; margin-top:28px; padding:18px; border:1px solid var(--border); border-radius:10px; background:rgba(16,23,34,.85); }
+        .profile-editor.visible { display:grid; }
+        .profile-editor h2 { margin:0; font-size:18px; }
+        .profile-editor label { display:flex; align-items:center; gap:12px; color:var(--muted); font-size:13px; }
+        .profile-editor input[type="color"] { width:48px; height:34px; padding:2px; cursor:pointer; background:transparent; border:1px solid var(--border); border-radius:6px; }
+        .profile-editor .presets { display:flex; flex-wrap:wrap; gap:8px; }
+        .color-preset { width:28px; height:28px; padding:0; cursor:pointer; border:2px solid rgba(255,255,255,.3); border-radius:50%; }
+        .color-preset:hover { border-color:#fff; }
+        @media (max-width:600px) { body { padding:12px; } main { padding:44px 0; } .summary { grid-template-columns:1fr; } .game { grid-template-columns:minmax(0,1fr) 90px; padding:16px; } }
     </style>
 </head>
 <body>
     <header><nav class="nav container"><a class="brand" href="Camos UEM.html"><span class="logo"><img src="../MW 2019/logo.png" alt="CAMO COD HQ"></span><span class="brand-text"><span class="site-name">CAMO COD HQ</span><small class="site-tag">Tu hub de camuflajes</small></span></a><a class="btn" href="leaderboard.html">Leaderboard</a></nav></header>
-    <main class="container"><p class="eyebrow">Perfil de jugador</p><h1 id="profileName">Cargando...</h1><section class="summary"><div class="stat"><span class="stat-label">Posición global</span><strong class="stat-value" id="profileRank">-</strong></div><div class="stat"><span class="stat-label">Camuflajes completados</span><strong class="stat-value" id="profileCompleted">0</strong></div><div class="stat"><span class="stat-label">Progreso total</span><strong class="stat-value" id="profilePercent">0%</strong></div></section><section class="games" id="gameStats" aria-label="Estadísticas por juego"><p class="message">Cargando estadísticas...</p></section></main>
+    <main class="container"><p class="eyebrow">Perfil de jugador</p><div class="profile-heading"><img class="profile-rank-icon" id="profileRankIcon" alt="" hidden><h1 id="profileName">Cargando...</h1></div><section class="summary"><div class="stat"><span class="stat-label">Posición global</span><div class="rank-stat"><img class="rank-stat-icon" id="profileRankStatIcon" alt="" hidden><strong class="stat-value" id="profileRank">-</strong></div></div><div class="stat"><span class="stat-label">Camuflajes completados</span><strong class="stat-value" id="profileCompleted">0 / 668</strong></div><div class="stat"><span class="stat-label">Progreso total</span><strong class="stat-value" id="profilePercent">0%</strong></div></section><section class="profile-editor" id="profileEditor" aria-label="Personalizar perfil"><h2>Personalizar perfil</h2><label for="accentColor">Color de perfil <input id="accentColor" type="color" value="#06b6d4"></label><div class="presets" aria-label="Colores disponibles"><button class="color-preset" type="button" data-color="#06b6d4" style="background:#06b6d4" aria-label="Cian"></button><button class="color-preset" type="button" data-color="#7c3aed" style="background:#7c3aed" aria-label="Morado"></button><button class="color-preset" type="button" data-color="#ff9d00" style="background:#ff9d00" aria-label="Naranja"></button><button class="color-preset" type="button" data-color="#ef4444" style="background:#ef4444" aria-label="Rojo"></button><button class="color-preset" type="button" data-color="#22c55e" style="background:#22c55e" aria-label="Verde"></button></div><button class="btn" id="saveProfileStyle" type="button">Guardar color</button><p class="message" id="profileStyleMessage" role="status"></p></section><section class="games" id="gameStats" aria-label="Estadísticas por juego"><p class="message">Cargando estadísticas...</p></section></main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js"></script>
     <script>
         const config = window.CAMO_SUPABASE_CONFIG || {};
         const client = config.url && config.anonKey ? window.supabase.createClient(config.url, config.anonKey) : null;
         const userId = new URLSearchParams(location.search).get('user');
+        const validColor = color => /^#[0-9a-f]{6}$/i.test(color);
+        const applyColor = color => { if (validColor(color)) document.documentElement.style.setProperty('--accent', color); };
         const render = async () => {
             const gameStats = document.querySelector('#gameStats');
             if (!client || !userId) { gameStats.innerHTML = '<p class="message">Perfil no disponible.</p>'; return; }
             const [{ data: profile }, { data: allProfiles }] = await Promise.all([
-                client.from('leaderboard_stats').select('username,completed').eq('user_id', userId).maybeSingle(),
+                client.from('leaderboard_stats').select('username,completed,accent_color').eq('user_id', userId).maybeSingle(),
                 client.from('leaderboard_stats').select('user_id,username,completed')
             ]);
-            const completed = profile?.completed || 0; const total = 0;
+            const completed = profile?.completed || 0; const total = 668;
             document.querySelector('#profileName').textContent = profile?.username || 'Jugador';
-            document.querySelector('#profileCompleted').textContent = completed;
-            document.querySelector('#profilePercent').textContent = total ? `${Math.round(completed / total * 100)}%` : 'En progreso';
+            applyColor(profile?.accent_color);
+            const editor = document.querySelector('#profileEditor');
+            const { data: sessionData } = await client.auth.getUser();
+            if (sessionData.user?.id === userId) {
+                editor.classList.add('visible');
+                const colorInput = document.querySelector('#accentColor');
+                colorInput.value = validColor(profile?.accent_color) ? profile.accent_color : '#06b6d4';
+                document.querySelectorAll('.color-preset').forEach(button => button.addEventListener('click', () => { colorInput.value = button.dataset.color; applyColor(colorInput.value); }));
+                document.querySelector('#saveProfileStyle').addEventListener('click', async () => {
+                    const { error } = await client.from('profiles').update({ accent_color: colorInput.value, updated_at: new Date().toISOString() }).eq('user_id', userId);
+                    const styleMessage = document.querySelector('#profileStyleMessage');
+                    styleMessage.textContent = error ? 'No se pudo guardar el color.' : 'Color guardado.';
+                    if (!error) applyColor(colorInput.value);
+                });
+            }
+            document.querySelector('#profileCompleted').textContent = `${completed} / ${total}`;
+            document.querySelector('#profilePercent').textContent = `${Math.min(Math.round(completed / total * 100), 100)}%`;
             const ranking = (allProfiles || []).sort((a, b) => b.completed - a.completed).map(item => item.user_id).indexOf(userId) + 1;
             document.querySelector('#profileRank').textContent = ranking > 0 ? `#${ranking}` : '-';
-            gameStats.innerHTML = `<div class="game"><span><span class="game-title">Modern Warfare 2019</span><br><span class="game-meta">Progreso sincronizado</span></span><span class="game-score">${completed} camuflajes</span><span class="game-score">${total ? '100%' : 'En progreso'}</span></div>`;
+            const rankIcon = document.querySelector('#profileRankIcon');
+            if (ranking >= 1 && ranking <= 3) {
+                rankIcon.src = `rank icon/leaderboards-rank-${ranking}.png`;
+                rankIcon.alt = `Rango ${ranking}`;
+                rankIcon.hidden = false;
+                const rankStatIcon = document.querySelector('#profileRankStatIcon');
+                rankStatIcon.src = rankIcon.src;
+                rankStatIcon.alt = rankIcon.alt;
+                rankStatIcon.hidden = false;
+            }
+            gameStats.innerHTML = `<div class="game"><span><span class="game-title">Modern Warfare 2019</span><br><span class="game-meta">${total} camuflajes en total</span></span><span class="game-score">${completed} / ${total}</span></div>`;
         };
         render().catch(() => { document.querySelector('#gameStats').innerHTML = '<p class="message">No se pudieron cargar las estadísticas.</p>'; });
     </script>

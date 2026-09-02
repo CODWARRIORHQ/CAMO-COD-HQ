@@ -29,11 +29,13 @@
         .stat { padding:22px; border:1px solid var(--border); border-radius:10px; background:rgba(16,23,34,.85); }
         .stat-label { color:var(--muted); font-size:12px; text-transform:uppercase; } .stat-value { display:block; margin-top:8px; color:var(--gold); font-size:28px; font-weight:800; }
         .games { margin-top:28px; border:1px solid var(--border); border-radius:10px; overflow:hidden; background:rgba(16,23,34,.85); }
-        .games-header { display:flex; justify-content:space-between; align-items:center; gap:16px; padding:18px 22px; border-bottom:1px solid var(--border); }
+        .games-header { display:flex; justify-content:space-between; align-items:center; gap:16px; padding:20px 22px; border-bottom:1px solid var(--border); }
         .games-header h2 { margin:0; font-size:18px; }
         .games-header span { color:var(--muted); font-size:13px; }
-        .game { display:grid; grid-template-columns:minmax(0,1fr) 80px; gap:16px; padding:18px 22px; border-bottom:1px solid var(--border); }
-        .game:last-child { border-bottom:0; } .game-title { font-weight:700; } .game-meta { color:var(--muted); font-size:13px; } .game-score { color:var(--gold); text-align:right; font-weight:800; }
+        .game-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; padding:14px; }
+        .game { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:14px; min-height:112px; padding:16px; border:1px solid var(--border); border-radius:8px; background:rgba(5,6,10,.42); }
+        .game.favorite { border-color:var(--cyan); box-shadow:inset 3px 0 0 var(--cyan); }
+        .game-title { font-weight:700; } .game-meta { display:block; margin-top:5px; color:var(--muted); font-size:13px; } .game-score { color:var(--gold); text-align:right; font-weight:800; }
         .message { color:var(--muted); }
         .action-row { display:flex; justify-content:flex-start; margin-top:28px; }
         .btn.primary { background:linear-gradient(135deg,var(--accent),var(--cyan)); border:none; color:#fff; font-weight:700; }
@@ -72,13 +74,14 @@
             .profile-meta { display:flex; flex-wrap:wrap; gap:22px; color:var(--muted); font-size:13px; }
             .profile-meta strong { color:#fff; }
             .achievement-badge { display:inline-flex; align-items:center; gap:6px; margin-left:10px; padding:5px 9px; border:1px solid rgba(255,204,51,.45); border-radius:999px; color:var(--gold); font-size:12px; vertical-align:middle; }
+            .medals { margin:0 14px 14px; padding:14px 16px; border:1px solid var(--border); border-radius:8px; }
             .medal-options { display:grid; gap:8px; }
             .medal-options label { justify-content:flex-start; }
             .rank-change { color:var(--cyan); font-size:14px; font-weight:700; }
-            .game-progress { height:7px; margin-top:10px; overflow:hidden; border-radius:5px; background:rgba(255,255,255,.1); }
-            .game-progress span { display:block; height:100%; background:linear-gradient(90deg,var(--accent),var(--cyan)); }
+            .game-progress { display:block; width:100%; height:8px; margin-top:12px; overflow:hidden; border:1px solid rgba(255,255,255,.08); border-radius:999px; background:#05060a; }
+            .game-progress span { display:block; width:0; max-width:100%; height:100%; border-radius:inherit; background:linear-gradient(90deg,var(--cyan),#38d6c5); box-shadow:0 0 10px rgba(6,182,212,.35); transition:width .35s ease; }
             .medal-date { color:var(--muted); font-size:11px; }
-        @media (max-width:600px) { body { padding:12px; } main { padding:44px 0; } .summary { grid-template-columns:1fr; } .game { grid-template-columns:minmax(0,1fr) 90px; padding:16px; } .compare-grid { grid-template-columns:1fr; } }
+        @media (max-width:600px) { body { padding:12px; } main { padding:44px 0; } .summary { grid-template-columns:1fr; } .game-grid { grid-template-columns:1fr; padding:10px; } .game { min-height:100px; } .compare-grid { grid-template-columns:1fr; } }
     </style>
 </head>
 <body>
@@ -263,21 +266,21 @@
             iconInput.value = profile?.icon_url || '';
                 privacyInput.checked = profile?.is_public !== false;
                 favoriteInput.value = profile?.favorite_game || 'Modern Warfare 2019';
-                editor.querySelectorAll('.medal-options input[type="checkbox"]').forEach(input => { input.checked = selectedMedals.includes(input.value); });
+                editor.querySelectorAll('.medal-options input[type="checkbox"]').forEach(input => { input.checked = selectedMedals.includes(input.value) && earnedMedals[input.value]; });
             const { data: sessionData } = await client.auth.getUser();
             const isOwner = sessionData.user?.id === userId;
             colorInput.disabled = !isOwner;
             iconInput.disabled = !isOwner;
                 privacyInput.disabled = !isOwner;
                 favoriteInput.disabled = !isOwner;
-                editor.querySelectorAll('.medal-options input').forEach(input => { input.disabled = !isOwner; });
+                editor.querySelectorAll('.medal-options input').forEach(input => { input.disabled = !isOwner || !earnedMedals[input.value]; });
             saveButton.disabled = !isOwner;
             if (!isOwner) {
                 styleMessage.textContent = 'Inicia sesión con este perfil para guardar cambios.';
             } else {
                 colorInput.addEventListener('input', () => applyColor(colorInput.value));
                 saveButton.addEventListener('click', async () => {
-                    const selected = Array.from(editor.querySelectorAll('.medal-options input:checked')).map(input => input.value);
+                    const selected = Array.from(editor.querySelectorAll('.medal-options input:checked')).map(input => input.value).filter(key => earnedMedals[key]);
                     const earnedAt = { ...(profile?.medal_earned_at || {}) };
                     Object.keys(earnedMedals).forEach(key => { if (earnedMedals[key] && !earnedAt[key]) earnedAt[key] = new Date().toISOString(); });
                     const { error } = await client.from('profiles').update({ accent_color: colorInput.value, icon_url: iconInput.value || null, is_public: privacyInput.checked, favorite_game: favoriteInput.value, selected_medals: selected, medal_earned_at: earnedAt, updated_at: new Date().toISOString() }).eq('user_id', userId);
@@ -331,15 +334,13 @@
                 setComparison(currentPlayer, opponent);
             });
             document.querySelector('#shareProfileBtn').addEventListener('click', shareProfile);
-            const medalCatalog = { completion: ['Maestro del camuflaje', 'Juego completado al 100%'], category: ['Categoría completa', 'Categoría de armas completada'], streak: ['Racha de progreso', 'Más de 100 camuflajes'], top3: ['Top 3 del leaderboard', 'Entre los tres mejores jugadores'], bronze: ['Nivel bronce', 'Más de 100 camuflajes'], silver: ['Nivel plata', 'Más de 250 camuflajes'], gold: ['Nivel oro', 'Más de 500 camuflajes'], diamond: ['Nivel diamante', 'Juego completado al 100%'] };
             const actionRow = document.querySelector('.action-row');
-            if (!actionRow.querySelector('[href="medals.html"]')) actionRow.insertAdjacentHTML('beforeend', '<a class="btn" href="medals.html">Ver todas las medallas</a>');
-            const visibleMedals = selectedMedals.filter(key => earnedMedals[key]).map(key => `<article class="medal"><span class="medal-icon" aria-hidden="true">★</span><span><span class="medal-title">${medalCatalog[key][0]}</span><br><span class="medal-meta">${medalCatalog[key][1]}</span><br><span class="medal-date">${medalDates[key] ? `Conseguida el ${formatDate(medalDates[key])}` : 'Conseguida recientemente'}</span></span></article>`).join('');
+            if (!actionRow.querySelector('[data-medals-link]')) actionRow.insertAdjacentHTML('beforeend', `<a class="btn" data-medals-link href="medals.html?user=${encodeURIComponent(userId)}">Ver todas las medallas</a>`);
             const favoriteGame = profile?.favorite_game || 'Modern Warfare 2019';
             const gameCatalog = profile?.game_progress || {};
             const gameNames = ['Modern Warfare 2019', 'Black Ops 6', 'Black Ops 7', 'Modern Warfare III', 'Warzone'];
-            const gamesMarkup = gameNames.map(name => { const value = gameCatalog[name] || (name === 'Modern Warfare 2019' ? completed : 0); const percent = Math.min(Math.round(value / total * 100), 100); const favoriteLabel = name === favoriteGame ? ' · Favorito' : ''; return `<div class="game"><span><span class="game-title">${name}${favoriteLabel}</span><br><span class="game-meta">${value} / ${total} camuflajes</span><span class="game-progress"><span style="width:${percent}%"></span></span></span><span class="game-score">${percent}%</span></div>`; }).join('');
-            gameStats.innerHTML = `<div class="games-header"><h2>Progreso por juego</h2><span>${gameNames.length} juegos registrados</span></div>${gamesMarkup}<section class="medals" aria-label="Medallas especiales">${visibleMedals || '<p class="message">Aún no hay medallas seleccionadas.</p>'}</section>`;
+            const gamesMarkup = gameNames.map(name => { const value = gameCatalog[name] || (name === 'Modern Warfare 2019' ? completed : 0); const percent = Math.min(Math.round(value / total * 100), 100); const favoriteLabel = name === favoriteGame ? ' · Favorito' : ''; const favoriteClass = name === favoriteGame ? ' favorite' : ''; return `<div class="game${favoriteClass}"><span><span class="game-title">${name}${favoriteLabel}</span><span class="game-meta">${value} / ${total} camuflajes</span><span class="game-progress"><span style="width:${percent}%"></span></span></span><span class="game-score">${percent}%</span></div>`; }).join('');
+            gameStats.innerHTML = `<div class="games-header"><h2>Progreso por juego</h2><span>${gameNames.length} juegos registrados</span></div><div class="game-grid">${gamesMarkup}</div>`;
         };
         render().catch(() => { document.querySelector('#gameStats').innerHTML = '<p class="message">No se pudieron cargar las estadísticas.</p>'; });
     </script>

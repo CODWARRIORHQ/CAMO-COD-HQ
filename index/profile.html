@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil | CAMO COD HQ</title>
+    <style>
+        :root { --bg:#05060a; --surface:#101722; --muted:#98a0b3; --accent:#7c3aed; --cyan:#06b6d4; --gold:#ffcc33; --border:rgba(255,255,255,.1); }
+        * { box-sizing:border-box; }
+        body { min-height:100vh; margin:0; padding:20px; color:#fff; background:radial-gradient(circle at top,#101b31 0,var(--bg) 48%); font-family:Inter,system-ui,sans-serif; }
+        a { color:inherit; text-decoration:none; }
+        .container { width:min(100%,1100px); margin:0 auto; }
+        .nav { display:flex; justify-content:space-between; align-items:center; gap:20px; min-height:72px; border-bottom:1px solid var(--border); }
+        .brand { display:flex; align-items:center; gap:12px; }
+        .logo { width:48px; height:48px; overflow:hidden; border-radius:8px; background:linear-gradient(135deg,var(--accent),var(--cyan)); }
+        .logo img { width:100%; height:100%; object-fit:cover; }
+        .brand-text { display:grid; gap:2px; } .site-name { font-weight:800; } .site-tag { color:var(--muted); font-size:12px; }
+        .btn { padding:8px 12px; border:1px solid rgba(255,255,255,.1); border-radius:8px; background:transparent; color:inherit; }
+        .btn:hover { background:var(--accent); border-color:transparent; }
+        main { padding:64px 0; }
+        .eyebrow { margin:0 0 10px; color:var(--cyan); font-size:12px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
+        h1 { margin:0; font-size:clamp(36px,7vw,72px); line-height:.95; }
+        .summary { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:40px; }
+        .stat { padding:22px; border:1px solid var(--border); border-radius:10px; background:rgba(16,23,34,.85); }
+        .stat-label { color:var(--muted); font-size:12px; text-transform:uppercase; } .stat-value { display:block; margin-top:8px; color:var(--gold); font-size:28px; font-weight:800; }
+        .games { margin-top:28px; border:1px solid var(--border); border-radius:10px; overflow:hidden; background:rgba(16,23,34,.85); }
+        .game { display:grid; grid-template-columns:minmax(0,1fr) 120px 120px; gap:16px; padding:18px 22px; border-bottom:1px solid var(--border); }
+        .game:last-child { border-bottom:0; } .game-title { font-weight:700; } .game-meta { color:var(--muted); } .game-score { color:var(--gold); text-align:right; font-weight:800; }
+        .message { color:var(--muted); }
+        @media (max-width:600px) { body { padding:12px; } main { padding:44px 0; } .summary { grid-template-columns:1fr; } .game { grid-template-columns:minmax(0,1fr) 90px; padding:16px; } .game-score:last-child { display:none; } }
+    </style>
+</head>
+<body>
+    <header><nav class="nav container"><a class="brand" href="Camos UEM.html"><span class="logo"><img src="../MW 2019/logo.png" alt="CAMO COD HQ"></span><span class="brand-text"><span class="site-name">CAMO COD HQ</span><small class="site-tag">Tu hub de camuflajes</small></span></a><a class="btn" href="leaderboard.html">Leaderboard</a></nav></header>
+    <main class="container"><p class="eyebrow">Perfil de jugador</p><h1 id="profileName">Cargando...</h1><section class="summary"><div class="stat"><span class="stat-label">Posición global</span><strong class="stat-value" id="profileRank">-</strong></div><div class="stat"><span class="stat-label">Camuflajes completados</span><strong class="stat-value" id="profileCompleted">0</strong></div><div class="stat"><span class="stat-label">Progreso total</span><strong class="stat-value" id="profilePercent">0%</strong></div></section><section class="games" id="gameStats" aria-label="Estadísticas por juego"><p class="message">Cargando estadísticas...</p></section></main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js"></script>
+    <script>
+        const config = window.CAMO_SUPABASE_CONFIG || {};
+        const client = config.url && config.anonKey ? window.supabase.createClient(config.url, config.anonKey) : null;
+        const userId = new URLSearchParams(location.search).get('user');
+        const render = async () => {
+            const gameStats = document.querySelector('#gameStats');
+            if (!client || !userId) { gameStats.innerHTML = '<p class="message">Perfil no disponible.</p>'; return; }
+            const [{ data: profile }, { data: allProfiles }] = await Promise.all([
+                client.from('leaderboard_stats').select('username,completed').eq('user_id', userId).maybeSingle(),
+                client.from('leaderboard_stats').select('user_id,username,completed')
+            ]);
+            const completed = profile?.completed || 0; const total = 0;
+            document.querySelector('#profileName').textContent = profile?.username || 'Jugador';
+            document.querySelector('#profileCompleted').textContent = completed;
+            document.querySelector('#profilePercent').textContent = total ? `${Math.round(completed / total * 100)}%` : 'En progreso';
+            const ranking = (allProfiles || []).sort((a, b) => b.completed - a.completed).map(item => item.user_id).indexOf(userId) + 1;
+            document.querySelector('#profileRank').textContent = ranking > 0 ? `#${ranking}` : '-';
+            gameStats.innerHTML = `<div class="game"><span><span class="game-title">Modern Warfare 2019</span><br><span class="game-meta">Progreso sincronizado</span></span><span class="game-score">${completed} camuflajes</span><span class="game-score">${total ? '100%' : 'En progreso'}</span></div>`;
+        };
+        render().catch(() => { document.querySelector('#gameStats').innerHTML = '<p class="message">No se pudieron cargar las estadísticas.</p>'; });
+    </script>
+</body>
+</html>

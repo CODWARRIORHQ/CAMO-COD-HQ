@@ -82,6 +82,17 @@
         }
     };
 
+    const saveProfile = async (user) => {
+        const username = user?.user_metadata?.username;
+        if (!client || !user || !username) return;
+        const { error } = await client.from('profiles').upsert({
+            user_id: user.id,
+            username,
+            updated_at: new Date().toISOString()
+        });
+        if (error) console.warn('No se pudo guardar el perfil', error);
+    };
+
     authButton.addEventListener('click', async () => {
         if (!client) {
             authModal.showModal();
@@ -125,9 +136,11 @@
         }
 
         if (isEditingProfile) {
+            await saveProfile(result.data.user);
             updateUser(result.data.user);
             closeModal();
         } else if (isRegistering) {
+            if (result.data.user) await saveProfile(result.data.user);
             setMessage('Cuenta creada. Revisa tu correo para confirmarla.');
         } else {
             updateUser(result.data.user);
@@ -140,6 +153,7 @@
         client = window.supabase.createClient(config.url, config.anonKey);
         const { data } = await client.auth.getUser();
         updateUser(data.user);
+        await saveProfile(data.user);
         client.auth.onAuthStateChange((_event, session) => updateUser(session?.user));
     };
 

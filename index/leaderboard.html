@@ -126,6 +126,8 @@
         .rank { color: var(--accent-2); font-weight: 900; }
         .player { font-weight: 700; }
         .score { color: var(--gold); font-weight: 800; text-align: right; }
+        .player { color: var(--cyan); }
+        .message { color: var(--muted); padding: 22px; }
 
         @media (max-width: 600px) {
             body { padding: 12px; }
@@ -153,7 +155,7 @@
     <main class="container">
         <p class="eyebrow">CAMO COD HQ</p>
         <h1>Leaderboard</h1>
-        <p class="intro">Clasificación de progreso de la comunidad. Esta página queda preparada para conectar los perfiles y puntuaciones cuando definamos cómo se registrarán.</p>
+        <p class="intro">Clasificación global de camuflajes completados por la comunidad.</p>
 
         <section class="leaderboard" aria-labelledby="leaderboard-title">
             <h2 id="leaderboard-title" hidden>Clasificación de jugadores</h2>
@@ -162,12 +164,35 @@
                 <span>Jugador</span>
                 <span>Puntuación</span>
             </div>
-            <div class="leaderboard-row">
-                <span class="rank">#1</span>
-                <span class="player">Próximamente</span>
-                <span class="score">0 XP</span>
-            </div>
+            <p class="message" id="leaderboardMessage">Cargando clasificación...</p>
         </section>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script>
+        const config = window.CAMO_SUPABASE_CONFIG || {};
+        const client = config.url && config.anonKey ? window.supabase.createClient(config.url, config.anonKey) : null;
+        const countProgress = progress => Object.values(progress || {}).reduce((total, indices) => total + (Array.isArray(indices) ? indices.length : 0), 0);
+        const loadLeaderboard = async () => {
+            const message = document.querySelector('#leaderboardMessage');
+            if (!client) { message.textContent = 'Supabase no está configurado.'; return; }
+            const [{ error: profileError }, { data: progressRows, error: progressError }] = await Promise.all([
+                client.from('profiles').select('user_id, username').limit(1),
+                client.from('leaderboard_stats').select('user_id, username, completed')
+            ]);
+            if (profileError || progressError) throw profileError || progressError;
+            const scores = (progressRows || []).sort((a, b) => b.completed - a.completed);
+            message.remove();
+            const board = document.querySelector('.leaderboard');
+            scores.forEach((player, index) => {
+                const row = document.createElement('div');
+                row.className = 'leaderboard-row';
+                row.innerHTML = `<span class="rank">#${index + 1}</span><a class="player" href="profile.html?user=${encodeURIComponent(player.user_id)}">${player.username}</a><span class="score">${player.completed} camuflajes</span>`;
+                board.appendChild(row);
+            });
+            if (!scores.length) board.insertAdjacentHTML('beforeend', '<p class="message">Todavía no hay jugadores registrados.</p>');
+        };
+        loadLeaderboard().catch(() => { document.querySelector('#leaderboardMessage').textContent = 'No se pudo cargar la clasificación.'; });
+    </script>
 </body>
 </html>

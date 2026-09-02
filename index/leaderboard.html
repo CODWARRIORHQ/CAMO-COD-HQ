@@ -181,7 +181,7 @@
             if (!client) { message.textContent = 'Supabase no está configurado.'; return; }
             const [{ error: profileError }, { data: progressRows, error: progressError }] = await Promise.all([
                 client.from('profiles').select('user_id, username').limit(1),
-                client.from('leaderboard_stats').select('user_id, username, completed')
+                client.from('leaderboard_stats').select('user_id, username, completed, accent_color')
             ]);
             if (profileError || progressError) throw profileError || progressError;
             const scores = (progressRows || []).sort((a, b) => b.completed - a.completed);
@@ -210,6 +210,9 @@
                 playerLink.className = 'player';
                 playerLink.href = `profile.html?user=${encodeURIComponent(player.user_id)}`;
                 playerLink.textContent = player.username;
+                if (/^#[0-9a-f]{6}$/i.test(player.accent_color || '')) {
+                    playerLink.style.color = player.accent_color;
+                }
 
                 const score = document.createElement('span');
                 score.className = 'score';

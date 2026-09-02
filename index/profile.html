@@ -19,7 +19,7 @@
         .btn:hover { background:var(--accent); border-color:transparent; }
         main { padding:64px 0; }
         .eyebrow { margin:0 0 10px; color:var(--cyan); font-size:12px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
-        h1 { margin:0; font-size:clamp(36px,7vw,72px); line-height:.95; }
+        h1 { margin:0; color:var(--profile-name-color, #fff); font-size:clamp(36px,7vw,72px); line-height:.95; }
         .profile-heading { display:flex; align-items:center; gap:18px; }
         .profile-rank-icon { width:72px; height:72px; object-fit:contain; }
         .rank-stat { display:flex; align-items:center; gap:12px; }
@@ -35,23 +35,24 @@
         .profile-editor.visible { display:grid; }
         .profile-editor h2 { margin:0; font-size:18px; }
         .profile-editor label { display:flex; align-items:center; gap:12px; color:var(--muted); font-size:13px; }
-        .profile-editor input[type="color"] { width:48px; height:34px; padding:2px; cursor:pointer; background:transparent; border:1px solid var(--border); border-radius:6px; }
-        .profile-editor .presets { display:flex; flex-wrap:wrap; gap:8px; }
-        .color-preset { width:28px; height:28px; padding:0; cursor:pointer; border:2px solid rgba(255,255,255,.3); border-radius:50%; }
-        .color-preset:hover { border-color:#fff; }
+        .profile-editor input[type="color"] { width:64px; height:42px; padding:2px; cursor:pointer; background:transparent; border:1px solid var(--border); border-radius:6px; }
         @media (max-width:600px) { body { padding:12px; } main { padding:44px 0; } .summary { grid-template-columns:1fr; } .game { grid-template-columns:minmax(0,1fr) 90px; padding:16px; } }
     </style>
 </head>
 <body>
     <header><nav class="nav container"><a class="brand" href="Camos UEM.html"><span class="logo"><img src="../MW 2019/logo.png" alt="CAMO COD HQ"></span><span class="brand-text"><span class="site-name">CAMO COD HQ</span><small class="site-tag">Tu hub de camuflajes</small></span></a><a class="btn" href="leaderboard.html">Leaderboard</a></nav></header>
-    <main class="container"><p class="eyebrow">Perfil de jugador</p><div class="profile-heading"><img class="profile-rank-icon" id="profileRankIcon" alt="" hidden><h1 id="profileName">Cargando...</h1></div><section class="summary"><div class="stat"><span class="stat-label">Posición global</span><div class="rank-stat"><img class="rank-stat-icon" id="profileRankStatIcon" alt="" hidden><strong class="stat-value" id="profileRank">-</strong></div></div><div class="stat"><span class="stat-label">Camuflajes completados</span><strong class="stat-value" id="profileCompleted">0 / 668</strong></div><div class="stat"><span class="stat-label">Progreso total</span><strong class="stat-value" id="profilePercent">0%</strong></div></section><section class="profile-editor" id="profileEditor" aria-label="Personalizar perfil"><h2>Personalizar perfil</h2><label for="accentColor">Color de perfil <input id="accentColor" type="color" value="#06b6d4"></label><div class="presets" aria-label="Colores disponibles"><button class="color-preset" type="button" data-color="#06b6d4" style="background:#06b6d4" aria-label="Cian"></button><button class="color-preset" type="button" data-color="#7c3aed" style="background:#7c3aed" aria-label="Morado"></button><button class="color-preset" type="button" data-color="#ff9d00" style="background:#ff9d00" aria-label="Naranja"></button><button class="color-preset" type="button" data-color="#ef4444" style="background:#ef4444" aria-label="Rojo"></button><button class="color-preset" type="button" data-color="#22c55e" style="background:#22c55e" aria-label="Verde"></button></div><button class="btn" id="saveProfileStyle" type="button">Guardar color</button><p class="message" id="profileStyleMessage" role="status"></p></section><section class="games" id="gameStats" aria-label="Estadísticas por juego"><p class="message">Cargando estadísticas...</p></section></main>
+    <main class="container"><p class="eyebrow">Perfil de jugador</p><div class="profile-heading"><img class="profile-rank-icon" id="profileRankIcon" alt="" hidden><h1 id="profileName">Cargando...</h1></div><section class="summary"><div class="stat"><span class="stat-label">Posición global</span><div class="rank-stat"><img class="rank-stat-icon" id="profileRankStatIcon" alt="" hidden><strong class="stat-value" id="profileRank">-</strong></div></div><div class="stat"><span class="stat-label">Camuflajes completados</span><strong class="stat-value" id="profileCompleted">0 / 668</strong></div><div class="stat"><span class="stat-label">Progreso total</span><strong class="stat-value" id="profilePercent">0%</strong></div></section><section class="profile-editor" id="profileEditor" aria-label="Personalizar perfil"><h2>Personalizar perfil</h2><label for="accentColor">Color del nombre <input id="accentColor" type="color" value="#06b6d4" title="Elegir cualquier color"></label><button class="btn" id="saveProfileStyle" type="button">Guardar color</button><p class="message" id="profileStyleMessage" role="status"></p></section><section class="games" id="gameStats" aria-label="Estadísticas por juego"><p class="message">Cargando estadísticas...</p></section></main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js"></script>
     <script>
         const config = window.CAMO_SUPABASE_CONFIG || {};
         const client = config.url && config.anonKey ? window.supabase.createClient(config.url, config.anonKey) : null;
         const userId = new URLSearchParams(location.search).get('user');
         const validColor = color => /^#[0-9a-f]{6}$/i.test(color);
-        const applyColor = color => { if (validColor(color)) document.documentElement.style.setProperty('--accent', color); };
+        const applyColor = color => {
+            if (!validColor(color)) return;
+            document.documentElement.style.setProperty('--accent', color);
+            document.documentElement.style.setProperty('--profile-name-color', color);
+        };
         const render = async () => {
             const gameStats = document.querySelector('#gameStats');
             if (!client || !userId) { gameStats.innerHTML = '<p class="message">Perfil no disponible.</p>'; return; }
@@ -68,7 +69,7 @@
                 editor.classList.add('visible');
                 const colorInput = document.querySelector('#accentColor');
                 colorInput.value = validColor(profile?.accent_color) ? profile.accent_color : '#06b6d4';
-                document.querySelectorAll('.color-preset').forEach(button => button.addEventListener('click', () => { colorInput.value = button.dataset.color; applyColor(colorInput.value); }));
+                colorInput.addEventListener('input', () => applyColor(colorInput.value));
                 document.querySelector('#saveProfileStyle').addEventListener('click', async () => {
                     const { error } = await client.from('profiles').update({ accent_color: colorInput.value, updated_at: new Date().toISOString() }).eq('user_id', userId);
                     const styleMessage = document.querySelector('#profileStyleMessage');

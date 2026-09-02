@@ -21,6 +21,7 @@
         .eyebrow { margin:0 0 10px; color:var(--cyan); font-size:12px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
         h1 { margin:0; color:var(--profile-name-color, #fff); font-size:clamp(36px,7vw,72px); line-height:.95; }
         .profile-heading { display:flex; align-items:center; gap:18px; }
+        .profile-name-icon { width:54px; height:54px; object-fit:contain; }
         .profile-rank-icon { width:72px; height:72px; object-fit:contain; }
         .rank-stat { display:flex; align-items:center; gap:12px; }
         .rank-stat-icon { width:42px; height:42px; object-fit:contain; }
@@ -36,12 +37,16 @@
         .profile-editor h2 { margin:0; font-size:18px; }
         .profile-editor label { display:flex; align-items:center; gap:12px; color:var(--muted); font-size:13px; }
         .profile-editor input[type="color"] { width:64px; height:42px; padding:2px; cursor:pointer; background:transparent; border:1px solid var(--border); border-radius:6px; }
+        .profile-editor select { padding:8px 10px; color:#fff; background:#05060a; border:1px solid var(--border); border-radius:6px; }
+        .profile-editor select:disabled { opacity:.55; cursor:not-allowed; }
+        .profile-editor .customization-row { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+        .profile-icon-option { width:34px; height:34px; object-fit:contain; vertical-align:middle; }
         @media (max-width:600px) { body { padding:12px; } main { padding:44px 0; } .summary { grid-template-columns:1fr; } .game { grid-template-columns:minmax(0,1fr) 90px; padding:16px; } }
     </style>
 </head>
 <body>
     <header><nav class="nav container"><a class="brand" href="Camos UEM.html"><span class="logo"><img src="../MW 2019/logo.png" alt="CAMO COD HQ"></span><span class="brand-text"><span class="site-name">CAMO COD HQ</span><small class="site-tag">Tu hub de camuflajes</small></span></a><a class="btn" href="leaderboard.html">Leaderboard</a></nav></header>
-    <main class="container"><p class="eyebrow">Perfil de jugador</p><div class="profile-heading"><img class="profile-rank-icon" id="profileRankIcon" alt="" hidden><h1 id="profileName">Cargando...</h1></div><section class="summary"><div class="stat"><span class="stat-label">Posición global</span><div class="rank-stat"><img class="rank-stat-icon" id="profileRankStatIcon" alt="" hidden><strong class="stat-value" id="profileRank">-</strong></div></div><div class="stat"><span class="stat-label">Camuflajes completados</span><strong class="stat-value" id="profileCompleted">0 / 668</strong></div><div class="stat"><span class="stat-label">Progreso total</span><strong class="stat-value" id="profilePercent">0%</strong></div></section><section class="profile-editor" id="profileEditor" aria-label="Personalizar perfil"><h2>Personalizar perfil</h2><label for="accentColor">Color del nombre <input id="accentColor" type="color" value="#06b6d4" title="Elegir cualquier color"></label><button class="btn" id="saveProfileStyle" type="button">Guardar color</button><p class="message" id="profileStyleMessage" role="status"></p></section><section class="games" id="gameStats" aria-label="Estadísticas por juego"><p class="message">Cargando estadísticas...</p></section></main>
+    <main class="container"><p class="eyebrow">Perfil de jugador</p><div class="profile-heading"><img class="profile-name-icon" id="profileNameIcon" alt="" hidden><img class="profile-rank-icon" id="profileRankIcon" alt="" hidden><h1 id="profileName">Cargando...</h1></div><section class="summary"><div class="stat"><span class="stat-label">Posición global</span><div class="rank-stat"><img class="rank-stat-icon" id="profileRankStatIcon" alt="" hidden><strong class="stat-value" id="profileRank">-</strong></div></div><div class="stat"><span class="stat-label">Camuflajes completados</span><strong class="stat-value" id="profileCompleted">0 / 668</strong></div><div class="stat"><span class="stat-label">Progreso total</span><strong class="stat-value" id="profilePercent">0%</strong></div></section><section class="profile-editor" id="profileEditor" aria-label="Personalizar perfil"><h2>Personalizar perfil</h2><label for="accentColor">Color del nombre <input id="accentColor" type="color" value="#06b6d4" title="Elegir cualquier color"></label><div class="customization-row"><label for="profileIcon">Icono del nombre</label><select id="profileIcon"><option value="">Sin icono</option><option value="rank icon/leaderboards-rank-1.png">Icono rango 1</option><option value="rank icon/leaderboards-rank-2.png">Icono rango 2</option><option value="rank icon/leaderboards-rank-3.png">Icono rango 3</option></select></div><div class="customization-row"><label for="callingCard">Calling card</label><select id="callingCard" disabled><option>Próximamente</option></select></div><button class="btn" id="saveProfileStyle" type="button">Guardar personalización</button><p class="message" id="profileStyleMessage" role="status"></p></section><section class="games" id="gameStats" aria-label="Estadísticas por juego"><p class="message">Cargando estadísticas...</p></section></main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js"></script>
     <script>
         const config = window.CAMO_SUPABASE_CONFIG || {};
@@ -57,24 +62,38 @@
             const gameStats = document.querySelector('#gameStats');
             if (!client || !userId) { gameStats.innerHTML = '<p class="message">Perfil no disponible.</p>'; return; }
             const [{ data: profile }, { data: allProfiles }] = await Promise.all([
-                client.from('leaderboard_stats').select('username,completed,accent_color').eq('user_id', userId).maybeSingle(),
+                client.from('leaderboard_stats').select('username,completed,accent_color,icon_url').eq('user_id', userId).maybeSingle(),
                 client.from('leaderboard_stats').select('user_id,username,completed')
             ]);
             const completed = profile?.completed || 0; const total = 668;
             document.querySelector('#profileName').textContent = profile?.username || 'Jugador';
             applyColor(profile?.accent_color);
+            const iconUrl = profile?.icon_url;
+            if (iconUrl) {
+                const profileIcon = document.querySelector('#profileNameIcon');
+                profileIcon.src = iconUrl;
+                profileIcon.alt = 'Icono del usuario';
+                profileIcon.hidden = false;
+            }
             const editor = document.querySelector('#profileEditor');
             const { data: sessionData } = await client.auth.getUser();
             if (sessionData.user?.id === userId) {
                 editor.classList.add('visible');
                 const colorInput = document.querySelector('#accentColor');
+                const iconInput = document.querySelector('#profileIcon');
                 colorInput.value = validColor(profile?.accent_color) ? profile.accent_color : '#06b6d4';
+                iconInput.value = profile?.icon_url || '';
                 colorInput.addEventListener('input', () => applyColor(colorInput.value));
                 document.querySelector('#saveProfileStyle').addEventListener('click', async () => {
-                    const { error } = await client.from('profiles').update({ accent_color: colorInput.value, updated_at: new Date().toISOString() }).eq('user_id', userId);
+                    const { error } = await client.from('profiles').update({ accent_color: colorInput.value, icon_url: iconInput.value || null, updated_at: new Date().toISOString() }).eq('user_id', userId);
                     const styleMessage = document.querySelector('#profileStyleMessage');
                     styleMessage.textContent = error ? 'No se pudo guardar el color.' : 'Color guardado.';
-                    if (!error) applyColor(colorInput.value);
+                    if (!error) {
+                        applyColor(colorInput.value);
+                        const profileIcon = document.querySelector('#profileNameIcon');
+                        profileIcon.src = iconInput.value;
+                        profileIcon.hidden = !iconInput.value;
+                    }
                 });
             }
             document.querySelector('#profileCompleted').textContent = `${completed} / ${total}`;

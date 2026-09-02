@@ -126,6 +126,7 @@
         .rank { color: var(--accent-2); font-weight: 900; }
         .rank-cell { display: flex; align-items: center; gap: 10px; min-width: 0; }
         .rank-icon { width: 34px; height: 34px; object-fit: contain; }
+        .name-icon { width: 28px; height: 28px; object-fit: contain; vertical-align: middle; margin-right: 6px; }
         .player { font-weight: 700; }
         .score { color: var(--gold); font-weight: 800; text-align: right; }
         .player { color: var(--cyan); }
@@ -181,7 +182,7 @@
             if (!client) { message.textContent = 'Supabase no está configurado.'; return; }
             const [{ error: profileError }, { data: progressRows, error: progressError }] = await Promise.all([
                 client.from('profiles').select('user_id, username').limit(1),
-                client.from('leaderboard_stats').select('user_id, username, completed, accent_color')
+                client.from('leaderboard_stats').select('user_id, username, completed, accent_color, icon_url')
             ]);
             if (profileError || progressError) throw profileError || progressError;
             const scores = (progressRows || []).sort((a, b) => b.completed - a.completed);
@@ -212,6 +213,13 @@
                 playerLink.textContent = player.username;
                 if (/^#[0-9a-f]{6}$/i.test(player.accent_color || '')) {
                     playerLink.style.color = player.accent_color;
+                }
+                if (player.icon_url) {
+                    const nameIcon = document.createElement('img');
+                    nameIcon.className = 'name-icon';
+                    nameIcon.src = player.icon_url;
+                    nameIcon.alt = 'Icono del usuario';
+                    playerLink.prepend(nameIcon);
                 }
 
                 const score = document.createElement('span');

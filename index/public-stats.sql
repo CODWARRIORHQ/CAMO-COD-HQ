@@ -5,6 +5,7 @@ select
     profiles.user_id,
     profiles.username,
     profiles.accent_color,
+    profiles.icon_url,
     coalesce(sum(jsonb_array_length(progress_item.value)), 0)::integer as completed
 from public.profiles
 left join public.camo_progress on camo_progress.user_id = profiles.user_id

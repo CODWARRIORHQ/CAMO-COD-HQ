@@ -32,40 +32,127 @@
         .game { display:grid; grid-template-columns:minmax(0,1fr) 120px; gap:16px; padding:18px 22px; border-bottom:1px solid var(--border); }
         .game:last-child { border-bottom:0; } .game-title { font-weight:700; } .game-meta { color:var(--muted); } .game-score { color:var(--gold); text-align:right; font-weight:800; }
         .message { color:var(--muted); }
-        .profile-editor { display:none; gap:12px; margin-top:28px; padding:18px; border:1px solid var(--border); border-radius:10px; background:rgba(16,23,34,.85); }
+        .action-row { display:flex; justify-content:flex-start; margin-top:28px; }
+        .btn.primary { background:linear-gradient(135deg,var(--accent),var(--cyan)); border:none; color:#fff; font-weight:700; }
+        .compare-panel { margin-top:28px; padding:22px; border:1px solid var(--border); border-radius:12px; background:rgba(16,23,34,.85); }
+        .compare-header { display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+        .compare-header h2 { margin:0; font-size:18px; }
+        .compare-select-wrap { display:grid; gap:8px; color:var(--muted); font-size:13px; }
+        .compare-select-wrap select { min-width:220px; padding:10px 12px; color:#fff; background:#05060a; border:1px solid var(--border); border-radius:8px; }
+        .compare-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin-top:18px; }
+        .compare-card { padding:18px; border:1px solid var(--border); border-radius:10px; background:rgba(5,6,10,.55); }
+        .compare-card h3 { margin:0 0 8px; color:var(--muted); font-size:12px; letter-spacing:.12em; text-transform:uppercase; }
+        .compare-name { margin:0 0 16px; font-size:20px; font-weight:800; }
+        .compare-list { margin:0; padding:0; list-style:none; display:grid; gap:10px; }
+        .compare-list li { display:flex; justify-content:space-between; gap:12px; color:var(--muted); border-bottom:1px solid rgba(255,255,255,.05); padding-bottom:8px; }
+        .compare-list li:last-child { border-bottom:0; padding-bottom:0; }
+        .compare-list strong { color:#fff; }
+        .profile-editor { display:grid; gap:12px; margin-top:28px; padding:18px; border:1px solid var(--border); border-radius:10px; background:rgba(16,23,34,.85); }
         .profile-editor.visible { display:grid; }
         .profile-editor h2 { margin:0; font-size:18px; }
+        .profile-editor input:disabled,
+        .profile-editor select:disabled,
+        .profile-editor button:disabled { opacity:.55; cursor:not-allowed; }
         .profile-editor label { display:flex; align-items:center; gap:12px; color:var(--muted); font-size:13px; }
         .profile-editor input[type="color"] { width:64px; height:42px; padding:2px; cursor:pointer; background:transparent; border:1px solid var(--border); border-radius:6px; }
         .profile-editor select { padding:8px 10px; color:#fff; background:#05060a; border:1px solid var(--border); border-radius:6px; }
         .profile-editor select:disabled { opacity:.55; cursor:not-allowed; }
         .profile-editor .customization-row { display:flex; align-items:center; justify-content:space-between; gap:12px; }
         .profile-icon-option { width:34px; height:34px; object-fit:contain; vertical-align:middle; }
-        @media (max-width:600px) { body { padding:12px; } main { padding:44px 0; } .summary { grid-template-columns:1fr; } .game { grid-template-columns:minmax(0,1fr) 90px; padding:16px; } }
+        @media (max-width:600px) { body { padding:12px; } main { padding:44px 0; } .summary { grid-template-columns:1fr; } .game { grid-template-columns:minmax(0,1fr) 90px; padding:16px; } .compare-grid { grid-template-columns:1fr; } }
     </style>
 </head>
 <body>
     <header><nav class="nav container"><a class="brand" href="Camos UEM.html"><span class="logo"><img src="../MW 2019/logo.png" alt="CAMO COD HQ"></span><span class="brand-text"><span class="site-name">CAMO COD HQ</span><small class="site-tag">Tu hub de camuflajes</small></span></a><a class="btn" href="leaderboard.html">Leaderboard</a></nav></header>
-    <main class="container"><p class="eyebrow">Perfil de jugador</p><div class="profile-heading"><img class="profile-name-icon" id="profileNameIcon" alt="" hidden><img class="profile-rank-icon" id="profileRankIcon" alt="" hidden><h1 id="profileName">Cargando...</h1></div><section class="summary"><div class="stat"><span class="stat-label">Posición global</span><div class="rank-stat"><img class="rank-stat-icon" id="profileRankStatIcon" alt="" hidden><strong class="stat-value" id="profileRank">-</strong></div></div><div class="stat"><span class="stat-label">Camuflajes completados</span><strong class="stat-value" id="profileCompleted">0 / 668</strong></div><div class="stat"><span class="stat-label">Progreso total</span><strong class="stat-value" id="profilePercent">0%</strong></div></section><section class="profile-editor" id="profileEditor" aria-label="Personalizar perfil"><h2>Personalizar perfil</h2><label for="accentColor">Color del nombre <input id="accentColor" type="color" value="#06b6d4" title="Elegir cualquier color"></label><div class="customization-row"><label for="profileIcon">Icono del nombre</label><select id="profileIcon"><option value="">Sin icono</option><option value="rank icon/leaderboards-rank-1.png">Icono rango 1</option><option value="rank icon/leaderboards-rank-2.png">Icono rango 2</option><option value="rank icon/leaderboards-rank-3.png">Icono rango 3</option></select></div><div class="customization-row"><label for="callingCard">Calling card</label><select id="callingCard" disabled><option>Próximamente</option></select></div><button class="btn" id="saveProfileStyle" type="button">Guardar personalización</button><p class="message" id="profileStyleMessage" role="status"></p></section><section class="games" id="gameStats" aria-label="Estadísticas por juego"><p class="message">Cargando estadísticas...</p></section></main>
+    <main class="container"><p class="eyebrow">Perfil de jugador</p><div class="profile-heading"><img class="profile-name-icon" id="profileNameIcon" alt="" hidden><img class="profile-rank-icon" id="profileRankIcon" alt="" hidden><h1 id="profileName">Cargando...</h1></div><section class="summary"><div class="stat"><span class="stat-label">Posición global</span><div class="rank-stat"><img class="rank-stat-icon" id="profileRankStatIcon" alt="" hidden><strong class="stat-value" id="profileRank">-</strong></div></div><div class="stat"><span class="stat-label">Camuflajes completados</span><strong class="stat-value" id="profileCompleted">0 / 668</strong></div><div class="stat"><span class="stat-label">Progreso total</span><strong class="stat-value" id="profilePercent">0%</strong></div></section><div class="action-row"><button class="btn primary" id="shareProfileBtn" type="button">Compartir perfil</button></div><section class="compare-panel" id="comparePanel" aria-label="Comparar con otro jugador"><div class="compare-header"><h2>Comparar con otro jugador</h2><label class="compare-select-wrap" for="comparePlayerSelect"><span>Jugador</span><select id="comparePlayerSelect"><option value="">Selecciona un jugador</option></select></label></div><div class="compare-grid"><article class="compare-card"><h3>Tu perfil</h3><p class="compare-name" id="compareCurrentName">Cargando...</p><ul class="compare-list"><li><span>Camuflajes</span><strong id="compareCurrentScore">0</strong></li><li><span>Posición</span><strong id="compareCurrentRank">-</strong></li><li><span>Progreso</span><strong id="compareCurrentPercent">0%</strong></li></ul></article><article class="compare-card"><h3>Jugador rival</h3><p class="compare-name" id="compareOpponentName">Sin selección</p><ul class="compare-list"><li><span>Camuflajes</span><strong id="compareOpponentScore">0</strong></li><li><span>Posición</span><strong id="compareOpponentRank">-</strong></li><li><span>Progreso</span><strong id="compareOpponentPercent">0%</strong></li></ul></article></div><p class="message" id="compareMessage" role="status">Selecciona otro jugador para comparar su progreso.</p></section><section class="profile-editor" id="profileEditor" aria-label="Personalizar perfil"><h2>Personalizar perfil</h2><label for="accentColor">Color del nombre <input id="accentColor" type="color" value="#06b6d4" title="Elegir cualquier color"></label><div class="customization-row"><label for="profileIcon">Icono del nombre</label><select id="profileIcon"><option value="">Sin icono</option><option value="rank icon/leaderboards-rank-1.png">Icono rango 1</option><option value="rank icon/leaderboards-rank-2.png">Icono rango 2</option><option value="rank icon/leaderboards-rank-3.png">Icono rango 3</option></select></div><div class="customization-row"><label for="callingCard">Calling card</label><select id="callingCard" disabled><option>Próximamente</option></select></div><button class="btn" id="saveProfileStyle" type="button">Guardar personalización</button><p class="message" id="profileStyleMessage" role="status"></p></section><section class="games" id="gameStats" aria-label="Estadísticas por juego"><p class="message">Cargando estadísticas...</p></section></main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js"></script>
     <script>
         const config = window.CAMO_SUPABASE_CONFIG || {};
         const client = config.url && config.anonKey ? window.supabase.createClient(config.url, config.anonKey) : null;
         const userId = new URLSearchParams(location.search).get('user');
+        const total = 668;
         const validColor = color => /^#[0-9a-f]{6}$/i.test(color);
         const applyColor = color => {
             if (!validColor(color)) return;
             document.documentElement.style.setProperty('--accent', color);
             document.documentElement.style.setProperty('--profile-name-color', color);
         };
+        const getRankNumber = (players, targetUserId) => {
+            const ordered = (players || []).slice().sort((a, b) => b.completed - a.completed);
+            return ordered.map(item => item.user_id).indexOf(targetUserId) + 1;
+        };
+        const setComparison = (currentPlayer, opponentPlayer) => {
+            const currentName = document.querySelector('#compareCurrentName');
+            const opponentName = document.querySelector('#compareOpponentName');
+            const currentScore = document.querySelector('#compareCurrentScore');
+            const opponentScore = document.querySelector('#compareOpponentScore');
+            const currentRank = document.querySelector('#compareCurrentRank');
+            const opponentRank = document.querySelector('#compareOpponentRank');
+            const currentPercent = document.querySelector('#compareCurrentPercent');
+            const opponentPercent = document.querySelector('#compareOpponentPercent');
+            const compareMessage = document.querySelector('#compareMessage');
+            const currentProgress = Math.min(Math.round((currentPlayer?.completed || 0) / total * 100), 100);
+            currentName.textContent = currentPlayer?.username || 'Jugador';
+            currentScore.textContent = `${currentPlayer?.completed || 0}`;
+            currentRank.textContent = currentPlayer?.rankText || '-';
+            currentPercent.textContent = `${currentProgress}%`;
+            if (!opponentPlayer) {
+                opponentName.textContent = 'Sin selección';
+                opponentScore.textContent = '0';
+                opponentRank.textContent = '-';
+                opponentPercent.textContent = '0%';
+                compareMessage.textContent = 'Selecciona otro jugador para comparar su progreso.';
+                return;
+            }
+            const opponentProgress = Math.min(Math.round((opponentPlayer?.completed || 0) / total * 100), 100);
+            opponentName.textContent = opponentPlayer.username || 'Jugador';
+            opponentScore.textContent = `${opponentPlayer.completed || 0}`;
+            opponentRank.textContent = opponentPlayer.rankText || '-';
+            opponentPercent.textContent = `${opponentProgress}%`;
+            if ((opponentPlayer.completed || 0) > (currentPlayer?.completed || 0)) {
+                compareMessage.textContent = `${opponentPlayer.username} va por delante en ${opponentPlayer.completed - (currentPlayer?.completed || 0)} camuflajes.`;
+            } else if ((opponentPlayer.completed || 0) < (currentPlayer?.completed || 0)) {
+                compareMessage.textContent = `${currentPlayer?.username || 'Tú'} va por delante en ${(currentPlayer?.completed || 0) - (opponentPlayer.completed || 0)} camuflajes.`;
+            } else {
+                compareMessage.textContent = 'Ambos jugadores llevan la misma cantidad de camuflajes completados.';
+            }
+        };
+        const shareProfile = async () => {
+            const profileUrl = `${location.origin}${location.pathname}?user=${encodeURIComponent(userId)}`;
+            const button = document.querySelector('#shareProfileBtn');
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(profileUrl);
+                } else {
+                    const tempInput = document.createElement('textarea');
+                    tempInput.value = profileUrl;
+                    document.body.appendChild(tempInput);
+                    tempInput.select();
+                    document.execCommand('copy');
+                    tempInput.remove();
+                }
+                button.textContent = 'Perfil copiado';
+                setTimeout(() => { button.textContent = 'Compartir perfil'; }, 1800);
+            } catch (error) {
+                button.textContent = 'No se pudo copiar';
+                setTimeout(() => { button.textContent = 'Compartir perfil'; }, 1800);
+            }
+        };
         const render = async () => {
             const gameStats = document.querySelector('#gameStats');
+            const compareSelect = document.querySelector('#comparePlayerSelect');
             if (!client || !userId) { gameStats.innerHTML = '<p class="message">Perfil no disponible.</p>'; return; }
             const [{ data: profile }, { data: allProfiles }] = await Promise.all([
                 client.from('leaderboard_stats').select('username,completed,accent_color,icon_url').eq('user_id', userId).maybeSingle(),
                 client.from('leaderboard_stats').select('user_id,username,completed')
             ]);
-            const completed = profile?.completed || 0; const total = 668;
+            const currentPlayer = profile ? { ...profile, user_id: userId, rankText: '-' } : null;
+            const sortedPlayers = ((allProfiles || []).slice().sort((a, b) => b.completed - a.completed));
+            if (currentPlayer) {
+                const currentRank = getRankNumber(sortedPlayers, userId);
+                currentPlayer.rankText = currentRank > 0 ? `#${currentRank}` : '-';
+            }
+            const completed = profile?.completed || 0;
             document.querySelector('#profileName').textContent = profile?.username || 'Jugador';
             applyColor(profile?.accent_color);
             const iconUrl = profile?.icon_url;
@@ -76,17 +163,24 @@
                 profileIcon.hidden = false;
             }
             const editor = document.querySelector('#profileEditor');
+            const saveButton = document.querySelector('#saveProfileStyle');
+            const colorInput = document.querySelector('#accentColor');
+            const iconInput = document.querySelector('#profileIcon');
+            const styleMessage = document.querySelector('#profileStyleMessage');
+            editor.classList.add('visible');
+            colorInput.value = validColor(profile?.accent_color) ? profile.accent_color : '#06b6d4';
+            iconInput.value = profile?.icon_url || '';
             const { data: sessionData } = await client.auth.getUser();
-            if (sessionData.user?.id === userId) {
-                editor.classList.add('visible');
-                const colorInput = document.querySelector('#accentColor');
-                const iconInput = document.querySelector('#profileIcon');
-                colorInput.value = validColor(profile?.accent_color) ? profile.accent_color : '#06b6d4';
-                iconInput.value = profile?.icon_url || '';
+            const isOwner = sessionData.user?.id === userId;
+            colorInput.disabled = !isOwner;
+            iconInput.disabled = !isOwner;
+            saveButton.disabled = !isOwner;
+            if (!isOwner) {
+                styleMessage.textContent = 'Inicia sesión con este perfil para guardar cambios.';
+            } else {
                 colorInput.addEventListener('input', () => applyColor(colorInput.value));
-                document.querySelector('#saveProfileStyle').addEventListener('click', async () => {
+                saveButton.addEventListener('click', async () => {
                     const { error } = await client.from('profiles').update({ accent_color: colorInput.value, icon_url: iconInput.value || null, updated_at: new Date().toISOString() }).eq('user_id', userId);
-                    const styleMessage = document.querySelector('#profileStyleMessage');
                     styleMessage.textContent = error ? 'No se pudo guardar el color.' : 'Color guardado.';
                     if (!error) {
                         applyColor(colorInput.value);
@@ -98,7 +192,7 @@
             }
             document.querySelector('#profileCompleted').textContent = `${completed} / ${total}`;
             document.querySelector('#profilePercent').textContent = `${Math.min(Math.round(completed / total * 100), 100)}%`;
-            const ranking = (allProfiles || []).sort((a, b) => b.completed - a.completed).map(item => item.user_id).indexOf(userId) + 1;
+            const ranking = getRankNumber(sortedPlayers, userId);
             document.querySelector('#profileRank').textContent = ranking > 0 ? `#${ranking}` : '-';
             const rankIcon = document.querySelector('#profileRankIcon');
             if (ranking >= 1 && ranking <= 3) {
@@ -110,6 +204,25 @@
                 rankStatIcon.alt = rankIcon.alt;
                 rankStatIcon.hidden = false;
             }
+            const playersForSelect = (allProfiles || []).filter(player => player.user_id !== userId);
+            playersForSelect.forEach(player => {
+                const option = document.createElement('option');
+                option.value = player.user_id;
+                option.textContent = player.username;
+                compareSelect.appendChild(option);
+            });
+            setComparison(currentPlayer, null);
+            compareSelect.addEventListener('change', () => {
+                const selectedId = compareSelect.value;
+                if (!selectedId) {
+                    setComparison(currentPlayer, null);
+                    return;
+                }
+                const selectedPlayer = sortedPlayers.find(player => player.user_id === selectedId);
+                const opponent = selectedPlayer ? { ...selectedPlayer, rankText: getRankNumber(sortedPlayers, selectedId) > 0 ? `#${getRankNumber(sortedPlayers, selectedId)}` : '-' } : null;
+                setComparison(currentPlayer, opponent);
+            });
+            document.querySelector('#shareProfileBtn').addEventListener('click', shareProfile);
             gameStats.innerHTML = `<div class="game"><span><span class="game-title">Modern Warfare 2019</span><br><span class="game-meta">${total} camuflajes en total</span></span><span class="game-score">${completed} / ${total}</span></div>`;
         };
         render().catch(() => { document.querySelector('#gameStats').innerHTML = '<p class="message">No se pudieron cargar las estadísticas.</p>'; });

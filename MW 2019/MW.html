@@ -2222,8 +2222,13 @@
 
             if (error) throw error;
 
-            if (remoteData?.progress) {
-                aplicarProgreso(remoteData.progress);
+            const remoteProgress = remoteData?.progress || {};
+            const hasRemoteProgress = Object.values(remoteProgress).some(
+                indices => Array.isArray(indices) && indices.length > 0
+            );
+
+            if (hasRemoteProgress) {
+                aplicarProgreso(remoteProgress);
                 actualizarTodo();
             } else {
                 await guardarProgresoEnCuenta(client, user.id);

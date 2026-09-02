@@ -29,8 +29,11 @@
         .stat { padding:22px; border:1px solid var(--border); border-radius:10px; background:rgba(16,23,34,.85); }
         .stat-label { color:var(--muted); font-size:12px; text-transform:uppercase; } .stat-value { display:block; margin-top:8px; color:var(--gold); font-size:28px; font-weight:800; }
         .games { margin-top:28px; border:1px solid var(--border); border-radius:10px; overflow:hidden; background:rgba(16,23,34,.85); }
-        .game { display:grid; grid-template-columns:minmax(0,1fr) 120px; gap:16px; padding:18px 22px; border-bottom:1px solid var(--border); }
-        .game:last-child { border-bottom:0; } .game-title { font-weight:700; } .game-meta { color:var(--muted); } .game-score { color:var(--gold); text-align:right; font-weight:800; }
+        .games-header { display:flex; justify-content:space-between; align-items:center; gap:16px; padding:18px 22px; border-bottom:1px solid var(--border); }
+        .games-header h2 { margin:0; font-size:18px; }
+        .games-header span { color:var(--muted); font-size:13px; }
+        .game { display:grid; grid-template-columns:minmax(0,1fr) 80px; gap:16px; padding:18px 22px; border-bottom:1px solid var(--border); }
+        .game:last-child { border-bottom:0; } .game-title { font-weight:700; } .game-meta { color:var(--muted); font-size:13px; } .game-score { color:var(--gold); text-align:right; font-weight:800; }
         .message { color:var(--muted); }
         .action-row { display:flex; justify-content:flex-start; margin-top:28px; }
         .btn.primary { background:linear-gradient(135deg,var(--accent),var(--cyan)); border:none; color:#fff; font-weight:700; }
@@ -332,10 +335,11 @@
             const actionRow = document.querySelector('.action-row');
             if (!actionRow.querySelector('[href="medals.html"]')) actionRow.insertAdjacentHTML('beforeend', '<a class="btn" href="medals.html">Ver todas las medallas</a>');
             const visibleMedals = selectedMedals.filter(key => earnedMedals[key]).map(key => `<article class="medal"><span class="medal-icon" aria-hidden="true">★</span><span><span class="medal-title">${medalCatalog[key][0]}</span><br><span class="medal-meta">${medalCatalog[key][1]}</span><br><span class="medal-date">${medalDates[key] ? `Conseguida el ${formatDate(medalDates[key])}` : 'Conseguida recientemente'}</span></span></article>`).join('');
-            gameStats.innerHTML = `<div class="game"><span><span class="game-title">${profile?.favorite_game || 'Modern Warfare 2019'}</span><br><span class="game-meta">${total} camuflajes en total</span></span><span class="game-score">${completed} / ${total}</span></div><section class="medals" aria-label="Medallas especiales">${visibleMedals || '<p class="message">Aún no hay medallas seleccionadas.</p>'}</section>`;
+            const favoriteGame = profile?.favorite_game || 'Modern Warfare 2019';
             const gameCatalog = profile?.game_progress || {};
             const gameNames = ['Modern Warfare 2019', 'Black Ops 6', 'Black Ops 7', 'Modern Warfare III', 'Warzone'];
-            gameStats.insertAdjacentHTML('afterbegin', `<section class="games" aria-label="Progreso por juego">${gameNames.map(name => { const value = gameCatalog[name] || (name === 'Modern Warfare 2019' ? completed : 0); const percent = Math.min(Math.round(value / total * 100), 100); return `<div class="game"><span><span class="game-title">${name}</span><br><span class="game-meta">${value} / ${total} camuflajes</span><span class="game-progress"><span style="width:${percent}%"></span></span></span><span class="game-score">${percent}%</span></div>`; }).join('')}</section>`);
+            const gamesMarkup = gameNames.map(name => { const value = gameCatalog[name] || (name === 'Modern Warfare 2019' ? completed : 0); const percent = Math.min(Math.round(value / total * 100), 100); const favoriteLabel = name === favoriteGame ? ' · Favorito' : ''; return `<div class="game"><span><span class="game-title">${name}${favoriteLabel}</span><br><span class="game-meta">${value} / ${total} camuflajes</span><span class="game-progress"><span style="width:${percent}%"></span></span></span><span class="game-score">${percent}%</span></div>`; }).join('');
+            gameStats.innerHTML = `<div class="games-header"><h2>Progreso por juego</h2><span>${gameNames.length} juegos registrados</span></div>${gamesMarkup}<section class="medals" aria-label="Medallas especiales">${visibleMedals || '<p class="message">Aún no hay medallas seleccionadas.</p>'}</section>`;
         };
         render().catch(() => { document.querySelector('#gameStats').innerHTML = '<p class="message">No se pudieron cargar las estadísticas.</p>'; });
     </script>

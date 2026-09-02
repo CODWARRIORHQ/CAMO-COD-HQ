@@ -189,13 +189,19 @@
             const iconInput = document.querySelector('#profileIcon');
             const styleMessage = document.querySelector('#profileStyleMessage');
             const profileHeading = document.querySelector('.profile-heading');
-            const badge = completed >= total ? 'Maestro del camuflaje' : completed >= 500 ? 'Cazador de camuflajes' : completed >= 250 ? 'Operador dedicado' : '';
+            const selectedMedals = Array.isArray(profile?.selected_medals) ? profile.selected_medals : ['completion'];
+            const earnedMedals = { completion: completed >= total, dedication: completed >= 250, hunter: completed >= 500 };
+            const badgeData = [
+                ['completion', 'Maestro del camuflaje'],
+                ['hunter', 'Cazador de camuflajes'],
+                ['dedication', 'Operador dedicado']
+            ].find(([key]) => selectedMedals.includes(key) && earnedMedals[key]);
             document.querySelector('#profileBadge')?.remove();
-            if (badge) {
+            if (badgeData) {
                 const badgeElement = document.createElement('span');
                 badgeElement.id = 'profileBadge';
                 badgeElement.className = 'achievement-badge';
-                badgeElement.textContent = `★ ${badge}`;
+                badgeElement.textContent = `★ ${badgeData[1]}`;
                 profileHeading.appendChild(badgeElement);
             }
             let profileMeta = document.querySelector('#profileMeta');
@@ -236,7 +242,6 @@
             iconInput.value = profile?.icon_url || '';
                 privacyInput.checked = profile?.is_public !== false;
                 favoriteInput.value = profile?.favorite_game || 'Modern Warfare 2019';
-                const selectedMedals = Array.isArray(profile?.selected_medals) ? profile.selected_medals : ['completion'];
                 editor.querySelectorAll('.medal-options input[type="checkbox"]').forEach(input => { input.checked = selectedMedals.includes(input.value); });
             const { data: sessionData } = await client.auth.getUser();
             const isOwner = sessionData.user?.id === userId;
@@ -259,6 +264,7 @@
                         const profileIcon = document.querySelector('#profileNameIcon');
                         profileIcon.src = iconInput.value;
                         profileIcon.hidden = !iconInput.value;
+                        window.location.reload();
                     }
                 });
             }
@@ -303,8 +309,7 @@
             });
             document.querySelector('#shareProfileBtn').addEventListener('click', shareProfile);
             const medalCatalog = { completion: ['Maestro del camuflaje', 'Juego completado al 100%'], dedication: ['Operador dedicado', 'Más de 250 camuflajes'], hunter: ['Cazador de camuflajes', 'Más de 500 camuflajes'] };
-            const earned = { completion: completed >= total, dedication: completed >= 250, hunter: completed >= 500 };
-            const visibleMedals = selectedMedals.filter(key => earned[key]).map(key => `<article class="medal"><span class="medal-icon" aria-hidden="true">★</span><span><span class="medal-title">${medalCatalog[key][0]}</span><br><span class="medal-meta">${medalCatalog[key][1]}</span></span></article>`).join('');
+            const visibleMedals = selectedMedals.filter(key => earnedMedals[key]).map(key => `<article class="medal"><span class="medal-icon" aria-hidden="true">★</span><span><span class="medal-title">${medalCatalog[key][0]}</span><br><span class="medal-meta">${medalCatalog[key][1]}</span></span></article>`).join('');
             gameStats.innerHTML = `<div class="game"><span><span class="game-title">${profile?.favorite_game || 'Modern Warfare 2019'}</span><br><span class="game-meta">${total} camuflajes en total</span></span><span class="game-score">${completed} / ${total}</span></div><section class="medals" aria-label="Medallas especiales">${visibleMedals || '<p class="message">Aún no hay medallas seleccionadas.</p>'}</section>`;
             if (isOwner) {
                 const today = new Date();

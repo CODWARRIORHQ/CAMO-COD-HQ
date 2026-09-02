@@ -38,7 +38,8 @@
         .compare-header { display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap; }
         .compare-header h2 { margin:0; font-size:18px; }
         .compare-select-wrap { display:grid; gap:8px; color:var(--muted); font-size:13px; }
-        .compare-select-wrap select { min-width:220px; padding:10px 12px; color:#fff; background:#05060a; border:1px solid var(--border); border-radius:8px; }
+        .compare-select-wrap input { min-width:220px; padding:10px 12px; color:#fff; background:#05060a; border:1px solid var(--border); border-radius:8px; }
+        .compare-select-wrap input::placeholder { color:var(--muted); }
         .compare-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin-top:18px; }
         .compare-card { padding:18px; border:1px solid var(--border); border-radius:10px; background:rgba(5,6,10,.55); }
         .compare-card h3 { margin:0 0 8px; color:var(--muted); font-size:12px; letter-spacing:.12em; text-transform:uppercase; }
@@ -64,7 +65,7 @@
 </head>
 <body>
     <header><nav class="nav container"><a class="brand" href="Camos UEM.html"><span class="logo"><img src="../MW 2019/logo.png" alt="CAMO COD HQ"></span><span class="brand-text"><span class="site-name">CAMO COD HQ</span><small class="site-tag">Tu hub de camuflajes</small></span></a><a class="btn" href="leaderboard.html">Leaderboard</a></nav></header>
-    <main class="container"><p class="eyebrow">Perfil de jugador</p><div class="profile-heading"><img class="profile-name-icon" id="profileNameIcon" alt="" hidden><img class="profile-rank-icon" id="profileRankIcon" alt="" hidden><h1 id="profileName">Cargando...</h1></div><section class="summary"><div class="stat"><span class="stat-label">Posición global</span><div class="rank-stat"><img class="rank-stat-icon" id="profileRankStatIcon" alt="" hidden><strong class="stat-value" id="profileRank">-</strong></div></div><div class="stat"><span class="stat-label">Camuflajes completados</span><strong class="stat-value" id="profileCompleted">0 / 668</strong></div><div class="stat"><span class="stat-label">Progreso total</span><strong class="stat-value" id="profilePercent">0%</strong></div></section><div class="action-row"><button class="btn primary" id="shareProfileBtn" type="button">Compartir perfil</button></div><section class="compare-panel" id="comparePanel" aria-label="Comparar con otro jugador"><div class="compare-header"><h2>Comparar con otro jugador</h2><label class="compare-select-wrap" for="comparePlayerSelect"><span>Jugador</span><select id="comparePlayerSelect"><option value="">Selecciona un jugador</option></select></label></div><div class="compare-grid"><article class="compare-card"><h3>Tu perfil</h3><p class="compare-name" id="compareCurrentName">Cargando...</p><ul class="compare-list"><li><span>Camuflajes</span><strong id="compareCurrentScore">0</strong></li><li><span>Posición</span><strong id="compareCurrentRank">-</strong></li><li><span>Progreso</span><strong id="compareCurrentPercent">0%</strong></li></ul></article><article class="compare-card"><h3>Jugador rival</h3><p class="compare-name" id="compareOpponentName">Sin selección</p><ul class="compare-list"><li><span>Camuflajes</span><strong id="compareOpponentScore">0</strong></li><li><span>Posición</span><strong id="compareOpponentRank">-</strong></li><li><span>Progreso</span><strong id="compareOpponentPercent">0%</strong></li></ul></article></div><p class="message" id="compareMessage" role="status">Selecciona otro jugador para comparar su progreso.</p></section><section class="profile-editor" id="profileEditor" aria-label="Personalizar perfil"><h2>Personalizar perfil</h2><label for="accentColor">Color del nombre <input id="accentColor" type="color" value="#06b6d4" title="Elegir cualquier color"></label><div class="customization-row"><label for="profileIcon">Icono del nombre</label><select id="profileIcon"><option value="">Sin icono</option><option value="rank icon/leaderboards-rank-1.png">Icono rango 1</option><option value="rank icon/leaderboards-rank-2.png">Icono rango 2</option><option value="rank icon/leaderboards-rank-3.png">Icono rango 3</option></select></div><div class="customization-row"><label for="callingCard">Calling card</label><select id="callingCard" disabled><option>Próximamente</option></select></div><button class="btn" id="saveProfileStyle" type="button">Guardar personalización</button><p class="message" id="profileStyleMessage" role="status"></p></section><section class="games" id="gameStats" aria-label="Estadísticas por juego"><p class="message">Cargando estadísticas...</p></section></main>
+    <main class="container"><p class="eyebrow">Perfil de jugador</p><div class="profile-heading"><img class="profile-name-icon" id="profileNameIcon" alt="" hidden><img class="profile-rank-icon" id="profileRankIcon" alt="" hidden><h1 id="profileName">Cargando...</h1></div><section class="summary"><div class="stat"><span class="stat-label">Posición global</span><div class="rank-stat"><img class="rank-stat-icon" id="profileRankStatIcon" alt="" hidden><strong class="stat-value" id="profileRank">-</strong></div></div><div class="stat"><span class="stat-label">Camuflajes completados</span><strong class="stat-value" id="profileCompleted">0 / 668</strong></div><div class="stat"><span class="stat-label">Progreso total</span><strong class="stat-value" id="profilePercent">0%</strong></div></section><div class="action-row"><button class="btn primary" id="shareProfileBtn" type="button">Compartir perfil</button></div><section class="compare-panel" id="comparePanel" aria-label="Comparar con otro jugador"><div class="compare-header"><h2>Comparar con otro jugador</h2><label class="compare-select-wrap" for="comparePlayerSearch"><span>Jugador</span><input id="comparePlayerSearch" type="text" list="comparePlayerOptions" placeholder="Buscar jugador..." autocomplete="off"><datalist id="comparePlayerOptions"></datalist></label></div><div class="compare-grid"><article class="compare-card"><h3>Tu perfil</h3><p class="compare-name" id="compareCurrentName">Cargando...</p><ul class="compare-list"><li><span>Camuflajes</span><strong id="compareCurrentScore">0</strong></li><li><span>Posición</span><strong id="compareCurrentRank">-</strong></li><li><span>Progreso</span><strong id="compareCurrentPercent">0%</strong></li></ul></article><article class="compare-card"><h3>Jugador rival</h3><p class="compare-name" id="compareOpponentName">Sin selección</p><ul class="compare-list"><li><span>Camuflajes</span><strong id="compareOpponentScore">0</strong></li><li><span>Posición</span><strong id="compareOpponentRank">-</strong></li><li><span>Progreso</span><strong id="compareOpponentPercent">0%</strong></li></ul></article></div><p class="message" id="compareMessage" role="status">Selecciona otro jugador para comparar su progreso.</p></section><section class="profile-editor" id="profileEditor" aria-label="Personalizar perfil"><h2>Personalizar perfil</h2><label for="accentColor">Color del nombre <input id="accentColor" type="color" value="#06b6d4" title="Elegir cualquier color"></label><div class="customization-row"><label for="profileIcon">Icono del nombre</label><select id="profileIcon"><option value="">Sin icono</option><option value="rank icon/leaderboards-rank-1.png">Icono rango 1</option><option value="rank icon/leaderboards-rank-2.png">Icono rango 2</option><option value="rank icon/leaderboards-rank-3.png">Icono rango 3</option></select></div><div class="customization-row"><label for="callingCard">Calling card</label><select id="callingCard" disabled><option>Próximamente</option></select></div><button class="btn" id="saveProfileStyle" type="button">Guardar personalización</button><p class="message" id="profileStyleMessage" role="status"></p></section><section class="games" id="gameStats" aria-label="Estadísticas por juego"><p class="message">Cargando estadísticas...</p></section></main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js"></script>
     <script>
         const config = window.CAMO_SUPABASE_CONFIG || {};
@@ -140,7 +141,8 @@
         };
         const render = async () => {
             const gameStats = document.querySelector('#gameStats');
-            const compareSelect = document.querySelector('#comparePlayerSelect');
+            const compareSearch = document.querySelector('#comparePlayerSearch');
+            const compareOptions = document.querySelector('#comparePlayerOptions');
             if (!client || !userId) { gameStats.innerHTML = '<p class="message">Perfil no disponible.</p>'; return; }
             const [{ data: profile }, { data: allProfiles }] = await Promise.all([
                 client.from('leaderboard_stats').select('username,completed,accent_color,icon_url').eq('user_id', userId).maybeSingle(),
@@ -205,21 +207,28 @@
                 rankStatIcon.hidden = false;
             }
             const playersForSelect = (allProfiles || []).filter(player => player.user_id !== userId);
+            const playerMap = new Map();
             playersForSelect.forEach(player => {
                 const option = document.createElement('option');
-                option.value = player.user_id;
-                option.textContent = player.username;
-                compareSelect.appendChild(option);
+                option.value = player.username;
+                playerMap.set(player.username, player.user_id);
+                compareOptions.appendChild(option);
             });
             setComparison(currentPlayer, null);
-            compareSelect.addEventListener('change', () => {
-                const selectedId = compareSelect.value;
-                if (!selectedId) {
+            compareSearch.addEventListener('change', () => {
+                const selectedName = compareSearch.value.trim();
+                if (!selectedName) {
                     setComparison(currentPlayer, null);
                     return;
                 }
+                const selectedId = playerMap.get(selectedName);
                 const selectedPlayer = sortedPlayers.find(player => player.user_id === selectedId);
                 const opponent = selectedPlayer ? { ...selectedPlayer, rankText: getRankNumber(sortedPlayers, selectedId) > 0 ? `#${getRankNumber(sortedPlayers, selectedId)}` : '-' } : null;
+                if (!opponent) {
+                    setComparison(currentPlayer, null);
+                    compareSearch.value = '';
+                    return;
+                }
                 setComparison(currentPlayer, opponent);
             });
             document.querySelector('#shareProfileBtn').addEventListener('click', shareProfile);

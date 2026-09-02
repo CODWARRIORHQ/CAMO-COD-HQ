@@ -173,6 +173,7 @@
             color: var(--gold);
             font-weight: 700;
         }
+        .podium-medals { margin-top:6px; color:var(--muted); font-size:12px; }
 
         .toolbar {
             display: flex;
@@ -266,6 +267,7 @@
         .player-medal { color:var(--gold); font-size:13px; }
         .player { font-weight: 700; }
         .score { color: var(--gold); font-weight: 800; text-align: right; }
+        .score-medals { display:block; margin-top:4px; color:var(--muted); font-size:11px; font-weight:600; }
         .player { color: var(--cyan); }
         .message { color: var(--muted); padding: 22px; }
 
@@ -364,6 +366,15 @@
         const client = config.url && config.anonKey ? window.supabase.createClient(config.url, config.anonKey) : null;
         const countProgress = progress => Object.values(progress || {}).reduce((total, indices) => total + (Array.isArray(indices) ? indices.length : 0), 0);
         const state = { limit: 10, sortBy: 'completed', search: '' };
+        const leaderboardGames = ['Modern Warfare 2007', 'Modern Warfare 2', 'Black Ops', 'Modern Warfare 3', 'Black Ops II', 'Ghosts', 'Advanced Warfare', 'Black Ops III', 'Infinite Warfare', 'Modern Warfare Remastered', 'WWII', 'Black Ops IIII', 'Mobile', 'Modern Warfare 2019', 'Modern Warfare 2 Remastered', 'Black Ops Cold War', 'Vanguard', 'Modern Warfare II', 'Modern Warfare III', 'Black Ops 6', 'Black Ops 7', 'Modern Warfare 4', 'Warzone'];
+        const getMedalCount = (player, position = null) => {
+            const completed = Number(player?.completed) || 0;
+            const quantityCount = Math.min(Math.floor(completed / 50), 20);
+            const generalCount = (completed >= 668 ? 2 : 0) + (completed >= 100 ? 1 : 0) + (position !== null && position < 3 ? 1 : 0);
+            const progress = player?.game_progress || {};
+            const gameCount = leaderboardGames.reduce((count, game) => count + ((progress[game] || (game === 'Modern Warfare 2019' ? completed : 0)) >= 668 ? 1 : 0), 0);
+            return quantityCount + generalCount + gameCount;
+        };
 
         const renderTopStats = (scores) => {
             const statsGrid = document.querySelector('#statsGrid');
@@ -397,6 +408,7 @@
                         <div class="podium-rank">${label}</div>
                         <span class="podium-name">${player.username}</span>
                         <div class="podium-score">${player.completed} camuflajes</div>
+                        <div class="podium-medals">${getMedalCount(player, index)} medallas conseguidas</div>
                     </div>
                 `;
             }).join('');
@@ -470,11 +482,14 @@
                     try { selectedMedals = JSON.parse(selectedMedals); } catch (error) { selectedMedals = []; }
                 }
                 selectedMedals = Array.isArray(selectedMedals) ? selectedMedals : [];
-                const leaderboardGames = ['Modern Warfare 2019', 'Black Ops 6', 'Black Ops 7', 'Modern Warfare III', 'Warzone'];
+                const leaderboardGames = ['Modern Warfare 2007', 'Modern Warfare 2', 'Black Ops', 'Modern Warfare 3', 'Black Ops II', 'Ghosts', 'Advanced Warfare', 'Black Ops III', 'Infinite Warfare', 'Modern Warfare Remastered', 'WWII', 'Black Ops IIII', 'Mobile', 'Modern Warfare 2019', 'Modern Warfare 2 Remastered', 'Black Ops Cold War', 'Vanguard', 'Modern Warfare II', 'Modern Warfare III', 'Black Ops 6', 'Black Ops 7', 'Modern Warfare 4', 'Warzone'];
                 const gameProgress = player.game_progress || {};
-                const earnedMedals = { completion: player.completed >= 668, category: player.completed >= 668, streak: player.completed >= 100, top3: index < 3, bronze: player.completed >= 100, silver: player.completed >= 250, gold: player.completed >= 500, diamond: player.completed >= 668, ...Object.fromEntries(leaderboardGames.map(name => [`game:${name}`, (gameProgress[name] || (name === 'Modern Warfare 2019' ? player.completed : 0)) >= 668])) };
-                const medalNames = { completion: 'Maestro del camuflaje', category: 'Categoría completa', streak: 'Racha de progreso', top3: 'Top 3 del leaderboard', bronze: 'Nivel bronce', silver: 'Nivel plata', gold: 'Nivel oro', diamond: 'Nivel diamante' };
-                const visibleMedals = selectedMedals.filter(key => earnedMedals[key]).slice(0, 4);
+                const completedGames = leaderboardGames.filter(game => (gameProgress[game] || (game === 'Modern Warfare 2019' ? player.completed : 0)) >= 668).length;
+                const visibleMedalLimit = 4 + completedGames;
+                const quantityMedals = Array.from({ length: 20 }, (_, medalIndex) => (medalIndex + 1) * 50);
+                const earnedMedals = { completion: player.completed >= 668, category: player.completed >= 668, streak: player.completed >= 100, top3: index < 3, ...Object.fromEntries(quantityMedals.map(amount => [`quantity:${amount}`, player.completed >= amount])), ...Object.fromEntries(leaderboardGames.map(name => [`game:${name}`, (gameProgress[name] || (name === 'Modern Warfare 2019' ? player.completed : 0)) >= 668])) };
+                const medalNames = { completion: 'Maestro del camuflaje', category: 'Categoría completa', streak: 'Racha de progreso', top3: 'Top 3 del leaderboard', ...Object.fromEntries(quantityMedals.map(amount => [`quantity:${amount}`, `${amount} camuflajes`])) };
+                const visibleMedals = selectedMedals.filter(key => earnedMedals[key]).slice(0, visibleMedalLimit);
                 if (visibleMedals.length) {
                     const medalWrap = document.createElement('span');
                     medalWrap.className = 'player-medals';
@@ -482,7 +497,7 @@
                         const medal = document.createElement('span');
                         medal.className = 'player-medal';
                         medal.textContent = '★';
-                        medal.title = medalNames[key];
+                        medal.title = medalNames[key] || `${key.replace('game:', '')} completado`;
                         medalWrap.appendChild(medal);
                     });
                     playerLink.appendChild(medalWrap);
@@ -490,7 +505,7 @@
 
                 const score = document.createElement('span');
                 score.className = 'score';
-                score.textContent = `${player.completed} camuflajes`;
+                score.innerHTML = `${player.completed} camuflajes<span class="score-medals">${getMedalCount(player, index)} medallas</span>`;
 
                 row.append(rankCell, playerLink, score);
                 board.appendChild(row);

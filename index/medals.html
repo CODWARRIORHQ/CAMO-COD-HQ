@@ -16,8 +16,10 @@ const client=config.url&&config.anonKey?window.supabase.createClient(config.url,
 const userId=new URLSearchParams(location.search).get('user');
 if(userId)document.querySelector('#profileLink').href=`profile.html?user=${encodeURIComponent(userId)}`;
 const total=668;
-const games=['Modern Warfare 2019','Black Ops 6','Black Ops 7','Modern Warfare III','Warzone'];
-const catalog=[['completion','Maestro del camuflaje','Completar un juego al 100%','gold'],['category','Categoría completa','Completar todas las categorías','silver'],['streak','Racha de progreso','Alcanzar una racha de progreso','bronze'],['top3','Top 3 del leaderboard','Quedar entre los tres primeros','gold'],['bronze','Nivel bronce','Más de 100 camuflajes','bronze'],['silver','Nivel plata','Más de 250 camuflajes','silver'],['gold','Nivel oro','Más de 500 camuflajes','gold'],['diamond','Nivel diamante','Completar un juego al 100%','diamond'],['allGames','Completista total','Completar todos los juegos','diamond'],...games.map(game=>[`game:${game}`,`${game} completado`,`Completar ${game} al 100%`,'diamond'])];
+const games=['Modern Warfare 2007','Modern Warfare 2','Black Ops','Modern Warfare 3','Black Ops II','Ghosts','Advanced Warfare','Black Ops III','Infinite Warfare','Modern Warfare Remastered','WWII','Black Ops IIII','Mobile','Modern Warfare 2019','Modern Warfare 2 Remastered','Black Ops Cold War','Vanguard','Modern Warfare II','Modern Warfare III','Black Ops 6','Black Ops 7','Modern Warfare 4','Warzone'];
+const quantityMedals=Array.from({length:20},(_,index)=>(index+1)*50);
+const tierFor=amount=>amount<=250?'bronze':amount<=500?'silver':amount<=750?'gold':'diamond';
+const catalog=[['completion','Maestro del camuflaje','Completar un juego al 100%','gold'],['category','Categoría completa','Completar todas las categorías','silver'],['streak','Racha de progreso','Alcanzar una racha de progreso','bronze'],['top3','Top 3 del leaderboard','Quedar entre los tres primeros','gold'],...quantityMedals.map(amount=>[`quantity:${amount}`,`${amount} camuflajes`,`Conseguir ${amount} camuflajes`,tierFor(amount)]),['allGames','Completista total','Completar todos los juegos','diamond'],...games.map(game=>[`game:${game}`,`${game} completado`,`Completar ${game} al 100%`,'diamond'])];
 const render=async()=>{
 	const root=document.querySelector('#medals');
 	if(!client||!userId){root.innerHTML='<p class="meta">Perfil no disponible.</p>';return;}
@@ -29,7 +31,7 @@ const render=async()=>{
 	const gameProgress=profile?.game_progress||{};
 	const values=games.map(game=>gameProgress[game]||(game==='Modern Warfare 2019'?completed:0));
 	const rank=[...(ranking||[])].sort((a,b)=>b.completed-a.completed).findIndex(item=>item.user_id===userId)+1;
-	const earned={completion:completed>=total,category:completed>=total,streak:completed>=100,top3:rank>0&&rank<=3,bronze:completed>=100,silver:completed>=250,gold:completed>=500,diamond:completed>=total,allGames:values.every(value=>value>=total)};
+	const earned={completion:completed>=total,category:completed>=total,streak:completed>=100,top3:rank>0&&rank<=3,allGames:values.every(value=>value>=total),...Object.fromEntries(quantityMedals.map(amount=>[`quantity:${amount}`,completed>=amount]))};
 	games.forEach((game,index)=>{earned[`game:${game}`]=values[index]>=total;});
 	const unlocked=catalog.filter(([key])=>earned[key]).length;
 	const summary=document.createElement('p');

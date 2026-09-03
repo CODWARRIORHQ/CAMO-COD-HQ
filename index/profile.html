@@ -84,13 +84,15 @@
             #profileBadges { display:flex; flex-basis:100%; flex-wrap:wrap; gap:6px; margin:8px 0 0 72px; }
             #profileBadges .achievement-badge { margin-left:0; }
             .medals { margin:0 14px 14px; padding:14px 16px; border:1px solid var(--border); border-radius:8px; }
-            .medal-options { display:grid; gap:8px; }
-            .medal-options label { justify-content:flex-start; }
+            .medal-options { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px 18px; max-height:300px; overflow-y:auto; padding:12px; border:1px solid var(--border); border-radius:8px; background:rgba(5,6,10,.35); }
+            .medal-options .stat-label { grid-column:1 / -1; }
+            .medal-options label { justify-content:flex-start; min-width:0; font-size:12px; }
+            .medal-options label input { flex:0 0 auto; }
             .rank-change { color:var(--cyan); font-size:14px; font-weight:700; }
             .game-progress { display:block; width:100%; height:8px; margin-top:12px; overflow:hidden; border:1px solid rgba(255,255,255,.08); border-radius:999px; background:#05060a; }
             .game-progress span { display:block; width:0; max-width:100%; height:100%; border-radius:inherit; background:linear-gradient(90deg,var(--cyan),#38d6c5); box-shadow:0 0 10px rgba(6,182,212,.35); transition:width .35s ease; }
             .medal-date { color:var(--muted); font-size:11px; }
-        @media (max-width:600px) { body { padding:12px; } main { padding:44px 0; } .profile-heading { display:grid; grid-template-columns:auto minmax(0,1fr); align-items:center; gap:10px; } .profile-heading h1 { min-width:0; font-size:clamp(32px,10vw,48px); overflow-wrap:anywhere; } #profileBadges { grid-column:1 / -1; margin:4px 0 0; gap:5px; } #profileBadges .achievement-badge { max-width:100%; padding:4px 7px; font-size:11px; } .summary { grid-template-columns:1fr; } .game-grid { grid-template-columns:1fr; padding:10px; } .game { min-height:100px; } .compare-grid { grid-template-columns:1fr; } }
+        @media (max-width:600px) { body { padding:12px; } main { padding:44px 0; } .profile-heading { display:grid; grid-template-columns:auto minmax(0,1fr); align-items:center; gap:10px; } .profile-heading h1 { min-width:0; font-size:clamp(32px,10vw,48px); overflow-wrap:anywhere; } #profileBadges { grid-column:1 / -1; margin:4px 0 0; gap:5px; } #profileBadges .achievement-badge { max-width:100%; padding:4px 7px; font-size:11px; } .summary { grid-template-columns:1fr; } .game-grid { grid-template-columns:1fr; padding:10px; } .game { min-height:100px; } .compare-grid { grid-template-columns:1fr; } .medal-options { grid-template-columns:1fr; max-height:260px; } .medal-options .stat-label { grid-column:auto; } }
     </style>
 </head>
 <body>
@@ -215,14 +217,12 @@
             const profileGameProgress = profile?.game_progress || {};
             const completedGames = profileGameNames.filter(name => (profileGameProgress[name] || (name === 'Modern Warfare 2019' ? completed : 0)) >= total).length;
             const visibleMedalLimit = 4 + completedGames;
-            const quantityMedals = Array.from({ length: 20 }, (_, index) => (index + 1) * 50);
-            const earnedMedals = { completion: completed >= total, category: completed >= total, streak: completed >= 100, top3: Number(currentPlayer?.rankText?.slice(1)) <= 3, ...Object.fromEntries(quantityMedals.map(amount => [`quantity:${amount}`, completed >= amount])), ...Object.fromEntries(profileGameNames.map(name => [`game:${name}`, (profileGameProgress[name] || (name === 'Modern Warfare 2019' ? completed : 0)) >= total])) };
+            const earnedMedals = { completion: completed >= total, category: completed >= total, streak: completed >= 100, top3: Number(currentPlayer?.rankText?.slice(1)) <= 3, ...Object.fromEntries(profileGameNames.map(name => [`game:${name}`, (profileGameProgress[name] || (name === 'Modern Warfare 2019' ? completed : 0)) >= total])) };
             const badgeData = [
                 ['completion', 'Maestro del camuflaje'],
                 ['category', 'Categoría completa'],
                 ['streak', 'Racha de progreso'],
                 ['top3', 'Top 3 del leaderboard'],
-                ...quantityMedals.slice().reverse().map(amount => [`quantity:${amount}`, `${amount} camuflajes`]),
                 ...profileGameNames.map(name => [`game:${name}`, `${name} completado`])
             ].filter(([key]) => selectedMedals.includes(key) && earnedMedals[key]).slice(0, visibleMedalLimit);
             document.querySelector('#profileBadges')?.remove();
@@ -270,7 +270,7 @@
                 if (!medalsInput) {
                     const medalsRow = document.createElement('div');
                     medalsRow.className = 'medal-options';
-                    medalsRow.innerHTML = '<span class="stat-label">Medallas visibles (máximo dinámico)</span><label><input id="selectedMedals" type="checkbox" value="completion"> Maestro del camuflaje</label><label><input type="checkbox" value="category"> Categoría completa</label><label><input type="checkbox" value="streak"> Racha de progreso</label><label><input type="checkbox" value="top3"> Top 3 del leaderboard</label>' + quantityMedals.map(amount => `<label><input type="checkbox" value="quantity:${amount}"> ${amount} camuflajes</label>`).join('') + profileGameNames.map(name => `<label><input type="checkbox" value="game:${name}"> ${name} completado</label>`).join('');
+                    medalsRow.innerHTML = '<span class="stat-label">Medallas visibles (máximo dinámico)</span><label><input id="selectedMedals" type="checkbox" value="completion"> Maestro del camuflaje</label><label><input type="checkbox" value="category"> Categoría completa</label><label><input type="checkbox" value="streak"> Racha de progreso</label><label><input type="checkbox" value="top3"> Top 3 del leaderboard</label>' + profileGameNames.map(name => `<label><input type="checkbox" value="game:${name}"> ${name} completado</label>`).join('');
                     editor.insertBefore(medalsRow, saveButton);
                     medalsInput = medalsRow.querySelector('#selectedMedals');
                 }

@@ -369,11 +369,10 @@
         const leaderboardGames = ['Modern Warfare 2007', 'Modern Warfare 2', 'Black Ops', 'Modern Warfare 3', 'Black Ops II', 'Ghosts', 'Advanced Warfare', 'Black Ops III', 'Infinite Warfare', 'Modern Warfare Remastered', 'WWII', 'Black Ops IIII', 'Mobile', 'Modern Warfare 2019', 'Modern Warfare 2 Remastered', 'Black Ops Cold War', 'Vanguard', 'Modern Warfare II', 'Modern Warfare III', 'Black Ops 6', 'Black Ops 7', 'Modern Warfare 4', 'Warzone'];
         const getMedalCount = (player, position = null) => {
             const completed = Number(player?.completed) || 0;
-            const quantityCount = Math.min(Math.floor(completed / 50), 20);
             const generalCount = (completed >= 668 ? 2 : 0) + (completed >= 100 ? 1 : 0) + (position !== null && position < 3 ? 1 : 0);
             const progress = player?.game_progress || {};
             const gameCount = leaderboardGames.reduce((count, game) => count + ((progress[game] || (game === 'Modern Warfare 2019' ? completed : 0)) >= 668 ? 1 : 0), 0);
-            return quantityCount + generalCount + gameCount;
+            return generalCount + gameCount;
         };
 
         const renderTopStats = (scores) => {
@@ -486,9 +485,8 @@
                 const gameProgress = player.game_progress || {};
                 const completedGames = leaderboardGames.filter(game => (gameProgress[game] || (game === 'Modern Warfare 2019' ? player.completed : 0)) >= 668).length;
                 const visibleMedalLimit = 4 + completedGames;
-                const quantityMedals = Array.from({ length: 20 }, (_, medalIndex) => (medalIndex + 1) * 50);
-                const earnedMedals = { completion: player.completed >= 668, category: player.completed >= 668, streak: player.completed >= 100, top3: index < 3, ...Object.fromEntries(quantityMedals.map(amount => [`quantity:${amount}`, player.completed >= amount])), ...Object.fromEntries(leaderboardGames.map(name => [`game:${name}`, (gameProgress[name] || (name === 'Modern Warfare 2019' ? player.completed : 0)) >= 668])) };
-                const medalNames = { completion: 'Maestro del camuflaje', category: 'Categoría completa', streak: 'Racha de progreso', top3: 'Top 3 del leaderboard', ...Object.fromEntries(quantityMedals.map(amount => [`quantity:${amount}`, `${amount} camuflajes`])) };
+                const earnedMedals = { completion: player.completed >= 668, category: player.completed >= 668, streak: player.completed >= 100, top3: index < 3, ...Object.fromEntries(leaderboardGames.map(name => [`game:${name}`, (gameProgress[name] || (name === 'Modern Warfare 2019' ? player.completed : 0)) >= 668])) };
+                const medalNames = { completion: 'Maestro del camuflaje', category: 'Categoría completa', streak: 'Racha de progreso', top3: 'Top 3 del leaderboard' };
                 const visibleMedals = selectedMedals.filter(key => earnedMedals[key]).slice(0, visibleMedalLimit);
                 if (visibleMedals.length) {
                     const medalWrap = document.createElement('span');

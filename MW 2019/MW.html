@@ -1484,6 +1484,11 @@
     }
 
     const PROGRESS_KEY = 'camo-cod-hq-mw2019-progress';
+    const GAME_NAME = 'Modern Warfare 2019';
+
+    function obtenerTotalCatalogo() {
+        return document.querySelectorAll('.weapon-card[data-name] .skin').length;
+    }
 
     function guardarProgreso() {
         try {
@@ -1573,9 +1578,35 @@
     }
 
     async function guardarProgresoEnCuenta(client, userId) {
+        const progreso = obtenerProgresoActual();
+        const total = obtenerTotalCatalogo();
+        const completed = Object.values(progreso).reduce((sum, indices) => sum + indices.length, 0);
+        const { data: profileData, error: profileReadError } = await client
+            .from('profiles')
+            .select('game_progress')
+            .eq('user_id', userId)
+            .maybeSingle();
+
+        if (profileReadError) throw profileReadError;
+
+        const gameProgress = profileData?.game_progress || {};
+        const catalogTotals = gameProgress.__totals || {};
+        const { error: profileError } = await client
+            .from('profiles')
+            .update({
+                game_progress: {
+                    ...gameProgress,
+                    [GAME_NAME]: completed,
+                    __totals: { ...catalogTotals, [GAME_NAME]: total }
+                }
+            })
+            .eq('user_id', userId);
+
+        if (profileError) throw profileError;
+
         const { error } = await client.from('camo_progress').upsert({
             user_id: userId,
-            progress: obtenerProgresoActual(),
+            progress: progreso,
             updated_at: new Date().toISOString()
         });
         if (error) throw error;

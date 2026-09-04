@@ -11,6 +11,7 @@
     const authEmailField = document.querySelector('#authEmail');
     const authEmailContainer = document.querySelector('#authEmailField');
     const authSignOut = document.querySelector('#authSignOut');
+    const authEditProfile = document.querySelector('#authEditProfile');
     const signOutButton = document.querySelector('[data-auth-signout]');
     const usernameField = document.querySelector('#authUsername');
     const usernameContainer = document.querySelector('#authUsernameField');
@@ -30,6 +31,8 @@
     const closeModal = () => {
         authModal.close();
         authForm.reset();
+        usernameField.disabled = false;
+        authSubmit.hidden = false;
         setMessage('');
     };
 
@@ -47,14 +50,17 @@
         passwordField.required = true;
         authSwitch.hidden = false;
         authSignOut.hidden = true;
+        authEditProfile.hidden = true;
+        authSubmit.hidden = false;
+        usernameField.disabled = false;
         passwordField.autocomplete = isRegistering ? 'new-password' : 'current-password';
         setMessage('');
     };
 
     const openProfile = () => {
-        isEditingProfile = true;
+        isEditingProfile = false;
         authTitle.textContent = 'Tu perfil';
-        authSubmit.textContent = 'Guardar nombre';
+        authSubmit.hidden = true;
         authEmailContainer.hidden = true;
         authEmailField.required = false;
         passwordField.parentElement.hidden = true;
@@ -62,9 +68,16 @@
         usernameContainer.hidden = false;
         usernameField.required = true;
         usernameField.value = currentUser?.user_metadata?.username || '';
+        usernameField.disabled = true;
         authSwitch.hidden = true;
         authSignOut.hidden = false;
+        authEditProfile.hidden = false;
         authModal.showModal();
+    };
+
+    const editProfile = () => {
+        if (!currentUser?.id) return;
+        window.location.href = `profile.html?user=${encodeURIComponent(currentUser.id)}`;
     };
 
     const updateUser = (user) => {
@@ -109,6 +122,7 @@
 
     authClose?.addEventListener('click', closeModal);
     authSwitch?.addEventListener('click', updateMode);
+    authEditProfile?.addEventListener('click', editProfile);
     authSignOut?.addEventListener('click', async () => {
         await client.auth.signOut();
         updateUser(null);

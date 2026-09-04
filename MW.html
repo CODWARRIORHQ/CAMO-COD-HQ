@@ -1,0 +1,1828 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Call of Duty: Modern Warfare 2019</title>
+    <style>
+
+        :root {
+            --bg-dark: #080808;
+            --card-bg: #111111;
+            --accent-orange: #ff9d00;
+            --border-gray: #222;
+            --input-bg: #1a1a1a;
+            --muted: #98a0b3;
+            --accent: #7c3aed;
+            --accent-2: #06b6d4;
+            --ff: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+        }
+
+        body {
+            margin: 0;
+            color: white;
+            background-color: var(--bg-dark);
+            font-family: var(--ff);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            padding: 20px;
+            justify-content: center;
+        }
+
+        /* Ocultar imágenes con marcador de posición '##' para evitar rutas rotas */
+        img[src="##"] { display: none !important; }
+
+        .brand { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+        }
+
+        .UEM-breadcrumbs-container {
+            margin-top: 18px;
+            margin-bottom: 18px;
+        }
+
+        /* --- ESTRUCTURA DE CATEGORÍAS --- */
+        .category-group { 
+            margin-bottom: 50px; 
+        }
+
+        .category-header { 
+            width: 100%; 
+            text-align: center; 
+            margin: 20px 0; 
+        }
+
+        .category-header h1 { 
+            font-size: 28px; 
+            font-weight: 900; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            border-bottom: 2px solid var(--accent-orange); 
+            display: inline-block; 
+            padding-bottom: 5px; 
+        }
+
+        .weapons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+            gap: 20px;
+            width: 100%;
+        }
+
+        .weapon-card,
+        .category-group,
+        .container {
+            min-width: 0;
+        }
+
+        .weapon-name .highlight {
+            margin-right: 6px;
+        }
+
+        .nav-left,
+        .master-title-row {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-left { gap: 12px; }
+        .master-title-row { gap: 20px; }
+
+        .weapon-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        /* Menú desplegable (botón) */
+        .left-menu { position: relative; margin-right: 12px; display: flex; align-items: center; }
+        .menu-toggle { display: none; }
+        .menu-btn { 
+            width: 44px; 
+            height: 40px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            gap: 5px; 
+            cursor: pointer; 
+            padding: 8px; 
+            border-radius: 8px; 
+            transition: background-color 0.3s ease;
+        }
+
+        .menu-btn span { 
+            display: block; 
+            height: 3px; 
+            background: linear-gradient(90deg, var(--accent), var(--accent-2)); 
+            border-radius: 2px; 
+            transition: transform 0.3s ease, opacity 0.3s ease; 
+        }
+
+        .menu-toggle:checked + .menu-btn + .dropdown-menu { 
+            opacity: 1; 
+            transform: translateY(0) scale(1); 
+            pointer-events: auto; 
+        }
+
+        .menu-toggle:checked + .menu-btn span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .menu-toggle:checked + .menu-btn span:nth-child(2) { opacity: 0; }
+        .menu-toggle:checked + .menu-btn span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+        .dropdown-menu { /* menu de jugos lateraal izquierdo*/
+            position: absolute; 
+            left: 0; 
+            top: 56px; 
+            min-width: 423px; /* ligeramente más grande */
+            max-width: min(640px, 92vw); /* evita desbordes en pantallas pequeñas */
+            background: linear-gradient(180deg, rgba(15, 23, 36, 0.98), rgba(11, 15, 25, 0.96)); 
+            border-radius: 10px; 
+            padding: 8px; 
+            box-shadow: 0 8px 24px rgba(2, 6, 23, 0.6); 
+            opacity: 0; 
+            transform: translateY(-10px) scale(0.96); 
+            pointer-events: none; 
+            transition: opacity 180ms ease, transform 180ms ease; 
+            border: 1px solid rgba(255, 255, 255, 0.03); 
+            z-index: 60; 
+        }
+        
+        /* Hacer el menú desplazable si hay muchos items */
+        .dropdown-menu {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 6px; /* espacio para el scrollbar */
+        }
+
+        /* Scrollbar minimalista (opcional) */
+        .dropdown-menu::-webkit-scrollbar { width: 8px; }
+        .dropdown-menu::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 8px; }
+
+        /* En pantallas pequeñas, mostrar el menú como panel ancho y fijo para que sea completamente visible */
+        @media (max-width: 640px) {
+            .dropdown-menu {
+                position: fixed;
+                left: 8px;
+                right: 8px;
+                top: 64px;
+                min-width: auto; /* permitir que use el ancho disponible */
+                max-width: calc(100% - 20px);
+                border-radius: 12px;
+                box-shadow: 0 24px 60px rgba(2,6,23,0.7);
+            }
+        }
+
+        .dropdown-menu a { 
+            display: block; 
+            padding: 8px 10px; 
+            color: var(--muted); 
+            border-radius: 6px; 
+        }
+
+        .dropdown-menu a:hover { 
+            background: rgba(255, 255, 255, 0.02); 
+            color: #fff; 
+        }
+
+        .weapon-name { 
+            margin: 0; 
+            font-size: 14px; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+        }
+
+        .weapon-img { 
+            height: 30px; 
+            width: auto; 
+            filter: brightness(0) invert(1); 
+            opacity: 0.8; 
+        }
+
+        .progress-container { 
+            margin: 5px 0 15px 0; 
+        }
+
+        .pct-text { 
+            font-size: 11px; 
+            font-weight: bold; 
+            margin-bottom: 5px; 
+            display: block; 
+        }
+
+        .bar-bg { 
+            height: 4px; 
+            background: #222; 
+            border-radius: 10px; 
+            overflow: hidden; 
+        }
+
+        .bar-fill { 
+            height: 100%; 
+            background: var(--accent-orange); 
+            width: 0%; 
+            transition: width 0.3s; 
+        }
+
+        .camo-section {
+            display: grid;
+            width: 100%;
+            max-width: 100%;
+            grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
+            grid-auto-rows: 52px;
+            grid-auto-flow: row;
+            gap: 5px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.45));
+            border: 1px solid rgba(255,255,255,0.07);
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.55), 0 0 0 1px rgba(255, 157, 0, 0.05);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 0 auto auto;
+            justify-content: center;
+            overflow-wrap: anywhere;
+        }
+
+        .highlight {
+            color: red; /* O puedes usar un tono más profesional como #ff4d4d */
+            font-weight: bold; /* Opcional, por si quieres resaltar aún más */
+        }
+
+        .skin {
+            position: relative;
+            aspect-ratio: 1/1;
+            min-height: 44px;
+            min-width: 0;
+            background-color: #1a1a1a;
+            background-size: cover;
+            background-position: center;
+            border-radius: 4px;
+            border: 1px solid var(--border-gray);
+            cursor: pointer;
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.04), inset 0 0 18px rgba(0,0,0,0.45);
+            transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+        }
+
+        .skin:hover {
+            transform: translateY(-1px);
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 0 1px rgba(255, 157, 0, 0.7), 0 10px 18px rgba(0,0,0,0.35);
+        }
+
+        /* Cuadros grandes para categoría 11 */
+        .skin.large {
+            grid-column: span 2;
+            grid-row: span 2;
+            min-width: 104px;
+            min-height: 104px;
+        }
+
+        .camo-toggle-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(36px, 1fr));
+            gap: 6px;
+            margin-bottom: 8px;
+            justify-content: center;
+            padding: 8px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.35));
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 8px;
+        }
+
+        .camo-toggle-item {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-width: 0;
+            height: 42px;
+            border-radius: 4px;
+            border: 1px solid var(--border-gray);
+            color: var(--muted);
+            font-size: 12px;
+            background: rgba(255,255,255,0.04);
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s, border-color 0.2s, color 0.2s;
+            overflow: visible;
+        }
+
+        .camo-toggle-item img.camo-toggle-thumb {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none;
+            opacity: 0.9;
+        }
+
+        .camo-toggle-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            transition: background 0.2s;
+            border-radius: inherit;
+            pointer-events: none;
+        }
+
+        .camo-toggle-item:hover::before {
+            background: rgba(0,0,0,0.2);
+        }
+
+        .camo-toggle-item .camo-toggle-tooltip {
+            position: absolute;
+            top: -34px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #000;
+            color: #ff9d00;
+            padding: 6px 8px;
+            border: 1px solid #ff9d00;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.03em;
+            line-height: 1;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+            z-index: 2000;
+        }
+
+        .camo-toggle-item:hover .camo-toggle-tooltip {
+            opacity: 1;
+        }
+
+        .camo-toggle-item .camo-toggle-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        .camo-toggle-item.has-image .camo-toggle-text {
+            color: #fff;
+        }
+
+        .camo-toggle-item:hover {
+            color: white;
+        }
+
+        .camo-toggle-item.active {
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+            transform: translateY(-1px);
+        }
+
+        .camo-toggle-item.completed::after {
+            content: "✓";
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            color: var(--accent-orange);
+            font-size: 18px;
+            font-weight: 900;
+            text-shadow: 0 0 5px rgba(0,0,0,0.8);
+            pointer-events: none;
+        }
+
+        .camo-toggle-text {
+            font-size: 12px;
+            line-height: 1;
+            letter-spacing: 0.05em;
+            display: none;
+        }
+
+        .camo-section.collapsed {
+            display: none;
+        }
+
+        .skin.checked::after {
+            content: "✓"; 
+            position: absolute; 
+            top: 50%; 
+            left: 50%;
+            transform: translate(-50%, -50%); 
+            color: var(--accent-orange);
+            font-size: 14px; /* Un poco más grande para que resalte */
+            font-weight: 900; 
+            z-index: 2;
+            text-shadow: 0px 0px 5px rgba(0,0,0,0.8); /* Sombra para que resalte */
+        }
+
+        /* Etiqueta dentro del propio cuadro, igual que una mini notificación */
+        .skin:hover::before {
+            content: attr(data-title);
+            position: absolute;
+            left: 3px;
+            right: 3px;
+            bottom: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.85);
+            color: #ff9d00;
+            padding: 4px 5px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 157, 0, 0.85);
+            font-size: 10px;
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: 0.03em;
+            white-space: nowrap;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        /* Quitamos la flecha externa para que la etiqueta quede integrada al cuadro */
+        .skin:hover::after {
+            content: none;
+        }
+
+        /* =========================================
+            HEADER Y NAVEGACIÓN
+           ========================================= */
+        .site-header { 
+            backdrop-filter: blur(6px); 
+            background: rgba(6, 9, 14, 0.45); 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+            padding: 8px 0;
+            margin-bottom: 24px;
+        }
+
+        .UEM-breadcrumbs-container {
+            margin-top: 16px;
+        }
+
+        .nav { 
+            display: flex !important; 
+            align-items: center !important; 
+            justify-content: space-between !important; 
+            padding: 12px 0; 
+            gap: 18px;
+        }
+
+        .nav > div:last-child {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Forzar alineado izquierdo igual que la página de inicio */
+        .site-header .nav { display:flex !important; }
+        .site-header .nav > .nav-left { display:flex !important; align-items:center !important; gap:12px !important; margin-right:auto !important; }
+        .site-header .nav .brand { display:flex !important; align-items:center !important; gap:12px !important; margin:0 !important; }
+        .site-header .nav > *:not(.nav-left) { margin-left: 0 !important; }
+        /* Force left alignment like the homepage */
+        .nav-left { display:flex; align-items:center; gap:12px; }
+        .brand { display:flex; align-items:center; gap:12px; margin:0; }
+        .nav .brand-text { margin-left: 0; }
+
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .left-menu {
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .site-header .container {
+            max-width: 100%;
+            width: 100%;
+            padding: 12px 24px;
+        }
+
+        .container { 
+            max-width: 1600px; 
+            margin: 0 auto; 
+            padding: 20px; 
+        }
+
+        /* Branding */
+        .brand { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+        }
+
+        * { 
+            box-sizing: border-box; 
+        }
+
+        .logo { 
+            width: 48px; 
+            height: 48px; 
+            border-radius: 10px; 
+            background: linear-gradient(135deg, var(--accent), var(--accent-2)); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            overflow: hidden;
+            font-weight: 700; 
+        }
+
+        .logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .btn.ghost { 
+            background: transparent; 
+            padding: 8px 12px; 
+            border-radius: 8px; 
+            border: 1px solid rgba(255,255,255,0.06); 
+            color: inherit; 
+        }
+
+        .btn:hover { 
+            background: var(--accent); 
+            color: white; 
+            border-color: transparent; 
+        }
+
+        a { 
+            color: var(--accent-2); 
+            text-decoration: none; 
+            transition: color 0.2s; 
+        }
+
+        .site-name { 
+            font-weight: 700; 
+        }
+
+        .site-tag {
+            display: block;
+            color: var(--muted); 
+            font-size: 12px; 
+        }
+
+        /* Modifica esta regla en tu <style> */
+        .skin.checked { 
+            border-color: var(--accent-orange); 
+            filter: brightness(0.6); /* Esto oscurece la imagen de fondo */
+            position: relative;
+        }
+
+        /* =========================================
+            FOOTER
+           ========================================= */
+        .site-footer { 
+            padding: 28px 0; 
+            border-top: 1px solid rgba(255, 255, 255, 0.03); 
+            margin-top: 48px; 
+            background: transparent; 
+            color: var(--muted); 
+        }
+
+        .footer-grid { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+
+        .footer-grid a { 
+            color: var(--muted); 
+            margin-left: 12px; 
+        }
+
+        .mastery-preview {
+            grid-column: span 2;
+            grid-row: span 2;
+            height: 100%;
+            border: 1px solid var(--accent-orange);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .mastery-preview-2 {
+            grid-column: span 2;
+            grid-row: span 2;
+            height: 100%;
+            border: 1px solid #7c3aed;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .mastery-preview-3 {
+            grid-column: span 2;
+            grid-row: span 2;
+            height: 100%;
+            border: 1px solid #06b6d4;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .mastery-preview-4 {
+            grid-column: span 2;
+            grid-row: span 2;
+            height: 100%;
+            border: 1px solid #ff9d00;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .camo-section:not([data-current-category='11']) .skin.mastery-preview,
+        .camo-section:not([data-current-category='11']) .skin.mastery-preview-2,
+        .camo-section:not([data-current-category='11']) .skin.mastery-preview-3,
+        .camo-section:not([data-current-category='11']) .skin.mastery-preview-4 {
+            grid-column: span 1 !important;
+            grid-row: span 1 !important;
+            height: auto !important;
+        }
+
+        /* Estilos específicos para la tarjeta de filtro */
+        .wzhub-filter-card {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid #1f1f1f;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .stat-card { 
+            background: #181818; 
+            padding: 15px; 
+            border-radius: 12px; 
+            border: 1px solid #222; 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 13px; 
+            font-weight: 800; 
+        }
+
+        /* Estilos de la Barra de Progreso */
+        .global-progress-bar {
+            height: 4px;
+            background: #1a1a1a;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .global-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            background-size: 400% 100%;
+            animation: rgb-move 8s linear infinite;
+            transition: width 0.6s ease;
+        }
+
+        /* --- APOCALYPSE TRACKER --- */
+        .master-panel {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 24px;
+            border: 1px solid var(--border-gray);
+            margin-bottom: 40px;
+            transition: all 0.3s ease;
+        }
+
+        /* Encabezado: Esto empuja el título a la izquierda y la flecha a la derecha */
+        .panel-header {
+            display: flex;
+            justify-content: space-between; /* Manda la flecha al extremo derecho */
+            align-items: center;
+            cursor: pointer;
+        }
+
+        /* Flecha: Posición inicial (Abierto - hacia abajo) */
+        .arrow-icon { 
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+            stroke: var(--accent-orange);
+            transform: rotate(0deg); 
+        }
+
+        /* Estado CERRADO: La flecha gira hacia la DERECHA (-90 grados) */
+        .master-panel.closed .arrow-icon { 
+            transform: rotate(-90deg); 
+        }
+
+        /* Ocultar contenido al cerrar */
+        .master-panel.closed .master-content { 
+            display: none; 
+        }
+
+        @keyframes rgb-move {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 400% 0%; }
+        }
+
+        .wz-label { 
+            color: var(--accent-orange); 
+            font-size: 10px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            display: block; 
+            margin-bottom: 5px; 
+        }
+
+        .search-row { 
+            display: flex; 
+            gap: 10px; 
+        }
+
+        .wz-input { 
+            flex: 1; 
+            background: var(--input-bg); 
+            border: 1px solid #222; 
+            border-radius: 10px; 
+            padding: 12px; 
+            color: white; 
+            outline: none; 
+        }
+
+        .wz-input:focus { 
+            border-color: var(--accent-orange); 
+        }
+
+        .btn-settings { 
+            background: var(--input-bg); 
+            border: none; 
+            border-radius: 10px; 
+            width: 45px; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+
+        .expand-panel { 
+            display: none; 
+            visibility: hidden; 
+            opacity: 0; 
+            max-height: 0; 
+            overflow: hidden; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+            margin-top: 15px; 
+            transition: opacity 0.2s ease, max-height 0.2s ease; 
+        }
+
+        .expand-panel.open { 
+            display: grid !important; 
+            visibility: visible !important; 
+            opacity: 1 !important; 
+            max-height: 1000px !important; 
+            overflow: visible !important; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+            margin-top: 15px; 
+            transition: opacity 0.2s ease, max-height 0.2s ease; 
+        }
+
+        .custom-select { 
+            position: relative; 
+        }
+
+        .select-header { 
+            background: var(--input-bg); 
+            padding: 12px; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            font-size: 13px; 
+            color: #888; 
+            border: 1px solid #222; 
+        }
+
+        .options-menu { 
+            position: absolute; 
+            top: 105%; 
+            left: 0; 
+            right: 0; 
+            background: #1a1a1a; 
+            border: 1px solid #333; 
+            border-radius: 10px; 
+            display: none; 
+            z-index: 2000; 
+        }
+
+        .custom-select.active .options-menu { 
+            display: block; 
+        }
+
+        .option-item { 
+            padding: 10px; 
+            cursor: pointer; 
+            font-size: 12px; 
+            color: #ccc; 
+        }
+
+        .option-item:hover { 
+            background: var(--accent-orange); 
+            color: black; 
+        }
+
+        .chevron { 
+            border: solid #888; 
+            border-width: 0 2px 2px 0; 
+            padding: 3px; 
+            transform: rotate(45deg); 
+        }
+
+        @media (max-width: 1200px) {
+            .site-header .nav {
+                flex-wrap: wrap;
+                gap: 12px;
+                justify-content: space-between;
+            }
+
+            .nav-left,
+            .nav-actions,
+            .brand {
+                min-width: 0;
+            }
+
+            .nav-left {
+                flex: 1 1 100%;
+            }
+
+            .brand {
+                flex: 1 1 auto;
+            }
+
+            .search-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .search-row > * {
+                min-width: 0;
+                flex: 1 1 100%;
+            }
+
+            .search-row .btn-settings {
+                width: auto;
+                align-self: flex-end;
+            }
+
+            .expand-panel.open {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+                width: 100%;
+            }
+
+            .custom-select {
+                width: 100%;
+            }
+
+            .category-header h1 {
+                font-size: 24px;
+            }
+
+            .weapon-header {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .weapon-header img {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .camo-section {
+                grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
+            }
+
+            .camo-toggle-row {
+                grid-template-columns: repeat(auto-fit, minmax(38px, 1fr));
+            }
+
+            .skin,
+            .camo-toggle-item {
+                min-width: 44px;
+                min-height: 44px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .weapons-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            .weapon-card {
+                width: 100%;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .master-panel {
+                padding: 18px;
+            }
+
+            .expand-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+            body {
+                padding: 12px;
+            }
+
+            .site-header .nav,
+            .site-header .container,
+            .container,
+            .wzhub-filter-card,
+            .master-panel {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            .site-header .nav {
+                flex-direction: row !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+                gap: 12px;
+            }
+
+            .nav-left,
+            .nav-actions {
+                width: auto;
+            }
+
+            .nav-left {
+                flex: 1 1 auto;
+                min-width: 0;
+            }
+
+            .nav > div:last-child {
+                margin-left: auto;
+                flex-shrink: 0;
+            }
+
+            .search-row {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+
+            .search-row .btn-settings {
+                width: 100%;
+            }
+
+            .category-header h1 {
+                font-size: 20px;
+            }
+
+            .weapon-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .camo-section {
+                grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+                gap: 4px;
+            }
+
+            .skin,
+            .camo-toggle-item {
+                min-width: 40px;
+                min-height: 40px;
+            }
+
+            .skin.checked::after {
+                font-size: 12px;
+            }
+
+            .dropdown-menu {
+                position: fixed;
+                left: 8px;
+                right: 8px;
+                top: 72px;
+                max-width: calc(100% - 16px);
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <nav class="nav container">
+            <div class="nav-left">
+            <div class="left-menu">
+                <input type="checkbox" id="menuToggle" class="menu-toggle" aria-expanded="false">
+                <label for="menuToggle" class="menu-btn" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </label>
+                <div class="dropdown-menu" role="menu" aria-label="Características">
+                    <a role="menuitem" href="../index/Camos UEM.html">Proyectos</a>
+                    <a role="menuitem" href="../index/leaderboard.html">Leaderboard</a>
+                    <a role="menuitem" href="../MW2007/MW2007.html">CALL OF DUTY4: MODERN WARFARE <span style="font-size: 11px; color: #7c3aed;">2007</span></a>
+                    <a role="menuitem" href="../MW2/MW2.html">CALL OF DUTY: MODERN WARFARE 2 <span style="font-size: 11px; color: #7c3aed;">2009</span></a>
+                    <a role="menuitem" href="../BLACK OPS I/BOI.html">CALL OF DUTY: BLACK OPS <span style="font-size: 11px; color: #7c3aed;">2010</span></a>
+                    <a role="menuitem" href="../MW3/MW3.html">CALL OF DUTY: MODERN WARFARE 3 <span style="font-size: 11px; color: #7c3aed;">2011</span></a>
+                    <a role="menuitem" href="../BLACK OPS II/BOII.html">CALL OF DUTY: BLACK OPS II <span style="font-size: 11px; color: #7c3aed;">2012</span></a>
+                    <a role="menuitem" href="../GHOSTS/GHOSTS.html">CALL OF DUTY: GHOSTS <span style="font-size: 11px; color: #7c3aed;">2013</span></a>
+                    <a role="menuitem" href="../ADVANCED/ADVANCED.html">CALL OF DUTY: ADVANCED WARFARE <span style="font-size: 11px; color: #7c3aed;">2014</span></a>
+                    <a role="menuitem" href="../BLACK OPS III/BOIII.html">CALL OF DUTY: BLACK OPS III <span style="font-size: 11px; color: #7c3aed;">2015</span></a>
+                    <a role="menuitem" href="../INFINITE/INFINITE.html">CALL OF DUTY: INFINITE WARFARE <span style="font-size: 11px; color: #7c3aed;">2016</span></a>
+                    <a role="menuitem" href="../MWREMASTERED/MWREMASTERED.html">CALL OF DUTY: MODERN WARFARE REMASTERED <span style="font-size: 11px; color: #7c3aed;">2016</span></a>
+                    <a role="menuitem" href="../WWII/WWII.html">CALL OF DUTY: WWII <span style="font-size: 11px; color: #7c3aed;">2017</span></a>
+                    <a role="menuitem" href="../BLACK OPS IIII/BOIIII.html">CALL OF DUTY: BLACK OPS IIII <span style="font-size: 11px; color: #7c3aed;">2018</span></a>
+                    <a role="menuitem" href="../CODM/CODM.html">CALL OF DUTY: MOBILE <span style="font-size: 11px; color: #7c3aed;">2019</span></a>
+                    <a role="menuitem" href="../MW 2019/MW.html">CALL OF DUTY: MODERN WARFARE (2019) <span style="font-size: 11px; color: #7c3aed;">2019</span></a>
+                    <a role="menuitem" href="../MW 2 REMASTERED/MW2REMASTERED.html">CALL OF DUTY: MODERN WARFARE 2 REMASTERED <span style="font-size: 11px; color: #7c3aed;">2020</span></a>
+                    <a role="menuitem" href="../COLD WAR/COLDWAR.html">CALL OF DUTY: BLACK OPS COLD WAR <span style="font-size: 11px; color: #7c3aed;">2020</span></a>
+                    <a role="menuitem" href="../VANGUARD/VANGUARD.html">CALL OF DUTY: VANGUARD <span style="font-size: 11px; color: #7c3aed;">2021</span></a>
+                    <a role="menuitem" href="../MW II/MWII.html">CALL OF DUTY: MODERN WARFARE II (2022) <span style="font-size: 11px; color: #7c3aed;">2022</span></a>
+                    <a role="menuitem" href="../MW III/MWIII.html">CALL OF DUTY: MODERN WARFARE III (2023) <span style="font-size: 11px; color: #7c3aed;">2023</span></a>
+                    <a role="menuitem" href="../BLACK OPS 6/BO6.html">CALL OF DUTY: BLACK OPS 6 <span style="font-size: 11px; color: #7c3aed;">2024</span></a>
+                    <a role="menuitem" href="../BLACK OPS 7/BO7.html">CALL OF DUTY: BLACK OPS 7 <span style="font-size: 11px; color: #7c3aed;">2025</span></a>
+                    <a role="menuitem" href="../MW 4/MW4.html"> PROXIMAMENTECALL OF DUTY: MODERN WARFARE 4 (2026) <span style="font-size: 11px; color: #7c3aed;">2026</span></a>
+                    <a role="menuitem" href="../WARZONE/WARZONE.html">WARZONE SIEMPRE EL PRIMERO DE TODOS</a>
+                </div>
+            </div>
+        <div class="brand">
+            <div class="logo">
+                <img src="logo.png" alt="CAMO COD HQ logo" class="logo-img">
+            </div>
+            <div class="brand-text">
+                <span class="site-name">CAMO COD HQ</span>
+                <small class="site-tag">Tu hub de camuflajes</small>
+            </div>
+        </div>
+            </div>
+        <div style="margin-left:auto; display:flex; align-items:center;">
+            <a class="btn ghost" href="../index/Camos UEM.html">Volver</a>
+        </div>
+        </nav>
+    </header>
+
+    <div class="UEM-breadcrumbs-container">
+        <div class="container">
+            <div itemscope="itemscope" itemtype="https://schema.org/BreadcrumbList" class="UEM-breadcrumbs">
+                <nav>
+                    <a href="../../index/Camos UEM.html">CAMO COD HQ</a> /
+                    <a href="../Camuflajes UEM.html">MW2019</a> 
+                </nav>
+            </div>
+        </div>
+    </div>
+
+<div class="controls-section">
+    <div class="wzhub-filter-card">
+        <span class="wz-label">Search Gun</span>
+        <div class="search-row">
+            <input type="text" id="weaponSearch" class="wz-input" placeholder="Buscar arma...">
+            <button type="button" class="btn-settings">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:20px; stroke:#ff9d00;"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="2" y1="14" x2="6" y2="14"></line><line x1="10" y1="8" x2="14" y2="8"></line><line x1="18" y1="16" x2="22" y2="16"></line></svg>
+            </button>
+            
+        </div>
+
+
+        <div class="expand-panel" id="advPanel">
+            <div class="custom-select" id="catSelect">
+                <span class="wz-label">Categoría</span>
+                <div class="select-header"><span>TODAS</span><div class="chevron"></div></div>
+                <div class="options-menu">
+                    <div class="option-item" data-val="all">TODAS</div>
+                    <div class="option-item" data-val="ar">FUSIL DE ASALTO</div>
+                    <div class="option-item" data-val="smg">SUBFUSIL</div>
+                    <div class="option-item" data-val="snipers">SNIPERS</div>
+                    <div class="option-item" data-val="pistols">PISTOLAS</div>
+                    <div class="option-item" data-val="melee">MELEE</div>
+                </div>
+            </div>
+
+            <div class="custom-select" id="statusSelect">
+                <span class="wz-label">Estado</span>
+                <div class="select-header"><span>TODOS</span><div class="chevron"></div></div>
+                <div class="options-menu">
+                    <div class="option-item" data-val="all">TODOS</div>
+                    <div class="option-item" data-val="done">COMPLETADOS</div>
+                    <div class="option-item" data-val="pending">PENDIENTES</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="master-panel closed" id="masterPanel">
+    <div class="panel-header">
+    <div class="master-title-row">
+        <h1>Seguimientos Completo</h1>
+    </div>
+
+    <svg class="arrow-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+
+</div>
+    <div class="master-content">
+        <div class="global-progress-container">
+            <div class="global-info-row">
+                <span style="font-size: 11px; font-weight: 800; color: #555;">SISTEMA DE STATS: ONLINE</span>
+                <span style="font-weight: 900;"><span id="globalPctText">0%</span></span>
+            </div>
+            <div class="global-progress-bar">
+                <div id="globalFill" class="global-fill"></div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card"><span>AR</span><span id="ar-stat">0%</span></div>
+            <div class="stat-card"><span>SMG</span><span id="smg-stat">0%</span></div>
+            <div class="stat-card"><span>SNIPERS</span><span id="snipers-stat">0%</span></div>
+            <div class="stat-card"><span>PISTOLS</span><span id="pistols-stat">0%</span></div>
+            <div class="stat-card"><span>MELEE</span><span id="melee-stat">0%</span></div>
+        </div>
+    </div>
+</div>
+
+
+    <div class="category-group" data-category="ar">
+        <div class="category-header"><h1>Fusil de asalto</h1></div>
+        <div class="weapons-grid">
+            <div class="weapon-card" data-name="AK-47">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>Ak-47</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Comando">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>Comando</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+            
+
+            <div class="weapon-card" data-name="Fal">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>Fal</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Scar-H">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>Scar-H</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="STG-44">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>STG-44</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="AUG HBAR">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>AUG HBAR</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="RAM-7">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>RAM-7</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="M13">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>M13</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="ACR Vengeance">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>ACR Vengeance</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="category-group" data-category="smg">
+        <div class="category-header"><h1>Subfusil</h1></div>
+        <div class="weapons-grid">
+            <div class="weapon-card" data-name="PPSH-41">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>PPSH-41</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="UMP45">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>UMP45</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Vector">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>Vector</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="MP-7">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>MP-7</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="MP5 Suppressed">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>MP5 Suppressed</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="MP-40">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>MP-40</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Thompson M1A1">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>Thompson M1A1</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="category-group" data-category="snipers">
+        <div class="category-header"><h1>SNIPERS</h1></div>
+        <div class="weapons-grid">
+            <div class="weapon-card" data-name="Kar98k">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>Kar98k</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+                        <div class="weapon-card" data-name="Barrett .50cal">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>Barrett .50cal</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+                        <div class="weapon-card" data-name="Intervention">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>Intervention</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+        </div>
+    </div>
+
+                <div class="category-group" data-category="pistols">
+        <div class="category-header"><h1>PISTOLS</h1></div>
+        <div class="weapons-grid">
+            <div class="weapon-card" data-name="Desert Eagle">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>Desert Eagle</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+                        <div class="weapon-card" data-name="M19">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>M19</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+                        <div class="weapon-card" data-name="44 Magnum">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>44 Magnum</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+                        <div class="weapon-card" data-name="M93 Raffica">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>M93 Raffica</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+        </div>
+    </div>
+
+                <div class="category-group" data-category="melee">
+        <div class="category-header"><h1>MELEE</h1></div>
+        <div class="weapons-grid">
+            <div class="weapon-card" data-name="melee">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight">UEM</span>melee</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            </div>
+        </div>
+            <footer id="contact" class="site-footer">
+        <div class="container footer-grid">
+            <div>
+                <strong>Camos UEM</strong>
+                <p class="muted">Hecho con ❤️ para la comunidad.</p>
+            </div>
+            <div class="links">
+                <a href="#">Términos</a>
+                <a href="#">Privacidad</a>
+            </div>
+        </div>
+    </footer>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../index/supabase-config.js"></script>
+<script src="camuflajes-template.js"></script>
+<script>
+    // 1. VARIABLES GLOBALES DE FILTRADO
+    let filtroCatActual = "all";
+    let filtroEstadoActual = "all";
+
+    // 2. LÓGICA DE LOS SELECTORES WZHUB (Corregida para no romper el layout)
+    function inicializarSelectores() {
+        document.querySelectorAll('.custom-select').forEach(select => {
+            const header = select.querySelector('.select-header');
+            
+            header.addEventListener('click', (e) => {
+                e.stopPropagation();
+                document.querySelectorAll('.custom-select').forEach(s => {
+                    if(s !== select) s.classList.remove('active');
+                });
+                select.classList.toggle('active');
+            });
+
+            select.querySelectorAll('.option-item').forEach(opt => {
+                opt.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    header.querySelector('span').innerText = opt.innerText;
+                    select.classList.remove('active');
+                    
+                    if(select.id === "catSelect") filtroCatActual = opt.getAttribute('data-val');
+                    if(select.id === "statusSelect") filtroEstadoActual = opt.getAttribute('data-val');
+                    
+                    filtrarTodo();
+                });
+            });
+        });
+    }
+
+    function asignarCategorias(section) {
+        const skins = Array.from(section.querySelectorAll('.skin'));
+        const skinsPerCat = 10;
+
+        // Reset categories
+        skins.forEach(s => delete s.dataset.category);
+
+        let idx = 0;
+        // Assign 1..10 => exactly up to 10 skins each (if available)
+        for (let cat = 1; cat <= 10; cat++) {
+            for (let i = 0; i < skinsPerCat; i++) {
+                if (skins[idx]) {
+                    skins[idx].dataset.category = String(cat);
+                    idx++;
+                }
+            }
+        }
+
+        // Remaining skins (if any) go to category 11
+        for (; idx < skins.length; idx++) {
+            skins[idx].dataset.category = '11';
+        }
+    }
+
+    function obtenerSkinsDeSeguimiento(card) {
+        const section = card.querySelector('.camo-section');
+        const category = section && section.dataset.currentCategory;
+
+        if (category) {
+            return Array.from(section.querySelectorAll(`.skin[data-category="${category}"]`));
+        }
+
+        return Array.from(card.querySelectorAll('.skin'));
+    }
+
+    function actualizarCategorias(section) {
+        const card = section.closest('.weapon-card');
+        if (!card) return;
+
+        card.querySelectorAll('.camo-toggle-item').forEach(item => {
+            const category = item.dataset.category;
+            const categorySkins = Array.from(section.querySelectorAll(`.skin[data-category="${category}"]`));
+            const completed = categorySkins.length > 0 && categorySkins.every(skin => skin.classList.contains('checked'));
+            item.classList.toggle('completed', completed);
+        });
+    }
+
+    function mostrarCategoria(section, category) {
+        section.dataset.currentCategory = category;
+
+        const skins = Array.from(section.querySelectorAll('.skin'));
+
+        // Limpiar clases grandes previas
+        skins.forEach(s => s.classList.remove('large'));
+
+        if (category !== '11') {
+            // Mostrar solo las skins reales de la categoría
+            skins.forEach(skin => {
+                skin.style.display = (skin.dataset && skin.dataset.category === category) ? '' : 'none';
+            });
+        } else {
+            // Categoría 11: mostrar solo las 5 últimas skins y en grande
+            const cat11 = skins.filter(s => s.dataset && s.dataset.category === '11');
+            const last5 = cat11.slice(-5);
+
+            // Ocultar todos
+            skins.forEach(skin => skin.style.display = 'none');
+
+            // Mostrar y marcar grandes los últimos 5
+            last5.forEach(skin => {
+                skin.style.display = '';
+                skin.classList.add('large');
+            });
+        }
+    }
+
+    const PROGRESS_KEY = 'camo-cod-hq-mw2019-progress';
+
+    function guardarProgreso() {
+        try {
+            const progreso = {};
+
+            document.querySelectorAll('.weapon-card[data-name]').forEach(card => {
+                progreso[card.dataset.name] = Array.from(card.querySelectorAll('.skin'))
+                    .map((skin, index) => skin.classList.contains('checked') ? index : null)
+                    .filter(index => index !== null);
+            });
+
+            localStorage.setItem(PROGRESS_KEY, JSON.stringify(progreso));
+        } catch (error) {
+            console.warn('No se pudo guardar el progreso', error);
+        }
+    }
+
+    function restaurarProgreso() {
+        try {
+            const progreso = JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}');
+
+            document.querySelectorAll('.weapon-card[data-name]').forEach(card => {
+                const indices = progreso[card.dataset.name] || [];
+                card.querySelectorAll('.skin').forEach((skin, index) => {
+                    skin.classList.toggle('checked', indices.includes(index));
+                });
+                actualizarCategorias(card.querySelector('.camo-section'));
+            });
+        } catch (error) {
+            console.warn('No se pudo restaurar el progreso', error);
+        }
+    }
+
+    async function sincronizarProgresoConCuenta() {
+        const config = window.CAMO_SUPABASE_CONFIG || {};
+        if (!config.url || !config.anonKey || !window.supabase) return;
+
+        try {
+            const client = window.supabase.createClient(config.url, config.anonKey);
+            const { data: userData } = await client.auth.getUser();
+            const user = userData.user;
+            if (!user) return;
+
+            const { data: remoteData, error } = await client
+                .from('camo_progress')
+                .select('progress')
+                .eq('user_id', user.id)
+                .maybeSingle();
+
+            if (error) throw error;
+
+            const remoteProgress = remoteData?.progress || {};
+            const hasRemoteProgress = Object.values(remoteProgress).some(
+                indices => Array.isArray(indices) && indices.length > 0
+            );
+
+            if (hasRemoteProgress) {
+                aplicarProgreso(remoteProgress);
+                actualizarTodo();
+            }
+
+            window.camoProgressSync = { client, userId: user.id };
+            await guardarProgresoEnCuenta(client, user.id);
+        } catch (error) {
+            console.warn('No se pudo sincronizar el progreso con Supabase', error);
+        }
+    }
+
+    function obtenerProgresoActual() {
+        const progreso = {};
+        document.querySelectorAll('.weapon-card[data-name]').forEach(card => {
+            progreso[card.dataset.name] = Array.from(card.querySelectorAll('.skin'))
+                .map((skin, index) => skin.classList.contains('checked') ? index : null)
+                .filter(index => index !== null);
+        });
+        return progreso;
+    }
+
+    function aplicarProgreso(progreso) {
+        document.querySelectorAll('.weapon-card[data-name]').forEach(card => {
+            const indices = progreso[card.dataset.name] || [];
+            card.querySelectorAll('.skin').forEach((skin, index) => {
+                skin.classList.toggle('checked', indices.includes(index));
+            });
+            actualizarCategorias(card.querySelector('.camo-section'));
+        });
+    }
+
+    async function guardarProgresoEnCuenta(client, userId) {
+        const { error } = await client.from('camo_progress').upsert({
+            user_id: userId,
+            progress: obtenerProgresoActual(),
+            updated_at: new Date().toISOString()
+        });
+        if (error) throw error;
+    }
+
+    function inicializarCamoCollapsibles() {
+        document.querySelectorAll('.camo-section').forEach(section => {
+            asignarCategorias(section);
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'camo-collapsible';
+
+            const toggleRow = document.createElement('div');
+            toggleRow.className = 'camo-toggle-row';
+
+            const buttons = [];
+            for (let i = 1; i <= 11; i++) {
+                const item = document.createElement('div');
+                item.className = 'camo-toggle-item';
+                item.dataset.category = String(i);
+                const tooltip = document.createElement('span');
+                tooltip.className = 'camo-toggle-tooltip';
+                tooltip.textContent = `Categoría ${i}`;
+                const toggleImage = section.dataset[`toggle${i}`];
+                if (toggleImage) {
+                    const thumb = document.createElement('img');
+                    thumb.className = 'camo-toggle-thumb';
+                    thumb.src = toggleImage;
+                    thumb.alt = `Imagen categoría ${i}`;
+                    item.appendChild(thumb);
+                    item.classList.add('has-image');
+                }
+                item.appendChild(tooltip);
+                item.innerHTML += `<span class="camo-toggle-text">${i}</span>`;
+                item.title = `Abrir categoría ${i}`;
+                item.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isActive = item.classList.contains('active');
+
+                    if (isActive) {
+                        item.classList.remove('active');
+                        section.classList.add('collapsed');
+                        return;
+                    }
+
+                    buttons.forEach(btn => btn.classList.remove('active'));
+                    item.classList.add('active');
+                    section.classList.remove('collapsed');
+                    mostrarCategoria(section, String(i));
+                });
+                buttons.push(item);
+                toggleRow.appendChild(item);
+            }
+
+            section.parentNode.insertBefore(wrapper, section);
+            wrapper.appendChild(toggleRow);
+            wrapper.appendChild(section);
+
+            actualizarCategorias(section);
+
+            section.classList.add('collapsed');
+
+            toggleRow.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        });
+    }
+
+    // 3. FUNCIÓN DE FILTRADO (ARREGLADA: Evita que las tarjetas se vuelvan pequeñas)
+    function filtrarTodo() {
+        const busqueda = document.getElementById('weaponSearch').value.toLowerCase();
+
+        document.querySelectorAll('.category-group').forEach(grupo => {
+            const nombreCat = grupo.dataset.category; 
+            const matchCat = (filtroCatActual === 'all' || filtroCatActual === nombreCat);
+            let visiblesEnGrupo = 0;
+
+            grupo.querySelectorAll('.weapon-card').forEach(card => {
+                const nombreArma = (card.dataset.name || card.querySelector('.weapon-name').innerText).toLowerCase();
+                const porcentaje = parseInt(card.querySelector('.pct-val').innerText) || 0;
+                
+                const matchBusqueda = nombreArma.includes(busqueda);
+                
+                let matchEstado = true;
+                if(filtroEstadoActual === 'done') matchEstado = (porcentaje === 100);
+                if(filtroEstadoActual === 'pending') matchEstado = (porcentaje < 100);
+
+                if(matchCat && matchBusqueda && matchEstado) {
+                    // CAMBIO CLAVE: Usamos cadena vacía para que herede el estilo del CSS original
+                    // Esto evita que 'display: flex' fuerce un tamaño incorrecto
+                    card.style.display = ''; 
+                    visiblesEnGrupo++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            grupo.style.display = (visiblesEnGrupo > 0) ? 'block' : 'none';
+        });
+    }
+
+    // 4. INICIALIZACIÓN
+    document.addEventListener('DOMContentLoaded', () => {
+        inicializarSelectores();
+        sincronizarCamuflajesEntreArmas();
+        inicializarCamoCollapsibles();
+        restaurarProgreso();
+        actualizarTodo();
+        sincronizarProgresoConCuenta();
+        document.querySelector('.btn-settings')?.addEventListener('click', () => {
+            document.getElementById('advPanel').classList.toggle('open');
+        });
+        document.querySelector('#masterPanel .panel-header')?.addEventListener('click', toggleMaster);
+        document.getElementById('weaponSearch').addEventListener('input', filtrarTodo);
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.custom-select').forEach(s => s.classList.remove('active'));
+        });
+
+        document.querySelectorAll('.skin').forEach(skin => {
+            skin.onclick = (e) => {
+                e.stopPropagation();
+                const card = skin.closest('.weapon-card');
+                const skins = obtenerSkinsDeSeguimiento(card);
+                const index = skins.indexOf(skin);
+
+                if (index === 0) {
+                    skin.classList.toggle('checked');
+                    if (!skin.classList.contains('checked')) {
+                        skins.forEach(item => item.classList.remove('checked'));
+                    }
+                } else {
+                    skins.forEach((item, itemIndex) => {
+                        item.classList.toggle('checked', itemIndex <= index);
+                    });
+                }
+
+                actualizarCategorias(card.querySelector('.camo-section'));
+                actualizarTodo();
+                guardarProgreso();
+                const sync = window.camoProgressSync;
+                if (sync) {
+                    guardarProgresoEnCuenta(sync.client, sync.userId).catch(error => {
+                        console.warn('No se pudo guardar el progreso en Supabase', error);
+                    });
+                }
+            };
+        });
+    });
+
+
+    function toggleMaster() { 
+        document.getElementById('masterPanel').classList.toggle('closed'); 
+    }
+
+    // 1. Función principal que actualiza TODO (Armas + Global)
+    function actualizarTodo() {
+        const todasLasArmas = document.querySelectorAll('.weapon-card');
+        const groups = document.querySelectorAll('.category-group');
+
+    // A. Actualizar cada tarjeta de arma individual
+    todasLasArmas.forEach(card => {
+        const skins = card.querySelectorAll('.skin');
+        const checked = card.querySelectorAll('.skin.checked').length;
+        const pct = Math.round((checked / skins.length) * 100);
+
+        // Actualizar texto y barra de la tarjeta
+        const pctVal = card.querySelector('.pct-val');
+        const progressBar = card.querySelector('.bar-fill');
+
+        if(pctVal) pctVal.innerText = pct;
+        if(progressBar) progressBar.style.width = pct + '%';
+    });
+
+    // B. Actualizar estadísticas por categoría (AR, SMG, etc.)
+    let sumaProgresosGlobal = 0;
+    let totalGruposConStats = 0;
+
+    groups.forEach(group => {
+        const catId = group.dataset.category;
+        const armasEnGrupo = group.querySelectorAll('.weapon-card');
+        let sumaGrupo = 0;
+
+        armasEnGrupo.forEach(arma => { 
+            sumaGrupo += parseInt(arma.querySelector('.pct-val').innerText) || 0; 
+        });
+
+        const promedioGrupo = Math.round(sumaGrupo / (armasEnGrupo.length || 1)) || 0;
+
+        // Buscar el cuadrito de stat correspondiente en el Apocalypse Tracker
+        const statEl = document.getElementById(catId + '-stat');
+        if(statEl) {
+            statEl.innerText = promedioGrupo + '%';
+            sumaProgresosGlobal += promedioGrupo;
+            totalGruposConStats++;
+        }
+    });
+
+    // C. Actualizar la Gran Barra RGB Global
+    const promedioGlobal = Math.round(sumaProgresosGlobal / (totalGruposConStats || 1)) || 0;
+    const globalFill = document.getElementById('globalFill');
+    const globalText = document.getElementById('globalPctText');
+
+    if(globalFill) globalFill.style.width = promedioGlobal + '%';
+    if(globalText) globalText.innerText = promedioGlobal + '%';
+}
+
+    // Cerrar el menú al hacer clic fuera, con la tecla Esc, y al hacer scroll en móviles
+        (function(){
+            const menuToggle = document.getElementById('menuToggle');
+            const leftMenu = document.querySelector('.left-menu');
+            if(!menuToggle) return;
+
+            // Mantener aria-expanded actualizado
+            menuToggle.addEventListener('change', () => {
+                menuToggle.setAttribute('aria-expanded', menuToggle.checked ? 'true' : 'false');
+            });
+
+            // Cerrar al clicar fuera del contenedor del menú
+            document.addEventListener('click', (e) => {
+                if (!leftMenu.contains(e.target)) {
+                    menuToggle.checked = false;
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Cerrar con Esc
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    menuToggle.checked = false;
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Cerrar al hacer scroll (solo en móviles)
+            window.addEventListener('scroll', () => {
+                try {
+                    if (window.innerWidth <= 640 && menuToggle.checked) {
+                        menuToggle.checked = false;
+                        menuToggle.setAttribute('aria-expanded', 'false');
+                    }
+                } catch (err) {
+                    // no bloquear si ocurre algún error
+                    console.warn('menu scroll close error', err);
+                }
+            }, { passive: true });
+        })();
+        
+</script>
+</body>
+</html>

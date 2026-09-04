@@ -202,6 +202,17 @@
 </div>
 
 <script>
+const fechaActual = new Date();
+const claveEntradaMensual = `${fechaActual.getFullYear()}-${fechaActual.getMonth() + 1}`;
+const entradaMensualMostrada = localStorage.getItem('camo-cod-hq-entrada-mensual');
+const mostrarEntradaMensual = fechaActual.getDate() === 1 && entradaMensualMostrada !== claveEntradaMensual;
+
+if (mostrarEntradaMensual) {
+  localStorage.setItem('camo-cod-hq-entrada-mensual', claveEntradaMensual);
+} else {
+  window.location.replace('index/Camos UEM.html');
+}
+
 const canvas = document.getElementById('mainCanvas');
 const zCanvas = document.getElementById('zombieCanvas');
 const nCanvas = document.getElementById('noiseCanvas');

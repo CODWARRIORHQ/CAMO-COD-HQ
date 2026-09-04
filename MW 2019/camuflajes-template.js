@@ -1,75 +1,39 @@
 (() => {
-    const rutaUem = nombre => `../uem/camuflajes/${nombre}`;
-    const camuflajes = [
-        { title: '1xp', image: 'Camuflajes/DEVGRU.png' },
-        { title: '2xp', image: rutaUem('camo_2_diamante.png') },
-        { title: '3xp', image: rutaUem('camo_3_escarcha.png') },
-        { title: '4xp', image: rutaUem('camo_4_Marea_Negra.png') },
-        { title: '5xp', image: rutaUem('camo_5_Cubierta_de_nebulosa.png') },
-        { title: '6xp', image: rutaUem('camo_6_Medianoche_liquido.png') },
-        { title: '7xp', image: rutaUem('camo_7_Helado_estelar.png') },
-        { title: '8xp', image: rutaUem('camo_8_Estrella_de_galaxias.png') },
-        { title: '9xp', image: rutaUem('camo_9_camuflaje_de_sangre.png') },
-        { title: '10xp', image: rutaUem('camo_10_esmeralda_encantada.png') },
-        { title: '11xp', image: rutaUem('camo_11_velo_de_orion.png') },
-        { title: '12xp', image: rutaUem('camo_12_eclipse_estelar.png') },
-        { title: '13xp', image: rutaUem('camo_13_profundidad_profunda.png') },
-        { title: '14xp', image: rutaUem('camo_14_Vorágine_amarilla.png') },
-        { title: '15xp', image: rutaUem('camo_15_tormenta_roja_astral.png') },
-        { title: '16xp', image: rutaUem('camo_16_aurora_verde.png') },
-        { title: '17xp', image: rutaUem('camo_17_cosmos_blanco.png') },
-        { title: '18xp', image: rutaUem('camo_18_Drift_de_Andrómeda.png') },
-        { title: '19xp', image: rutaUem('camo_19_resplandor_acido.png') },
-        { title: '20xp', image: rutaUem('camo_20_amatista_galactica.png') },
-        { title: '21xp', image: rutaUem('camo_21_diamantes_electrificados.png') },
-        { title: '22xp', image: rutaUem('camo_22.png') },
-        { title: '23xp', image: rutaUem('camo_23.png') },
-        { title: '24xp', image: rutaUem('camo_24.png') },
-        { title: '25xp', image: rutaUem('camo_25.png') },
-        ...Array.from({ length: 22 }, (_, index) => ({ title: `${index + 26}xp`, image: rutaUem('camo_14_Vorágine_amarilla.png') })),
-        { title: '48xp', image: rutaUem('camo_19_resplandor_acido.png') },
-        { title: '49xp', image: rutaUem('camo_20_amatista_galactica.png') },
-        { title: '50xp', image: rutaUem('camo_21_diamantes_electrificados.png') },
-        { title: '51xp', image: rutaUem('camo_20_amatista_galactica.png') },
-        { title: '52xp', image: rutaUem('camo_21_diamantes_electrificados.png') },
-        { title: '53xp', image: rutaUem('camo_22.png') },
-        { title: '54xp', image: rutaUem('camo_23.png') },
-        { title: '55xp', image: rutaUem('camo_24.png') },
-        { title: '56xp', image: rutaUem('camo_25.png') },
-        ...Array.from({ length: 21 }, (_, index) => ({ title: `${index + 57}xp`, image: rutaUem('camo_14_Vorágine_amarilla.png') })),
-        { title: '78xp', image: rutaUem('camo_19_resplandor_acido.png') },
-        { title: '79xp', image: rutaUem('camo_20_amatista_galactica.png') },
-        { title: '80xp', image: rutaUem('camo_21_diamantes_electrificados.png') },
-        { title: '81xp', image: rutaUem('camo_20_amatista_galactica.png') },
-        { title: '82xp', image: rutaUem('camo_21_diamantes_electrificados.png') },
-        { title: '83xp', image: rutaUem('camo_22.png') },
-        { title: '84xp', image: rutaUem('camo_23.png') },
-        { title: '85xp', image: rutaUem('camo_24.png') },
-        { title: '86xp', image: rutaUem('camo_25.png') },
-        ...Array.from({ length: 13 }, (_, index) => ({ title: `${index + 87}xp`, image: rutaUem('camo_14_Vorágine_amarilla.png') })),
-        { title: '100xp', image: 'Camuflajes/ORO.png', className: 'mastery-preview' },
-        { title: 'Nuevo grande', image: rutaUem('camo_21_diamantes_electrificados.png'), className: 'mastery-preview-2' },
-        { title: 'Nuevo grande 2', image: rutaUem('camo_21_diamantes_electrificados.png'), className: 'mastery-preview-3' },
-        { title: 'Nuevo grande 3', image: rutaUem('camo_21_diamantes_electrificados.png'), className: 'mastery-preview-4' },
-        { title: 'Nuevo grande 3', image: rutaUem('camo_21_diamantes_electrificados.png'), className: 'mastery-preview-4' }
+    const rutaCamuflaje = (categoria, nombre) => `Camuflajes/${categoria}/${nombre}`;
+
+    const categorias = [
+        ['spray', ['Serpiente_del_Desierto_MW2019.png', 'Comando_MW2019.png', 'Rip NTear_MW2019.png', 'Serpiente_marroquí_MW2019.png', 'Golpeteo_MW2019.png', 'Lago_China_MW2019.png', 'Traje_de_rayas_MW2019.png', 'Eslabón_de_cadena_MW2019.png', 'Nightfall_MW2019.png', 'Humo_MW2019.png']],
+        ['bosque', ['Pantano_MW2019.png', 'Bosque_moderno_MW2019.png', 'Híbrido_del_Desierto_MW2019.png', 'Danza_de_la_Arena_MW2019.png', 'Marismas_MW2019.png', 'Kill_Brush_MW2019.png', 'Verdes_de_WARCOM_MW2019.png', 'WARCOM_Blues_MW2019.png', 'Nightfrost_MW2019.png', 'Dosel_MW2019.png']],
+        ['digital', ['Urban_Digital_MW2019.png', 'Jungle_Digital_MW2019.png', 'Arctic_Digital_MW2019.png', 'Forest_Digital_MW2019.png', 'Marsh_Digital_MW2019.png', 'Bark_Digital_MW2019.png', 'Blue_Digital_MW2019.png', 'Classic_Digital_MW2019.png', 'Desert_Digital_MW2019.png', 'Green_Digital_MW2019.png']],
+        ['dragon', ['H20_MW2019.png', 'Tierra_MW2019.png', 'Moss_MW2019.png', 'Etiquetado_MW2019.png', 'Black_Top_MW2019.png', 'Asfalto_MW2019.png', 'Escena_del_crimen_MW2019.png', 'Neón_Rosa_MW2019.png', 'Pionero_MW2019.png', 'Follaje_MW2019.png']],
+        ['escindida', ['Tundra_MW2019.png', 'Sotobosque_MW2019.png', 'Congelación_MW2019.png', 'Rompehielos_MW2019.png', 'Ruinas_MW2019.png', 'Espuma_de_Mar_Ártico_MW2019.png', 'Ángulos_MW2019.png', 'Deslumbramiento_de_otoño_MW2019.png', 'Resumen_Ártico_MW2019.png', 'Aristas_afilados_MW2019.png']],
+        ['topo', ['Fuera_de_la_red_MW2019.png', 'Mares_nocturnos_MW2019.png', 'Operaciones_en_Marsh_MW2019.png', 'Forestación_MW2019.png', 'Fósforo_MW2019.png', 'Senderos_vectoriales_MW2019.png', 'Viaje_Topo_MW2019.png', 'Estéril_MW2019.png', 'Desaparecidos_MW2019.png', 'Tormenta_de_Arena_MW2019.png']],
+        ['tiger', ['Cubierto_de_maleza_MW2019.png', 'Deslizamiento_de_tierra_MW2019.png', 'Bosque_Húmedo_MW2019.png', 'Abominable_MW2019.png', 'Velo_desvaído_MW2019.png', 'Bestia_Salvaje_MW2019.png', 'Rayas_de_tigre_MW2019.png', 'Gato_del_Desierto_MW2019.png', 'Tigre_Rojo_MW2019.png', 'Tigre_Azul_MW2019.png']],
+        ['rayas', ['Praderas_MW2019.png','Melena _de_los_Tigres_MW2019.png','El_Kan_MW2019.png','Savannah_MW2019.png','Zebra_MW2019.png','Bluegrass_MW2019.png','Africa_MW2019.png','Nu_Wave_Zebra_MW2019.png','Greengrass_MW2019.png','Cebra_Rosa_MW2019.png']],
+        ['reptil', ['Python_MW2019.png','Serpiente_de_cascabel_MW2019.png','Komodo_MW2019.png','Iguana_azul_MW2019.png', 'Chupacabras_MW2019.png', 'Pitón_Rosa_MW2019.png', 'Anaconda_MW2019.png', 'Serpiente_toro_MW2019.png', 'Gecko_MW2019.png', 'Serpiente_de_liga_MW2019.png']],
+        ['calaveras', ['Necropolis_MW2019.png', 'Excavador_de_cadáveres_MW2019.png', 'Osario_MW2019.png', 'Apariciones_MW2019.png', 'Fantasma_MW2019.png', 'Espectro_del_Bosque_MW2019.png', 'Hemofílico_MW2019.png', 'Engaños_MW2019.png', 'Cthulhu_MW2019.png', 'Lichyard_MW2019.png']],
+        ['completista', ['Oro_MW2019.png', 'Platino_MW2019.png', 'Damasco_MW2019.png', 'Obsidiana_MW2019.png']]
     ];
 
-    const imagenesCategorias = camuflajes.slice(0, 11).reduce((imagenes, camuflaje, index) => {
-        imagenes[`data-toggle${index + 1}`] = camuflaje.image;
+    const camuflajes = categorias.flatMap(([categoria, nombres], categoriaIndex) => nombres.map((nombre, index) => ({
+        title: categoriaIndex === 10 ? `Categoría 11 - ${index + 1}` : `${categoriaIndex * 10 + index + 1}xp`,
+        image: rutaCamuflaje(categoria, nombre),
+        className: categoriaIndex === 10 ? `mastery-preview${index ? `-${index + 1}` : ''}` : ''
+    })));
+
+    const imagenesCategorias = categorias.reduce((imagenes, [categoria, nombres], index) => {
+        imagenes[`data-toggle${index + 1}`] = rutaCamuflaje(categoria, nombres[0]);
         return imagenes;
     }, {});
 
     window.sincronizarCamuflajesEntreArmas = () => {
         document.querySelectorAll('.weapon-card[data-name] .camo-section').forEach(seccion => {
-            Object.entries(imagenesCategorias).forEach(([atributo, valor]) => {
-                seccion.setAttribute(atributo, valor);
-            });
-
+            Object.entries(imagenesCategorias).forEach(([atributo, valor]) => seccion.setAttribute(atributo, valor));
             seccion.replaceChildren(...camuflajes.map(({ title, image, className }) => {
                 const skin = document.createElement('div');
                 skin.className = `skin${className ? ` ${className}` : ''}`;
                 skin.dataset.title = title;
-                skin.style.backgroundImage = `url(${image})`;
+                skin.style.backgroundImage = `url("${image.replace(/"/g, '\\"')}")`;
                 return skin;
             }));
         });

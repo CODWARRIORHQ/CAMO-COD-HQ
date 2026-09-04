@@ -21,10 +21,14 @@ select
     profiles.previous_rank,
     profiles.created_at,
     profiles.icon_url,
-    coalesce(sum(jsonb_array_length(progress_item.value)), 0)::integer as completed
+    coalesce(sum(least(jsonb_array_length(progress_item.value), catalog.camo_count)), 0)::integer as completed
 from public.profiles
 left join public.camo_progress on camo_progress.user_id = profiles.user_id
-left join lateral jsonb_each(camo_progress.progress) as progress_item on true
+left join lateral jsonb_each(camo_progress.progress) as progress_item on jsonb_typeof(progress_item.value) = 'array'
+left join public.camo_catalog as catalog
+    on catalog.game = 'Modern Warfare 2019'
+    and catalog.weapon = progress_item.key
+    and catalog.camo_count >= jsonb_array_length(progress_item.value)
 group by profiles.user_id, profiles.username, profiles.accent_color, profiles.is_public, profiles.favorite_game, profiles.selected_medals, profiles.game_progress, profiles.medal_earned_at, profiles.previous_rank, profiles.created_at, profiles.icon_url
 having profiles.is_public or profiles.user_id = auth.uid();
 

@@ -103,7 +103,9 @@
         const config = window.CAMO_SUPABASE_CONFIG || {};
         const client = config.url && config.anonKey ? window.supabase.createClient(config.url, config.anonKey) : null;
         const userId = new URLSearchParams(location.search).get('user');
-        const total = 668;
+        const defaultGameTotals = { 'Modern Warfare 2019': 2496 };
+        let total = defaultGameTotals['Modern Warfare 2019'];
+        document.querySelector('#profileCompleted').textContent = `0 / ${total}`;
         const validColor = color => /^#[0-9a-f]{6}$/i.test(color);
         const applyColor = color => {
             if (!validColor(color)) return;
@@ -180,7 +182,7 @@
             if (!client || !userId) { gameStats.innerHTML = '<p class="message">Perfil no disponible.</p>'; return; }
             const [{ data: profile }, { data: allProfiles }] = await Promise.all([
                 client.from('leaderboard_stats').select('username,completed,is_public,favorite_game,selected_medals,created_at,accent_color,icon_url,game_progress,medal_earned_at,previous_rank').eq('user_id', userId).maybeSingle(),
-                client.from('leaderboard_stats').select('user_id,username,completed')
+                client.from('leaderboard_stats').select('user_id,username,completed,created_at')
             ]);
             const currentPlayer = profile ? { ...profile, user_id: userId, rankText: '-' } : null;
             const sortedPlayers = ((allProfiles || []).slice().sort((a, b) => b.completed - a.completed));
@@ -189,6 +191,9 @@
                 currentPlayer.rankText = currentRank > 0 ? `#${currentRank}` : '-';
             }
             const completed = profile?.completed || 0;
+            const storedGameTotals = profile?.game_progress?.__totals || {};
+            const getGameTotal = gameName => Number(storedGameTotals[gameName]) || defaultGameTotals[gameName] || 668;
+            total = getGameTotal(profile?.favorite_game || 'Modern Warfare 2019');
             document.querySelector('#profileName').textContent = profile?.username || 'Jugador';
             applyColor(profile?.accent_color);
             const rankChange = profile?.previous_rank && currentPlayer?.rankText !== '-' ? Number(profile.previous_rank) - Number(currentPlayer.rankText.slice(1)) : 0;
@@ -214,11 +219,18 @@
                 return ['completion'];
             })();
             const profileGameNames = ['Modern Warfare 2007', 'Modern Warfare 2', 'Black Ops', 'Modern Warfare 3', 'Black Ops II', 'Ghosts', 'Advanced Warfare', 'Black Ops III', 'Infinite Warfare', 'Modern Warfare Remastered', 'WWII', 'Black Ops IIII', 'Mobile', 'Modern Warfare 2019', 'Modern Warfare 2 Remastered', 'Black Ops Cold War', 'Vanguard', 'Modern Warfare II', 'Modern Warfare III', 'Black Ops 6', 'Black Ops 7', 'Modern Warfare 4', 'Warzone'];
+            const camouflageMilestones = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 2750, 3000, 3500, 4000, 4500, 5000, 6000, 7000, 8000, 9000, 10000];
             const profileGameProgress = profile?.game_progress || {};
-            const completedGames = profileGameNames.filter(name => (profileGameProgress[name] || (name === 'Modern Warfare 2019' ? completed : 0)) >= total).length;
+            const completedGames = profileGameNames.filter(name => (profileGameProgress[name] || (name === 'Modern Warfare 2019' ? completed : 0)) >= getGameTotal(name)).length;
             const visibleMedalLimit = 4 + completedGames;
-            const earnedMedals = { completion: completed >= total, category: completed >= total, streak: completed >= 100, top3: Number(currentPlayer?.rankText?.slice(1)) <= 3, ...Object.fromEntries(profileGameNames.map(name => [`game:${name}`, (profileGameProgress[name] || (name === 'Modern Warfare 2019' ? completed : 0)) >= total])) };
+            const firstUsers = (allProfiles || []).filter(item => item.created_at).sort((a, b) => new Date(a.created_at) - new Date(b.created_at)).slice(0, 10);
+            const accountAge = profile?.created_at && Date.now() - new Date(profile.created_at).getTime() >= 365.25 * 24 * 60 * 60 * 1000;
+            const earnedMedals = { ...Object.fromEntries(camouflageMilestones.map(amount => [`camos:${amount}`, completed >= amount])), veteran: Boolean(accountAge), secret: completed >= 1000, founder: firstUsers.some(item => item.user_id === userId), completion: completed >= total, category: completed >= total, streak: completed >= 100, top3: Number(currentPlayer?.rankText?.slice(1)) <= 3, ...Object.fromEntries(profileGameNames.map(name => [`game:${name}`, (profileGameProgress[name] || (name === 'Modern Warfare 2019' ? completed : 0)) >= getGameTotal(name)])) };
             const badgeData = [
+                ...camouflageMilestones.map(amount => [`camos:${amount}`, `${amount} camuflajes`]),
+                ['veteran', 'Perfil veterano'],
+                ['secret', 'Cazador de secretos'],
+                ['founder', 'Fundador de CAMO COD HQ'],
                 ['completion', 'Maestro del camuflaje'],
                 ['category', 'Categoría completa'],
                 ['streak', 'Racha de progreso'],
@@ -270,7 +282,7 @@
                 if (!medalsInput) {
                     const medalsRow = document.createElement('div');
                     medalsRow.className = 'medal-options';
-                    medalsRow.innerHTML = '<span class="stat-label">Medallas visibles (máximo dinámico)</span><label><input id="selectedMedals" type="checkbox" value="completion"> Maestro del camuflaje</label><label><input type="checkbox" value="category"> Categoría completa</label><label><input type="checkbox" value="streak"> Racha de progreso</label><label><input type="checkbox" value="top3"> Top 3 del leaderboard</label>' + profileGameNames.map(name => `<label><input type="checkbox" value="game:${name}"> ${name} completado</label>`).join('');
+                    medalsRow.innerHTML = '<span class="stat-label">Medallas visibles (máximo dinámico)</span>' + camouflageMilestones.map(amount => `<label><input type="checkbox" value="camos:${amount}"> ${amount} camuflajes</label>`).join('') + '<label><input type="checkbox" value="veteran"> Perfil veterano</label><label><input type="checkbox" value="secret"> Cazador de secretos</label><label><input type="checkbox" value="founder"> Fundador de CAMO COD HQ</label><label><input id="selectedMedals" type="checkbox" value="completion"> Maestro del camuflaje</label><label><input type="checkbox" value="category"> Categoría completa</label><label><input type="checkbox" value="streak"> Racha de progreso</label><label><input type="checkbox" value="top3"> Top 3 del leaderboard</label>' + profileGameNames.map(name => `<label><input type="checkbox" value="game:${name}"> ${name} completado</label>`).join('');
                     editor.insertBefore(medalsRow, saveButton);
                     medalsInput = medalsRow.querySelector('#selectedMedals');
                 }
@@ -288,6 +300,15 @@
                 }));
             const { data: sessionData } = await client.auth.getUser();
             const isOwner = sessionData.user?.id === userId;
+            const earnedAt = { ...(profile?.medal_earned_at || {}) };
+            if (isOwner) {
+                const newDate = new Date().toISOString();
+                const newMedals = Object.keys(earnedMedals).filter(key => earnedMedals[key] && !earnedAt[key]);
+                if (newMedals.length) {
+                    newMedals.forEach(key => { earnedAt[key] = newDate; });
+                    await client.from('profiles').update({ medal_earned_at: earnedAt, updated_at: newDate }).eq('user_id', userId);
+                }
+            }
             editor.hidden = !isOwner;
             colorInput.disabled = !isOwner;
             iconInput.disabled = !isOwner;
@@ -362,7 +383,7 @@
             const gameValues = gameNames.map(name => gameCatalog[name] || (name === 'Modern Warfare 2019' ? completed : 0));
             const bestValue = Math.max(...gameValues);
             const gameCodes = Object.fromEntries(gameNames.map(name => [name, name.split(' ').map(part => part[0]).join('').slice(0, 3).toUpperCase()]));
-            const gamesMarkup = gameNames.map((name, index) => { const value = gameValues[index]; const percent = Math.min(Math.round(value / total * 100), 100); const favoriteLabel = name === favoriteGame ? ' · Favorito' : ''; const favoriteClass = name === favoriteGame ? ' favorite' : ''; const bestClass = value === bestValue && value > 0 ? ' best' : ''; const status = percent === 100 ? 'Completado' : percent > 0 ? 'En progreso' : 'Sin comenzar'; return `<div class="game${favoriteClass}${bestClass}"><span><span class="game-icon">${gameCodes[name]}</span><span class="game-title">${name}${favoriteLabel}</span><span class="game-meta">${value} / ${total} camuflajes</span><span class="game-progress"><span style="width:${percent}%"></span></span><span class="game-status">${status}</span></span><span class="game-score">${percent}%</span></div>`; }).join('');
+            const gamesMarkup = gameNames.map((name, index) => { const value = gameValues[index]; const gameTotal = getGameTotal(name); const percent = Math.min(Math.round(value / gameTotal * 100), 100); const favoriteLabel = name === favoriteGame ? ' · Favorito' : ''; const favoriteClass = name === favoriteGame ? ' favorite' : ''; const bestClass = value === bestValue && value > 0 ? ' best' : ''; const status = percent === 100 ? 'Completado' : percent > 0 ? 'En progreso' : 'Sin comenzar'; return `<div class="game${favoriteClass}${bestClass}"><span><span class="game-icon">${gameCodes[name]}</span><span class="game-title">${name}${favoriteLabel}</span><span class="game-meta">${value} / ${gameTotal} camuflajes</span><span class="game-progress"><span style="width:${percent}%"></span></span><span class="game-status">${status}</span></span><span class="game-score">${percent}%</span></div>`; }).join('');
             gameStats.innerHTML = `<div class="games-header"><h2>Progreso por juego</h2><span>${gameNames.length} juegos registrados</span></div><div class="game-grid">${gamesMarkup}</div>`;
         };
         render().catch(() => { document.querySelector('#gameStats').innerHTML = '<p class="message">No se pudieron cargar las estadísticas.</p>'; });

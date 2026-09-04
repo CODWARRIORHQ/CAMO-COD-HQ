@@ -37,8 +37,11 @@
         }
 
         .site-header {
-            border-bottom: 1px solid var(--border);
-            background: rgba(5, 6, 10, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            background: linear-gradient(110deg, rgba(18, 27, 43, 0.96), rgba(8, 12, 21, 0.94));
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
         }
 
         .nav {
@@ -46,33 +49,41 @@
             align-items: center;
             justify-content: space-between;
             gap: 20px;
-            min-height: 78px;
+            min-height: 74px;
+            padding: 9px 14px;
         }
 
         .brand {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
+            min-width: 0;
         }
 
         .logo {
-            width: 48px;
-            height: 48px;
+            width: 54px;
+            height: 54px;
             overflow: hidden;
-            border-radius: 8px;
+            flex: 0 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 12px;
             background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            box-shadow: 0 5px 14px rgba(0, 0, 0, 0.28);
         }
 
         .logo img { width: 100%; height: 100%; object-fit: cover; }
-        .brand-text { display: grid; gap: 2px; }
-        .site-name { font-weight: 800; letter-spacing: 0.04em; }
-        .site-tag { color: var(--muted); font-size: 12px; }
+        .brand-text { display: grid; gap: 3px; min-width: 0; }
+        .site-name { font-size: 15px; font-weight: 800; letter-spacing: 0.05em; white-space: nowrap; }
+        .site-tag { color: var(--muted); font-size: 12px; white-space: nowrap; }
 
         .btn.ghost {
-            padding: 8px 12px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 8px;
+            flex: 0 0 auto;
+            padding: 10px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.04);
             color: inherit;
+            font-size: 14px;
             transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
         }
 
@@ -98,7 +109,7 @@
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 16px;
             margin: 0 0 28px;
         }
@@ -189,8 +200,7 @@
             min-width: 220px;
         }
 
-        .search-box input,
-        .sort-box select {
+        .search-box input {
             width: 100%;
             padding: 12px 14px;
             color: #fff;
@@ -206,8 +216,7 @@
             gap: 8px;
         }
 
-        .filter-button,
-        .sort-box {
+        .filter-button {
             flex: 0 0 auto;
         }
 
@@ -226,10 +235,6 @@
             background: linear-gradient(135deg, var(--accent), var(--accent-2));
             border-color: transparent;
             color: white;
-        }
-
-        .sort-box {
-            min-width: 180px;
         }
 
         .leaderboard {
@@ -263,8 +268,6 @@
         .rank-cell { display: flex; align-items: center; gap: 10px; min-width: 0; }
         .rank-icon { width: 34px; height: 34px; object-fit: contain; }
         .name-icon { width: 28px; height: 28px; object-fit: contain; vertical-align: middle; margin-right: 6px; }
-        .player-medals { display:inline-flex; gap:4px; margin-left:8px; vertical-align:middle; }
-        .player-medal { color:var(--gold); font-size:13px; }
         .player { font-weight: 700; }
         .score { color: var(--gold); font-weight: 800; text-align: right; }
         .score-medals { display:block; margin-top:4px; color:var(--muted); font-size:11px; font-weight:600; }
@@ -273,7 +276,13 @@
 
         @media (max-width: 600px) {
             body { padding: 12px; }
-            .nav { min-height: 68px; }
+            .nav { min-height: 68px; padding: 7px 10px; }
+            .site-header { border-radius: 14px; }
+            .logo { width: 50px; height: 50px; }
+            .brand { gap: 11px; }
+            .site-name { font-size: 14px; }
+            .site-tag { font-size: 11px; }
+            .btn.ghost { padding: 9px 13px; }
             main { padding: 44px 0; }
             .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 20px; }
             .stat-card { min-width: 0; padding: 14px; border-radius: 9px; }
@@ -287,7 +296,6 @@
             .search-box { min-width: 100%; }
             .filters { width: 100%; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 3px; }
             .filter-button { flex: 0 0 auto; padding: 9px 12px; }
-            .sort-box { width: 100%; min-width: 0; }
             .leaderboard-header,
             .leaderboard-row { grid-template-columns: 72px minmax(0, 1fr) 110px; padding: 16px; }
             .rank-icon { width: 28px; height: 28px; }
@@ -340,13 +348,6 @@
                 <button class="filter-button" type="button" data-limit="50">Top 50</button>
                 <button class="filter-button" type="button" data-limit="all">Todos</button>
             </div>
-            <div class="sort-box">
-                <select id="leaderboardSort" aria-label="Ordenar por">
-                    <option value="completed">Total de camuflajes</option>
-                    <option value="progress">Progreso %</option>
-                    <option value="position">Posición global</option>
-                </select>
-            </div>
         </div>
 
         <section class="leaderboard" aria-labelledby="leaderboard-title">
@@ -365,13 +366,15 @@
         const config = window.CAMO_SUPABASE_CONFIG || {};
         const client = config.url && config.anonKey ? window.supabase.createClient(config.url, config.anonKey) : null;
         const countProgress = progress => Object.values(progress || {}).reduce((total, indices) => total + (Array.isArray(indices) ? indices.length : 0), 0);
-        const state = { limit: 10, sortBy: 'completed', search: '' };
+        const state = { limit: 10, search: '' };
         const leaderboardGames = ['Modern Warfare 2007', 'Modern Warfare 2', 'Black Ops', 'Modern Warfare 3', 'Black Ops II', 'Ghosts', 'Advanced Warfare', 'Black Ops III', 'Infinite Warfare', 'Modern Warfare Remastered', 'WWII', 'Black Ops IIII', 'Mobile', 'Modern Warfare 2019', 'Modern Warfare 2 Remastered', 'Black Ops Cold War', 'Vanguard', 'Modern Warfare II', 'Modern Warfare III', 'Black Ops 6', 'Black Ops 7', 'Modern Warfare 4', 'Warzone'];
         const getMedalCount = (player, position = null) => {
             const completed = Number(player?.completed) || 0;
-            const generalCount = (completed >= 668 ? 2 : 0) + (completed >= 100 ? 1 : 0) + (position !== null && position < 3 ? 1 : 0);
             const progress = player?.game_progress || {};
-            const gameCount = leaderboardGames.reduce((count, game) => count + ((progress[game] || (game === 'Modern Warfare 2019' ? completed : 0)) >= 668 ? 1 : 0), 0);
+            const totals = progress.__totals || {};
+            const getGameTotal = game => Number(totals[game]) || (game === 'Modern Warfare 2019' ? 2496 : 668);
+            const generalCount = (completed >= getGameTotal('Modern Warfare 2019') ? 2 : 0) + (completed >= 100 ? 1 : 0) + (position !== null && position < 3 ? 1 : 0);
+            const gameCount = leaderboardGames.reduce((count, game) => count + ((progress[game] || (game === 'Modern Warfare 2019' ? completed : 0)) >= getGameTotal(game) ? 1 : 0), 0);
             return generalCount + gameCount;
         };
 
@@ -380,12 +383,10 @@
             const podium = document.querySelector('#podium');
             const activePlayers = scores.length;
             const bestPlayer = scores[0] || null;
-            const average = activePlayers ? Math.round(scores.reduce((sum, player) => sum + player.completed, 0) / activePlayers) : 0;
             const totalCompleted = scores.reduce((sum, player) => sum + player.completed, 0);
 
             const statCards = [
                 { label: 'Jugadores activos', value: activePlayers },
-                { label: 'Media global', value: average },
                 { label: 'Mejor jugador', value: bestPlayer ? bestPlayer.username : '—' },
                 { label: 'Total camuflajes', value: totalCompleted }
             ];
@@ -422,11 +423,7 @@
                 return (player.username || '').toLowerCase().includes(searchValue);
             });
 
-            const sorted = filtered.slice().sort((a, b) => {
-                if (state.sortBy === 'progress') return (b.completed / 668) - (a.completed / 668);
-                if (state.sortBy === 'position') return a.completed - b.completed;
-                return b.completed - a.completed;
-            });
+            const sorted = filtered.slice().sort((a, b) => b.completed - a.completed);
 
             const limited = state.limit === 'all' ? sorted : sorted.slice(0, Number(state.limit));
             message.remove();
@@ -476,31 +473,6 @@
                     nameIcon.alt = 'Icono del usuario';
                     playerLink.prepend(nameIcon);
                 }
-                let selectedMedals = player.selected_medals;
-                if (typeof selectedMedals === 'string') {
-                    try { selectedMedals = JSON.parse(selectedMedals); } catch (error) { selectedMedals = []; }
-                }
-                selectedMedals = Array.isArray(selectedMedals) ? selectedMedals : [];
-                const leaderboardGames = ['Modern Warfare 2007', 'Modern Warfare 2', 'Black Ops', 'Modern Warfare 3', 'Black Ops II', 'Ghosts', 'Advanced Warfare', 'Black Ops III', 'Infinite Warfare', 'Modern Warfare Remastered', 'WWII', 'Black Ops IIII', 'Mobile', 'Modern Warfare 2019', 'Modern Warfare 2 Remastered', 'Black Ops Cold War', 'Vanguard', 'Modern Warfare II', 'Modern Warfare III', 'Black Ops 6', 'Black Ops 7', 'Modern Warfare 4', 'Warzone'];
-                const gameProgress = player.game_progress || {};
-                const completedGames = leaderboardGames.filter(game => (gameProgress[game] || (game === 'Modern Warfare 2019' ? player.completed : 0)) >= 668).length;
-                const visibleMedalLimit = 4 + completedGames;
-                const earnedMedals = { completion: player.completed >= 668, category: player.completed >= 668, streak: player.completed >= 100, top3: index < 3, ...Object.fromEntries(leaderboardGames.map(name => [`game:${name}`, (gameProgress[name] || (name === 'Modern Warfare 2019' ? player.completed : 0)) >= 668])) };
-                const medalNames = { completion: 'Maestro del camuflaje', category: 'Categoría completa', streak: 'Racha de progreso', top3: 'Top 3 del leaderboard' };
-                const visibleMedals = selectedMedals.filter(key => earnedMedals[key]).slice(0, visibleMedalLimit);
-                if (visibleMedals.length) {
-                    const medalWrap = document.createElement('span');
-                    medalWrap.className = 'player-medals';
-                    visibleMedals.forEach(key => {
-                        const medal = document.createElement('span');
-                        medal.className = 'player-medal';
-                        medal.textContent = '★';
-                        medal.title = medalNames[key] || `${key.replace('game:', '')} completado`;
-                        medalWrap.appendChild(medal);
-                    });
-                    playerLink.appendChild(medalWrap);
-                }
-
                 const score = document.createElement('span');
                 score.className = 'score';
                 score.innerHTML = `${player.completed} camuflajes<span class="score-medals">${getMedalCount(player, index)} medallas</span>`;
@@ -521,16 +493,10 @@
             const scores = (progressRows || []).sort((a, b) => b.completed - a.completed);
             renderTopStats(scores);
             const searchInput = document.querySelector('#leaderboardSearch');
-            const sortSelect = document.querySelector('#leaderboardSort');
             const filterButtons = document.querySelectorAll('.filter-button');
 
             searchInput.addEventListener('input', (event) => {
                 state.search = event.target.value;
-                renderLeaderboard(scores);
-            });
-
-            sortSelect.addEventListener('change', (event) => {
-                state.sortBy = event.target.value;
                 renderLeaderboard(scores);
             });
 

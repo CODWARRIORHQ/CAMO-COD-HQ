@@ -15,22 +15,40 @@ const config=window.CAMO_SUPABASE_CONFIG||{};
 const client=config.url&&config.anonKey?window.supabase.createClient(config.url,config.anonKey):null;
 const userId=new URLSearchParams(location.search).get('user');
 if(userId)document.querySelector('#profileLink').href=`profile.html?user=${encodeURIComponent(userId)}`;
-const total=668;
+const defaultGameTotals={'Modern Warfare 2019':2496};
 const games=['Modern Warfare 2007','Modern Warfare 2','Black Ops','Modern Warfare 3','Black Ops II','Ghosts','Advanced Warfare','Black Ops III','Infinite Warfare','Modern Warfare Remastered','WWII','Black Ops IIII','Mobile','Modern Warfare 2019','Modern Warfare 2 Remastered','Black Ops Cold War','Vanguard','Modern Warfare II','Modern Warfare III','Black Ops 6','Black Ops 7','Modern Warfare 4','Warzone'];
-const catalog=[['completion','Maestro del camuflaje','Completar un juego al 100%','gold'],['category','Categoría completa','Completar todas las categorías','silver'],['streak','Racha de progreso','Alcanzar una racha de progreso','bronze'],['top3','Top 3 del leaderboard','Quedar entre los tres primeros','gold'],['allGames','Completista total','Completar todos los juegos','diamond'],...games.map(game=>[`game:${game}`,`${game} completado`,`Completar ${game} al 100%`,'diamond'])];
+const camouflageMilestones=[50,100,200,300,400,500,600,700,800,900,1000,1250,1500,1750,2000,2250,2500,2750,3000,3500,4000,4500,5000,6000,7000,8000,9000,10000];
+const milestoneCatalog=camouflageMilestones.map(amount=>[`camos:${amount}`,`${amount} camuflajes`,`Completar ${amount} camuflajes`,amount<1000?'bronze':amount<2500?'silver':amount<5000?'gold':'diamond']);
+const specialCatalog=[['veteran','Perfil veterano','Mantener la cuenta activa durante un año','silver'],['secret','Cazador de secretos','Desbloquear una medalla oculta','gold'],['founder','Fundador de CAMO COD HQ','Ser uno de los primeros 10 usuarios','diamond']];
+const catalog=[...milestoneCatalog,...specialCatalog,['completion','Maestro del camuflaje','Completar un juego al 100%','gold'],['category','Categoría completa','Completar todas las categorías','silver'],['streak','Racha de progreso','Alcanzar una racha de progreso','bronze'],['top3','Top 3 del leaderboard','Quedar entre los tres primeros','gold'],['allGames','Completista total','Completar todos los juegos','diamond'],...games.map(game=>[`game:${game}`,`${game} completado`,`Completar ${game} al 100%`,'diamond'])];
 const render=async()=>{
 	const root=document.querySelector('#medals');
 	if(!client||!userId){root.innerHTML='<p class="meta">Perfil no disponible.</p>';return;}
 	const [{data:profile},{data:ranking}]=await Promise.all([
-		client.from('leaderboard_stats').select('completed,selected_medals,medal_earned_at,game_progress').eq('user_id',userId).maybeSingle(),
-		client.from('leaderboard_stats').select('user_id,completed')
+		client.from('leaderboard_stats').select('completed,selected_medals,medal_earned_at,game_progress,created_at').eq('user_id',userId).maybeSingle(),
+		client.from('leaderboard_stats').select('user_id,completed,created_at')
 	]);
 	const completed=profile?.completed||0;
 	const gameProgress=profile?.game_progress||{};
+	const storedGameTotals=gameProgress.__totals||{};
+	const getGameTotal=game=>Number(storedGameTotals[game])||defaultGameTotals[game]||668;
+	const total=getGameTotal('Modern Warfare 2019');
 	const values=games.map(game=>gameProgress[game]||(game==='Modern Warfare 2019'?completed:0));
 	const rank=[...(ranking||[])].sort((a,b)=>b.completed-a.completed).findIndex(item=>item.user_id===userId)+1;
-	const earned={completion:completed>=total,category:completed>=total,streak:completed>=100,top3:rank>0&&rank<=3,allGames:values.every(value=>value>=total)};
-	games.forEach((game,index)=>{earned[`game:${game}`]=values[index]>=total;});
+	const firstUsers=[...(ranking||[])].filter(item=>item.created_at).sort((a,b)=>new Date(a.created_at)-new Date(b.created_at)).slice(0,10);
+	const accountAge=profile?.created_at && Date.now()-new Date(profile.created_at).getTime() >= 365.25*24*60*60*1000;
+	const earned={...Object.fromEntries(camouflageMilestones.map(amount=>[`camos:${amount}`,completed>=amount])),veteran:Boolean(accountAge),secret:completed>=1000,founder:firstUsers.some(item=>item.user_id===userId),completion:completed>=total,category:completed>=total,streak:completed>=100,top3:rank>0&&rank<=3,allGames:values.every((value,index)=>value>=getGameTotal(games[index]))};
+	games.forEach((game,index)=>{earned[`game:${game}`]=values[index]>=getGameTotal(game);});
+	const earnedAt={...(profile?.medal_earned_at||{})};
+	const {data:sessionData}=await client.auth.getUser();
+	if(sessionData.user?.id===userId){
+		const newDate=new Date().toISOString();
+		const newMedals=Object.keys(earned).filter(key=>earned[key]&&!earnedAt[key]);
+		if(newMedals.length){
+			newMedals.forEach(key=>{earnedAt[key]=newDate;});
+			await client.from('profiles').update({medal_earned_at:earnedAt,updated_at:newDate}).eq('user_id',userId);
+		}
+	}
 	const unlocked=catalog.filter(([key])=>earned[key]).length;
 	const summary=document.createElement('p');
 	summary.className='summary';
@@ -40,13 +58,13 @@ const render=async()=>{
 	grid.id='medals';
 	grid.className='grid';
 	summary.after(grid);
-	const dates=profile?.medal_earned_at||{};
+	const dates=earnedAt;
 	const tierClass={bronze:'bronze',silver:'silver',gold:'gold',diamond:'diamond'};
 	grid.innerHTML=catalog.map(([key,name,description,tier])=>{
 		const isEarned=earned[key];
 		const date=dates[key];
 		const tag=key.startsWith('game:')?key.slice(5):'LOGRO';
-		return `<article class="medal ${isEarned?'earned '+(tierClass[tier]||''):'locked'}"><span class="lock">${isEarned?'':'🔒'}</span><span class="game-tag">${tag}</span><span class="icon">${isEarned?'★':'☆'}</span><span class="name">${name}</span><span class="meta">${description}</span><br><span class="meta">${isEarned?(date?'Conseguida el '+new Intl.DateTimeFormat('es-ES').format(new Date(date)):'Desbloqueada'):'Bloqueada'}</span></article>`;
+		return `<article class="medal ${isEarned?'earned '+(tierClass[tier]||''):'locked'}"><span class="lock">${isEarned?'':'🔒'}</span><span class="game-tag">${tag}</span><span class="icon">${isEarned?'★':'☆'}</span><span class="name">${name}</span><span class="meta">${description}</span><br><span class="meta">${isEarned?(date?'Conseguida el '+new Intl.DateTimeFormat('es-ES',{day:'2-digit',month:'2-digit',year:'numeric'}).format(new Date(date)):'Desbloqueada'):'Bloqueada'}</span></article>`;
 	}).join('');
 };
 render().catch(() => { document.querySelector('#medals').innerHTML='<p class="meta">No se pudieron cargar las medallas.</p>'; });

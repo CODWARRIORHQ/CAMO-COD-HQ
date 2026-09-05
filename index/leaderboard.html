@@ -368,14 +368,18 @@
         const countProgress = progress => Object.values(progress || {}).reduce((total, indices) => total + (Array.isArray(indices) ? indices.length : 0), 0);
         const state = { limit: 10, search: '' };
         const leaderboardGames = ['Modern Warfare 2007', 'Modern Warfare 2', 'Black Ops', 'Modern Warfare 3', 'Black Ops II', 'Ghosts', 'Advanced Warfare', 'Black Ops III', 'Infinite Warfare', 'Modern Warfare Remastered', 'WWII', 'Black Ops IIII', 'Mobile', 'Modern Warfare 2019', 'Modern Warfare 2 Remastered', 'Black Ops Cold War', 'Vanguard', 'Modern Warfare II', 'Modern Warfare III', 'Black Ops 6', 'Black Ops 7', 'Modern Warfare 4', 'Warzone'];
+        const camouflageMilestones = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 2750, 3000, 3500, 4000, 4500, 5000, 6000, 7000, 8000, 9000, 10000];
         const getMedalCount = (player, position = null) => {
             const completed = Number(player?.completed) || 0;
             const progress = player?.game_progress || {};
             const totals = progress.__totals || {};
-            const getGameTotal = game => Number(totals[game]) || (game === 'Modern Warfare 2019' ? 2496 : 668);
+            const getGameTotal = game => Number(totals[game]) || (game === 'Modern Warfare 2019' ? 3328 : 668);
+            const milestoneCount = camouflageMilestones.filter(amount => completed >= amount).length;
+            const accountAge = player?.created_at && Date.now() - new Date(player.created_at).getTime() >= 365.25 * 24 * 60 * 60 * 1000;
+            const specialCount = (accountAge ? 1 : 0) + (completed >= 1000 ? 1 : 0) + (player?._founder ? 1 : 0);
             const generalCount = (completed >= getGameTotal('Modern Warfare 2019') ? 2 : 0) + (completed >= 100 ? 1 : 0) + (position !== null && position < 3 ? 1 : 0);
             const gameCount = leaderboardGames.reduce((count, game) => count + ((progress[game] || (game === 'Modern Warfare 2019' ? completed : 0)) >= getGameTotal(game) ? 1 : 0), 0);
-            return generalCount + gameCount;
+            return milestoneCount + specialCount + generalCount + gameCount;
         };
 
         const renderTopStats = (scores) => {
@@ -487,10 +491,13 @@
             if (!client) { message.textContent = 'Supabase no está configurado.'; return; }
             const [{ error: profileError }, { data: progressRows, error: progressError }] = await Promise.all([
                 client.from('profiles').select('user_id, username').limit(1),
-                client.from('leaderboard_stats').select('user_id, username, completed, accent_color, icon_url, selected_medals, game_progress, previous_rank')
+                client.from('leaderboard_stats').select('user_id, username, completed, accent_color, icon_url, selected_medals, game_progress, previous_rank, created_at')
             ]);
             if (profileError || progressError) throw profileError || progressError;
             const scores = (progressRows || []).sort((a, b) => b.completed - a.completed);
+            const firstUsers = scores.filter(player => player.created_at).slice().sort((a, b) => new Date(a.created_at) - new Date(b.created_at)).slice(0, 10);
+            const founderIds = new Set(firstUsers.map(player => player.user_id));
+            scores.forEach(player => { player._founder = founderIds.has(player.user_id); });
             renderTopStats(scores);
             const searchInput = document.querySelector('#leaderboardSearch');
             const filterButtons = document.querySelectorAll('.filter-button');

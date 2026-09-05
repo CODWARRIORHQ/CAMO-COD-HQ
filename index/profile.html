@@ -38,7 +38,10 @@
         .game { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:14px; min-height:112px; padding:16px; border:1px solid var(--border); border-radius:8px; background:rgba(5,6,10,.42); }
         .game.favorite { border-color:var(--cyan); box-shadow:inset 3px 0 0 var(--cyan); }
         .game.best { border-color:var(--gold); }
-        .game-icon { display:inline-grid; place-items:center; width:34px; height:34px; margin-right:9px; border:1px solid rgba(255,255,255,.16); border-radius:7px; color:var(--cyan); font-size:11px; font-weight:800; vertical-align:middle; }
+        .game-icon { display:inline-grid; place-items:center; box-sizing:border-box; width:34px; height:34px; margin-right:9px; border:1px solid rgba(255,255,255,.16); border-radius:7px; color:var(--cyan); font-size:clamp(8px, 2.5vw, 10px); font-weight:800; line-height:1; white-space:nowrap; overflow:hidden; vertical-align:middle; }
+        .game-link { display:inline-grid; place-items:center; box-sizing:border-box; width:34px; height:34px; margin-right:9px; color:inherit; vertical-align:middle; }
+        .game-link .game-icon { margin-right:0; }
+        .game-link:hover .game-icon { border-color:var(--cyan); background:rgba(6,182,212,.12); transform:translateY(-1px); }
         .game-status { display:block; margin-top:7px; color:var(--muted); font-size:11px; }
         .game-title { font-weight:700; } .game-meta { display:block; margin-top:5px; color:var(--muted); font-size:13px; } .game-score { color:var(--gold); text-align:right; font-weight:800; }
         .message { color:var(--muted); }
@@ -103,7 +106,7 @@
         const config = window.CAMO_SUPABASE_CONFIG || {};
         const client = config.url && config.anonKey ? window.supabase.createClient(config.url, config.anonKey) : null;
         const userId = new URLSearchParams(location.search).get('user');
-        const defaultGameTotals = { 'Modern Warfare 2019': 2496 };
+        const defaultGameTotals = { 'Modern Warfare 2019': 3328 };
         let total = defaultGameTotals['Modern Warfare 2019'];
         document.querySelector('#profileCompleted').textContent = `0 / ${total}`;
         const validColor = color => /^#[0-9a-f]{6}$/i.test(color);
@@ -380,10 +383,36 @@
             const favoriteGame = profile?.favorite_game || 'Modern Warfare 2019';
             const gameCatalog = profile?.game_progress || {};
             const gameNames = profileGameNames;
-            const gameValues = gameNames.map(name => gameCatalog[name] || (name === 'Modern Warfare 2019' ? completed : 0));
+            const gameValues = gameNames.map(name => name === 'Modern Warfare 2019' ? completed : (gameCatalog[name] || 0));
+            const gameLinks = {
+                'Modern Warfare 2007': '../MW2007/MW2007.html',
+                'Modern Warfare 2': '../MW2/MW2.html',
+                'Black Ops': '../BLACK OPS I/BOI.html',
+                'Modern Warfare 3': '../MW3/MW3.html',
+                'Black Ops II': '../BLACK OPS II/BOII.html',
+                'Ghosts': '../GHOSTS/GHOSTS.html',
+                'Advanced Warfare': '../ADVANCED/ADVANCED.html',
+                'Black Ops III': '../BLACK OPS III/BOIII.html',
+                'Infinite Warfare': '../INFINITE/INFINITE.html',
+                'Modern Warfare Remastered': '../MWREMASTERED/MWREMASTERED.html',
+                'WWII': '../WWII/WWII.html',
+                'Black Ops IIII': '../BLACK OPS IIII/BOIIII.html',
+                'Mobile': '../CODM/CODM.html',
+                'Modern Warfare 2019': '../MW 2019/MW.html',
+                'Modern Warfare 2 Remastered': '../MW 2 REMASTERED/MW2REMASTERED.html',
+                'Black Ops Cold War': '../COLD WAR/COLDWAR.html',
+                'Vanguard': '../VANGUARD/VANGUARD.html',
+                'Modern Warfare II': '../MW II/MWII.html',
+                'Modern Warfare III': '../MW III/MWIII.html',
+                'Black Ops 6': '../BLACK OPS 6/BO6.html',
+                'Black Ops 7': '../BLACK OPS 7/BO7.html',
+                'Modern Warfare 4': '../MW 4/MW4.html',
+                'Warzone': '../WARZONE/WARZONE.html'
+            };
             const bestValue = Math.max(...gameValues);
-            const gameCodes = Object.fromEntries(gameNames.map(name => [name, name.split(' ').map(part => part[0]).join('').slice(0, 3).toUpperCase()]));
-            const gamesMarkup = gameNames.map((name, index) => { const value = gameValues[index]; const gameTotal = getGameTotal(name); const percent = Math.min(Math.round(value / gameTotal * 100), 100); const favoriteLabel = name === favoriteGame ? ' · Favorito' : ''; const favoriteClass = name === favoriteGame ? ' favorite' : ''; const bestClass = value === bestValue && value > 0 ? ' best' : ''; const status = percent === 100 ? 'Completado' : percent > 0 ? 'En progreso' : 'Sin comenzar'; return `<div class="game${favoriteClass}${bestClass}"><span><span class="game-icon">${gameCodes[name]}</span><span class="game-title">${name}${favoriteLabel}</span><span class="game-meta">${value} / ${gameTotal} camuflajes</span><span class="game-progress"><span style="width:${percent}%"></span></span><span class="game-status">${status}</span></span><span class="game-score">${percent}%</span></div>`; }).join('');
+            const gameLabels = { 'Black Ops': 'Black Ops I' };
+            const gameCodes = Object.fromEntries(gameNames.map(name => [name, name === 'Black Ops' ? 'BOI' : name === 'Black Ops II' ? 'BOII' : name === 'Black Ops III' ? 'BOIII' : name === 'Black Ops IIII' ? 'BOIIII' : name === 'Mobile' ? 'CODM' : name === 'Modern Warfare 2 Remastered' ? 'MW2R' : name === 'Black Ops Cold War' ? 'BOCW' : name === 'Modern Warfare II' ? 'MWII' : name === 'Modern Warfare III' ? 'MWIII' : name.split(' ').map(part => part[0]).join('').slice(0, 3).toUpperCase()]));
+            const gamesMarkup = gameNames.map((name, index) => { const value = gameValues[index]; const gameTotal = getGameTotal(name); const percent = Math.min(Math.round(value / gameTotal * 100), 100); const favoriteLabel = name === favoriteGame ? ' · Favorito' : ''; const favoriteClass = name === favoriteGame ? ' favorite' : ''; const bestClass = value === bestValue && value > 0 ? ' best' : ''; const status = percent === 100 ? 'Completado' : percent > 0 ? 'En progreso' : 'Sin comenzar'; const gameLink = gameLinks[name]; const displayName = gameLabels[name] || name; const iconMarkup = gameLink ? `<a class="game-link" href="${gameLink}" aria-label="Abrir ${displayName}"><span class="game-icon">${gameCodes[name]}</span></a>` : `<span class="game-icon">${gameCodes[name]}</span>`; return `<div class="game${favoriteClass}${bestClass}"><span>${iconMarkup}<span class="game-title">${displayName}${favoriteLabel}</span><span class="game-meta">${value} / ${gameTotal} camuflajes</span><span class="game-progress"><span style="width:${percent}%"></span></span><span class="game-status">${status}</span></span><span class="game-score">${percent}%</span></div>`; }).join('');
             gameStats.innerHTML = `<div class="games-header"><h2>Progreso por juego</h2><span>${gameNames.length} juegos registrados</span></div><div class="game-grid">${gamesMarkup}</div>`;
         };
         render().catch(() => { document.querySelector('#gameStats').innerHTML = '<p class="message">No se pudieron cargar las estadísticas.</p>'; });

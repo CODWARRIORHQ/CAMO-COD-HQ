@@ -15,8 +15,35 @@
         ['completista', ['Oro_MW2019.png', 'Platino_MW2019.png', 'Damasco_MW2019.png', 'Obsidiana_MW2019.png']]
     ];
 
+    const nombresCategorias = [
+        'Spray (Bajas Normales)',
+        'Bosque (Tiros a la Cabeza)',
+        'Digital (Bajas Agachado)',
+        'Dragón',
+        'Escindida',
+        'Topo',
+        'Tigre',
+        'Rayas',
+        'Reptil',
+        'Calaveras',
+        'Completista'
+    ];
+
+    const bajasPorCamuflaje = [
+        0, 25, 50, 100, 150, 225, 325, 450, 600, 800,
+        0, 5, 10, 20, 30, 45, 60, 80, 100, 125,
+        0, 5, 15, 30, 50, 70, 90, 110, 135, 160,
+        155, 160, 165, 170, 175, 180, 185, 190, 195, 200,
+        205, 210, 215, 220, 225, 230, 235, 240, 245, 250,
+        255, 260, 265, 270, 275, 280, 285, 290, 295, 300,
+        305, 310, 315, 320, 325, 330, 335, 340, 345, 350,
+        355, 360, 365, 370, 375, 380, 385, 390, 395, 400,
+        405, 410, 415, 420, 425, 430, 435, 440, 445, 450,
+        455, 460, 465, 470, 475, 480, 485, 490, 495, 500
+    ];
+
     const camuflajes = categorias.flatMap(([categoria, nombres], categoriaIndex) => nombres.map((nombre, index) => ({
-        title: categoriaIndex === 10 ? `Categoría 11 - ${index + 1}` : `${categoriaIndex * 10 + index + 1}xp`,
+        title: categoriaIndex === 10 ? `Categoría 11 - ${index + 1}` : `${bajasPorCamuflaje[categoriaIndex * 10 + index]} bajas`,
         image: rutaCamuflaje(categoria, nombre),
         className: categoriaIndex === 10 ? `mastery-preview${index ? `-${index + 1}` : ''}` : ''
     })));
@@ -40,4 +67,5 @@
     };
 
     window.MW2019_CAMUFLAJES = camuflajes;
+    window.MW2019_NOMBRES_CATEGORIAS = nombresCategorias;
 })();

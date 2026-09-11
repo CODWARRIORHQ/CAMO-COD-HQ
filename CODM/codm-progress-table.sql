@@ -1,8 +1,11 @@
 create table if not exists public.codm_progress (
     user_id uuid primary key references auth.users(id) on delete cascade,
     progress jsonb not null default '{}'::jsonb,
+    mastery jsonb not null default '{}'::jsonb,
     updated_at timestamptz not null default now()
 );
+
+alter table public.codm_progress add column if not exists mastery jsonb not null default '{}'::jsonb;
 
 alter table public.codm_progress enable row level security;
 grant select, insert, update on public.codm_progress to authenticated;

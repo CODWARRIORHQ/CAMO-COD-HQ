@@ -138,7 +138,14 @@
             border: 1px solid rgba(255,255,255,0.07);
             border-radius: 6px;
             background: rgba(255,255,255,0.025);
-            scrollbar-width: thin;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .codm-camo-tabs::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
         }
 
         .codm-camo-tab {
@@ -232,7 +239,7 @@
             text-transform: uppercase;
         }
 
-        .codm-tournament-skin,
+                .codm-tournament-skin,
         .codm-zombie-skin {
             position: relative;
             container-type: inline-size;
@@ -240,7 +247,10 @@
             min-height: 44px;
             border: 1px solid var(--border-gray);
             border-radius: 4px;
-            background: #1a1a1a;
+            background-color: #1a1a1a;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
             box-shadow: 0 0 0 1px rgba(255,255,255,0.04), inset 0 0 18px rgba(0,0,0,0.45);
         }
 
@@ -248,13 +258,21 @@
         .codm-zombie-skin::after {
             content: attr(data-title);
             position: absolute;
-            inset: 3px;
-            display: grid;
-            place-items: center;
-            color: var(--muted);
-            font-size: 9px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.38);
+            border-radius: 3px;
+            padding: 2px 3px;
+            font-size: 7px;
             font-weight: 800;
+            line-height: 1.1;
             text-align: center;
+            z-index: 2;
         }
 
         .codm-special-skin::after {

@@ -106,8 +106,20 @@
         const config = window.CAMO_SUPABASE_CONFIG || {};
         const client = config.url && config.anonKey ? window.supabase.createClient(config.url, config.anonKey) : null;
         const userId = new URLSearchParams(location.search).get('user');
-        const defaultGameTotals = { 'Modern Warfare 2019': 3328 };
-        let total = defaultGameTotals['Modern Warfare 2019'];
+        const availableGameTotals = {
+            'Modern Warfare 2019': 3328,
+            'Mobile': 5988
+        };
+        const sumGameProgress = (progress = {}) => Object.entries(progress || {})
+            .filter(([gameName]) => gameName !== '__totals' && gameName !== '__mastery')
+            .reduce((sum, [, value]) => sum + (Number(value) || 0), 0);
+        const sumAvailableGameTotals = (gameTotals = {}) => {
+            const mergedTotals = { ...availableGameTotals, ...(gameTotals || {}) };
+            return Object.entries(mergedTotals)
+                .filter(([gameName]) => gameName !== '__totals' && gameName !== '__mastery')
+                .reduce((sum, [, gameTotal]) => sum + (Number(gameTotal) || 0), 0);
+        };
+        let total = sumAvailableGameTotals();
         document.querySelector('#profileCompleted').textContent = `0 / ${total}`;
         const validColor = color => /^#[0-9a-f]{6}$/i.test(color);
         const applyColor = color => {
@@ -193,10 +205,10 @@
                 const currentRank = getRankNumber(sortedPlayers, userId);
                 currentPlayer.rankText = currentRank > 0 ? `#${currentRank}` : '-';
             }
-            const completed = profile?.completed || 0;
+            const completed = sumGameProgress(profile?.game_progress || {});
             const storedGameTotals = profile?.game_progress?.__totals || {};
-            const getGameTotal = gameName => Number(storedGameTotals[gameName]) || defaultGameTotals[gameName] || 668;
-            total = getGameTotal(profile?.favorite_game || 'Modern Warfare 2019');
+            const getGameTotal = gameName => Number(storedGameTotals[gameName]) || availableGameTotals[gameName] || 0;
+            total = sumAvailableGameTotals(storedGameTotals);
             document.querySelector('#profileName').textContent = profile?.username || 'Jugador';
             applyColor(profile?.accent_color);
             const rankChange = profile?.previous_rank && currentPlayer?.rankText !== '-' ? Number(profile.previous_rank) - Number(currentPlayer.rankText.slice(1)) : 0;

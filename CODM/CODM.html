@@ -190,11 +190,11 @@
         .codm-tournament-grid {
             display: grid;
             width: 100%;
-            grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
-            grid-auto-rows: 52px;
-            gap: 5px;
+            grid-template-columns: repeat(auto-fit, minmax(34px, 1fr));
+            grid-auto-rows: 40px;
+            gap: 4px;
             box-sizing: border-box;
-            padding: 10px;
+            padding: 8px;
             border: 1px solid rgba(255,255,255,0.07);
             border-radius: 8px;
             background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.45));
@@ -207,27 +207,66 @@
         .codm-zombie-grid {
             display: grid;
             width: 100%;
-            grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
-            grid-auto-rows: 52px;
-            gap: 5px;
+            grid-template-columns: repeat(auto-fit, minmax(34px, 1fr));
+            grid-auto-rows: 40px;
+            gap: 4px;
             box-sizing: border-box;
-            padding: 10px;
+            padding: 8px;
             border: 1px solid rgba(255,255,255,0.07);
             border-radius: 8px;
             background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.45));
+        }
+
+        .codm-tournament-grid.single-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 60px;
+            margin: 0 auto;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .single-zombie-skin {
+            width: 40px;
+            height: 40px;
+            max-width: 40px;
+            max-height: 40px;
+            min-width: 40px;
+            min-height: 40px;
+            display: block;
+            border-radius: 4px;
+            justify-self: center;
+            align-self: center;
         }
 
         .codm-zombie-grid[hidden] {
             display: none;
         }
 
+        .codm-special-panel {
+            display: block;
+            width: 100%;
+        }
+
+        .codm-special-panel[hidden] {
+            display: none;
+        }
+
         .codm-dmz-panel {
             display: grid;
             gap: 10px;
+            width: 100%;
         }
 
         .codm-dmz-panel[hidden] {
             display: none;
+        }
+
+        .codm-special-content {
+            display: block;
+            width: 100%;
         }
 
         .codm-dmz-category-title {
@@ -243,14 +282,15 @@
         .codm-zombie-skin {
             position: relative;
             container-type: inline-size;
-            min-width: 0;
-            min-height: 44px;
+            min-width: 34px;
+            min-height: 34px;
+            aspect-ratio: 1 / 1;
             border: 1px solid var(--border-gray);
             border-radius: 4px;
             background-color: #1a1a1a;
             background-repeat: no-repeat;
             background-position: center;
-            background-size: contain;
+            background-size: cover;
             box-shadow: 0 0 0 1px rgba(255,255,255,0.04), inset 0 0 18px rgba(0,0,0,0.45);
         }
 
@@ -351,11 +391,18 @@
 
         .codm-special-progress {
             grid-column: 1 / -1;
-            margin-bottom: 2px;
+            margin: 2px 0 8px 0;
         }
 
         .codm-special-progress .pct-text {
             margin-bottom: 5px;
+        }
+
+        .codm-special-progress + .codm-special-content,
+        .codm-special-progress + .codm-tournament-grid,
+        .codm-special-progress + .codm-zombie-grid,
+        .codm-special-progress + .codm-dmz-panel {
+            margin-top: 0;
         }
 
         .codm-special-progress .bar-bg {
@@ -1101,6 +1148,24 @@
             transition: opacity 0.2s ease, max-height 0.2s ease; 
         }
 
+        .clear-all-btn {
+            grid-column: 1 / -1;
+            width: 100%;
+            background: rgba(255, 157, 0, 0.08);
+            border: 1px solid rgba(255, 157, 0, 0.5);
+            color: #ffbf66;
+            border-radius: 10px;
+            padding: 11px 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .clear-all-btn:hover {
+            background: rgba(255, 157, 0, 0.14);
+            transform: translateY(-1px);
+        }
+
         .custom-select { 
             position: relative; 
         }
@@ -1456,6 +1521,8 @@
                     <div class="option-item" data-val="pending">PENDIENTES</div>
                 </div>
             </div>
+
+            <button type="button" id="clearAllCamosBtn" class="clear-all-btn">DESMARCAR TODO</button>
         </div>
     </div>
 </div>
@@ -1957,6 +2024,18 @@
         }
     }
 
+    function resetearBaseALaPrimeraCategoria(section) {
+        if (!section) return;
+        section.dataset.currentCategory = '';
+        section.querySelectorAll('.camo-toggle-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        section.querySelectorAll('.skin').forEach(skin => {
+            skin.style.display = 'none';
+        });
+        section.classList.add('collapsed');
+    }
+
     const PROGRESS_KEY = 'camo-cod-hq-codm-progress';
     const SPECIAL_PROGRESS_KEY = 'camo-cod-hq-codm-special-progress';
     const MASTERY_KEY = 'camo-cod-hq-codm-mastery';
@@ -1964,7 +2043,9 @@
     let maestriasDesbloqueadas = {};
 
     function obtenerTotalCatalogo() {
-        return document.querySelectorAll('.weapon-card[data-name] .skin').length;
+        const baseTotal = document.querySelectorAll('.weapon-card[data-name] .skin').length;
+        const specialTotal = document.querySelectorAll('.weapon-card[data-name] .codm-special-skin').length;
+        return baseTotal + specialTotal;
     }
 
     function normalizarProgreso(progreso) {
@@ -2019,6 +2100,34 @@
         }
     }
 
+    function limpiarTodoElProgresoCODM() {
+        document.querySelectorAll('.weapon-card[data-name] .skin.checked').forEach(skin => {
+            skin.classList.remove('checked');
+        });
+
+        document.querySelectorAll('.weapon-card[data-name] .codm-special-skin.checked').forEach(skin => {
+            skin.classList.remove('checked');
+        });
+
+        document.querySelectorAll('.weapon-card[data-name]').forEach(card => {
+            const section = card.querySelector('.camo-section');
+            if (section) {
+                actualizarCategorias(section);
+            }
+        });
+
+        maestriasDesbloqueadas = {};
+        localStorage.setItem(MASTERY_KEY, JSON.stringify(maestriasDesbloqueadas));
+        localStorage.removeItem(PROGRESS_KEY);
+        localStorage.removeItem(SPECIAL_PROGRESS_KEY);
+
+        guardarProgreso();
+        guardarProgresoEspecial();
+        actualizarBloqueoCompletista();
+        actualizarProgresosEspeciales();
+        actualizarTodo();
+    }
+
     function guardarProgresoEspecial() {
         const progreso = {};
         document.querySelectorAll('.weapon-card[data-name]').forEach(card => {
@@ -2041,6 +2150,17 @@
             const bar = panel.querySelector('.codm-special-fill');
             if (value) value.textContent = `${percentage}%`;
             if (bar) bar.style.width = `${percentage}%`;
+
+            if (panel.dataset.specialGroup === 'dmz') {
+                const buttons = panel.querySelectorAll('.camo-toggle-item');
+                buttons.forEach(button => {
+                    const categoryIndex = Number(button.dataset.category);
+                    const grid = panel.querySelectorAll('.codm-tournament-grid')[categoryIndex - 1];
+                    const categorySkins = grid ? Array.from(grid.querySelectorAll('.codm-special-skin')) : [];
+                    const completed = categorySkins.length > 0 && categorySkins.every(skin => skin.classList.contains('checked'));
+                    button.classList.toggle('completed', completed);
+                });
+            }
         });
     }
 
@@ -2072,6 +2192,7 @@
             });
         });
         restaurarProgresoEspecial();
+        actualizarProgresosEspeciales();
     }
 
     function restaurarProgreso() {
@@ -2103,21 +2224,23 @@
             const user = userData.user;
             if (!user) return;
 
-            const { data: remoteData, error } = await client
-                .from('codm_progress')
-                .select('progress, mastery')
-                .eq('user_id', user.id)
-                .maybeSingle();
+            const [profileResult, legacyResult] = await Promise.allSettled([
+                client.from('profiles').select('game_progress').eq('user_id', user.id).maybeSingle(),
+                client.from('codm_progress').select('progress, mastery').eq('user_id', user.id).maybeSingle()
+            ]);
 
-            if (error) throw error;
+            const profileData = profileResult.status === 'fulfilled' ? profileResult.value.data : null;
+            const legacyData = legacyResult.status === 'fulfilled' ? legacyResult.value.data : null;
+            const profileGameProgress = profileData?.game_progress || {};
 
             maestriasDesbloqueadas = {
-                ...(remoteData?.mastery || {}),
+                ...(profileGameProgress.__mastery || {}),
+                ...(legacyData?.mastery || {}),
                 ...maestriasDesbloqueadas
             };
             localStorage.setItem(MASTERY_KEY, JSON.stringify(maestriasDesbloqueadas));
 
-            const remoteProgress = normalizarProgreso(remoteData?.progress || {});
+            const remoteProgress = normalizarProgreso(legacyData?.progress || {});
             const hasRemoteProgress = Object.values(remoteProgress).some(
                 indices => Array.isArray(indices) && indices.length > 0
             );
@@ -2160,17 +2283,48 @@
     async function guardarProgresoEnCuenta(client, userId) {
         registrarMaestriasDesbloqueadas();
         const progreso = obtenerProgresoActual();
+        const baseCompleted = Object.values(progreso).reduce((sum, indices) => sum + indices.length, 0);
+        const specialCompleted = Array.from(document.querySelectorAll('.weapon-card[data-name]'))
+            .reduce((sum, card) => sum + card.querySelectorAll('.codm-special-skin.checked').length, 0);
+        const completed = baseCompleted + specialCompleted;
         const total = obtenerTotalCatalogo();
-        const completed = Object.values(progreso).reduce((sum, indices) => sum + indices.length, 0);
         localStorage.setItem(MASTERY_KEY, JSON.stringify(maestriasDesbloqueadas));
         actualizarBloqueoCompletista();
-        const { error } = await client.from('codm_progress').upsert({
+
+        const { data: profileData, error: profileReadError } = await client
+            .from('profiles')
+            .select('game_progress')
+            .eq('user_id', userId)
+            .maybeSingle();
+
+        if (profileReadError) throw profileReadError;
+
+        const gameProgress = profileData?.game_progress || {};
+        const nextGameProgress = {
+            ...gameProgress,
+            [GAME_NAME]: completed,
+            __totals: {
+                ...(gameProgress.__totals || {}),
+                [GAME_NAME]: total
+            },
+            __mastery: maestriasDesbloqueadas
+        };
+
+        const profileUpdate = await client
+            .from('profiles')
+            .update({ game_progress: nextGameProgress })
+            .eq('user_id', userId);
+
+        if (profileUpdate.error) throw profileUpdate.error;
+
+        const legacyProgress = await client.from('codm_progress').upsert({
             user_id: userId,
             progress: progreso,
             mastery: maestriasDesbloqueadas,
             updated_at: new Date().toISOString()
         });
-        if (error) throw error;
+
+        if (legacyProgress.error) throw legacyProgress.error;
     }
 
     function inicializarCamoCollapsibles() {
@@ -2227,6 +2381,8 @@
 
             actualizarCategorias(section);
 
+            buttons.forEach(btn => btn.classList.remove('active'));
+            resetearBaseALaPrimeraCategoria(section);
             section.classList.add('collapsed');
 
             toggleRow.addEventListener('click', (e) => {
@@ -2271,50 +2427,50 @@
                 button.setAttribute('aria-selected', String(index === 0));
 
                 if (id !== 'base') {
-                    const panel = document.createElement('div');
-                    panel.hidden = true;
-                    panel.classList.add('codm-special-panel');
-                    panel.dataset.specialGroup = id;
+                    const specialProgress = document.createElement('div');
+                    specialProgress.className = 'codm-special-progress';
+                    specialProgress.innerHTML = '<span class="pct-text"><span class="codm-special-pct">0%</span></span><div class="bar-bg"><div class="bar-fill codm-special-fill"></div></div>';
+
+                    const content = document.createElement('div');
+                    content.className = 'codm-special-content';
 
                     if (id === 'torneos') {
-                        panel.className = 'codm-tournament-grid';
-                        for (let tournamentIndex = 1; tournamentIndex <= 30; tournamentIndex++) {
+                        content.className = 'codm-tournament-grid';
+                        for (let tournamentIndex = 0; tournamentIndex < 30; tournamentIndex++) {
                             const skin = document.createElement('div');
                             skin.className = 'codm-tournament-skin codm-special-skin';
-                            skin.dataset.specialIndex = String(tournamentIndex - 1);
+                            skin.dataset.specialIndex = String(tournamentIndex);
                             skin.dataset.specialGroup = id;
-                            skin.dataset.title = `${window.CODM_REQUISITOS_ESPECIALES?.[id]?.[tournamentIndex - 1] ?? 0} bajas`;
-                            const torneo = window.CODM_TORNEOS?.[tournamentIndex - 1];
+                            skin.dataset.title = `${window.CODM_REQUISITOS_ESPECIALES?.[id]?.[tournamentIndex] ?? 0} bajas`;
+                            const torneo = window.CODM_TORNEOS?.[tournamentIndex];
                             if (torneo?.ruta) {
                                 skin.style.backgroundImage = `url("${torneo.ruta}")`;
                             }
                             agregarTooltipEspecial(skin);
-                            panel.appendChild(skin);
+                            content.appendChild(skin);
                         }
                     } else if (id === 'zombies') {
-                        panel.className = 'codm-zombie-grid';
-                        for (let zombieIndex = 1; zombieIndex <= 1; zombieIndex++) {
-                            const skin = document.createElement('div');
-                            skin.className = 'codm-zombie-skin codm-special-skin';
-                            skin.dataset.specialIndex = String(zombieIndex - 1);
-                            skin.dataset.specialGroup = id;
-                            skin.dataset.title = `${window.CODM_REQUISITOS_ESPECIALES?.[id]?.[zombieIndex - 1] ?? 0} bajas`;
-                            agregarTooltipEspecial(skin);
-                            panel.appendChild(skin);
-                        }
+                        content.className = 'codm-tournament-grid single-item';
+                        const skin = document.createElement('div');
+                        skin.className = 'codm-tournament-skin codm-special-skin single-zombie-skin';
+                        skin.dataset.specialIndex = '0';
+                        skin.dataset.specialGroup = id;
+                        skin.dataset.title = `${window.CODM_REQUISITOS_ESPECIALES?.[id]?.[0] ?? 0} bajas`;
+                        agregarTooltipEspecial(skin);
+                        content.appendChild(skin);
                     } else if (id === 'cajas') {
-                        panel.className = 'codm-tournament-grid';
-                        for (let boxIndex = 1; boxIndex <= 15; boxIndex++) {
+                        content.className = 'codm-tournament-grid';
+                        for (let boxIndex = 0; boxIndex < 15; boxIndex++) {
                             const skin = document.createElement('div');
                             skin.className = 'codm-tournament-skin codm-special-skin';
-                            skin.dataset.specialIndex = String(boxIndex - 1);
+                            skin.dataset.specialIndex = String(boxIndex);
                             skin.dataset.specialGroup = id;
-                            skin.dataset.title = `${window.CODM_REQUISITOS_ESPECIALES?.[id]?.[boxIndex - 1] ?? 0} bajas`;
+                            skin.dataset.title = `${window.CODM_REQUISITOS_ESPECIALES?.[id]?.[boxIndex] ?? 0} bajas`;
                             agregarTooltipEspecial(skin);
-                            panel.appendChild(skin);
+                            content.appendChild(skin);
                         }
                     } else if (id === 'dmz') {
-                        panel.className = 'codm-dmz-panel';
+                        content.className = 'codm-dmz-panel';
                         const toggleRow = document.createElement('div');
                         toggleRow.className = 'camo-toggle-row';
                         const categoryButtons = [];
@@ -2326,14 +2482,10 @@
                             button.textContent = `DMZ ${categoryIndex}`;
                             button.dataset.category = String(categoryIndex);
                             button.addEventListener('click', () => {
-                                const isActive = button.classList.contains('active');
                                 categoryButtons.forEach(item => item.classList.remove('active'));
                                 categoryGrids.forEach(grid => { grid.hidden = true; });
-
-                                if (!isActive) {
-                                    button.classList.add('active');
-                                    categoryGrids[categoryIndex - 1].hidden = false;
-                                }
+                                button.classList.add('active');
+                                categoryGrids[categoryIndex - 1].hidden = false;
                             });
                             categoryButtons.push(button);
                             toggleRow.appendChild(button);
@@ -2352,17 +2504,18 @@
                             }
                             categoryGrids.push(grid);
                         }
-                        panel.append(toggleRow, ...categoryGrids);
+                        content.append(toggleRow, ...categoryGrids);
                     } else {
-                        panel.className = 'codm-camo-placeholder';
-                        panel.textContent = `${label}: camuflajes pendientes de añadir`;
+                        content.className = 'codm-camo-placeholder';
+                        content.textContent = `${label}: camuflajes pendientes de añadir`;
                     }
 
-                    panel.classList.add('codm-special-panel');
-                    const specialProgress = document.createElement('div');
-                    specialProgress.className = 'codm-special-progress';
-                    specialProgress.innerHTML = '<span class="pct-text"><span class="codm-special-pct">0%</span></span><div class="bar-bg"><div class="bar-fill codm-special-fill"></div></div>';
-                    panel.insertBefore(specialProgress, panel.firstChild);
+                    const panel = document.createElement('div');
+                    panel.className = 'codm-special-panel';
+                    panel.dataset.specialGroup = id;
+                    panel.hidden = true;
+                    panel.appendChild(specialProgress);
+                    panel.appendChild(content);
 
                     panels[id] = panel;
                     card.appendChild(panel);
@@ -2370,7 +2523,24 @@
 
                 button.addEventListener('click', () => {
                     const baseProgress = card.querySelector('.progress-container');
+                    const baseCollapsible = card.querySelector('.camo-collapsible');
+                    const baseSection = baseCollapsible?.querySelector('.camo-section');
+
                     if (baseProgress) baseProgress.hidden = id !== 'base';
+
+                    if (baseCollapsible) {
+                        baseCollapsible.hidden = id !== 'base';
+                    }
+
+                    if (id !== 'base' && baseSection) {
+                        baseSection.classList.add('collapsed');
+                        baseSection.querySelectorAll('.camo-toggle-item').forEach(item => item.classList.remove('active'));
+                        baseSection.dataset.currentCategory = '1';
+                    }
+
+                    if (id === 'base' && baseSection) {
+                        resetearBaseALaPrimeraCategoria(baseSection);
+                    }
 
                     tabRow.querySelectorAll('.codm-camo-tab').forEach(tab => {
                         const isActive = tab === button;
@@ -2436,6 +2606,15 @@
         sincronizarProgresoConCuenta();
         document.querySelector('.btn-settings')?.addEventListener('click', () => {
             document.getElementById('advPanel').classList.toggle('open');
+        });
+        document.getElementById('clearAllCamosBtn')?.addEventListener('click', () => {
+            limpiarTodoElProgresoCODM();
+            const sync = window.camoProgressSync;
+            if (sync) {
+                guardarProgresoEnCuenta(sync.client, sync.userId).catch(error => {
+                    console.warn('No se pudo limpiar el progreso de CODM en Supabase', error);
+                });
+            }
         });
         document.querySelector('#masterPanel .panel-header')?.addEventListener('click', toggleMaster);
         document.getElementById('weaponSearch').addEventListener('input', filtrarTodo);

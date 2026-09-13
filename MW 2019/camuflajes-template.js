@@ -17,15 +17,15 @@
 
     const nombresCategorias = [
         'Spray (Bajas Normales)',
-        'Bosque (Tiros a la Cabeza)',
+        'Bosque (Tiros A La Cabeza)',
         'Digital (Bajas Agachado)',
-        'Dragón',
-        'Escindida',
-        'Topo',
-        'Tigre',
-        'Rayas',
-        'Reptil',
-        'Calaveras',
+        'Dragón (Bajas Desde La Cadera)',
+        'Escindida (Bajas Con Tiros Lejanos)',
+        'Topo (Bajas Con El Arma Apollada)',
+        'Tigre (Bajas Con Todos Los Accesorios Equipados)',
+        'Rayas (Bajas Poco Despues De Recargar)',
+        'Reptil (Bajas Sin Ningun Accesorio Equipado)',
+        'Calaveras (3 Bajas Sin Morir)',
         'Completista'
     ];
 
@@ -33,13 +33,13 @@
         0, 25, 50, 100, 150, 225, 325, 450, 600, 800,
         0, 5, 10, 20, 30, 45, 60, 80, 100, 125,
         0, 5, 15, 30, 50, 70, 90, 110, 135, 160,
-        155, 160, 165, 170, 175, 180, 185, 190, 195, 200,
-        205, 210, 215, 220, 225, 230, 235, 240, 245, 250,
-        255, 260, 265, 270, 275, 280, 285, 290, 295, 300,
-        305, 310, 315, 320, 325, 330, 335, 340, 345, 350,
-        355, 360, 365, 370, 375, 380, 385, 390, 395, 400,
-        405, 410, 415, 420, 425, 430, 435, 440, 445, 450,
-        455, 460, 465, 470, 475, 480, 485, 490, 495, 500
+        0, 5, 10, 15, 20, 25, 35, 45, 60, 75,
+        0, 5, 10, 15, 20, 25, 35, 55, 75, 100,
+        0, 5, 10, 15, 25, 35, 45, 60, 75,100,
+        0, 10, 20, 30, 50, 70, 90, 120, 150, 180,
+        0, 5, 10, 15, 20, 25, 30, 35, 40, 50,
+        0, 5, 15, 25, 35, 45, 60, 75, 90, 110,
+        0, 2, 4, 7, 10, 14, 18, 23, 28, 35
     ];
 
     const camuflajes = categorias.flatMap(([categoria, nombres], categoriaIndex) => nombres.map((nombre, index) => ({

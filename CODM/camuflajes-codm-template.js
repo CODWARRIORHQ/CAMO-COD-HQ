@@ -1,12 +1,8 @@
 (() => {
-    const rutaCamuflaje = (categoria, nombre) => `../MW 2019/Camuflajes/${categoria}/${nombre}`;
-    const rutaTorneo = nombre => `camuflajes/${nombre}`;
-
-    const nombresTorneos = [
-        'Oro_codm.png',
-        ...Array(29).fill('')
-    ];
-
+    // 1. Ruta hacia las imágenes específicas de CODM
+    const rutaCamuflaje = (categoria, nombre) => `Camuflajes/${categoria}/${encodeURI(nombre)}`;
+    const rutaTorneo = nombre => `camuflajes/${encodeURI(nombre)}`;
+    const nombresTorneos = ['Oro_codm.png', ...Array(29).fill('')];
     const requisitosEspeciales = {
         torneos: Array(30).fill(0),
         zombies: [0],
@@ -14,6 +10,7 @@
         dmz: Array(20).fill(0)
     };
 
+    // 2. Definición de categorías e imágenes de CODM (sustituye las cadenas por los nombres reales de tus fotos)
     const categorias = [
         ['spray', ['Serpiente_del_Desierto_MW2019.png', 'Comando_MW2019.png', 'Rip NTear_MW2019.png', 'Serpiente_marroquí_MW2019.png', 'Golpeteo_MW2019.png', 'Lago_China_MW2019.png', 'Traje_de_rayas_MW2019.png', 'Eslabón_de_cadena_MW2019.png', 'Nightfall_MW2019.png', 'Humo_MW2019.png']],
         ['bosque', ['Pantano_MW2019.png', 'Bosque_moderno_MW2019.png', 'Híbrido_del_Desierto_MW2019.png', 'Danza_de_la_Arena_MW2019.png', 'Marismas_MW2019.png', 'Kill_Brush_MW2019.png', 'Verdes_de_WARCOM_MW2019.png', 'WARCOM_Blues_MW2019.png', 'Nightfrost_MW2019.png', 'Dosel_MW2019.png']],
@@ -25,9 +22,10 @@
         ['rayas', ['Praderas_MW2019.png','Melena _de_los_Tigres_MW2019.png','El_Kan_MW2019.png','Savannah_MW2019.png','Zebra_MW2019.png','Bluegrass_MW2019.png','Africa_MW2019.png','Nu_Wave_Zebra_MW2019.png','Greengrass_MW2019.png','Cebra_Rosa_MW2019.png']],
         ['reptil', ['Python_MW2019.png','Serpiente_de_cascabel_MW2019.png','Komodo_MW2019.png','Iguana_azul_MW2019.png', 'Chupacabras_MW2019.png', 'Pitón_Rosa_MW2019.png', 'Anaconda_MW2019.png', 'Serpiente_toro_MW2019.png', 'Gecko_MW2019.png', 'Serpiente_de_liga_MW2019.png']],
         ['calaveras', ['Necropolis_MW2019.png', 'Excavador_de_cadáveres_MW2019.png', 'Osario_MW2019.png', 'Apariciones_MW2019.png', 'Fantasma_MW2019.png', 'Espectro_del_Bosque_MW2019.png', 'Hemofílico_MW2019.png', 'Engaños_MW2019.png', 'Cthulhu_MW2019.png', 'Lichyard_MW2019.png']],
-        ['completista', ['Oro_MW2019.png', 'Platino_MW2019.png', 'Damasco_MW2019.png', 'Obsidiana_MW2019.png']]
+        ['completista', ['Oro_MW2019.png', 'Platino_MW2019.png', 'Damasco_MW2019.png', 'Diamante_CODM.png']]
     ];
 
+    // 3. Nombres descriptivos de los desafíos de CODM
     const nombresCategorias = [
         'Spray (Bajas Normales)',
         'Bosque (Tiros A La Cabeza)',
@@ -42,6 +40,7 @@
         'Completista'
     ];
 
+    // 4. Bajas o requisitos por camuflaje según CODM
     const bajasPorCamuflaje = [
         0, 25, 50, 100, 150, 225, 325, 450, 600, 800,
         0, 5, 10, 20, 30, 45, 60, 80, 100, 125,
@@ -55,9 +54,9 @@
         0, 2, 4, 7, 10, 14, 18, 23, 28, 35
     ];
 
-
+    const nombresCompletista = ['Oro', 'Platino', 'Damasco', 'Diamante'];
     const camuflajes = categorias.flatMap(([categoria, nombres], categoriaIndex) => nombres.map((nombre, index) => ({
-        title: categoriaIndex === 10 ? `Categoría 11 - ${index + 1}` : `${bajasPorCamuflaje[categoriaIndex * 10 + index]} bajas`,
+        title: categoriaIndex === 10 ? nombresCompletista[index] : `${bajasPorCamuflaje[categoriaIndex * 10 + index]} bajas`,
         image: rutaCamuflaje(categoria, nombre),
         className: categoriaIndex === 10 ? `mastery-preview${index ? `-${index + 1}` : ''}` : ''
     })));
@@ -67,6 +66,7 @@
         return imagenes;
     }, {});
 
+    // 5. Nombre de función único para evitar sobrenombrado/sobreescritura
     window.sincronizarCamuflajesEntreArmas = () => {
         document.querySelectorAll('.weapon-card[data-name] .camo-section').forEach(seccion => {
             Object.entries(imagenesCategorias).forEach(([atributo, valor]) => seccion.setAttribute(atributo, valor));
@@ -80,6 +80,7 @@
         });
     };
 
+    // 6. Variables globales con prefijo CODM
     window.CODM_CAMUFLAJES = camuflajes;
     window.CODM_NOMBRES_CATEGORIAS = nombresCategorias;
     window.CODM_REQUISITOS_ESPECIALES = requisitosEspeciales;

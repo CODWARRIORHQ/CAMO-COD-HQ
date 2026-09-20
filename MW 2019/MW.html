@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -531,7 +531,7 @@
 
         .UEM-breadcrumbs-container > .container {
             max-width: none;
-            padding-left: 52px;
+            padding-left: 0;
             padding-right: 20px;
         }
 
@@ -1103,7 +1103,46 @@
             }
         }
 
+        .clear-all-btn {
+            border: 1px solid #ff9d00;
+            border-radius: 6px;
+            padding: 10px 14px;
+            color: #ff9d00;
+            background: rgba(255,157,0,.08);
+            font: inherit;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .clear-progress-dialog {
+            width: min(420px, calc(100% - 32px));
+            border: 1px solid #ff9d00;
+            border-radius: 10px;
+            padding: 24px;
+            color: #fff;
+            background: #090b0f;
+            box-shadow: 0 18px 50px rgba(0,0,0,.65);
+        }
+
+        .clear-progress-dialog::backdrop { background: rgba(0,0,0,.72); }
+        .clear-progress-dialog h2 { margin: 0 0 10px; color: #ff9d00; font-size: 18px; }
+        .clear-progress-dialog p { margin: 0 0 20px; color: #d5d9df; line-height: 1.5; }
+        .clear-progress-actions { display: flex; justify-content: flex-end; gap: 10px; }
+        .clear-progress-actions button { min-width: 130px; }
+        #confirmClearCamosBtn:disabled { cursor: not-allowed; opacity: .55; }
+
+        .progress-actions { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 0; }
+        .progress-status { min-height: 18px; font-size: 12px; color: #7ef7b0; font-weight: 700; letter-spacing: .02em; }
+        .progress-status.error { color: #ffb3b3; }
     </style>
+    <link rel="manifest" href="../manifest.webmanifest">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <script src="../pwa-register.js" defer></script>
+    <meta name="theme-color" content="#0f1724">
+    <link rel="stylesheet" href="../index/css/themes.css">
+    <script src="../index/theme.js"></script>
 </head>
 <body>
 
@@ -1212,9 +1251,28 @@
                     <div class="option-item" data-val="pending">PENDIENTES</div>
                 </div>
             </div>
+
+            <button type="button" id="clearAllCamosBtn" class="clear-all-btn">DESMARCAR TODO</button>
+            <div class="progress-actions" aria-live="polite">
+                <button type="button" id="exportProgressBtn" class="btn ghost">EXPORTAR JSON</button>
+                <button type="button" id="importProgressBtn" class="btn ghost">IMPORTAR JSON</button>
+                <input id="importProgressInput" type="file" accept="application/json" hidden>
+                <span id="progressStatus" class="progress-status" aria-live="polite"></span>
+            </div>
         </div>
     </div>
 </div>
+
+<dialog id="clearProgressDialog" class="clear-progress-dialog">
+    <form method="dialog">
+        <h2>¿Desmarcar todo?</h2>
+        <p>Se eliminará todo el progreso de camuflajes de MW2019. Esta acción no se puede deshacer.</p>
+        <div class="clear-progress-actions">
+            <button type="button" class="btn ghost" id="cancelClearCamosBtn">Cancelar</button>
+            <button type="button" class="clear-all-btn" id="confirmClearCamosBtn" disabled>Confirmar (5)</button>
+        </div>
+    </form>
+</dialog>
 
 <div class="master-panel closed" id="masterPanel">
     <div class="panel-header">
@@ -1263,89 +1321,7 @@
                 </div>
             </div>
 
-            <div class="weapon-card" data-name="FAL">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>FAL</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
 
-            <div class="weapon-card" data-name="M4A1">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>M4A1</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="FR 5,56">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>FR 5,56</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="ODEN">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>ODEN</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="M13">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>M13</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="FN SCAR 17">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>FN SCAR 17</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="AK-47">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>AK-47</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="RAM-7">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>RAM-7</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="GRAU 5.56">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>GRAU 5.56</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="CR-56 AMAX">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>CR-56 AMAX</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="AN-94">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>AN-94</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="AS VAL">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>AS VAL</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
         </div>
     </div>
 
@@ -1359,68 +1335,7 @@
                 </div>
             </div>
 
-            <div class="weapon-card" data-name="P90">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>P90</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
 
-            <div class="weapon-card" data-name="MP5">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>MP5</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="UZI">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>UZI</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="PP19 Bizon">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>PP19 Bizon</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="MP7">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>MP7</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="STRIKER 45">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>STRIKER 45</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="FENNEC">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>FENNEC</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="ISO">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>ISO</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="CX-9">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>CX-9</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
         </div>
     </div>
 
@@ -1434,40 +1349,7 @@
                 </div>
             </div>
 
-            <div class="weapon-card" data-name="ESCOPETA R9-0">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>ESCOPETA R9-0</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
 
-            <div class="weapon-card" data-name="725">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>725</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="ESCOPETA ORIGIN 12">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>ESCOPETA ORIGIN 12</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="ROGUE VLK">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>ROGUE VLK</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="JAK-12">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>JAK-12</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
         </div>
     </div>
 
@@ -1481,54 +1363,7 @@
                 </div>
             </div>
 
-            <div class="weapon-card" data-name="SA87">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>SA87</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
 
-            <div class="weapon-card" data-name="M91">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>M91</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="MG34">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>MG34</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="HOLGER-26">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>HOLGER-26</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="BRUEN MK9">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>BRUEN MK9</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="AMETRALLADORA LEGERA FINN">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>AMETRALLADORA LEGERA FINN</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="RAAL">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>RAAL</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
         </div>
     </div>
 
@@ -1542,40 +1377,7 @@
                 </div>
             </div>
 
-            <div class="weapon-card" data-name="CARABINA MK2">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>CARABINA MK2</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
 
-            <div class="weapon-card" data-name="KAR98K">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>KAR98K</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="BALLESTA">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>BALLESTA</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="SKS">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>SKS</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="SP-R 208">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>SP-R 208</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
         </div>
     </div>
 
@@ -1589,26 +1391,7 @@
                 </div>
             </div>
 
-            <div class="weapon-card" data-name="HDR">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>HDR</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
 
-            <div class="weapon-card" data-name="AX-50">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>AX-50</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="RYTEC AMR">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>RYTEC AMR</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
         </div>
     </div>
 
@@ -1622,47 +1405,7 @@
                 </div>
             </div>
 
-            <div class="weapon-card" data-name="1911">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>1911</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
 
-            <div class="weapon-card" data-name=".357">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>.357</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="M19">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>M19</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name=".50 GS">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>.50 GS</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="RENETTI">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>RENETTI</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="SYKOV">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>SYKOV</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
         </div>
     </div>
 
@@ -1676,26 +1419,7 @@
                 </div>
             </div>
 
-            <div class="weapon-card" data-name="STRELA-P">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>STRELA-P</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
 
-            <div class="weapon-card" data-name="JOKR">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>JOKR</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="RPG-7">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>RPG-7</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
         </div>
     </div>
 
@@ -1709,26 +1433,7 @@
                 </div>
             </div>
 
-            <div class="weapon-card" data-name="CUCHILLO">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>CUCHILLO</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
 
-            <div class="weapon-card" data-name="PALOS DE KALI">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>PALOS DE KALI</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
-
-            <div class="weapon-card" data-name="KODACHIS DUALES">
-                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>KODACHIS DUALES</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
-                <div class="camo-section">
-                </div>
-            </div>
 
             </div>
         </div>
@@ -1755,7 +1460,7 @@
     let filtroCatActual = "all";
     let filtroEstadoActual = "all";
 
-    // 2. LÓGICA DE LOS SELECTORES WZHUB (Corregida para no romper el layout)
+    // 2. LÓGICA DE LOS SELECTORES  (Corregida para no romper el layout)
     function inicializarSelectores() {
         document.querySelectorAll('.custom-select').forEach(select => {
             const header = select.querySelector('.select-header');
@@ -2000,7 +1705,7 @@
             if (!user) return;
 
             const [{ data: remoteData, error }, { data: profileData, error: profileError }] = await Promise.all([
-                client.from('camo_progress').select('progress').eq('user_id', user.id).maybeSingle(),
+                client.from('camo_progress').select('progress').eq('user_id', user.id).eq('game', GAME_NAME).maybeSingle(),
                 client.from('profiles').select('game_progress').eq('user_id', user.id).maybeSingle()
             ]);
 
@@ -2057,9 +1762,10 @@
         const progreso = obtenerProgresoActual();
         const total = obtenerTotalCatalogo();
         const completed = Object.values(progreso).reduce((sum, indices) => sum + indices.length, 0);
+
         const { data: profileData, error: profileReadError } = await client
             .from('profiles')
-            .select('game_progress')
+            .select('user_id, username, game_progress')
             .eq('user_id', userId)
             .maybeSingle();
 
@@ -2072,26 +1778,36 @@
         };
         localStorage.setItem(MASTERY_KEY, JSON.stringify(maestriasDesbloqueadas));
         actualizarBloqueoCompletista();
-        const catalogTotals = gameProgress.__totals || {};
+
+        const nextGameProgress = {
+            ...gameProgress,
+            [GAME_NAME]: completed,
+            __totals: {
+                ...(gameProgress.__totals || {}),
+                [GAME_NAME]: total
+            },
+            __mastery: maestriasDesbloqueadas
+        };
+
+        const profilePayload = {
+            user_id: userId,
+            username: profileData?.username || 'Jugador',
+            game_progress: nextGameProgress,
+            updated_at: new Date().toISOString()
+        };
+
         const { error: profileError } = await client
             .from('profiles')
-            .update({
-                game_progress: {
-                    ...gameProgress,
-                    [GAME_NAME]: completed,
-                    __totals: { ...catalogTotals, [GAME_NAME]: total },
-                    __mastery: maestriasDesbloqueadas
-                }
-            })
-            .eq('user_id', userId);
+            .upsert(profilePayload, { onConflict: 'user_id' });
 
         if (profileError) throw profileError;
 
         const { error } = await client.from('camo_progress').upsert({
             user_id: userId,
+            game: GAME_NAME,
             progress: progreso,
             updated_at: new Date().toISOString()
-        });
+        }, { onConflict: 'user_id,game' });
         if (error) throw error;
     }
 
@@ -2190,6 +1906,114 @@
         });
     }
 
+    function mostrarEstadoProgreso(mensaje, esError = false) {
+        const statusElement = document.getElementById('progressStatus');
+        if (!statusElement) return;
+        statusElement.textContent = mensaje;
+        statusElement.classList.toggle('error', esError);
+    }
+
+    function obtenerArchivoExportacion(nombreBase) {
+        const fecha = new Date();
+        const timestamp = `${fecha.getFullYear()}${String(fecha.getMonth() + 1).padStart(2, '0')}${String(fecha.getDate()).padStart(2, '0')}`;
+        return `${nombreBase}-${timestamp}.json`;
+    }
+
+    function exportarProgresoJSON() {
+        try {
+            const payload = {
+                version: 1,
+                exportedAt: new Date().toISOString(),
+                game: GAME_NAME,
+                progress: obtenerProgresoActual(),
+                mastery: { ...maestriasDesbloqueadas }
+            };
+
+            const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = obtenerArchivoExportacion(GAME_NAME.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            URL.revokeObjectURL(url);
+            mostrarEstadoProgreso('JSON exportado correctamente.');
+        } catch (error) {
+            console.warn('No se pudo exportar el progreso', error);
+            mostrarEstadoProgreso('No se pudo exportar el progreso.', true);
+        }
+    }
+
+    function validarCarryImportado(carga) {
+        if (!carga || typeof carga !== 'object' || Array.isArray(carga)) {
+            return false;
+        }
+        return true;
+    }
+
+    function importarProgresoJSONDesdeArchivo(file) {
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = () => {
+            try {
+                const payload = JSON.parse(String(reader.result || ''));
+                if (!validarCarryImportado(payload)) {
+                    throw new Error('El JSON no tiene la estructura esperada.');
+                }
+
+                const rawProgress = payload.progress ?? payload.progreso ?? payload.baseProgress ?? payload.base ?? payload;
+                const rawMastery = payload.mastery ?? payload.__mastery ?? payload.maestrias ?? {};
+
+                const progreso = normalizarProgreso(rawProgress || {});
+                const maestrias = Object.fromEntries(
+                    Object.entries(rawMastery || {}).filter(([key, value]) => typeof key === 'string' && (value === true || value === false))
+                );
+
+                document.querySelectorAll('.weapon-card[data-name]').forEach(card => {
+                    const indices = progreso[card.dataset.name] || [];
+                    card.querySelectorAll('.skin').forEach((skin, index) => {
+                        skin.classList.toggle('checked', indices.includes(index));
+                    });
+                    actualizarCategorias(card.querySelector('.camo-section'));
+                });
+
+                maestriasDesbloqueadas = maestrias;
+                localStorage.setItem(MASTERY_KEY, JSON.stringify(maestriasDesbloqueadas));
+                localStorage.setItem(PROGRESS_KEY, JSON.stringify(progreso));
+                registrarMaestriasDesbloqueadas();
+                actualizarBloqueoCompletista();
+                guardarProgreso();
+                actualizarTodo();
+                mostrarEstadoProgreso('Progreso importado correctamente.');
+            } catch (error) {
+                console.warn('No se pudo importar el progreso', error);
+                mostrarEstadoProgreso('JSON inv?lido: estructura o datos no compatibles.', true);
+            }
+        };
+        reader.onerror = () => {
+            mostrarEstadoProgreso('No se pudo leer el archivo.', true);
+        };
+        reader.readAsText(file);
+    }
+
+    function limpiarTodoElProgresoMW2019() {
+        document.querySelectorAll('.weapon-card[data-name] .skin.checked').forEach(skin => {
+            skin.classList.remove('checked');
+        });
+        document.querySelectorAll('.weapon-card[data-name]').forEach(card => {
+            const section = card.querySelector('.camo-section');
+            if (section) actualizarCategorias(section);
+        });
+        maestriasDesbloqueadas = {};
+        localStorage.removeItem(PROGRESS_KEY);
+        localStorage.removeItem(MASTERY_KEY);
+        guardarProgreso();
+        actualizarBloqueoCompletista();
+        actualizarTodo();
+    }
+
     // 4. INICIALIZACIÓN
     document.addEventListener('DOMContentLoaded', () => {
         inicializarSelectores();
@@ -2202,7 +2026,61 @@
             document.getElementById('advPanel').classList.toggle('open');
         });
         document.querySelector('#masterPanel .panel-header')?.addEventListener('click', toggleMaster);
+        const exportProgressBtn = document.getElementById('exportProgressBtn');
+        const importProgressBtn = document.getElementById('importProgressBtn');
+        const importProgressInput = document.getElementById('importProgressInput');
+
+        exportProgressBtn?.addEventListener('click', exportarProgresoJSON);
+        importProgressBtn?.addEventListener('click', () => importProgressInput?.click());
+        importProgressInput?.addEventListener('change', (event) => {
+            const [file] = event.target.files || [];
+            importarProgresoJSONDesdeArchivo(file);
+            event.target.value = '';
+        });
+
         document.getElementById('weaponSearch').addEventListener('input', filtrarTodo);
+        const clearProgressDialog = document.getElementById('clearProgressDialog');
+        const confirmClearCamosBtn = document.getElementById('confirmClearCamosBtn');
+        const cancelClearCamosBtn = document.getElementById('cancelClearCamosBtn');
+        let clearCountdownTimer;
+
+        const cerrarConfirmacionBorrado = () => {
+            window.clearInterval(clearCountdownTimer);
+            confirmClearCamosBtn.disabled = true;
+            confirmClearCamosBtn.textContent = 'Confirmar (5)';
+            if (clearProgressDialog.open) clearProgressDialog.close();
+        };
+
+        document.getElementById('clearAllCamosBtn')?.addEventListener('click', () => {
+            let secondsLeft = 5;
+            confirmClearCamosBtn.disabled = true;
+            confirmClearCamosBtn.textContent = `Confirmar (${secondsLeft})`;
+            clearProgressDialog.showModal();
+            window.clearInterval(clearCountdownTimer);
+            clearCountdownTimer = window.setInterval(() => {
+                secondsLeft -= 1;
+                if (secondsLeft <= 0) {
+                    window.clearInterval(clearCountdownTimer);
+                    confirmClearCamosBtn.disabled = false;
+                    confirmClearCamosBtn.textContent = 'Confirmar';
+                    return;
+                }
+                confirmClearCamosBtn.textContent = `Confirmar (${secondsLeft})`;
+            }, 1000);
+        });
+
+        cancelClearCamosBtn?.addEventListener('click', cerrarConfirmacionBorrado);
+        confirmClearCamosBtn?.addEventListener('click', () => {
+            limpiarTodoElProgresoMW2019();
+            const sync = window.camoProgressSync;
+            if (sync) {
+                guardarProgresoEnCuenta(sync.client, sync.userId).catch(error => {
+                    console.warn('No se pudo limpiar el progreso de MW2019 en Supabase', error);
+                });
+            }
+            cerrarConfirmacionBorrado();
+        });
+
         document.addEventListener('click', () => {
             document.querySelectorAll('.custom-select').forEach(s => s.classList.remove('active'));
         });
@@ -2219,11 +2097,12 @@
                     return;
                 }
 
-                if (index === 0) {
-                    skin.classList.toggle('checked');
-                    if (!skin.classList.contains('checked')) {
-                        skins.forEach(item => item.classList.remove('checked'));
-                    }
+                const alreadyChecked = skin.classList.contains('checked');
+
+                if (alreadyChecked) {
+                    skins.forEach((item, itemIndex) => {
+                        item.classList.toggle('checked', itemIndex < index);
+                    });
                 } else {
                     skins.forEach((item, itemIndex) => {
                         item.classList.toggle('checked', itemIndex <= index);

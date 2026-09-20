@@ -60,7 +60,7 @@
                 const skin = document.createElement('div');
                 skin.className = `skin${className ? ` ${className}` : ''}`;
                 skin.dataset.title = title;
-                skin.style.backgroundImage = `url("${image.replace(/"/g, '\\"')}")`;
+                skin.style.backgroundImage = `url("${encodeURI(image).replace(/"/g, '\\"')}")`;
                 return skin;
             }));
         });

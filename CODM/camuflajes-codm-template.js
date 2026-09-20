@@ -1,6 +1,6 @@
 (() => {
     // 1. Ruta hacia las imágenes específicas de CODM
-    const rutaCamuflaje = (categoria, nombre) => `Camuflajes/${categoria}/${encodeURI(nombre)}`;
+    const rutaCamuflaje = (categoria, nombre) => `camuflajes/${categoria}/${encodeURI(nombre)}`;
     const rutaTorneo = nombre => `camuflajes/${encodeURI(nombre)}`;
     const nombresTorneos = ['Oro_codm.png', ...Array(29).fill('')];
     const requisitosEspeciales = {

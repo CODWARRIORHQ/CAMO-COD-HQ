@@ -1,8 +1,28 @@
 create table if not exists public.camo_progress (
-    user_id uuid primary key references auth.users(id) on delete cascade,
+    user_id uuid references auth.users(id) on delete cascade,
+    game text not null default 'Modern Warfare 2019',
     progress jsonb not null default '{}'::jsonb,
-    updated_at timestamptz not null default now()
+    updated_at timestamptz not null default now(),
+    primary key (user_id, game)
 );
+
+-- Migration for installations created with the original user-only key.
+alter table public.camo_progress
+    add column if not exists game text;
+
+update public.camo_progress
+set game = 'Modern Warfare 2019'
+where game is null;
+
+alter table public.camo_progress
+    alter column game set default 'Modern Warfare 2019',
+    alter column game set not null;
+
+alter table public.camo_progress
+    drop constraint if exists camo_progress_pkey;
+
+alter table public.camo_progress
+    add constraint camo_progress_pkey primary key (user_id, game);
 
 create table if not exists public.camo_catalog (
     game text not null,
@@ -13,46 +33,48 @@ create table if not exists public.camo_catalog (
 
 insert into public.camo_catalog (game, weapon, camo_count)
 values
+    ('Modern Warfare 2019', 'M4A1', 104),
+    ('Modern Warfare 2019', 'Comando', 104),
+    ('Modern Warfare 2019', 'RAM-7', 104),
+    ('Modern Warfare 2019', 'Grau 5.56', 104),
+    ('Modern Warfare 2019', 'M13', 104),
+    ('Modern Warfare 2019', 'FR 5,56', 104),
+    ('Modern Warfare 2019', 'CR-56 AMAX', 104),
+    ('Modern Warfare 2019', 'ODEN', 104),
     ('Modern Warfare 2019', 'KILO 141', 104),
     ('Modern Warfare 2019', 'FAL', 104),
-    ('Modern Warfare 2019', 'M4A1', 104),
-    ('Modern Warfare 2019', 'FR 5,56', 104),
-    ('Modern Warfare 2019', 'ODEN', 104),
-    ('Modern Warfare 2019', 'M13', 104),
     ('Modern Warfare 2019', 'FN SCAR 17', 104),
     ('Modern Warfare 2019', 'AK-47', 104),
-    ('Modern Warfare 2019', 'RAN-7', 104),
-    ('Modern Warfare 2019', 'GRAU 5.56', 104),
-    ('Modern Warfare 2019', 'CR-56 AMAX', 104),
     ('Modern Warfare 2019', 'AN-94', 104),
     ('Modern Warfare 2019', 'AS VAL', 104),
+    ('Modern Warfare 2019', 'MP5', 104),
+    ('Modern Warfare 2019', 'MP7', 104),
     ('Modern Warfare 2019', 'AUG', 104),
     ('Modern Warfare 2019', 'P90', 104),
-    ('Modern Warfare 2019', 'MP5', 104),
+    ('Modern Warfare 2019', 'PP19 Bizon', 104),
     ('Modern Warfare 2019', 'UZI', 104),
-    ('Modern Warfare 2019', 'PP19 BIZON', 104),
-    ('Modern Warfare 2019', 'MP7', 104),
     ('Modern Warfare 2019', 'STRIKER 45', 104),
     ('Modern Warfare 2019', 'FENNEC', 104),
     ('Modern Warfare 2019', 'ISO', 104),
     ('Modern Warfare 2019', 'CX-9', 104),
     ('Modern Warfare 2019', 'MODELO 680', 104),
-    ('Modern Warfare 2019', 'ESCOPETA R9-0', 104),
     ('Modern Warfare 2019', '725', 104),
+    ('Modern Warfare 2019', 'ESCOPETA R9-0', 104),
     ('Modern Warfare 2019', 'ESCOPETA ORIGIN 12', 104),
     ('Modern Warfare 2019', 'ROGUE VLK', 104),
     ('Modern Warfare 2019', 'JAK-12', 104),
     ('Modern Warfare 2019', 'PKM', 104),
     ('Modern Warfare 2019', 'SA87', 104),
+    ('Modern Warfare 2019', 'KAR98K', 104),
     ('Modern Warfare 2019', 'M91', 104),
     ('Modern Warfare 2019', 'MG34', 104),
     ('Modern Warfare 2019', 'HOLGER-26', 104),
+    ('Modern Warfare 2019', 'M19', 104),
     ('Modern Warfare 2019', 'BRUEN MK9', 104),
+    ('Modern Warfare 2019', 'RENETTI', 104),
     ('Modern Warfare 2019', 'AMETRALLADORA LEGERA FINN', 104),
     ('Modern Warfare 2019', 'RAAL', 104),
-    ('Modern Warfare 2019', 'EBR-14', 104),
     ('Modern Warfare 2019', 'CARABINA MK2', 104),
-    ('Modern Warfare 2019', 'KAR98K', 104),
     ('Modern Warfare 2019', 'BALLESTA', 104),
     ('Modern Warfare 2019', 'SKS', 104),
     ('Modern Warfare 2019', 'SP-R 208', 104),
@@ -63,19 +85,16 @@ values
     ('Modern Warfare 2019', 'X16', 104),
     ('Modern Warfare 2019', '1911', 104),
     ('Modern Warfare 2019', '.357', 104),
-    ('Modern Warfare 2019', 'M19', 104),
     ('Modern Warfare 2019', '.50 GS', 104),
-    ('Modern Warfare 2019', 'RENETTI', 104),
     ('Modern Warfare 2019', 'SYKOV', 104),
     ('Modern Warfare 2019', 'PILA', 104),
-    ('Modern Warfare 2019', 'STRELA-P', 104),
     ('Modern Warfare 2019', 'JOKR', 104),
     ('Modern Warfare 2019', 'RPG-7', 104),
     ('Modern Warfare 2019', 'ESCUDO ANTIDISTURBIOS', 104),
     ('Modern Warfare 2019', 'CUCHILLO', 104),
     ('Modern Warfare 2019', 'PALOS DE KALI', 104),
-    ('Modern Warfare 2019', 'KODACHIS DUALES', 104)
-
+    ('Modern Warfare 2019', 'KODACHIS DUALES', 104),
+    ('Modern Warfare 2019', 'EBR-14', 104)
 on conflict (game, weapon) do update set camo_count = excluded.camo_count;
 
 create or replace function public.validate_camo_progress()
@@ -96,11 +115,11 @@ begin
     for progress_item in select key, value from jsonb_each(new.progress) loop
         select camo_count into catalog_count
         from public.camo_catalog
-        where game = 'Modern Warfare 2019'
+        where game = new.game
           and weapon = progress_item.key;
 
         if catalog_count is null then
-            raise exception 'Arma no autorizada en el progreso: %', progress_item.key;
+            raise exception 'Arma no autorizada en el progreso de %: %', new.game, progress_item.key;
         end if;
 
         if jsonb_typeof(progress_item.value) <> 'array' then

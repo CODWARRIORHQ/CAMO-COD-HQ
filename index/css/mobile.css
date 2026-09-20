@@ -1,0 +1,338 @@
+/* Contenedores de página fluidos en móvil y escritorio.
+   El 100% incluye el padding; no usamos 100vw para evitar desbordar por el scrollbar.
+   Los diálogos, imágenes y textos introductorios conservan sus propios límites. */
+.container,
+.main-container,
+.nav-container,
+.header {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: none;
+}
+
+/* Estas tarjetas de página tienen un límite inline de 860px en las plantillas. */
+.seguimiento > .meta-card {
+    width: 100%;
+    max-width: none !important;
+}
+
+/* Ajustes compartidos: cargar después de los estilos propios de cada página.
+   No se ocultan desbordamientos globales ni se desactiva el zoom del usuario. */
+@media (max-width: 900px) {
+    html {
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+    }
+
+    .container,
+    .nav,
+    .nav-left,
+    .brand,
+    .brand-text,
+    .weapon-card,
+    .camo-collapsible,
+    .custom-select,
+    .compare-select-wrap,
+    .compare-card {
+        min-width: 0;
+    }
+
+    .nav {
+        flex-wrap: wrap;
+        row-gap: 12px;
+    }
+
+    .nav .brand {
+        max-width: 100%;
+    }
+
+    .nav .brand-text {
+        min-width: 0;
+    }
+
+    .nav .site-name,
+    .nav .site-tag {
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+
+    .logo,
+    .left-menu,
+    .arrow-icon {
+        flex-shrink: 0;
+    }
+
+    .footer-grid,
+    .auth-actions,
+    .games-header,
+    .customization-row {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .weapon-name,
+    .master-title-row,
+    .player,
+    .compare-name,
+    .game-title,
+    .data-value {
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .master-title-row h1 {
+        font-size: clamp(20px, 4vw, 32px);
+    }
+
+    .compare-select-wrap input,
+    .profile-editor select {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .compare-select-wrap {
+        width: 100%;
+    }
+
+    .auth-modal {
+        max-height: calc(100vh - 32px);
+        max-height: calc(100dvh - 32px);
+        overflow-y: auto;
+    }
+
+    .auth-content {
+        padding: 18px;
+    }
+
+    .auth-fields input,
+    .wz-input,
+    .compare-select-wrap input,
+    .profile-editor select,
+    .search-box input {
+        font-size: 16px;
+    }
+
+    .btn,
+    .btn-settings,
+    .menu-btn,
+    .select-header,
+    .option-item,
+    .filter-button,
+    .auth-switch,
+    .auth-close,
+    .back-btn {
+        min-height: 44px;
+        touch-action: manipulation;
+    }
+
+    .auth-close,
+    .btn-settings,
+    .menu-btn {
+        min-width: 44px;
+    }
+
+    .dropdown-menu a,
+    .nav-links a {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        min-height: 44px;
+    }
+
+    .search-row {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: stretch;
+    }
+
+    .search-row > .wz-input {
+        flex: 1 1 0;
+        width: 0;
+        min-width: 0;
+    }
+
+    .search-row > .btn-settings {
+        flex: 0 0 44px;
+        width: 44px;
+        align-self: stretch;
+    }
+
+    .options-menu {
+        max-height: 50vh;
+        max-height: 50dvh;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+    }
+
+    .camo-toggle-row {
+        grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
+    }
+
+    .camo-toggle-item {
+        min-width: 44px;
+        min-height: 44px;
+        touch-action: manipulation;
+    }
+
+    .camo-section {
+        grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
+        grid-auto-rows: minmax(52px, auto);
+    }
+
+    .camo-section .skin {
+        min-width: 0;
+        min-height: 44px;
+        touch-action: manipulation;
+    }
+
+    .camo-section .skin.large {
+        min-width: 0;
+        min-height: 104px;
+    }
+
+    /* Une étiquette ne doit pas élargir la page lorsqu'elle est masquée. */
+    .camo-toggle-item .camo-toggle-tooltip {
+        display: none;
+    }
+
+    .camo-toggle-row {
+        position: relative;
+    }
+
+    .camo-toggle-item:hover .camo-toggle-tooltip,
+    .camo-toggle-item:focus-visible .camo-toggle-tooltip {
+        display: block;
+        position: fixed;
+        left: 16px;
+        right: 16px;
+        top: auto;
+        bottom: 16px;
+        bottom: max(16px, env(safe-area-inset-bottom));
+        transform: none;
+        white-space: normal;
+        line-height: 1.4;
+        text-align: center;
+        opacity: 1;
+    }
+}
+
+@media (max-width: 640px) {
+    body {
+        padding: 12px;
+    }
+
+    .container {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .nav-links {
+        display: flex;
+        flex: 1 1 100%;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 8px;
+        margin-left: 0;
+    }
+
+    .footer-grid {
+        align-items: flex-start;
+    }
+
+    .footer-grid .links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .footer-grid a {
+        margin-left: 0;
+    }
+
+    .UEM-breadcrumbs nav {
+        flex-wrap: wrap;
+    }
+
+    /* Un ancêtre filtré change le repère des menus positionnés en fixed. */
+    .site-header:has(.dropdown-menu) {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    .dropdown-menu {
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        top: 72px;
+        min-width: 0;
+        max-width: none;
+        max-height: calc(100vh - 96px);
+        max-height: calc(100dvh - 96px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+    }
+
+    .dropdown-menu a {
+        overflow-wrap: anywhere;
+    }
+
+    .projects-grid,
+    .features .grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .profile-editor .customization-row {
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 479px) {
+    .expand-panel.open {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .auth-actions > button {
+        max-width: 100%;
+    }
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .meta-card:hover,
+    .download-btn:hover {
+        transform: none;
+    }
+
+    .camo-toggle-item.active .camo-toggle-tooltip {
+        display: block;
+        position: fixed;
+        left: 16px;
+        right: 16px;
+        top: auto;
+        bottom: max(16px, env(safe-area-inset-bottom));
+        transform: none;
+        white-space: normal;
+        line-height: 1.4;
+        text-align: center;
+        opacity: 1;
+    }
+
+    .skin.checked:hover::after {
+        content: "✓";
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .global-fill,
+    .core-inner,
+    .glitch-mode,
+    #alert-msg {
+        animation: none;
+    }
+
+    .skin,
+    .meta-card,
+    .dropdown-menu,
+    .bar-fill {
+        transition: none;
+    }
+}

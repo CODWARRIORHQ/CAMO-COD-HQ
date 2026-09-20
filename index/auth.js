@@ -31,6 +31,21 @@
     const closeModal = () => {
         authModal.close();
         authForm.reset();
+        isEditingProfile = false;
+        isRegistering = false;
+        authTitle.textContent = 'Iniciar sesión';
+        authSubmit.textContent = 'Entrar';
+        authSwitch.textContent = 'Crear una cuenta';
+        usernameContainer.hidden = true;
+        usernameField.required = false;
+        usernameField.disabled = false;
+        authEmailContainer.hidden = false;
+        authEmailField.required = true;
+        passwordField.parentElement.hidden = false;
+        passwordField.required = true;
+        authSwitch.hidden = false;
+        authSignOut.hidden = true;
+        authEditProfile.hidden = true;
         usernameField.disabled = false;
         authSubmit.hidden = false;
         setMessage('');

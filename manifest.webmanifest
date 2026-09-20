@@ -1,0 +1,26 @@
+{
+  "name": "CAMO COD HQ",
+  "short_name": "CAMO COD HQ",
+  "description": "Tu hub de camuflajes de Call of Duty.",
+  "lang": "es",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#05060a",
+  "theme_color": "#0f1724",
+  "icons": [
+    {
+      "src": "MW 2019/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "MW 2019/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

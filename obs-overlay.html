@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CAMO COD HQ - Overlay OBS</title>
+  <link rel="stylesheet" href="obs-overlay.css?v=20260920-5">
+</head>
+<body>
+  <main class="overlay" aria-live="polite">
+    <header class="overlay-header">
+      <div>
+        <p class="eyebrow">CAMO COD HQ · OBS</p>
+        <h1 id="gameName">Cargando progreso</h1>
+      </div>
+      <span id="connectionStatus" class="status">LOCAL</span>
+    </header>
+    <section class="summary">
+      <strong id="overallPercent">0%</strong>
+      <span id="overallCount">0 camuflajes</span>
+    </section>
+    <div class="progress-track overall-progress" aria-label="Progreso total"><span id="overallFill"></span></div>
+    <section id="typeBreakdown" class="type-breakdown" hidden aria-label="Progreso por tipo de camuflaje"></section>
+    <p id="generalStatus" class="general-status" hidden>En progreso</p>
+    <section id="weaponView" class="weapon-view" hidden>
+      <h2 id="weaponName">Arma</h2>
+      <div class="progress-track"><span id="weaponFill"></span></div>
+      <p id="weaponCount">0 camuflajes completados</p>
+    </section>
+    <section id="listView" class="list-view" hidden>
+      <h2>Progreso de armas</h2>
+      <div id="weaponList"></div>
+    </section>
+    <p id="emptyMessage" class="empty">Configura el modo en la URL del navegador de OBS.</p>
+  </main>
+  <script src="obs-overlay.js?v=20260920-5"></script>
+</body>
+</html>

@@ -23,6 +23,87 @@
             --ff: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
         }
 
+        html[data-theme="light"] {
+            --bg: #eef2ff;
+            --surface: #ffffff;
+            --muted: #475569;
+            --glass: rgba(15, 23, 42, 0.07);
+            --text: #172033;
+            --border: rgba(15, 23, 42, 0.14);
+        }
+        html[data-theme="neon"] {
+            --accent: #f43f5e;
+            --accent-2: #22d3ee;
+            --bg: #12051f;
+            --surface: #24103a;
+        }
+        html[data-card-size="compact"] .projects-grid { gap: 10px; }
+        html[data-card-size="compact"] .meta-card { min-height: 120px; }
+        html[data-card-size="large"] .projects-grid { gap: 24px; }
+        html[data-card-size="large"] .meta-card { min-height: 220px; }
+
+        html[data-theme="light"],
+        html[data-theme="light"] body {
+            background-color: var(--bg) !important;
+        }
+        html[data-theme="light"] body { color: var(--text); }
+        html[data-theme="light"] h1,
+        html[data-theme="light"] h2,
+        html[data-theme="light"] h3,
+        html[data-theme="light"] h4 { color: var(--text); }
+        html[data-theme="light"] .site-header {
+            background: rgba(255, 255, 255, 0.86);
+            border-bottom: 1px solid var(--border);
+        }
+        html[data-theme="light"] .dropdown-menu,
+        html[data-theme="light"] .lang-list {
+            background: #ffffff;
+            border-color: var(--border);
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.16);
+        }
+        html[data-theme="light"] .dropdown-menu a,
+        html[data-theme="light"] .lang-list a { color: var(--text); }
+        html[data-theme="light"] .dropdown-menu a:hover,
+        html[data-theme="light"] .lang-list a:hover { background: #eef2ff; color: var(--text); }
+        html[data-theme="light"] .feature {
+            border-color: var(--border);
+            background: rgba(255, 255, 255, 0.72);
+        }
+        html[data-theme="light"] .meta-card {
+            background: #ffffff;
+            border-color: #c7d2fe;
+        }
+        html[data-theme="light"] .meta-media { background-color: #e2e8f0; }
+        html[data-theme="light"] .meta-title { color: #ffffff; }
+        html[data-theme="light"] .meta-sub { color: #e2e8f0; }
+        html[data-theme="light"] .site-footer { border-top-color: var(--border); }
+        html[data-theme="light"] .btn {
+            color: var(--text);
+            border-color: var(--border);
+            background: rgba(255, 255, 255, 0.7);
+        }
+        html[data-theme="light"] .btn:hover { color: #ffffff; background: var(--accent); }
+        html[data-theme="light"] .auth-modal,
+        html[data-theme="light"] .contact-dialog,
+        html[data-theme="light"] .settings-dialog,
+        html[data-theme="light"] .report-dialog,
+        html[data-theme="light"] .overlay-dialog {
+            color: var(--text);
+            background: #ffffff;
+            border-color: var(--border);
+            box-shadow: 0 18px 50px rgba(15, 23, 42, 0.2);
+        }
+        html[data-theme="light"] .auth-fields input,
+        html[data-theme="light"] .settings-content select,
+        html[data-theme="light"] .settings-content textarea,
+        html[data-theme="light"] .overlay-content input,
+        html[data-theme="light"] .overlay-content select {
+            color: var(--text);
+            background: #f8fafc;
+            border-color: var(--border);
+        }
+        html[data-theme="light"] .auth-close { color: var(--muted); }
+
         * { 
             box-sizing: border-box; 
         }
@@ -262,6 +343,45 @@
             color: #fff; 
         }
 
+        .tools-switch { position: relative; display: inline-block; }
+        .tools-switch summary {
+            list-style: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 10px;
+            color: var(--muted);
+            border-radius: 8px;
+        }
+        .tools-switch summary::-webkit-details-marker { display: none; }
+        .tools-switch summary::after { content: '▾'; font-size: 14px; line-height: 1; }
+        .tools-switch[open] summary,
+        .tools-switch summary:hover { color: #fff; background: rgba(255, 255, 255, .04); }
+        .tools-menu {
+            position: absolute;
+            top: 42px;
+            right: 0;
+            z-index: 80;
+            display: grid;
+            min-width: 210px;
+            gap: 5px;
+            padding: 8px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: linear-gradient(180deg, rgba(15, 23, 36, .98), rgba(11, 15, 25, .98));
+            box-shadow: 0 12px 30px rgba(2, 6, 23, .5);
+        }
+        .tools-menu .btn {
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+        html[data-theme="light"] .tools-menu {
+            background: #fff;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, .16);
+        }
+
         /* Selector de Idioma */
         .lang-switch { position: relative; display: inline-block; }
         .lang-switch summary { 
@@ -466,6 +586,94 @@
             margin-left: 12px; 
         }
 
+        .contact-dialog {
+            width: min(460px, calc(100% - 32px));
+            padding: 0;
+            color: #fff;
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            box-shadow: 0 18px 50px rgba(0,0,0,.65);
+        }
+
+        .contact-dialog::backdrop { background: rgba(0, 0, 0, 0.72); }
+        .contact-content { display: grid; gap: 16px; padding: 24px; }
+        .contact-content h2 { margin: 0; }
+        .contact-content p { margin: 0; color: var(--muted); }
+        .contact-list { display: grid; gap: 10px; }
+        .contact-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 14px;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .contact-option:hover { color: #fff; border-color: var(--accent-2); }
+        .contact-option-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .contact-icon {
+            width: 22px;
+            height: 22px;
+            flex: 0 0 22px;
+            fill: currentColor;
+        }
+        .contact-status { color: var(--accent-2); font-size: 12px; font-weight: 700; }
+        .contact-close {
+            justify-self: end;
+            padding: 0;
+            color: var(--muted);
+            background: none;
+            border: 0;
+            cursor: pointer;
+            font-size: 22px;
+        }
+
+        .news-grid { display: grid; gap: 12px; }
+        .news-item { border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius); padding: 16px; background: var(--glass); }
+        .news-item time { color: var(--accent-2); font-size: 12px; }
+        .calendar-grid { display: grid; gap: 12px; }
+        .calendar-item { display: grid; grid-template-columns: 110px 1fr; gap: 14px; align-items: start; padding: 14px; border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius); background: var(--glass); }
+        .calendar-date { color: var(--accent-2); font-size: 12px; font-weight: 700; text-transform: uppercase; }
+        .calendar-item h3 { margin: 0 0 5px; }
+        .calendar-item p { margin: 0; }
+        .help-list { display: grid; gap: 12px; }
+        .help-list details { padding: 12px 14px; border: 1px solid rgba(255,255,255,.08); border-radius: 10px; background: var(--glass); }
+        .help-list summary { cursor: pointer; font-weight: 700; color: var(--accent-2); }
+        .help-list p { margin: 10px 0 0; }
+        .install-pwa-button[hidden] { display: none; }
+        @media (max-width: 600px) { .calendar-item { grid-template-columns: 1fr; gap: 6px; } }
+        .settings-dialog, .report-dialog, .overlay-dialog { border: 0; border-radius: var(--radius); color: white; background: var(--surface); max-width: min(560px, calc(100% - 24px)); width: 100%; padding: 0; }
+        .settings-dialog::backdrop, .report-dialog::backdrop, .overlay-dialog::backdrop { background: rgba(0,0,0,.72); }
+        .settings-content { display: grid; gap: 16px; padding: 24px; }
+        .settings-content label { display: grid; gap: 6px; color: var(--muted); }
+        .settings-content select, .settings-content textarea { padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,.15); background: rgba(0,0,0,.2); color: inherit; }
+        .overlay-content { display: grid; gap: 16px; padding: 24px; }
+        .overlay-content label { display: grid; gap: 6px; color: var(--muted); }
+        .overlay-content input, .overlay-content select { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,.15); background: rgba(0,0,0,.2); color: inherit; }
+        .overlay-content [hidden] { display: none !important; }
+        .overlay-types { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin: 2px 0 0; padding: 14px; border: 1px solid rgba(255,255,255,.14); border-radius: 12px; }
+        .overlay-types legend { padding: 0 7px; color: var(--text); font-size: 13px; font-weight: 800; }
+        .overlay-types label { display: flex; align-items: center; justify-content: center; gap: 7px; min-height: 38px; padding: 7px 9px; border: 1px solid rgba(255,255,255,.12); border-radius: 8px; color: var(--muted); background: rgba(0,0,0,.14); font-size: 13px; cursor: pointer; transition: border-color .2s, background .2s, color .2s; }
+        .overlay-types label:has(input:checked) { border-color: var(--accent); color: var(--text); background: rgba(6,182,212,.12); }
+        .overlay-types label:has(input:disabled) { display: none; }
+        .overlay-types input { appearance: none; flex: 0 0 18px; width: 18px; height: 18px; margin: 0; border: 1px solid rgba(159,178,200,.7); border-radius: 5px; background: rgba(4,12,22,.8); cursor: pointer; transition: border-color .2s, background-color .2s, box-shadow .2s, transform .2s; }
+        .overlay-types input:hover { border-color: var(--accent); }
+        .overlay-types input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+        .overlay-types input:checked { border-color: #43d5f5; background-color: #43d5f5 !important; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='m4 9 3 3 7-7' fill='none' stroke='%2306111c' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2'/%3E%3C/svg%3E") !important; box-shadow: 0 0 0 3px rgba(6,182,212,.14); }
+        .overlay-types input:checked:active { transform: scale(.92); }
+        .overlay-types input:disabled { opacity: .45; cursor: not-allowed; }
+        .dialog-actions { display: flex; justify-content: flex-end; gap: 10px; }
+        html[data-theme="light"] body { color: #172033; }
+        html[data-theme="light"] h1, html[data-theme="light"] h2, html[data-theme="light"] h3, html[data-theme="light"] h4 { color: #172033; }
+        @media (max-width: 560px) { .overlay-types { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
 
 .meta-sub {
     color: #ffee00;
@@ -548,6 +756,13 @@
                     /* CALL OF DUTY: MODERN WARFARE 4 (2026)*/_/*2026*/
                     /* WARZONE SIEMPRE EL PRIMERO DE TODOS*/
     </style>
+    <link rel="manifest" href="../manifest.webmanifest">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <script src="../pwa-register.js" defer></script>
+    <link rel="stylesheet" href="css/themes.css">
+    <script src="theme.js"></script>
 </head>
 <body>
     <header class="site-header">
@@ -597,7 +812,25 @@
                 <li><a href="leaderboard.html">Leaderboard</a></li>
                 <li><a href="#features" data-i18n="nav.features">Características</a></li>
                 <li><a href="#projects" data-i18n="nav.projects">Proyectos</a></li>
-                <li><a href="#contact" data-i18n="nav.contact">Contacto</a></li>
+                <li><a href="#contact" data-contact-open data-i18n="nav.contact">Contacto</a></li>
+                <li>
+                    <details class="tools-switch">
+                        <summary>Herramientas</summary>
+                        <div class="tools-menu" role="menu" aria-label="Herramientas">
+                            <button class="btn" type="button" data-settings-open>Personalizar</button>
+                            <button class="btn" type="button" data-report-open>Enviar un reporte</button>
+                            <button class="btn" type="button" data-news-open>Noticias</button>
+                            <button class="btn" type="button" data-calendar-open>Calendario</button>
+                            <button class="btn" type="button" data-help-open>Centro de ayuda</button>
+                            <button class="btn" type="button" data-overlay-open>Overlay OBS</button>
+                            <button class="btn" type="button" data-export-card>Exportar perfil en PNG</button>
+                            <button class="btn install-pwa-button" type="button" data-install-pwa hidden>Instalar CAMO COD HQ</button>
+                            <button class="btn" type="button" data-export-progress>Exportar progreso</button>
+                            <button class="btn" type="button" data-import-progress>Importar progreso</button>
+                            <input type="file" accept="application/json,.json" data-import-file hidden>
+                        </div>
+                    </details>
+                </li>
                 <li class="lang-item">
                     <details class="lang-switch">
                         <summary aria-haspopup="listbox">
@@ -615,6 +848,46 @@
             </ul>
         </nav>
     </header>
+
+    <dialog class="overlay-dialog" id="overlayDialog">
+        <form class="overlay-content" id="overlayForm">
+            <button class="auth-close" type="button" data-overlay-close aria-label="Cerrar">&times;</button>
+            <h2>Configurar Overlay OBS</h2>
+            <p class="muted">Elige el juego y la información que quieres mostrar en tu directo. El overlay está disponible para CODM y MW2019.</p>
+            <label for="overlayGame">Juego
+                <select id="overlayGame" required>
+                    <option value="codm">Call of Duty: Mobile</option>
+                    <option value="mw2019">Modern Warfare 2019</option>
+                </select>
+            </label>
+            <label for="overlayMode">Vista
+                <select id="overlayMode" required>
+                    <option value="general">Progreso general</option>
+                    <option value="list">Lista de armas</option>
+                    <option value="weapon">Seguimiento de un arma</option>
+                </select>
+            </label>
+            <label id="overlayWeaponField" for="overlayWeapon" hidden>Nombre del arma
+                <input id="overlayWeapon" list="overlayWeaponOptions" maxlength="80" autocomplete="off" placeholder="Escribe para buscar un arma...">
+            </label>
+            <label id="overlayWeaponsField" for="overlayWeapons" hidden>Armas a mostrar
+                <select id="overlayWeapons" multiple size="7" aria-describedby="overlayWeaponsHelp"></select>
+                <small id="overlayWeaponsHelp" class="muted">Mantén Ctrl (Windows) o Cmd (Mac) para seleccionar varias armas.</small>
+            </label>
+            <fieldset class="overlay-types">
+                <legend>Tipos de camuflaje</legend>
+                <label><input type="checkbox" name="overlayTypes" value="base" checked> Base</label>
+                <label><input type="checkbox" name="overlayTypes" value="torneos" checked> Torneo</label>
+                <label><input type="checkbox" name="overlayTypes" value="zombies" checked> Zombies</label>
+                <label><input type="checkbox" name="overlayTypes" value="cajas" checked> Cajas</label>
+                <label><input type="checkbox" name="overlayTypes" value="dmz" checked> DMZ</label>
+            </fieldset>
+            <p class="muted">En OBS, añade la URL generada como una Fuente del navegador. Usa la web y OBS desde el mismo localhost para compartir el progreso.</p>
+            <div class="dialog-actions">
+                <button class="btn" type="submit">Abrir overlay</button>
+            </div>
+        </form>
+    </dialog>
 
     <dialog class="auth-modal" id="authModal">
         <form class="auth-content" id="authForm">
@@ -639,6 +912,98 @@
                 <button class="btn" id="authSubmit" type="submit">Entrar</button>
             </div>
         </form>
+    </dialog>
+
+    <dialog class="settings-dialog" id="settingsDialog">
+        <form class="settings-content" id="settingsForm">
+            <button class="auth-close" type="button" data-settings-close aria-label="Cerrar">&times;</button>
+            <h2>Personalizar la web</h2>
+            <label for="themeSelect">Tema
+                <select id="themeSelect">
+                    <option value="dark">CAMO COD HQ</option>
+                    <option value="light">Claro</option>
+                    <option value="neon">Neón</option>
+                    <option value="black">Negro total</option>
+                </select>
+            </label>
+            <label for="cardSizeSelect">Tamaño de tarjetas
+                <select id="cardSizeSelect">
+                    <option value="normal">Normal</option>
+                    <option value="compact">Compacto</option>
+                    <option value="large">Grande</option>
+                </select>
+            </label>
+            <div class="dialog-actions">
+                <button class="btn" type="submit">Guardar preferencias</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog class="report-dialog" id="reportDialog">
+        <form class="settings-content" id="reportForm">
+            <button class="auth-close" type="button" data-report-close aria-label="Cerrar">&times;</button>
+            <h2>Reportar un problema</h2>
+            <label for="reportType">Tipo de reporte
+                <select id="reportType" required>
+                    <option value="imagen">Imagen incorrecta</option>
+                    <option value="arma">Arma nueva</option>
+                    <option value="nombre">Nombre o requisito incorrecto</option>
+                    <option value="otro">Otro</option>
+                </select>
+            </label>
+            <label for="reportGame">Juego
+                <input id="reportGame" maxlength="80" required placeholder="Ej.: CODM o MW2019">
+            </label>
+            <label for="reportDetails">Detalles
+                <textarea id="reportDetails" rows="5" maxlength="1000" required></textarea>
+            </label>
+            <p class="muted" id="reportMessage" role="status"></p>
+            <div class="dialog-actions">
+                <button class="btn" type="submit">Enviar reporte</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog class="settings-dialog" id="newsDialog">
+        <div class="settings-content">
+            <button class="auth-close" type="button" data-news-close aria-label="Cerrar">&times;</button>
+            <h2>Noticias e historial</h2>
+            <div class="news-grid">
+                <article class="news-item"><time datetime="2025-01-01">01/01/2025</time><h3>Nueva arma añadida</h3><p class="muted">El catálogo se mantiene preparado para incorporar nuevas armas sin perder tu progreso.</p></article>
+                <article class="news-item"><time datetime="2024-12-15">15/12/2024</time><h3>Progreso separado por juego</h3><p class="muted">CODM y Modern Warfare 2019 guardan ahora sus avances de forma independiente.</p></article>
+                <article class="news-item"><time datetime="2024-12-01">01/12/2024</time><h3>Confirmación segura</h3><p class="muted">Se añadió una cuenta atrás antes de borrar todo el progreso.</p></article>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog class="settings-dialog" id="calendarDialog">
+        <div class="settings-content">
+            <button class="auth-close" type="button" data-calendar-close aria-label="Cerrar">&times;</button>
+            <h2>Calendario de actualizaciones</h2>
+            <p class="muted">Próximas armas, juegos y funciones previstas para CAMO COD HQ.</p>
+            <div class="calendar-grid">
+                <article class="calendar-item"><time class="calendar-date" datetime="2026-10">Octubre 2026</time><div><h3>Próximas armas</h3><p class="muted">Revisión del catálogo y preparación de nuevas armas.</p></div></article>
+                <article class="calendar-item"><time class="calendar-date" datetime="2026-11">Noviembre 2026</time><div><h3>Juegos en desarrollo</h3><p class="muted">Actualización de proyectos pendientes y nuevos trackers.</p></div></article>
+                <article class="calendar-item"><time class="calendar-date" datetime="2026-12">Diciembre 2026</time><div><h3>Actualizaciones previstas</h3><p class="muted">Mejoras de estadísticas, perfiles y leaderboard.</p></div></article>
+                <article class="calendar-item"><time class="calendar-date">Próximamente</time><div><h3>Funciones futuras</h3><p class="muted">Más herramientas para la comunidad y personalización.</p></div></article>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog class="settings-dialog" id="helpDialog">
+        <div class="settings-content">
+            <button class="auth-close" type="button" data-help-close aria-label="Cerrar">&times;</button>
+            <h2>Centro de ayuda</h2>
+            <p class="muted">Respuestas rápidas sobre las funciones principales de la web.</p>
+            <div class="help-list">
+                <details><summary>¿Cómo guardar el progreso?</summary><p class="muted">Marca los camuflajes en el tracker. Se guardan localmente y, si has iniciado sesión, también en Supabase.</p></details>
+                <details><summary>¿Cómo iniciar sesión?</summary><p class="muted">Pulsa “Iniciar sesión” en la cabecera, escribe tu correo y contraseña, o crea una cuenta nueva.</p></details>
+                <details><summary>¿Cómo exportar datos?</summary><p class="muted">Usa “Exportar progreso” para descargar un archivo JSON con tu progreso y maestrías.</p></details>
+                <details><summary>¿Cómo importar una copia?</summary><p class="muted">Pulsa “Importar progreso”, selecciona un JSON válido y confirma la sustitución del progreso local.</p></details>
+                <details><summary>¿Cómo cambiar el tema?</summary><p class="muted">Entra en “Personalizar” y elige tema oscuro, claro o neón. La elección se aplica a todo el proyecto.</p></details>
+                <details><summary>¿Cómo reportar errores?</summary><p class="muted">Abre “Enviar un reporte”, selecciona el tipo de problema, indica el juego y explica los detalles.</p></details>
+            </div>
+        </div>
     </dialog>
 
     <main>
@@ -867,9 +1232,44 @@
         </div>
     </footer>
 
+    <dialog id="contactDialog" class="contact-dialog">
+        <div class="contact-content">
+            <button type="button" class="contact-close" data-contact-close aria-label="Cerrar">×</button>
+            <h2>Contacto y comunidad</h2>
+            <p>Próximamente podrás encontrar aquí todos mis canales.</p>
+            <div class="contact-list">
+                <a class="contact-option" href="#" data-contact-link>
+                    <span class="contact-option-label">
+                        <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.54 5.32A16.7 16.7 0 0 0 15.47 4l-.5 1.02a15.4 15.4 0 0 0-5.94 0L8.53 4a16.7 16.7 0 0 0-4.07 1.32C1.88 9.1 1.18 12.78 1.53 16.4a16.8 16.8 0 0 0 5 2.55l1.2-1.63a10.6 10.6 0 0 1-1.9-.92l.47-.36c3.67 1.72 7.65 1.72 11.28 0l.48.36c-.61.36-1.25.67-1.91.92l1.2 1.63a16.8 16.8 0 0 0 5-2.55c.41-4.2-.7-7.84-2.81-11.08ZM8.48 14.1c-1.1 0-2-.99-2-2.21s.88-2.21 2-2.21 2 .99 2 2.21-.9 2.21-2 2.21Zm7.04 0c-1.1 0-2-.99-2-2.21s.88-2.21 2-2.21 2 .99 2 2.21-.9 2.21-2 2.21Z"/></svg>
+                        <span>Discord</span>
+                    </span><span class="contact-status">Próximamente</span>
+                </a>
+                <a class="contact-option" href="#" data-contact-link>
+                    <span class="contact-option-label">
+                        <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.12C19.55 3.5 12 3.5 12 3.5s-7.55 0-9.4.58A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.12c1.85.58 9.4.58 9.4.58s7.55 0 9.4-.58a3 3 0 0 0 2.1-2.12A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.9V8.1l6.3 3.9-6.3 3.9Z"/></svg>
+                        <span>YouTube</span>
+                    </span><span class="contact-status">Próximamente</span>
+                </a>
+                <a class="contact-option" href="#" data-contact-link>
+                    <span class="contact-option-label">
+                        <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.1 2h9.8A5.1 5.1 0 0 1 22 7.1v9.8a5.1 5.1 0 0 1-5.1 5.1H7.1A5.1 5.1 0 0 1 2 16.9V7.1A5.1 5.1 0 0 1 7.1 2Zm-.2 2A2.9 2.9 0 0 0 4 6.9v10.2A2.9 2.9 0 0 0 6.9 20h10.2a2.9 2.9 0 0 0 2.9-2.9V6.9A2.9 2.9 0 0 0 17.1 4H6.9ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.25-3.25a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4Z"/></svg>
+                        <span>Instagram</span>
+                    </span><span class="contact-status">Próximamente</span>
+                </a>
+                <a class="contact-option" href="#" data-contact-link>
+                    <span class="contact-option-label">
+                        <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.2 2h3.1c.3 1.7 1.3 3.1 2.7 4.1a8 8 0 0 0 2 .8v3.2a11.5 11.5 0 0 1-4.7-1.5v7.1a6.3 6.3 0 1 1-6.3-6.3c.4 0 .8 0 1.2.1v3.3a3.1 3.1 0 1 0 1.9 2.9V2Z"/></svg>
+                        <span>TikTok</span>
+                    </span><span class="contact-status">Próximamente</span>
+                </a>
+            </div>
+        </div>
+    </dialog>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
     <script src="auth.js"></script>
+    <datalist id="overlayWeaponOptions"></datalist>
     <script>
         const translations = {
             es: {
@@ -964,11 +1364,504 @@
 
         const savedLang = localStorage.getItem('preferred-lang');
         setLanguage(savedLang || 'es');
+
+        const settingsDialog = document.querySelector('#settingsDialog');
+        const settingsForm = document.querySelector('#settingsForm');
+        const themeSelect = document.querySelector('#themeSelect');
+        const cardSizeSelect = document.querySelector('#cardSizeSelect');
+        const applyPreferences = () => {
+            const theme = localStorage.getItem('camo-theme') || 'dark';
+            const cardSize = localStorage.getItem('camo-card-size') || 'normal';
+            if (window.CamoTheme?.set && document.documentElement.dataset.theme !== theme) {
+                window.CamoTheme.set(theme);
+            } else {
+                document.documentElement.dataset.theme = theme;
+            }
+            document.documentElement.dataset.cardSize = cardSize;
+            if (themeSelect) themeSelect.value = theme;
+            if (cardSizeSelect) cardSizeSelect.value = cardSize;
+        };
+        applyPreferences();
+        document.querySelector('[data-settings-open]')?.addEventListener('click', () => settingsDialog?.showModal());
+        document.querySelector('[data-settings-close]')?.addEventListener('click', () => settingsDialog?.close());
+        settingsForm?.addEventListener('submit', (event) => {
+            event.preventDefault();
+            if (window.CamoTheme?.set) {
+                window.CamoTheme.set(themeSelect.value);
+            } else {
+                localStorage.setItem('camo-theme', themeSelect.value);
+            }
+            localStorage.setItem('camo-card-size', cardSizeSelect.value);
+            applyPreferences();
+            settingsDialog.close();
+        });
+
+        const progressKeys = [
+            'camo-cod-hq-codm-progress',
+            'camo-cod-hq-codm-special-progress',
+            'camo-cod-hq-codm-mastery',
+            'camo-cod-hq-mw2019-progress',
+            'camo-cod-hq-mw2019-mastery'
+        ];
+        const exportProgress = () => {
+            const progress = {};
+            progressKeys.forEach((key) => {
+                const value = localStorage.getItem(key);
+                if (value !== null) {
+                    try { progress[key] = JSON.parse(value); } catch (error) { console.warn(`Se omitió ${key}`, error); }
+                }
+            });
+            const blob = new Blob([JSON.stringify({ format: 'camo-cod-hq', version: 1, exportedAt: new Date().toISOString(), progress }, null, 2)], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `camo-cod-hq-progreso-${new Date().toISOString().slice(0, 10)}.json`;
+            link.click();
+            URL.revokeObjectURL(link.href);
+        };
+        document.querySelector('[data-export-progress]')?.addEventListener('click', exportProgress);
+
+        const activeDaysKey = 'camo-cod-hq-active-days';
+        const trackActiveDay = () => {
+            try {
+                const today = new Date().toISOString().slice(0, 10);
+                const days = JSON.parse(localStorage.getItem(activeDaysKey) || '[]');
+                const normalized = Array.isArray(days) ? days.filter(day => typeof day === 'string') : [];
+                if (!normalized.includes(today)) {
+                    normalized.push(today);
+                    localStorage.setItem(activeDaysKey, JSON.stringify(normalized.slice(-5000)));
+                }
+                return normalized.length;
+            } catch (error) {
+                console.warn('No se pudo registrar el día activo', error);
+                return 0;
+            }
+        };
+        trackActiveDay();
+
+        const exportProfileCard = async () => {
+            const button = document.querySelector('[data-export-card]');
+            const originalLabel = button?.textContent;
+            if (button) {
+                button.disabled = true;
+                button.textContent = 'Generando PNG...';
+            }
+
+            try {
+                const config = window.CAMO_SUPABASE_CONFIG || {};
+                if (!window.supabase || !config.url || !config.anonKey) {
+                    throw new Error('El servicio de perfiles no está disponible.');
+                }
+                const profileClient = window.supabase.createClient(config.url, config.anonKey);
+                const { data: userData, error: userError } = await profileClient.auth.getUser();
+                if (userError || !userData.user) {
+                    throw new Error('Inicia sesión para exportar tu perfil.');
+                }
+
+                const { data: players, error: rankingError } = await profileClient
+                    .from('leaderboard_stats')
+                    .select('user_id,username,completed,game_progress,created_at,selected_medals,medal_earned_at')
+                    .order('completed', { ascending: false });
+                if (rankingError) throw rankingError;
+
+                const currentUser = userData.user;
+                const currentPlayer = (players || []).find(player => player.user_id === currentUser.id);
+                const username = currentPlayer?.username || currentUser.user_metadata?.username || currentUser.email || 'Jugador';
+                const completed = Number(currentPlayer?.completed) || 0;
+                const sortedPlayers = (players || []).slice().sort((a, b) => (Number(b.completed) || 0) - (Number(a.completed) || 0));
+                const rank = sortedPlayers.findIndex(player => player.user_id === currentUser.id) + 1;
+                const progress = currentPlayer?.game_progress || {};
+                const gameProgress = Object.entries(progress)
+                    .filter(([game]) => !['__totals', '__mastery'].includes(game))
+                    .map(([game, value]) => ({ game, value: Number(value) || 0 }))
+                    .filter(item => item.value > 0)
+                    .sort((a, b) => b.value - a.value);
+                const milestones = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 2750, 3000, 3500, 4000, 4500, 5000, 6000, 7000, 8000, 9000, 10000];
+                const gameTotals = progress.__totals || {};
+                const totalForGame = game => Number(gameTotals[game]) || (game === 'Modern Warfare 2019' ? 3328 : game === 'Mobile' ? 5988 : 668);
+                const milestoneMedals = milestones.filter(amount => completed >= amount).length;
+                const ageMedal = currentPlayer?.created_at && Date.now() - new Date(currentPlayer.created_at).getTime() >= 365.25 * 24 * 60 * 60 * 1000 ? 1 : 0;
+                const completionMedal = completed >= 1000 ? 1 : 0;
+                const gameMedals = Object.keys(progress).filter(game => !['__totals', '__mastery'].includes(game) && Number(progress[game]) >= totalForGame(game)).length;
+                const medals = milestoneMedals + ageMedal + completionMedal + gameMedals + (rank > 0 && rank <= 3 ? 1 : 0);
+                const activeDays = trackActiveDay();
+                const registrationDate = currentPlayer?.created_at ? new Date(currentPlayer.created_at) : null;
+                const now = new Date();
+                const formatDate = date => date ? date.toLocaleDateString('es-ES') : '—';
+                const getElapsedTime = (start, end) => {
+                    if (!start || Number.isNaN(start.getTime()) || start > end) return { years: 0, months: 0, days: 0, hours: 0, minutes: 0 };
+                    let years = end.getFullYear() - start.getFullYear();
+                    let months = end.getMonth() - start.getMonth();
+                    let days = end.getDate() - start.getDate();
+                    let hours = end.getHours() - start.getHours();
+                    let minutes = end.getMinutes() - start.getMinutes();
+                    if (minutes < 0) { minutes += 60; hours -= 1; }
+                    if (hours < 0) { hours += 24; days -= 1; }
+                    if (days < 0) {
+                        const daysInPreviousMonth = new Date(end.getFullYear(), end.getMonth(), 0).getDate();
+                        days += daysInPreviousMonth;
+                        months -= 1;
+                    }
+                    if (months < 0) { months += 12; years -= 1; }
+                    return { years: Math.max(0, years), months: Math.max(0, months), days: Math.max(0, days), hours: Math.max(0, hours), minutes: Math.max(0, minutes) };
+                };
+                const elapsed = getElapsedTime(registrationDate, now);
+                const elapsedText = `${elapsed.years}a ${elapsed.months}m ${elapsed.days}d ${elapsed.hours}h ${elapsed.minutes}min`;
+                const escapeXml = value => String(value).replace(/[<>&'"]/g, character => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;' }[character]));
+                const logoElement = document.querySelector('.logo-img');
+                if (!logoElement?.complete || !logoElement.naturalWidth) {
+                    throw new Error('No se pudo cargar el icono de CAMO COD HQ.');
+                }
+                const logoCanvas = document.createElement('canvas');
+                logoCanvas.width = logoElement.naturalWidth;
+                logoCanvas.height = logoElement.naturalHeight;
+                logoCanvas.getContext('2d').drawImage(logoElement, 0, 0);
+                const logoDataUrl = logoCanvas.toDataURL('image/png');
+                const bar = (x, y, width, value, max) => {
+                    const ratio = max > 0 ? Math.max(0, Math.min(value / max, 1)) : 0;
+                    return `<rect x="${x}" y="${y}" width="${width}" height="14" rx="7" fill="#13283d"/><rect x="${x}" y="${y}" width="${Math.round(width * ratio)}" height="14" rx="7" fill="url(#progress)"/><circle cx="${x + Math.max(7, Math.round(width * ratio))}" cy="${y + 7}" r="5" fill="#baf6ff"/>`;
+                };
+                const gameRows = gameProgress.length ? gameProgress.map((item, index) => {
+                    const column = index % 2;
+                    const row = Math.floor(index / 2);
+                    const x = column === 0 ? 80 : 620;
+                    const y = 392 + row * 64;
+                    const total = totalForGame(item.game);
+                    const percentage = total > 0 ? Math.min((item.value / total) * 100, 100) : 0;
+                    return `<rect x="${x - 14}" y="${y - 27}" width="528" height="52" rx="12" fill="#102238" stroke="#203c56"/><text x="${x}" y="${y - 3}" fill="#f2f7fb" font-size="16" font-weight="700">${escapeXml(item.game)}</text><text x="${x + 410}" y="${y - 3}" text-anchor="end" fill="#ffd34e" font-size="16" font-weight="700">${item.value.toLocaleString('es-ES')}</text><text x="${x + 500}" y="${y - 3}" text-anchor="end" fill="#73e4ff" font-size="16" font-weight="800">${percentage.toFixed(1)}%</text>${bar(x, y + 8, 500, item.value, total)}`;
+                }).join('') : '<text x="80" y="342" fill="#91a7bd" font-size="20">Todavía no hay progreso sincronizado</text>';
+                const progressRows = Math.max(1, Math.ceil(gameProgress.length / 2));
+                const canvasHeight = Math.max(820, 430 + progressRows * 64 + 170);
+                const footerY = canvasHeight - 112;
+                const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="${canvasHeight}" viewBox="0 0 1200 ${canvasHeight}">
+                    <defs>
+                        <linearGradient id="background" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#050d18"/><stop offset=".55" stop-color="#0b2035"/><stop offset="1" stop-color="#122d49"/></linearGradient>
+                        <linearGradient id="header" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#43d5f5"/><stop offset="1" stop-color="#2379d8"/></linearGradient>
+                        <linearGradient id="progress" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#43d5f5"/><stop offset="1" stop-color="#2b8de6"/></linearGradient>
+                        <pattern id="grid" width="34" height="34" patternUnits="userSpaceOnUse"><path d="M34 0H0V34" fill="none" stroke="#7ddff5" stroke-opacity=".045"/></pattern>
+                    </defs>
+                    <rect width="1200" height="${canvasHeight}" rx="30" fill="url(#background)"/><rect width="1200" height="${canvasHeight}" rx="30" fill="url(#grid)"/>
+                    <rect x="32" y="32" width="1136" height="${canvasHeight - 64}" rx="26" fill="#091727" fill-opacity=".92" stroke="#2d6589" stroke-width="2"/>
+                    <path d="M58 32H1142Q1168 32 1168 58V178H32V58Q32 32 58 32Z" fill="#0c2237"/>
+                    <path d="M32 178H1168" stroke="url(#header)" stroke-width="3"/>
+                    <image href="${logoDataUrl}" x="66" y="71" width="68" height="68" preserveAspectRatio="xMidYMid meet"/>
+                    <text x="164" y="91" fill="#f2f7fb" font-size="32" font-weight="800" font-family="Arial, sans-serif">CAMO COD HQ</text>
+                    <text x="164" y="122" fill="#8eb5ce" font-size="16" font-family="Arial, sans-serif">PLAYER PROGRESS CARD  •  ${new Date().getFullYear()}</text>
+                    <text x="80" y="219" fill="#7fa7c0" font-size="14" font-weight="700" letter-spacing="2" font-family="Arial, sans-serif">JUGADOR</text><text x="80" y="258" fill="#f2f7fb" font-size="34" font-weight="800" font-family="Arial, sans-serif">${escapeXml(username)}</text>
+                    <rect x="474" y="198" width="280" height="83" rx="16" fill="#101f34" stroke="#244b69"/><text x="498" y="222" fill="#7fa7c0" font-size="14" font-weight="700" letter-spacing="2" font-family="Arial, sans-serif">LEADERBOARD</text><text x="498" y="263" fill="#ffd34e" font-size="34" font-weight="800" font-family="Arial, sans-serif">${rank > 0 ? `#${rank}` : '—'}</text><text x="650" y="259" fill="#829db2" font-size="14" font-family="Arial, sans-serif">POSICIÓN</text>
+                    <rect x="780" y="198" width="340" height="83" rx="16" fill="#101f34" stroke="#244b69"/><text x="804" y="222" fill="#7fa7c0" font-size="14" font-weight="700" letter-spacing="2" font-family="Arial, sans-serif">CAMUFLAJES COMPLETADOS</text><text x="804" y="263" fill="#43d5f5" font-size="34" font-weight="800" font-family="Arial, sans-serif">${completed.toLocaleString('es-ES')}</text>
+                    <text x="80" y="326" fill="#f2f7fb" font-size="22" font-weight="800" font-family="Arial, sans-serif">Progreso por juego</text><path d="M80 340H1120" stroke="#21445f"/>
+                    ${gameRows}
+                    <rect x="80" y="${footerY}" width="250" height="72" rx="16" fill="#101f34" stroke="#244b69"/><text x="104" y="${footerY + 27}" fill="#7fa7c0" font-size="12" font-weight="700" letter-spacing="1" font-family="Arial, sans-serif">MEDALLAS</text><text x="104" y="${footerY + 57}" fill="#ffd34e" font-size="27" font-weight="800" font-family="Arial, sans-serif">${medals}</text><text x="305" y="${footerY + 57}" text-anchor="end" fill="#829db2" font-size="12" font-family="Arial, sans-serif">OBTENIDAS</text>
+                    <rect x="350" y="${footerY}" width="250" height="72" rx="16" fill="#101f34" stroke="#244b69"/><text x="374" y="${footerY + 27}" fill="#7fa7c0" font-size="12" font-weight="700" letter-spacing="1" font-family="Arial, sans-serif">DÍAS ACTIVOS</text><text x="374" y="${footerY + 57}" fill="#43d5f5" font-size="27" font-weight="800" font-family="Arial, sans-serif">${activeDays}</text><text x="575" y="${footerY + 57}" text-anchor="end" fill="#829db2" font-size="12" font-family="Arial, sans-serif">EN LA WEB</text>
+                    <rect x="620" y="${footerY}" width="250" height="72" rx="16" fill="#101f34" stroke="#244b69"/><text x="644" y="${footerY + 27}" fill="#7fa7c0" font-size="12" font-weight="700" letter-spacing="1" font-family="Arial, sans-serif">REGISTRADO</text><text x="644" y="${footerY + 57}" fill="#f2f7fb" font-size="21" font-weight="800" font-family="Arial, sans-serif">${formatDate(registrationDate)}</text>
+                    <rect x="890" y="${footerY}" width="230" height="72" rx="16" fill="#101f34" stroke="#244b69"/><text x="914" y="${footerY + 27}" fill="#7fa7c0" font-size="12" font-weight="700" letter-spacing="1" font-family="Arial, sans-serif">TIEMPO EN LA WEB</text><text x="914" y="${footerY + 57}" fill="#73e4ff" font-size="16" font-weight="800" font-family="Arial, sans-serif">${elapsedText}</text>
+                    <text x="1120" y="${footerY + 96}" text-anchor="end" fill="#607f96" font-size="12" font-family="Arial, sans-serif">Exportado: ${now.toLocaleString('es-ES')}</text>
+                </svg>`;
+                const svgBlob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+                const imageUrl = URL.createObjectURL(svgBlob);
+                const image = new Image();
+                image.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = 1200;
+                    canvas.height = canvasHeight;
+                    const context = canvas.getContext('2d');
+                    context.drawImage(image, 0, 0);
+                    URL.revokeObjectURL(imageUrl);
+                    const link = document.createElement('a');
+                    link.download = `camo-cod-hq-${username.replace(/[^a-z0-9_-]+/gi, '-').replace(/^-|-$/g, '') || 'perfil'}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                };
+                image.onerror = () => {
+                    URL.revokeObjectURL(imageUrl);
+                    throw new Error('No se pudo generar la imagen.');
+                };
+                image.src = imageUrl;
+            } catch (error) {
+                console.error('No se pudo exportar el perfil en PNG', error);
+                alert(error.message || 'No se pudo exportar el perfil en PNG.');
+            } finally {
+                if (button) {
+                    button.disabled = false;
+                    button.textContent = originalLabel;
+                }
+            }
+        };
+        document.querySelector('[data-export-card]')?.addEventListener('click', exportProfileCard);
+        const importFile = document.querySelector('[data-import-file]');
+        document.querySelector('[data-import-progress]')?.addEventListener('click', () => importFile?.click());
+        importFile?.addEventListener('change', async () => {
+            const [file] = importFile.files || [];
+            if (!file) return;
+            try {
+                const data = JSON.parse(await file.text());
+                if (data?.format !== 'camo-cod-hq' || !data.progress || typeof data.progress !== 'object') throw new Error('Formato no reconocido');
+                if (!confirm('La importación reemplazará el progreso local guardado. ¿Continuar?')) return;
+                Object.entries(data.progress).forEach(([key, value]) => {
+                    if (progressKeys.includes(key) && value && typeof value === 'object') localStorage.setItem(key, JSON.stringify(value));
+                });
+                alert('Progreso importado. Abre de nuevo el juego para verlo.');
+            } catch (error) {
+                console.error('No se pudo importar el progreso', error);
+                alert('El archivo no es un respaldo válido de CAMO COD HQ.');
+            } finally {
+                importFile.value = '';
+            }
+        });
+
+        const reportDialog = document.querySelector('#reportDialog');
+        const reportForm = document.querySelector('#reportForm');
+        const reportMessage = document.querySelector('#reportMessage');
+        document.querySelector('[data-report-open]')?.addEventListener('click', () => {
+            reportMessage.textContent = '';
+            reportDialog?.showModal();
+        });
+        document.querySelector('[data-report-close]')?.addEventListener('click', () => reportDialog?.close());
+        reportForm?.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const lastReport = Number(localStorage.getItem('camo-last-report') || 0);
+            if (Date.now() - lastReport < 60000) {
+                reportMessage.textContent = 'Espera un minuto antes de enviar otro reporte.';
+                return;
+            }
+            const payload = {
+                type: document.querySelector('#reportType').value,
+                game: document.querySelector('#reportGame').value.trim(),
+                details: document.querySelector('#reportDetails').value.trim()
+            };
+            if (!payload.game || !payload.details) return;
+            const config = window.CAMO_SUPABASE_CONFIG || {};
+            if (!window.supabase || !config.url || !config.anonKey) {
+                reportMessage.textContent = 'El servicio de reportes no está disponible ahora.';
+                return;
+            }
+            const client = window.supabase.createClient(config.url, config.anonKey);
+            const { data } = await client.auth.getUser();
+            const { error } = await client.from('camo_reports').insert({ ...payload, user_id: data.user?.id || null });
+            if (error) {
+                console.error('No se pudo enviar el reporte', error);
+                reportMessage.textContent = 'No se pudo enviar el reporte. Inténtalo más tarde.';
+                return;
+            }
+            localStorage.setItem('camo-last-report', String(Date.now()));
+            reportForm.reset();
+            reportMessage.textContent = 'Reporte enviado. Gracias por ayudar a mejorar la web.';
+        });
+
+        const newsDialog = document.querySelector('#newsDialog');
+        document.querySelector('[data-news-open]')?.addEventListener('click', () => newsDialog?.showModal());
+        document.querySelector('[data-news-close]')?.addEventListener('click', () => newsDialog?.close());
+
+        const calendarDialog = document.querySelector('#calendarDialog');
+        document.querySelector('[data-calendar-open]')?.addEventListener('click', () => calendarDialog?.showModal());
+        document.querySelector('[data-calendar-close]')?.addEventListener('click', () => calendarDialog?.close());
+
+        const helpDialog = document.querySelector('#helpDialog');
+        document.querySelector('[data-help-open]')?.addEventListener('click', () => helpDialog?.showModal());
+        document.querySelector('[data-help-close]')?.addEventListener('click', () => helpDialog?.close());
+
+        const overlayDialog = document.querySelector('#overlayDialog');
+        const overlayForm = document.querySelector('#overlayForm');
+        const overlayMode = document.querySelector('#overlayMode');
+        const overlayWeaponField = document.querySelector('#overlayWeaponField');
+        const overlayWeaponsField = document.querySelector('#overlayWeaponsField');
+        const overlayGame = document.querySelector('#overlayGame');
+        const overlayWeapons = document.querySelector('#overlayWeapons');
+        const overlayWeaponOptions = document.querySelector('#overlayWeaponOptions');
+        const readOverlayWeaponNames = game => {
+            const names = new Set();
+            const catalogNames = game === 'codm'
+                ? ['TYPE 25', 'AK-117', 'RUS-79U', 'CHICOM', 'HS2126', 'S36', 'KILO CON MECANISMO DE CRROJO', 'XPR-50', 'J358', 'FHJ-18', 'CUCHILLO']
+                : [];
+            catalogNames.forEach(name => names.add(name));
+            const progressKey = game === 'mw2019' ? 'camo-cod-hq-mw2019-progress' : 'camo-cod-hq-codm-progress';
+            try {
+                const progress = JSON.parse(localStorage.getItem(progressKey) || '{}');
+                Object.keys(progress).forEach(name => names.add(name));
+                if (game === 'codm') {
+                    const special = JSON.parse(localStorage.getItem('camo-cod-hq-codm-special-progress') || '{}');
+                    Object.keys(special).forEach(name => names.add(name));
+                }
+            } catch (error) {
+                console.warn('No se pudieron cargar los nombres de armas', error);
+            }
+            return [...names].sort((a, b) => a.localeCompare(b, 'es', { sensitivity: 'base' }));
+        };
+        const updateOverlayWeaponOptions = () => {
+            if (!overlayWeaponOptions) return;
+            const names = readOverlayWeaponNames(overlayGame.value);
+            overlayWeaponOptions.replaceChildren(...names.map(name => {
+                const option = document.createElement('option');
+                option.value = name;
+                return option;
+            }));
+            if (overlayWeapons?.tagName === 'SELECT') {
+                const selected = new Set([...overlayWeapons.selectedOptions].map(option => option.value));
+                overlayWeapons.replaceChildren(...names.map(name => {
+                    const option = document.createElement('option');
+                    option.value = name;
+                    option.textContent = name;
+                    option.selected = selected.has(name);
+                    return option;
+                }));
+            }
+        };
+        const overlayTypeInputs = [...document.querySelectorAll('input[name="overlayTypes"]')];
+        const updateOverlayTypes = () => {
+            const isCodm = overlayGame?.value === 'codm';
+            overlayTypeInputs.filter(input => input.value !== 'base').forEach(input => {
+                input.disabled = !isCodm;
+                input.closest('label').hidden = !isCodm;
+            });
+            if (!isCodm) {
+                const base = overlayTypeInputs.find(input => input.value === 'base');
+                if (base) base.checked = true;
+            }
+        };
+        const updateOverlayFields = () => {
+            const mode = overlayMode?.value;
+            if (overlayWeaponField) overlayWeaponField.hidden = mode !== 'weapon';
+            if (overlayWeaponsField) overlayWeaponsField.hidden = mode !== 'list';
+            const weaponInput = document.querySelector('#overlayWeapon');
+            const weaponsInput = document.querySelector('#overlayWeapons');
+            if (weaponInput) weaponInput.required = mode === 'weapon';
+            if (weaponsInput) weaponsInput.required = false;
+            if (overlayWeapons && !overlayWeapons.selectedOptions?.length) updateOverlayWeaponOptions();
+        };
+        document.querySelectorAll('[data-overlay-open]').forEach((button) => button.addEventListener('click', (event) => {
+            event.preventDefault();
+            updateOverlayFields();
+            overlayDialog?.showModal();
+        }));
+        document.querySelectorAll('.tools-menu .btn').forEach((button) => button.addEventListener('click', () => {
+            const toolsSwitch = button.closest('.tools-switch');
+            if (toolsSwitch) toolsSwitch.removeAttribute('open');
+        }));
+        document.querySelector('[data-overlay-close]')?.addEventListener('click', () => overlayDialog?.close());
+        overlayMode?.addEventListener('change', updateOverlayFields);
+        overlayForm?.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const encodeSnapshot = value => {
+                const bytes = new TextEncoder().encode(JSON.stringify(value));
+                let binary = '';
+                bytes.forEach(byte => { binary += String.fromCharCode(byte); });
+                return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+            };
+            const game = overlayGame.value;
+            const selectedTypes = overlayTypeInputs.filter(input => input.checked && !input.disabled).map(input => input.value);
+            const progressKey = game === 'mw2019' ? 'camo-cod-hq-mw2019-progress' : 'camo-cod-hq-codm-progress';
+            let progressSnapshot = {};
+            try {
+                const savedProgress = JSON.parse(localStorage.getItem(progressKey) || '{}');
+                const specialProgress = game === 'codm' ? JSON.parse(localStorage.getItem('camo-cod-hq-codm-special-progress') || '{}') : {};
+                const buildWeaponProgress = name => {
+                    const values = selectedTypes.includes('base') && Array.isArray(savedProgress[name]) ? savedProgress[name] : [];
+                    const specialValues = selectedTypes.filter(type => type !== 'base').flatMap(type =>
+                        (specialProgress[name]?.[type] || []).map(index => `special-${type}-${index}`)
+                    );
+                    return [...values, ...specialValues];
+                };
+                const selectedWeapon = document.querySelector('#overlayWeapon').value.trim();
+                const selectedWeapons = overlayWeapons.tagName === 'SELECT'
+                    ? [...overlayWeapons.selectedOptions].map(option => option.value)
+                    : overlayWeapons.value.split(',').map(name => name.trim()).filter(Boolean);
+                if (overlayMode.value === 'weapon' && selectedWeapon) {
+                    progressSnapshot[selectedWeapon] = buildWeaponProgress(selectedWeapon);
+                } else if (overlayMode.value === 'list' && selectedWeapons.length) {
+                    selectedWeapons.forEach(name => {
+                        progressSnapshot[name] = buildWeaponProgress(name);
+                    });
+                } else {
+                    Object.keys(savedProgress).forEach(name => {
+                        progressSnapshot[name] = buildWeaponProgress(name);
+                    });
+                }
+                const typeTotals = game === 'codm'
+                    ? { base: 1144, torneos: 330, zombies: 11, cajas: 165, dmz: 220 }
+                    : { base: 3328 };
+                const typeProgress = {};
+                Object.keys(progressSnapshot).forEach(name => {
+                    typeProgress[name] = {
+                        base: selectedTypes.includes('base') && Array.isArray(savedProgress[name]) ? savedProgress[name].length : 0,
+                        torneos: selectedTypes.includes('torneos') ? (specialProgress[name]?.torneos?.length || 0) : 0,
+                        zombies: selectedTypes.includes('zombies') ? (specialProgress[name]?.zombies?.length || 0) : 0,
+                        cajas: selectedTypes.includes('cajas') ? (specialProgress[name]?.cajas?.length || 0) : 0,
+                        dmz: selectedTypes.includes('dmz') ? (specialProgress[name]?.dmz?.length || 0) : 0
+                    };
+                });
+                progressSnapshot = { progress: progressSnapshot, typeTotals, typeProgress, weaponTotals: {}, selectedTypes };
+            } catch (error) {
+                console.warn('No se pudo preparar la sincronización del overlay', error);
+            }
+            const params = new URLSearchParams({
+                game,
+                mode: overlayMode.value,
+                snapshot: encodeSnapshot(progressSnapshot),
+                v: String(Date.now())
+            });
+            const weapon = document.querySelector('#overlayWeapon').value.trim();
+            const weapons = overlayWeapons.tagName === 'SELECT'
+                ? [...overlayWeapons.selectedOptions].map(option => option.value).join(',')
+                : overlayWeapons.value.trim();
+            if (overlayMode.value === 'weapon' && weapon) params.set('weapon', weapon);
+            if (overlayMode.value === 'list' && weapons) params.set('weapons', weapons);
+            window.open(`../obs-overlay.html?${params.toString()}`, '_blank', 'noopener');
+            overlayDialog?.close();
+        });
+        overlayGame?.addEventListener('change', updateOverlayTypes);
+        overlayGame?.addEventListener('change', updateOverlayWeaponOptions);
+        updateOverlayWeaponOptions();
+        updateOverlayTypes();
+        const overlayRequest = new URLSearchParams(window.location.search);
+        if (overlayRequest.get('openOverlay') === '1' && overlayDialog) {
+            const requestedGame = overlayRequest.get('game');
+            const overlayGame = document.querySelector('#overlayGame');
+            if (requestedGame && [...overlayGame.options].some(option => option.value === requestedGame)) {
+                overlayGame.value = requestedGame;
+            }
+            updateOverlayFields();
+            overlayDialog.showModal();
+        }
+
+        let deferredInstallPrompt;
+        const installButton = document.querySelector('[data-install-pwa]');
+        window.addEventListener('beforeinstallprompt', (event) => {
+            event.preventDefault();
+            deferredInstallPrompt = event;
+            installButton.hidden = false;
+        });
+        window.addEventListener('appinstalled', () => {
+            deferredInstallPrompt = null;
+            installButton.hidden = true;
+        });
+        installButton?.addEventListener('click', async () => {
+            if (!deferredInstallPrompt) {
+                alert('Para instalar la aplicación, abre esta web desde Chrome o Edge mediante HTTPS o localhost.');
+                return;
+            }
+            deferredInstallPrompt.prompt();
+            await deferredInstallPrompt.userChoice;
+            deferredInstallPrompt = null;
+            installButton.hidden = true;
+        });
+
+        const contactDialog = document.querySelector('#contactDialog');
+        document.querySelector('[data-contact-open]')?.addEventListener('click', (event) => {
+            event.preventDefault();
+            contactDialog?.showModal();
+        });
+        document.querySelector('[data-contact-close]')?.addEventListener('click', () => {
+            contactDialog?.close();
+        });
+        document.querySelectorAll('[data-contact-link]').forEach((link) => {
+            link.addEventListener('click', (event) => event.preventDefault());
+        });
         
         // Cerrar el menú al hacer clic fuera, con la tecla Esc, y al hacer scroll en móviles
         (function(){
             const menuToggle = document.getElementById('menuToggle');
             const leftMenu = document.querySelector('.left-menu');
+            const toolsSwitch = document.querySelector('.tools-switch');
             if(!menuToggle) return;
 
             // Inicializar aria-expanded y mantenerlo sincronizado
@@ -983,6 +1876,9 @@
                     menuToggle.checked = false;
                     menuToggle.setAttribute('aria-expanded', 'false');
                 }
+                if (toolsSwitch && !toolsSwitch.contains(e.target)) {
+                    toolsSwitch.removeAttribute('open');
+                }
             });
 
             // Cerrar con Esc
@@ -990,6 +1886,7 @@
                 if (e.key === 'Escape') {
                     menuToggle.checked = false;
                     menuToggle.setAttribute('aria-expanded', 'false');
+                    toolsSwitch?.removeAttribute('open');
                 }
             });
 

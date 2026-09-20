@@ -1,0 +1,338 @@
+/*
+ * CAMO COD HQ shared theme layer.
+ * Page-specific styles remain in charge of game artwork; this only changes
+ * shared surfaces, readable text, controls and the page background.
+ */
+:root {
+  --theme-bg: #060b13;
+  --theme-surface: #0d1929;
+  --theme-surface-raised: #14253b;
+  --theme-text: #f2f7fb;
+  --theme-muted: #91a7bd;
+  --theme-border: #29445e;
+  --theme-accent: #43d5f5;
+  --theme-accent-2: #72e5ff;
+  --theme-gold: #ffd34e;
+  --theme-radius: 14px;
+  --theme-container: 1600px;
+  color-scheme: dark;
+}
+
+/*
+ * Legacy templates use these shorter variable names. Keep them in sync with
+ * the shared theme so every game page responds to Personalizar.
+ */
+html {
+  --bg: var(--theme-bg) !important;
+  --bg-dark: var(--theme-bg) !important;
+  --surface: var(--theme-surface) !important;
+  --surface-light: var(--theme-surface-raised) !important;
+  --input-bg: var(--theme-input) !important;
+  --muted: var(--theme-muted) !important;
+  --text: var(--theme-text) !important;
+  --accent: var(--theme-accent) !important;
+  --accent-2: var(--theme-accent-2) !important;
+  --accent-orange: var(--theme-gold) !important;
+  --gold: var(--theme-gold) !important;
+  --border: var(--theme-border) !important;
+}
+
+html[data-theme="light"] {
+  --theme-bg: #eef2f7;
+  --theme-surface: #ffffff;
+  --theme-surface-raised: #f8fafc;
+  --theme-text: #172033;
+  --theme-muted: #526176;
+  --theme-border: rgba(15, 23, 42, .16);
+  --theme-input: #f8fafc;
+  --theme-header-start: #ffffff;
+  --theme-header-end: #e8eef7;
+  --theme-panel-start: #ffffff;
+  --theme-panel-end: #eef3f9;
+  --theme-page-glow: #dbeafe;
+  --theme-accent: #6d28d9;
+  --theme-accent-2: #0891b2;
+  color-scheme: light;
+}
+
+html[data-theme="neon"] {
+  --theme-bg: #10051b;
+  --theme-surface: #211036;
+  --theme-surface-raised: #30134b;
+  --theme-text: #f5eaff;
+  --theme-muted: #c2a8d8;
+  --theme-border: rgba(244, 63, 94, .34);
+  --theme-input: #160d27;
+  --theme-header-start: #32124d;
+  --theme-header-end: #160a2b;
+  --theme-panel-start: #32164d;
+  --theme-panel-end: #1b0d32;
+  --theme-page-glow: #3b115c;
+  --theme-accent: #f43f5e;
+  --theme-accent-2: #22d3ee;
+  color-scheme: dark;
+}
+
+html[data-theme="black"] {
+  --theme-bg: #000000;
+  --theme-surface: #000000;
+  --theme-surface-raised: #050505;
+  --theme-text: #f5f5f5;
+  --theme-muted: #a3a3a3;
+  --theme-border: #1d1d1d;
+  --theme-input: #000000;
+  --theme-header-start: #050505;
+  --theme-header-end: #000000;
+  --theme-panel-start: #050505;
+  --theme-panel-end: #000000;
+  --theme-page-glow: #000000;
+  --theme-accent: #43d5f5;
+  --theme-accent-2: #72e5ff;
+  --theme-gold: #ffd34e;
+  color-scheme: dark;
+}
+
+:root {
+  --theme-input: #081522;
+  --theme-header-start: #10233a;
+  --theme-header-end: #070f1b;
+  --theme-panel-start: #132740;
+  --theme-panel-end: #0a1727;
+  --theme-page-glow: #142b49;
+}
+
+html, body {
+  background-color: var(--theme-bg) !important;
+  color: var(--theme-text);
+}
+
+/*
+ * Shared CAMO COD HQ visual system.  This layer intentionally comes after
+ * each page's artwork/template CSS, so legacy game-specific layouts and
+ * interactions remain intact while shared surfaces stay consistent.
+ */
+body {
+  background-image: radial-gradient(circle at 50% -18%, var(--theme-page-glow) 0, var(--theme-bg) 46%) !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+:is(.container, .main-container, .nav-container, .header) {
+  width: min(100%, var(--theme-container));
+  max-width: var(--theme-container);
+  margin-inline: auto;
+}
+
+/* Breadcrumbs stay aligned with the page content instead of being centered. */
+.UEM-breadcrumbs-container > .container {
+  display: flex !important;
+  justify-content: flex-start !important;
+  text-align: left !important;
+}
+
+.UEM-breadcrumbs {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+:is(.site-header, header) {
+  border-color: var(--theme-border) !important;
+  background: linear-gradient(110deg, var(--theme-header-start), var(--theme-header-end)) !important;
+  box-shadow: 0 16px 38px rgba(0, 0, 0, .24);
+}
+
+:is(.site-header, header, .card, .panel, .feature, .meta-card, .games,
+  .stat, .stat-card, .compare-panel, .compare-card, .category-group,
+  .weapon-card, .leaderboard, .podium-card, .profile-editor) {
+  border-color: var(--theme-border) !important;
+  border-radius: var(--theme-radius);
+}
+
+:is(.card, .panel, .feature, .meta-card, .games, .stat, .stat-card,
+  .compare-panel, .compare-card, .category-group, .weapon-card,
+  .leaderboard, .podium-card, .profile-editor, .controls-section,
+  .wzhub-filter-card, .master-panel, .panel-header, .expand-panel) {
+  background: linear-gradient(145deg, var(--theme-panel-start), var(--theme-panel-end)) !important;
+  color: var(--theme-text);
+}
+
+:is(.controls-section, .wzhub-filter-card, .master-panel, .panel-header,
+  .expand-panel) {
+  border-color: var(--theme-border) !important;
+  border-radius: var(--theme-radius);
+}
+
+/* Legacy game templates use these two unshared utility cards. */
+.wzhub-filter-card,
+.master-panel {
+  background: linear-gradient(145deg, var(--theme-panel-start), var(--theme-panel-end)) !important;
+  border: 1px solid var(--theme-border) !important;
+  color: var(--theme-text) !important;
+}
+
+:is(h1, h2, h3, h4, h5, h6, .title, .brand-text, .site-name) {
+  color: var(--theme-text);
+}
+
+:is(.muted, .message, .site-tag, .game-meta, .game-status, .stat-label,
+  .meta-sub, .subtitle, small, .score-medals, .podium-medals) {
+  color: var(--theme-muted) !important;
+}
+
+:is(a, .accent, .eyebrow, .player, .rank, .UEM-breadcrumbs a) {
+  color: var(--theme-accent-2);
+}
+
+:is(.score, .podium-score, .stat-value, .game-score, .gold, .highlight) {
+  color: var(--theme-gold) !important;
+}
+
+:is(input, select, textarea, button, .btn, .filter-button) {
+  border-color: var(--theme-border);
+  border-radius: 9px;
+  font: inherit;
+}
+
+:is(input, select, textarea) {
+  color: var(--theme-text) !important;
+  background: var(--theme-input) !important;
+}
+
+:is(button, .btn, .filter-button) {
+  color: var(--theme-text);
+  background: linear-gradient(180deg, var(--theme-panel-start), var(--theme-panel-end));
+}
+
+:is(button, .btn, .filter-button):hover,
+:is(button, .btn, .filter-button):focus-visible {
+  border-color: var(--theme-accent);
+  background: linear-gradient(135deg, var(--theme-accent-2), var(--theme-accent));
+}
+
+:is(.filter-button.active, .btn.primary) {
+  color: #041018 !important;
+  border-color: transparent !important;
+  background: linear-gradient(135deg, var(--theme-accent), var(--theme-gold)) !important;
+}
+
+:is(.nav, .site-header .nav) {
+  min-height: 72px;
+}
+
+/* Keep the game header grouped on the left instead of centering the brand. */
+.site-header .nav > .nav-left {
+  display: flex !important;
+  flex: 0 1 auto !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  margin-right: auto !important;
+}
+
+.site-header .nav > .nav-left .brand {
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+  justify-content: flex-start !important;
+}
+
+/* Older game templates place the menu and brand as sibling elements. */
+.site-header .nav > .left-menu + .brand {
+  flex: 0 0 auto !important;
+  margin: 0 auto 0 12px !important;
+  justify-content: flex-start !important;
+}
+
+@media (min-width: 651px) and (max-width: 1200px) {
+  .site-header .nav {
+    flex-wrap: nowrap !important;
+  }
+}
+
+:is(.logo, .game-icon) {
+  border-color: var(--theme-border) !important;
+  background: linear-gradient(135deg, #15516d, #16314d) !important;
+}
+
+.UEM-breadcrumbs {
+  border-color: var(--theme-border) !important;
+  background: rgba(28, 115, 145, .12) !important;
+}
+
+:is(.weapon-card, .meta-card, .stat-card, .stat, .podium-card, .compare-card):hover {
+  border-color: #3a6688 !important;
+}
+
+@media (max-width: 900px) {
+  :is(.container, .main-container, .nav-container, .header) {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  body { padding: 12px !important; }
+  :is(.container, .main-container) { padding-inline: 12px; }
+  :is(.site-header, header) { border-radius: 11px; }
+  :is(.nav, .site-header .nav) { min-height: 64px; gap: 10px; }
+}
+
+html[data-theme="light"] body {
+  background-color: var(--theme-bg) !important;
+  color: var(--theme-text) !important;
+}
+
+html[data-theme="light"] :is(h1, h2, h3, h4, h5, h6, .title, .brand-text) {
+  color: var(--theme-text) !important;
+}
+
+html[data-theme="light"] :is(.site-header, header, nav, .card, .panel, .modal,
+.settings-dialog, .auth-modal, .contact-dialog, .report-dialog, .feature,
+.meta-card, .games, .stat, .compare-panel, .compare-card, .category-group) {
+  border-color: var(--theme-border) !important;
+}
+
+html[data-theme="light"] :is(.site-header, header, .card, .panel, .modal,
+.settings-dialog, .auth-modal, .contact-dialog, .report-dialog, .feature,
+.meta-card, .games, .stat, .compare-panel, .compare-card, .leaderboard,
+.podium-card, .controls-section, .wzhub-filter-card, .master-panel,
+.panel-header, .expand-panel) {
+  background: linear-gradient(145deg, var(--theme-panel-start), var(--theme-panel-end)) !important;
+  color: var(--theme-text);
+}
+
+html[data-theme="light"] :is(.muted, .message, .site-tag, .game-meta, .game-status,
+.stat-label, .meta-sub, .subtitle, small) {
+  color: var(--theme-muted) !important;
+}
+
+html[data-theme="light"] :is(input, select, textarea, button) {
+  color: var(--theme-text);
+  background-color: var(--theme-surface-raised);
+  border-color: var(--theme-border);
+}
+
+html[data-theme="neon"] :is(.site-header, header, .card, .panel, .modal,
+.feature, .meta-card, .games, .stat, .compare-panel, .compare-card,
+.leaderboard, .podium-card, .controls-section, .wzhub-filter-card,
+.master-panel, .panel-header, .expand-panel) {
+  background: linear-gradient(145deg, var(--theme-panel-start), var(--theme-panel-end)) !important;
+}
+
+html[data-theme="black"] :is(.site-header, header, .card, .panel, .modal,
+.feature, .meta-card, .games, .stat, .stat-card, .compare-panel,
+.compare-card, .leaderboard, .podium-card, .controls-section,
+.wzhub-filter-card, .master-panel, .panel-header, .expand-panel,
+.profile-editor) {
+  background: #000000 !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="black"] :is(input, select, textarea, button, .btn, .filter-button) {
+  background: #000000 !important;
+}
+
+html[data-theme="neon"] :is(a, .accent, .eyebrow) {
+  color: var(--theme-accent-2);
+}
+
+/* Theme selection is available from Personalizar on the home page only. */
+.camo-theme-control {
+  display: none !important;
+}

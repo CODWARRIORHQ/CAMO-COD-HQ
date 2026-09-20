@@ -11,7 +11,7 @@
         html { min-height:100%; background:#05060a; color-scheme:dark; }
         body { min-height:100vh; margin:0; padding:20px; color:#fff; background:radial-gradient(circle at top,#101b31 0,var(--bg) 48%); font-family:Inter,system-ui,sans-serif; overscroll-behavior:none; }
         a { color:inherit; text-decoration:none; }
-        .container { width:min(100%,1100px); margin:0 auto; }
+        .container { width:min(100%,1600px); margin:0 auto; }
         .nav { display:flex; justify-content:space-between; align-items:center; gap:20px; min-height:72px; border-bottom:1px solid var(--border); }
         .brand { display:flex; align-items:center; gap:12px; }
         .logo { width:48px; height:48px; overflow:hidden; border-radius:8px; background:linear-gradient(135deg,var(--accent),var(--cyan)); }
@@ -97,6 +97,13 @@
             .medal-date { color:var(--muted); font-size:11px; }
         @media (max-width:600px) { body { padding:12px; } main { padding:44px 0; } .profile-heading { display:grid; grid-template-columns:auto minmax(0,1fr); align-items:center; gap:10px; } .profile-heading h1 { min-width:0; font-size:clamp(32px,10vw,48px); overflow-wrap:anywhere; } #profileBadges { grid-column:1 / -1; margin:4px 0 0; gap:5px; } #profileBadges .achievement-badge { max-width:100%; padding:4px 7px; font-size:11px; } .summary { grid-template-columns:1fr; } .game-grid { grid-template-columns:1fr; padding:10px; } .game { min-height:100px; } .compare-grid { grid-template-columns:1fr; } .medal-options { grid-template-columns:1fr; max-height:260px; } .medal-options .stat-label { grid-column:auto; } }
     </style>
+    <link rel="manifest" href="../manifest.webmanifest">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <script src="../pwa-register.js" defer></script>
+    <link rel="stylesheet" href="css/themes.css">
+    <script src="theme.js"></script>
 </head>
 <body>
     <header><nav class="nav container"><a class="brand" href="Camos UEM.html"><span class="logo"><img src="../MW 2019/logo.png" alt="CAMO COD HQ"></span><span class="brand-text"><span class="site-name">CAMO COD HQ</span><small class="site-tag">Tu hub de camuflajes</small></span></a><a class="btn" href="leaderboard.html">Leaderboard</a></nav></header>
@@ -207,7 +214,8 @@
             }
             const completed = sumGameProgress(profile?.game_progress || {});
             const storedGameTotals = profile?.game_progress?.__totals || {};
-            const getGameTotal = gameName => Number(storedGameTotals[gameName]) || availableGameTotals[gameName] || 0;
+            const getGameTotal = gameName => Number(storedGameTotals[gameName]) || availableGameTotals[gameName] || 668;
+            const hasGameCatalog = gameName => Number(storedGameTotals[gameName]) > 0 || Number(availableGameTotals[gameName]) > 0;
             total = sumAvailableGameTotals(storedGameTotals);
             document.querySelector('#profileName').textContent = profile?.username || 'Jugador';
             applyColor(profile?.accent_color);
@@ -236,11 +244,20 @@
             const profileGameNames = ['Modern Warfare 2007', 'Modern Warfare 2', 'Black Ops', 'Modern Warfare 3', 'Black Ops II', 'Ghosts', 'Advanced Warfare', 'Black Ops III', 'Infinite Warfare', 'Modern Warfare Remastered', 'WWII', 'Black Ops IIII', 'Mobile', 'Modern Warfare 2019', 'Modern Warfare 2 Remastered', 'Black Ops Cold War', 'Vanguard', 'Modern Warfare II', 'Modern Warfare III', 'Black Ops 6', 'Black Ops 7', 'Modern Warfare 4', 'Warzone'];
             const camouflageMilestones = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 2750, 3000, 3500, 4000, 4500, 5000, 6000, 7000, 8000, 9000, 10000];
             const profileGameProgress = profile?.game_progress || {};
-            const completedGames = profileGameNames.filter(name => (profileGameProgress[name] || (name === 'Modern Warfare 2019' ? completed : 0)) >= getGameTotal(name)).length;
+            const completedGames = profileGameNames.filter(name => {
+                const gameTotal = getGameTotal(name);
+                return hasGameCatalog(name) && (Number(profileGameProgress[name]) || 0) >= gameTotal;
+            }).length;
             const visibleMedalLimit = 4 + completedGames;
             const firstUsers = (allProfiles || []).filter(item => item.created_at).sort((a, b) => new Date(a.created_at) - new Date(b.created_at)).slice(0, 10);
             const accountAge = profile?.created_at && Date.now() - new Date(profile.created_at).getTime() >= 365.25 * 24 * 60 * 60 * 1000;
-            const earnedMedals = { ...Object.fromEntries(camouflageMilestones.map(amount => [`camos:${amount}`, completed >= amount])), veteran: Boolean(accountAge), secret: completed >= 1000, founder: firstUsers.some(item => item.user_id === userId), completion: completed >= total, category: completed >= total, streak: completed >= 100, top3: Number(currentPlayer?.rankText?.slice(1)) <= 3, ...Object.fromEntries(profileGameNames.map(name => [`game:${name}`, (profileGameProgress[name] || (name === 'Modern Warfare 2019' ? completed : 0)) >= getGameTotal(name)])) };
+            const earnedMedals = { ...Object.fromEntries(camouflageMilestones.map(amount => [`camos:${amount}`, completed >= amount])), veteran: Boolean(accountAge), secret: completed >= 1000, founder: firstUsers.some(item => item.user_id === userId), completion: profileGameNames.some(name => {
+                const gameTotal = getGameTotal(name);
+                return hasGameCatalog(name) && (Number(profileGameProgress[name]) || 0) >= gameTotal;
+            }), category: false, streak: completed >= 100, top3: Number(currentPlayer?.rankText?.slice(1)) <= 3, ...Object.fromEntries(profileGameNames.map(name => {
+                const gameTotal = getGameTotal(name);
+                return [`game:${name}`, hasGameCatalog(name) && (Number(profileGameProgress[name]) || 0) >= gameTotal];
+            })) };
             const badgeData = [
                 ...camouflageMilestones.map(amount => [`camos:${amount}`, `${amount} camuflajes`]),
                 ['veteran', 'Perfil veterano'],
@@ -395,7 +412,7 @@
             const favoriteGame = profile?.favorite_game || 'Modern Warfare 2019';
             const gameCatalog = profile?.game_progress || {};
             const gameNames = profileGameNames;
-            const gameValues = gameNames.map(name => name === 'Modern Warfare 2019' ? completed : (gameCatalog[name] || 0));
+            const gameValues = gameNames.map(name => Number(gameCatalog[name]) || 0);
             const gameLinks = {
                 'Modern Warfare 2007': '../MW2007/MW2007.html',
                 'Modern Warfare 2': '../MW2/MW2.html',

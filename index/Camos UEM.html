@@ -351,7 +351,7 @@
             align-items: center;
             gap: 6px;
             padding: 8px 10px;
-            color: var(--muted);
+            color: var(--accent-2);
             border-radius: 8px;
         }
         .tools-switch summary::-webkit-details-marker { display: none; }
@@ -391,7 +391,7 @@
             align-items: center; 
             gap: 6px; 
             padding: 8px 10px; 
-            color: var(--muted); 
+            color: var(--accent-2); 
         }
 
         .lang-switch summary::-webkit-details-marker { display: none; }
@@ -411,7 +411,13 @@
         }
         .btn:hover { background: var(--accent); color: white; border-color: transparent; }
 
-        .auth-button { cursor: pointer; font: inherit; }
+        .auth-button {
+            cursor: pointer;
+            font: inherit;
+            color: var(--accent-2);
+            border-color: rgba(6, 182, 212, 0.45);
+        }
+        .auth-button:hover { color: #fff; border-color: var(--accent-2); }
         .auth-button.is-authenticated { color: var(--accent-2); }
 
         .auth-modal {
@@ -638,17 +644,20 @@
         .news-grid { display: grid; gap: 12px; }
         .news-item { border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius); padding: 16px; background: var(--glass); }
         .news-item time { color: var(--accent-2); font-size: 12px; }
-        .calendar-grid { display: grid; gap: 12px; }
-        .calendar-item { display: grid; grid-template-columns: 110px 1fr; gap: 14px; align-items: start; padding: 14px; border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius); background: var(--glass); }
-        .calendar-date { color: var(--accent-2); font-size: 12px; font-weight: 700; text-transform: uppercase; }
-        .calendar-item h3 { margin: 0 0 5px; }
-        .calendar-item p { margin: 0; }
+        .news-changes {
+            display: grid;
+            gap: 5px;
+            margin: 12px 0 0;
+            padding-left: 20px;
+            color: var(--muted);
+            font-size: 13px;
+            overflow-wrap: anywhere;
+        }
         .help-list { display: grid; gap: 12px; }
         .help-list details { padding: 12px 14px; border: 1px solid rgba(255,255,255,.08); border-radius: 10px; background: var(--glass); }
         .help-list summary { cursor: pointer; font-weight: 700; color: var(--accent-2); }
         .help-list p { margin: 10px 0 0; }
         .install-pwa-button[hidden] { display: none; }
-        @media (max-width: 600px) { .calendar-item { grid-template-columns: 1fr; gap: 6px; } }
         .settings-dialog, .report-dialog, .overlay-dialog { border: 0; border-radius: var(--radius); color: white; background: var(--surface); max-width: min(560px, calc(100% - 24px)); width: 100%; padding: 0; }
         .settings-dialog::backdrop, .report-dialog::backdrop, .overlay-dialog::backdrop { background: rgba(0,0,0,.72); }
         .settings-content { display: grid; gap: 16px; padding: 24px; }
@@ -726,6 +735,25 @@
                 font-size: 12px;
             }
 
+            .tools-switch {
+                position: static;
+            }
+
+            .tools-menu {
+                position: fixed;
+                top: 160px;
+                left: 12px;
+                right: 12px;
+                width: auto;
+                min-width: 0;
+                max-width: none;
+                max-height: calc(100vh - 172px);
+                max-height: calc(100dvh - 172px);
+                box-sizing: border-box;
+                overflow-y: auto;
+                overscroll-behavior: contain;
+            }
+
             .section-title { overflow-wrap: anywhere; }
 
             .projects-grid, .features .grid { grid-template-columns: 1fr; }
@@ -783,7 +811,7 @@
                     <a role="menuitem" href="../BLACK OPS II/BOII.html">CALL OF DUTY: BLACK OPS II <span style="font-size: 11px; color: #7c3aed;">2012</span></a>
                     <a role="menuitem" href="../GHOSTS/GHOSTS.html">CALL OF DUTY: GHOSTS <span style="font-size: 11px; color: #7c3aed;">2013</span></a>
                     <a role="menuitem" href="../ADVANCED/ADVANCED.html">CALL OF DUTY: ADVANCED WARFARE <span style="font-size: 11px; color: #7c3aed;">2014</span></a>
-                    <a role="menuitem" href="../BLACK OPS III/BOIII.html">CALL OF DUTY: BLACK OPS III <span style="font-size: 11px; color: #7c3aed;">2015</span></a>
+                    <a role="menuitem" href="../uem/Camuflajes UEM.html">CALL OF DUTY: BLACK OPS III <span style="font-size: 11px; color: #7c3aed;">2015</span></a>
                     <a role="menuitem" href="../INFINITE/INFINITE.html">CALL OF DUTY: INFINITE WARFARE <span style="font-size: 11px; color: #7c3aed;">2016</span></a>
                     <a role="menuitem" href="../MWREMASTERED/MWREMASTERED.html">CALL OF DUTY: MODERN WARFARE REMASTERED <span style="font-size: 11px; color: #7c3aed;">2016</span></a>
                     <a role="menuitem" href="../WWII/WWII.html">CALL OF DUTY: WWII <span style="font-size: 11px; color: #7c3aed;">2017</span></a>
@@ -820,7 +848,6 @@
                             <button class="btn" type="button" data-settings-open>Personalizar</button>
                             <button class="btn" type="button" data-report-open>Enviar un reporte</button>
                             <button class="btn" type="button" data-news-open>Noticias</button>
-                            <button class="btn" type="button" data-calendar-open>Calendario</button>
                             <button class="btn" type="button" data-help-open>Centro de ayuda</button>
                             <button class="btn" type="button" data-overlay-open>Overlay OBS</button>
                             <button class="btn" type="button" data-export-card>Exportar perfil en PNG</button>
@@ -968,24 +995,8 @@
         <div class="settings-content">
             <button class="auth-close" type="button" data-news-close aria-label="Cerrar">&times;</button>
             <h2>Noticias e historial</h2>
-            <div class="news-grid">
-                <article class="news-item"><time datetime="2025-01-01">01/01/2025</time><h3>Nueva arma añadida</h3><p class="muted">El catálogo se mantiene preparado para incorporar nuevas armas sin perder tu progreso.</p></article>
-                <article class="news-item"><time datetime="2024-12-15">15/12/2024</time><h3>Progreso separado por juego</h3><p class="muted">CODM y Modern Warfare 2019 guardan ahora sus avances de forma independiente.</p></article>
-                <article class="news-item"><time datetime="2024-12-01">01/12/2024</time><h3>Confirmación segura</h3><p class="muted">Se añadió una cuenta atrás antes de borrar todo el progreso.</p></article>
-            </div>
-        </div>
-    </dialog>
-
-    <dialog class="settings-dialog" id="calendarDialog">
-        <div class="settings-content">
-            <button class="auth-close" type="button" data-calendar-close aria-label="Cerrar">&times;</button>
-            <h2>Calendario de actualizaciones</h2>
-            <p class="muted">Próximas armas, juegos y funciones previstas para CAMO COD HQ.</p>
-            <div class="calendar-grid">
-                <article class="calendar-item"><time class="calendar-date" datetime="2026-10">Octubre 2026</time><div><h3>Próximas armas</h3><p class="muted">Revisión del catálogo y preparación de nuevas armas.</p></div></article>
-                <article class="calendar-item"><time class="calendar-date" datetime="2026-11">Noviembre 2026</time><div><h3>Juegos en desarrollo</h3><p class="muted">Actualización de proyectos pendientes y nuevos trackers.</p></div></article>
-                <article class="calendar-item"><time class="calendar-date" datetime="2026-12">Diciembre 2026</time><div><h3>Actualizaciones previstas</h3><p class="muted">Mejoras de estadísticas, perfiles y leaderboard.</p></div></article>
-                <article class="calendar-item"><time class="calendar-date">Próximamente</time><div><h3>Funciones futuras</h3><p class="muted">Más herramientas para la comunidad y personalización.</p></div></article>
+            <div class="news-grid" id="newsList">
+                <p class="muted">Cargando las últimas actualizaciones...</p>
             </div>
         </div>
     </dialog>
@@ -1034,8 +1045,7 @@
                     <div class="meta-media">
                         <img src="Warzone boton.png" alt="WARZONE" class="card-img">
                         <div class="meta-overlay">
-                            <h4 class="meta-title small">WARZONE</h4>
-                            <p class="meta-sub muted" data-i18n="projects.access">Acceder al proyecto</p>
+                            <h4 class="meta-title small"></h4>
                         </div>
                     </div>
                 </a>
@@ -1043,7 +1053,6 @@
                     <div class="meta-media">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">MWII</h4>
-                            <p class="meta-sub muted" data-i18n="projects.access">Acceder al proyecto</p>
                         </div>
                     </div>
                 </a>
@@ -1051,7 +1060,6 @@
                     <div class="meta-media">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">MWIII</h4>
-                            <p class="meta-sub muted" data-i18n="projects.access">Acceder al proyecto</p>
                         </div>
                     </div>
                 </a>
@@ -1059,7 +1067,6 @@
                     <div class="meta-media">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">BO6</h4>
-                            <p class="meta-sub muted" data-i18n="projects.access">Acceder al proyecto</p>
                         </div>
                     </div>
                 </a>
@@ -1067,7 +1074,6 @@
                     <div class="meta-media">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">BO7</h4>
-                            <p class="meta-sub muted" data-i18n="projects.access">Acceder al proyecto</p>
                         </div>
                     </div>
                 </a>
@@ -1075,7 +1081,6 @@
                     <div class="meta-media">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">CODM</h4>
-                            <p class="meta-sub muted" data-i18n="projects.access">Acceder al proyecto</p>
                         </div>
                     </div>
                 </a>
@@ -1083,7 +1088,6 @@
                     <div class="meta-media">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">BOI</h4>
-                            <p class="meta-sub muted" data-i18n="projects.access">Acceder al proyecto</p>
                         </div>
                     </div>
                 </a>
@@ -1091,7 +1095,6 @@
                     <div class="meta-media">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">BOII</h4>
-                            <p class="meta-sub muted" data-i18n="projects.access">Acceder al proyecto</p>
                         </div>
                     </div>
                 </a>
@@ -1099,7 +1102,6 @@
                     <div class="meta-media">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">BOIII</h4>
-                            <p class="meta-sub muted" data-i18n="projects.access">Acceder al proyecto</p>
                         </div>
                     </div>
                 </a>
@@ -1107,7 +1109,6 @@
                     <div class="meta-media">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">MW2019</h4>
-                            <p class="meta-sub muted" data-i18n="projects.access">Acceder al proyecto</p>
                         </div>
                     </div>
                 </a>
@@ -1115,7 +1116,6 @@
                     <div class="meta-media">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">MW4</h4>
-                            <p class="meta-sub muted" data-i18n="projects.access">Acceder al proyecto</p>
                         </div>
                     </div>
                 </a>
@@ -1123,7 +1123,6 @@
                     <div class="meta-media">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">WWII</h4>
-                            <p class="meta-sub muted" data-i18n="projects.access">Acceder al proyecto</p>
                         </div>
                     </div>
                 </a>
@@ -1131,7 +1130,6 @@
                     <div class="meta-media">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">VANGUARD</h4>
-                            <p class="meta-sub muted" data-i18n="projects.access">Acceder al proyecto</p>
                         </div>
                     </div>
                 </a>
@@ -1139,7 +1137,6 @@
                     <div class="meta-media">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">MWREMASTERED</h4>
-                            <p class="meta-sub muted" data-i18n="projects.access">Acceder al proyecto</p>
                         </div>
                     </div>
                 </a>
@@ -1147,7 +1144,6 @@
                     <div class="meta-media">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">MW3</h4>
-                            <p class="meta-sub muted" data-i18n="projects.access">Acceder al proyecto</p>
                         </div>
                     </div>
                 </a>
@@ -1155,7 +1151,6 @@
                     <div class="meta-media">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">MW2007</h4>
-                            <p class="meta-sub muted" data-i18n="projects.access">Acceder al proyecto</p>
                         </div>
                     </div>
                 </a>
@@ -1163,7 +1158,6 @@
                     <div class="meta-media">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">MW2</h4>
-                            <p class="meta-sub muted" data-i18n="projects.access">Acceder al proyecto</p>
                         </div>
                     </div>
                 </a>
@@ -1171,7 +1165,6 @@
                     <div class="meta-media">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">MW2REMASTERED</h4>
-                            <p class="meta-sub muted" data-i18n="projects.access">Acceder al proyecto</p>
                         </div>
                     </div>
                 </a>
@@ -1179,7 +1172,6 @@
                     <div class="meta-media">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">INFINITE</h4>
-                            <p class="meta-sub muted" data-i18n="projects.access">Acceder al proyecto</p>
                         </div>
                     </div>
                 </a>
@@ -1187,7 +1179,6 @@
                     <div class="meta-media">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">GHOSTS</h4>
-                            <p class="meta-sub muted" data-i18n="projects.access">Acceder al proyecto</p>
                         </div>
                     </div>
                 </a>
@@ -1195,7 +1186,6 @@
                     <div class="meta-media">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">COLD WAR</h4>
-                            <p class="meta-sub muted" data-i18n="projects.access">Acceder al proyecto</p>
                         </div>
                     </div>
                 </a>
@@ -1203,7 +1193,6 @@
                     <div class="meta-media">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">BOIIII</h4>
-                            <p class="meta-sub muted" data-i18n="projects.access">Acceder al proyecto</p>
                         </div>
                     </div>
                 </a>
@@ -1211,7 +1200,6 @@
                     <div class="meta-media">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">ADVANCED</h4>
-                            <p class="meta-sub muted" data-i18n="projects.access">Acceder al proyecto</p>
                         </div>
                     </div>
                 </a>
@@ -1285,7 +1273,6 @@
                 'features.classification.title': 'Clasificación',
                 'features.classification.text': 'Organización lógica por categorías de armas y tipos de camuflaje.',
                 'projects.title': 'Proyectos',
-                'projects.access': 'Acceder al proyecto',
                 'footer.title': 'Camos UEM',
                 'footer.muted': 'Hecho con ❤️ para la comunidad.',
                 'footer.terms': 'Términos',
@@ -1304,7 +1291,6 @@
                 'features.classification.title': 'Classification',
                 'features.classification.text': 'Logical organization by weapon categories and camouflage types.',
                 'projects.title': 'Projects',
-                'projects.access': 'Access the project',
                 'footer.title': 'Camos UEM',
                 'footer.muted': 'Made with ❤️ for the community.',
                 'footer.terms': 'Terms',
@@ -1323,7 +1309,6 @@
                 'features.classification.title': 'Classification',
                 'features.classification.text': 'Organisation logique par catégories d’armes et types de camouflage.',
                 'projects.title': 'Projets',
-                'projects.access': 'Accéder au projet',
                 'footer.title': 'Camos UEM',
                 'footer.muted': 'Créé avec ❤️ pour la communauté.',
                 'footer.terms': 'Conditions',
@@ -1649,12 +1634,80 @@
         });
 
         const newsDialog = document.querySelector('#newsDialog');
-        document.querySelector('[data-news-open]')?.addEventListener('click', () => newsDialog?.showModal());
+        const newsList = document.querySelector('#newsList');
+        const NEWS_LAST_SEEN_KEY = 'camo-cod-hq-news-last-seen';
+        const newsConfig = window.CAMO_SUPABASE_CONFIG || {};
+        const newsClient = newsConfig.url && newsConfig.anonKey
+            ? window.supabase.createClient(newsConfig.url, newsConfig.anonKey)
+            : null;
+
+        const mostrarNoticias = (news) => {
+            newsList.replaceChildren(...news.map(item => {
+                const article = document.createElement('article');
+                article.className = 'news-item';
+
+                const date = document.createElement('time');
+                const publishDate = new Date(item.publish_at);
+                date.dateTime = publishDate.toISOString();
+                date.textContent = publishDate.toLocaleDateString('es-ES');
+
+                const title = document.createElement('h3');
+                title.textContent = item.title;
+
+                const description = document.createElement('p');
+                description.className = 'muted';
+                description.textContent = item.body;
+                article.append(date, title, description);
+                return article;
+            }));
+        };
+
+        const cargarNoticias = async ({ soloNuevas = false } = {}) => {
+            try {
+                if (!newsClient) throw new Error('Falta configurar Supabase.');
+                const inicioDelMes = new Date();
+                inicioDelMes.setDate(1);
+                inicioDelMes.setHours(0, 0, 0, 0);
+                const { data: news, error } = await newsClient
+                    .from('site_news')
+                    .select('id, title, body, publish_at')
+                    .gte('publish_at', inicioDelMes.toISOString())
+                    .lte('publish_at', new Date().toISOString())
+                    .order('publish_at', { ascending: false })
+                    .limit(100);
+                if (error) throw error;
+                if (!news?.length) {
+                    newsList.innerHTML = '<p class="muted">No hay novedades publicadas este mes.</p>';
+                    return false;
+                }
+
+                const ultimoCommitVisto = localStorage.getItem(NEWS_LAST_SEEN_KEY);
+                if (soloNuevas && !ultimoCommitVisto) {
+                    localStorage.setItem(NEWS_LAST_SEEN_KEY, String(news[0].id));
+                    return false;
+                }
+
+                const nuevas = news.filter(item => Number(item.id) > Number(ultimoCommitVisto));
+                if (soloNuevas && !nuevas.length) return false;
+                mostrarNoticias(soloNuevas ? nuevas : news);
+                localStorage.setItem(NEWS_LAST_SEEN_KEY, String(news[0].id));
+                return true;
+            } catch (error) {
+                console.warn('No se pudieron cargar las noticias:', error);
+                newsList.innerHTML = '<p class="muted">No se pudieron cargar las últimas actualizaciones. Inténtalo de nuevo más tarde.</p>';
+                return false;
+            }
+        };
+
+        document.querySelector('[data-news-open]')?.addEventListener('click', () => {
+            newsDialog?.showModal();
+            cargarNoticias({ soloNuevas: false });
+        });
         document.querySelector('[data-news-close]')?.addEventListener('click', () => newsDialog?.close());
 
-        const calendarDialog = document.querySelector('#calendarDialog');
-        document.querySelector('[data-calendar-open]')?.addEventListener('click', () => calendarDialog?.showModal());
-        document.querySelector('[data-calendar-close]')?.addEventListener('click', () => calendarDialog?.close());
+        cargarNoticias({ soloNuevas: true }).then(hayNoticiasNuevas => {
+            if (hayNoticiasNuevas && !newsDialog?.open) newsDialog?.showModal();
+        });
 
         const helpDialog = document.querySelector('#helpDialog');
         document.querySelector('[data-help-open]')?.addEventListener('click', () => helpDialog?.showModal());

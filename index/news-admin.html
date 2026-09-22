@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Administrar noticias - CAMO COD HQ</title>
+    <style>
+        :root { color-scheme: dark; font-family: Inter, system-ui, sans-serif; background: #071026; color: #fff; }
+        body { max-width: 720px; margin: 0 auto; padding: 24px; }
+        form { display: grid; gap: 14px; }
+        label { display: grid; gap: 6px; color: #98a0b3; }
+        input, textarea, button { box-sizing: border-box; width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #334155; font: inherit; }
+        input, textarea { background: #0f1724; color: #fff; }
+        textarea { min-height: 140px; resize: vertical; }
+        button { cursor: pointer; color: #fff; background: #0e7490; border-color: #06b6d4; }
+        button.secondary { background: transparent; }
+        [hidden] { display: none !important; }
+        #status { min-height: 24px; }
+    </style>
+</head>
+<body>
+    <h1>Administrar noticias</h1>
+    <p id="status">Comprobando sesión...</p>
+    <form id="newsForm" hidden>
+        <label>Título
+            <input id="title" maxlength="160" required>
+        </label>
+        <label>Contenido
+            <textarea id="body" maxlength="2000" required></textarea>
+        </label>
+        <label>Publicar el
+            <input id="publishAt" type="datetime-local" required>
+        </label>
+        <button type="submit">Enviar noticia programada</button>
+        <button class="secondary" type="button" id="signOut">Cerrar sesión</button>
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script>
+        const config = window.CAMO_SUPABASE_CONFIG || {};
+        const client = config.url && config.anonKey ? window.supabase.createClient(config.url, config.anonKey) : null;
+        const status = document.querySelector('#status');
+        const form = document.querySelector('#newsForm');
+        const publishAt = document.querySelector('#publishAt');
+
+        const localDateTime = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+            .toISOString().slice(0, 16);
+        publishAt.value = localDateTime;
+
+        const init = async () => {
+            if (!client) throw new Error('Falta configurar Supabase.');
+            const { data: { user }, error: userError } = await client.auth.getUser();
+            if (userError || !user) throw new Error('Inicia sesión primero en CAMO COD HQ.');
+
+            const { data: profile, error: profileError } = await client
+                .from('profiles')
+                .select('is_admin')
+                .eq('user_id', user.id)
+                .single();
+            if (profileError || !profile?.is_admin) throw new Error('Esta cuenta no tiene permisos de administrador.');
+
+            status.textContent = `Sesión iniciada como ${user.email}.`;
+            form.hidden = false;
+        };
+
+        form.addEventListener('submit', async event => {
+            event.preventDefault();
+            status.textContent = 'Guardando noticia...';
+            const { data: { user } } = await client.auth.getUser();
+            const { error } = await client.from('site_news').insert({
+                title: document.querySelector('#title').value.trim(),
+                body: document.querySelector('#body').value.trim(),
+                publish_at: new Date(publishAt.value).toISOString(),
+                created_by: user.id
+            });
+            if (error) {
+                status.textContent = `No se pudo guardar: ${error.message}`;
+                return;
+            }
+            form.reset();
+            publishAt.value = localDateTime;
+            status.textContent = 'Noticia guardada y programada correctamente.';
+        });
+
+        document.querySelector('#signOut').addEventListener('click', async () => {
+            await client.auth.signOut();
+            form.hidden = true;
+            status.textContent = 'Sesión cerrada.';
+        });
+
+        init().catch(error => { status.textContent = error.message; });
+    </script>
+</body>
+</html>

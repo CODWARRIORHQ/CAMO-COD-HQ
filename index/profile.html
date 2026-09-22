@@ -44,6 +44,10 @@
         .game-link:hover .game-icon { border-color:var(--cyan); background:rgba(6,182,212,.12); transform:translateY(-1px); }
         .game-status { display:block; margin-top:7px; color:var(--muted); font-size:11px; }
         .game-title { font-weight:700; } .game-meta { display:block; margin-top:5px; color:var(--muted); font-size:13px; } .game-score { color:var(--gold); text-align:right; font-weight:800; }
+        .game-subcategory { margin-top:28px; border-top:1px solid var(--border); }
+        .game-subcategory-header { padding:20px 22px 8px; }
+        .game-subcategory-header h3 { margin:0; color:var(--cyan); font-size:14px; letter-spacing:.12em; text-transform:uppercase; }
+        .game-subcategory-header span { display:block; margin-top:6px; color:var(--muted); font-size:12px; }
         .message { color:var(--muted); }
         .action-row { display:flex; justify-content:flex-start; margin-top:28px; }
         .btn.primary { background:linear-gradient(135deg,var(--accent),var(--cyan)); border:none; color:#fff; font-weight:700; }
@@ -115,7 +119,8 @@
         const userId = new URLSearchParams(location.search).get('user');
         const availableGameTotals = {
             'Modern Warfare 2019': 3328,
-            'Mobile': 5988
+            'Mobile': 5988,
+            'Black Ops III UEM': 504
         };
         const sumGameProgress = (progress = {}) => Object.entries(progress || {})
             .filter(([gameName]) => gameName !== '__totals' && gameName !== '__mastery')
@@ -442,7 +447,12 @@
             const gameLabels = { 'Black Ops': 'Black Ops I' };
             const gameCodes = Object.fromEntries(gameNames.map(name => [name, name === 'Black Ops' ? 'BOI' : name === 'Black Ops II' ? 'BOII' : name === 'Black Ops III' ? 'BOIII' : name === 'Black Ops IIII' ? 'BOIIII' : name === 'Mobile' ? 'CODM' : name === 'Modern Warfare 2 Remastered' ? 'MW2R' : name === 'Black Ops Cold War' ? 'BOCW' : name === 'Modern Warfare II' ? 'MWII' : name === 'Modern Warfare III' ? 'MWIII' : name.split(' ').map(part => part[0]).join('').slice(0, 3).toUpperCase()]));
             const gamesMarkup = gameNames.map((name, index) => { const value = gameValues[index]; const gameTotal = getGameTotal(name); const percent = Math.min(Math.round(value / gameTotal * 100), 100); const favoriteLabel = name === favoriteGame ? ' · Favorito' : ''; const favoriteClass = name === favoriteGame ? ' favorite' : ''; const bestClass = value === bestValue && value > 0 ? ' best' : ''; const status = percent === 100 ? 'Completado' : percent > 0 ? 'En progreso' : 'Sin comenzar'; const gameLink = gameLinks[name]; const displayName = gameLabels[name] || name; const iconMarkup = gameLink ? `<a class="game-link" href="${gameLink}" aria-label="Abrir ${displayName}"><span class="game-icon">${gameCodes[name]}</span></a>` : `<span class="game-icon">${gameCodes[name]}</span>`; return `<div class="game${favoriteClass}${bestClass}"><span>${iconMarkup}<span class="game-title">${displayName}${favoriteLabel}</span><span class="game-meta">${value} / ${gameTotal} camuflajes</span><span class="game-progress"><span style="width:${percent}%"></span></span><span class="game-status">${status}</span></span><span class="game-score">${percent}%</span></div>`; }).join('');
-            gameStats.innerHTML = `<div class="games-header"><h2>Progreso por juego</h2><span>${gameNames.length} juegos registrados</span></div><div class="game-grid">${gamesMarkup}</div>`;
+            const uemValue = Number(gameCatalog['Black Ops III UEM']) || 0;
+            const uemTotal = getGameTotal('Black Ops III UEM');
+            const uemPercent = Math.min(Math.round(uemValue / uemTotal * 100), 100);
+            const uemStatus = uemPercent === 100 ? 'Completado' : uemPercent > 0 ? 'En progreso' : 'Sin comenzar';
+            const uemGameMarkup = `<div class="game-grid"><div class="game"><span><a class="game-link" href="../uem/con UEM/card.html" aria-label="Abrir Black Ops III UEM"><span class="game-icon">UEM</span></a><span class="game-title">Black Ops III UEM</span><span class="game-meta">${uemValue} / ${uemTotal} camuflajes</span><span class="game-progress"><span style="width:${uemPercent}%"></span></span><span class="game-status">${uemStatus}</span></span><span class="game-score">${uemPercent}%</span></div></div>`;
+            gameStats.innerHTML = `<div class="games-header"><h2>Progreso por juego</h2><span>${gameNames.length} juegos registrados</span></div><div class="game-grid">${gamesMarkup}</div><div class="game-subcategory"><div class="game-subcategory-header"><h3>Juegos UEM</h3><span>Experiencias y modificaciones de Call of Duty</span></div>${uemGameMarkup}</div>`;
         };
         render().catch(() => { document.querySelector('#gameStats').innerHTML = '<p class="message">No se pudieron cargar las estadísticas.</p>'; });
     </script>

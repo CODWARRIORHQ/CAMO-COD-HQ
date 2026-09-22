@@ -653,6 +653,19 @@
             font-size: 13px;
             overflow-wrap: anywhere;
         }
+        .news-item .news-body {
+            margin: 12px 0 0;
+            color: var(--muted);
+            white-space: pre-line;
+            overflow-wrap: anywhere;
+        }
+        .news-item .news-body-list {
+            display: grid;
+            gap: 6px;
+            margin: 12px 0 0;
+            padding-left: 22px;
+            color: var(--muted);
+        }
         .help-list { display: grid; gap: 12px; }
         .help-list details { padding: 12px 14px; border: 1px solid rgba(255,255,255,.08); border-radius: 10px; background: var(--glass); }
         .help-list summary { cursor: pointer; font-weight: 700; color: var(--accent-2); }
@@ -1655,10 +1668,24 @@
                 const title = document.createElement('h3');
                 title.textContent = item.title;
 
-                const description = document.createElement('p');
-                description.className = 'muted';
-                description.textContent = item.body;
-                article.append(date, title, description);
+                const lines = String(item.body || '').split(/\r?\n/);
+                const bulletLines = lines.filter(line => /^[-•]\s*/.test(line.trim()));
+                const otherLines = lines.filter(line => !/^[-•]\s*/.test(line.trim()) && line.trim());
+                if (bulletLines.length && !otherLines.length) {
+                    const list = document.createElement('ul');
+                    list.className = 'news-body-list';
+                    bulletLines.forEach(line => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = line.trim().replace(/^[-•]\s*/, '');
+                        list.appendChild(listItem);
+                    });
+                    article.append(date, title, list);
+                } else {
+                    const description = document.createElement('p');
+                    description.className = 'news-body';
+                    description.textContent = item.body;
+                    article.append(date, title, description);
+                }
                 return article;
             }));
         };

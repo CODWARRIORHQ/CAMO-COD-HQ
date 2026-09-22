@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Black Ops III — Tracker de camuflajes</title>
+  <style>
+    :root{--bg:#070b12;--panel:#101927;--panel-2:#162235;--line:#293a51;--text:#edf4ff;--muted:#94a5bb;--accent:#7c3aed;--cyan:#06b6d4;--ok:#35d07f}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#17243a 0,#070b12 48%);color:var(--text);font:14px system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+    a{color:inherit;text-decoration:none}.container{width:min(1500px,calc(100% - 28px));margin:auto}
+    header{position:sticky;top:0;z-index:5;background:rgba(7,11,18,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+    nav{min-height:70px;display:flex;align-items:center;gap:18px}.brand{display:flex;align-items:center;gap:10px;margin-right:auto}.logo{width:42px;height:42px;border-radius:9px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--cyan));font-weight:900}.tag{color:var(--muted);font-size:12px}
+    .btn{border:1px solid var(--line);border-radius:7px;padding:9px 13px;background:var(--panel);color:var(--text);cursor:pointer}.btn:hover{border-color:var(--cyan);background:var(--panel-2)}
+    main{padding:28px 0 55px}.hero{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:22px}.eyebrow{color:var(--cyan);font-weight:800;letter-spacing:.12em;font-size:12px}.hero h1{font-size:clamp(26px,4vw,48px);margin:5px 0}.hero p{color:var(--muted);margin:0}.summary{min-width:220px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px}.summary strong{font-size:24px}.bar{height:7px;background:#263449;border-radius:99px;overflow:hidden;margin-top:9px}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--cyan));transition:width .2s}
+    .toolbar{display:flex;flex-wrap:wrap;gap:9px;background:rgba(16,25,39,.88);border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:18px}.toolbar input,.toolbar select{min-height:38px;background:#0b121e;border:1px solid var(--line);border-radius:7px;color:var(--text);padding:8px 10px}.toolbar input{flex:1;min-width:220px}.toolbar select{min-width:170px}
+    .weapons{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}.weapon{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}.weapon-head{display:flex;justify-content:space-between;gap:10px;padding:14px;border-bottom:1px solid var(--line)}.weapon h2{font-size:16px;margin:0 0 3px}.weapon small{color:var(--muted)}.count{color:var(--cyan);font-weight:800}.camos{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:10px}.camo{position:relative;aspect-ratio:1;background:linear-gradient(135deg,var(--c1),var(--c2));border:1px solid rgba(255,255,255,.2);border-radius:5px;cursor:pointer;overflow:hidden}.camo:nth-child(3n){filter:saturate(1.25)}.camo:nth-child(4n){background:repeating-linear-gradient(45deg,var(--c1) 0 8px,var(--c2) 8px 15px)}.camo.mastery{background:radial-gradient(circle,#fff8 0 4%,transparent 5%),linear-gradient(135deg,#45d7ff,#813cff 45%,#ff4e9b 75%,#ffe66d)}.camo::after{content:"✓";position:absolute;inset:0;display:grid;place-items:center;font-size:21px;font-weight:900;color:#fff;text-shadow:0 2px 5px #000;opacity:0}.camo.checked::after{opacity:1}.camo.checked{outline:2px solid var(--ok);outline-offset:-2px}.camo span{position:absolute;left:3px;right:3px;bottom:3px;background:#000b;border-radius:3px;padding:2px;font-size:9px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.empty{grid-column:1/-1;color:var(--muted);padding:35px;text-align:center;border:1px dashed var(--line);border-radius:10px}
+    @media(max-width:650px){nav{min-height:58px}.brand small{display:none}.hero{display:block}.summary{margin-top:16px}.weapons{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header><div class="container"><nav><a class="brand" href="../index/Camos UEM.html"><span class="logo">BO3</span><span><strong>CAMO COD HQ</strong><small class="tag">Black Ops III</small></span></a><a class="btn" href="../index/Camos UEM.html">Volver</a></nav></div></header>
+  <main class="container">
+    <section class="hero"><div><div class="eyebrow">CALL OF DUTY: BLACK OPS III · 2015</div><h1>Tracker de camuflajes</h1><p>Marca tu progreso por arma. Las imágenes provisionales se sustituirán por las oficiales cuando estén disponibles.</p></div><div class="summary"><strong id="progressText">0 / 0</strong><div class="tag">camuflajes completados</div><div class="bar"><i id="progressBar"></i></div></div></section>
+    <section class="toolbar"><input id="search" type="search" placeholder="Buscar arma..."><select id="category"><option value="all">Todas las categorías</option><option value="ar">Fusiles de asalto</option><option value="smg">Subfusiles</option><option value="shotgun">Escopetas</option><option value="lmg">Ametralladoras</option><option value="sniper">Fusiles de precisión</option><option value="pistol">Pistolas</option><option value="launcher">Lanzadores</option><option value="melee">Cuerpo a cuerpo</option></select><select id="status"><option value="all">Todos los estados</option><option value="pending">Pendientes</option><option value="done">Completadas</option></select><button class="btn" id="clear">Desmarcar todo</button></section>
+    <section class="weapons" id="weapons"></section>
+  </main>
+  <script>
+    const categories={ar:"Fusiles de asalto",smg:"Subfusiles",shotgun:"Escopetas",lmg:"Ametralladoras",sniper:"Fusiles de precisión",pistol:"Pistolas",launcher:"Lanzadores",melee:"Cuerpo a cuerpo"};
+    const weapons=[
+      ["KN-44","ar"],["XR-2","ar"],["HVK-30","ar"],["ICR-1","ar"],["Man-O-War","ar"],["Sheiva","ar"],["M8A7","ar"],["FFAR","ar"],
+      ["Kuda","smg"],["VMP","smg"],["Weevil","smg"],["Vesper","smg"],["Pharo","smg"],["Razorback","smg"],["HG 40","smg"],
+      ["KRM-262","shotgun"],["205 Brecci","shotgun"],["Haymaker 12","shotgun"],["Argus","shotgun"],
+      ["Dingo","lmg"],["Gorgon","lmg"],["48 Dredge","lmg"],["BRM","lmg"],
+      ["Drakon","sniper"],["Locus","sniper"],["P-06","sniper"],["SVG-100","sniper"],
+      ["MR6","pistol"],["RK5","pistol"],["L-CAR 9","pistol"],["XM-53","launcher"],["Blackcell","launcher"],
+      ["Cuchillo de combate","melee"],["Bastón eléctrico","melee"],["Puños de combate","melee"],["Cuchillo mariposa","melee"]
+    ].map(([name,category],id)=>({id,name,category}));
+    const camos=["Jungla","Ceniza","Flectarn","Integer","Contraste","Verde","Tecnología jungla","Mitosis","Transfusión","Alucinación","Oro","Diamante","Materia oscura"];
+    const storageKey="camo-cod-hq-boiii-progress";
+    let progress=JSON.parse(localStorage.getItem(storageKey)||"{}");
+    const colors=[["#243b53","#829ab1"],["#382f2a","#b8a28a"],["#122b38","#67a5b8"],["#3d2d52","#a26ddd"],["#4b2525","#dd7764"],["#1e4033","#55a878"],["#173c55","#2da6d0"],["#542b58","#e681cf"],["#713b28","#e0a85b"],["#22283d","#8b9bc2"]];
+    const esc=s=>s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+    function key(w,c){return `${w.id}:${c}`}
+    function render(){const query=document.querySelector("#search").value.trim().toLowerCase(),cat=document.querySelector("#category").value,status=document.querySelector("#status").value;const list=weapons.filter(w=>(cat==="all"||w.category===cat)&&w.name.toLowerCase().includes(query)).filter(w=>status==="all"||status===(camos.every((_,i)=>progress[key(w,i)])?"done":"pending"));document.querySelector("#weapons").innerHTML=list.length?list.map(w=>{const done=camos.filter((_,i)=>progress[key(w,i)]).length;return `<article class="weapon"><div class="weapon-head"><div><h2>${esc(w.name)}</h2><small>${categories[w.category]}</small></div><span class="count">${done}/${camos.length}</span></div><div class="camos">${camos.map((name,i)=>`<button class="camo ${progress[key(w,i)]?"checked ":""}${i>9?"mastery":""}" style="--c1:${colors[i%colors.length][0]};--c2:${colors[i%colors.length][1]}" data-id="${w.id}" data-camo="${i}" title="${name}"><span>${name}</span></button>`).join("")}</div></article>`}).join(""):'<div class="empty">No hay armas que coincidan con el filtro.</div>';updateTotal()}
+    function updateTotal(){const total=weapons.length*camos.length,done=Object.values(progress).filter(Boolean).length;document.querySelector("#progressText").textContent=`${done} / ${total}`;document.querySelector("#progressBar").style.width=`${total?done/total*100:0}%`}
+    document.querySelector("#weapons").addEventListener("click",e=>{const button=e.target.closest(".camo");if(!button)return;const k=`${button.dataset.id}:${button.dataset.camo}`;progress[k]=!progress[k];if(!progress[k])delete progress[k];localStorage.setItem(storageKey,JSON.stringify(progress));render()});
+    ["search","category","status"].forEach(id=>document.querySelector("#"+id).addEventListener("input",render));
+    document.querySelector("#clear").addEventListener("click",()=>{if(confirm("¿Desmarcar todo el progreso de BOIII?")){progress={};localStorage.removeItem(storageKey);render()}});
+    render();
+  </script>
+</body>
+</html>

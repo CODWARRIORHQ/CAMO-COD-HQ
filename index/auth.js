@@ -12,6 +12,7 @@
     const authEmailContainer = document.querySelector('#authEmailField');
     const authSignOut = document.querySelector('#authSignOut');
     const authEditProfile = document.querySelector('#authEditProfile');
+    const adminNewsLink = document.querySelector('[data-admin-news]');
     const signOutButton = document.querySelector('[data-auth-signout]');
     const usernameField = document.querySelector('#authUsername');
     const usernameContainer = document.querySelector('#authUsernameField');
@@ -22,6 +23,22 @@
     let client;
 
     if (!authButton || !authModal || !authForm) return;
+
+    const updateAdminLink = async (user) => {
+        if (!adminNewsLink) return;
+        adminNewsLink.hidden = true;
+        if (!client || !user) return;
+        const { data: profile, error } = await client
+            .from('profiles')
+            .select('is_admin')
+            .eq('user_id', user.id)
+            .maybeSingle();
+        if (error) {
+            console.warn('No se pudo comprobar el acceso de administrador', error);
+            return;
+        }
+        adminNewsLink.hidden = profile?.is_admin !== true;
+    };
 
     const setMessage = (message, isError = false) => {
         authMessage.textContent = message;
@@ -183,8 +200,12 @@
         client = window.supabase.createClient(config.url, config.anonKey);
         const { data } = await client.auth.getUser();
         updateUser(data.user);
+        await updateAdminLink(data.user);
         await saveProfile(data.user);
-        client.auth.onAuthStateChange((_event, session) => updateUser(session?.user));
+        client.auth.onAuthStateChange(async (_event, session) => {
+            updateUser(session?.user);
+            await updateAdminLink(session?.user);
+        });
     };
 
     loadAuth();

@@ -815,6 +815,100 @@
             .weapons-grid { grid-template-columns: 1fr; 
         } }
 
+        html, body {
+            background: var(--bg) !important;
+        }
+
+        body {
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .site-header {
+            background: rgba(6, 9, 14, 0.72);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 0;
+            margin-bottom: 18px;
+        }
+
+        .site-header .container {
+            max-width: 1600px;
+            width: 100%;
+            padding: 12px 24px;
+        }
+
+        .UEM-breadcrumbs-container {
+            margin: 18px auto 22px;
+        }
+
+        .UEM-breadcrumbs {
+            display: inline-flex;
+            padding: 9px 14px;
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 999px;
+            background: rgba(6, 182, 212, 0.04);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+        }
+
+        .UEM-breadcrumbs nav {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--muted);
+            font-size: 12px;
+            letter-spacing: 0.03em;
+        }
+
+        .UEM-breadcrumbs a:last-child {
+            color: #fff;
+            font-weight: 800;
+        }
+
+        .controls-section,
+        .master-panel,
+        .category-group {
+            border-radius: 14px;
+        }
+
+        .wzhub-filter-card,
+        .master-panel {
+            background: rgba(15, 23, 36, 0.82);
+            border-color: rgba(6, 182, 212, 0.45);
+        }
+
+        .category-group {
+            background: rgba(15, 23, 36, 0.45);
+            padding: 8px;
+        }
+
+        .weapon-card {
+            background: rgba(8, 16, 30, 0.92);
+            border-color: rgba(255,255,255,0.08);
+        }
+
+        .weapon-card:hover {
+            border-color: rgba(6, 182, 212, 0.55);
+            box-shadow: 0 12px 26px rgba(2, 6, 23, 0.35);
+        }
+
+        .site-footer {
+            margin-top: 48px;
+            border-top-color: rgba(255,255,255,0.06);
+        }
+
+        @media (max-width: 650px) {
+            body {
+                padding: 8px;
+            }
+
+            .site-header .container,
+            .container {
+                padding: 12px;
+            }
+        }
+
     </style>
     <link rel="manifest" href="../../manifest.webmanifest">
     <meta name="mobile-web-app-capable" content="yes">
@@ -824,6 +918,8 @@
     <meta name="theme-color" content="#0f1724">
     <link rel="stylesheet" href="../../index/css/themes.css">
     <script src="../../index/theme.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../index/supabase-config.js"></script>
 </head>
 <body>
 
@@ -847,7 +943,7 @@
                     <a role="menuitem" href="../../BLACK OPS II/BOII.html">CALL OF DUTY: BLACK OPS II <span style="font-size: 11px; color: #7c3aed;">2012</span></a>
                     <a role="menuitem" href="../../GHOSTS/GHOSTS.html">CALL OF DUTY: GHOSTS <span style="font-size: 11px; color: #7c3aed;">2013</span></a>
                     <a role="menuitem" href="../../ADVANCED/ADVANCED.html">CALL OF DUTY: ADVANCED WARFARE <span style="font-size: 11px; color: #7c3aed;">2014</span></a>
-                    <a role="menuitem" href="../../BLACK OPS III/BOIII.html">CALL OF DUTY: BLACK OPS III <span style="font-size: 11px; color: #7c3aed;">2015</span></a>
+                    <a role="menuitem" href="../Camuflajes UEM.html">CALL OF DUTY: BLACK OPS III <span style="font-size: 11px; color: #7c3aed;">2015</span></a>
                     <a role="menuitem" href="../../INFINITE/INFINITE.html">CALL OF DUTY: INFINITE WARFARE <span style="font-size: 11px; color: #7c3aed;">2016</span></a>
                     <a role="menuitem" href="../../MWREMASTERED/MWREMASTERED.html">CALL OF DUTY: MODERN WARFARE REMASTERED <span style="font-size: 11px; color: #7c3aed;">2016</span></a>
                     <a role="menuitem" href="../../WWII/WWII.html">CALL OF DUTY: WWII <span style="font-size: 11px; color: #7c3aed;">2017</span></a>
@@ -883,9 +979,11 @@
         <div class="container">
             <div itemscope="itemscope" itemtype="https://schema.org/BreadcrumbList" class="UEM-breadcrumbs">
                 <nav>
-                    <a href="../../index/Camos UEM.html">Camos UEM</a> /
-                    <a href="../../index/Camos UEM.html">Camuflajes UEM</a> /
-                    <a href="../sin UEM/mapas.html">Mapas Para UEM</a> 
+                    <a href="../../index/Camos UEM.html">CAMO COD HQ</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <a href="../Camuflajes UEM.html">CAMUFLAJES UEM</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <a href="#" aria-current="page">UEM</a>
                 </nav>
             </div>
         </div>
@@ -1779,6 +1877,7 @@
 
     // 5. INICIALIZACIÓN
     document.addEventListener('DOMContentLoaded', () => {
+        restaurarProgresoUEM();
         inicializarCamuflajes();
         inicializarSelectores();
         document.getElementById('weaponSearch').addEventListener('input', filtrarTodo);
@@ -1874,8 +1973,101 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Llamar a la actualización vinculada
             actualizarTodo();
+            guardarProgresoUEM();
         };
     });
+
+    const UEM_PROGRESS_KEY = 'camo-cod-hq-uem-progress';
+    const UEM_GAME_NAME = 'Black Ops III UEM';
+
+    function obtenerProgresoUEM() {
+        const progreso = {};
+        document.querySelectorAll('.weapon-card[data-name]').forEach(card => {
+            progreso[card.dataset.name] = Array.from(card.querySelectorAll('.skin'))
+                .map((skin, index) => skin.classList.contains('checked') ? index : null)
+                .filter(index => index !== null);
+        });
+        return progreso;
+    }
+
+    function aplicarProgresoUEM(progreso) {
+        document.querySelectorAll('.weapon-card[data-name]').forEach(card => {
+            const indices = Array.isArray(progreso?.[card.dataset.name]) ? progreso[card.dataset.name] : [];
+            card.querySelectorAll('.skin').forEach((skin, index) => {
+                skin.classList.toggle('checked', indices.includes(index));
+            });
+        });
+    }
+
+    function restaurarProgresoUEM() {
+        try {
+            aplicarProgresoUEM(JSON.parse(localStorage.getItem(UEM_PROGRESS_KEY) || '{}'));
+        } catch (error) {
+            console.warn('No se pudo restaurar el progreso UEM', error);
+        }
+    }
+
+    async function guardarProgresoUEM() {
+        const progreso = obtenerProgresoUEM();
+        localStorage.setItem(UEM_PROGRESS_KEY, JSON.stringify(progreso));
+        const completed = Object.values(progreso).reduce((total, indices) => total + indices.length, 0);
+        const total = document.querySelectorAll('.weapon-card[data-name] .skin').length;
+        const config = window.CAMO_SUPABASE_CONFIG || {};
+        if (!config.url || !config.anonKey || !window.supabase) return;
+
+        try {
+            const client = window.supabase.createClient(config.url, config.anonKey);
+            const { data: userData } = await client.auth.getUser();
+            if (!userData.user) return;
+            const { data: profile, error: readError } = await client
+                .from('profiles')
+                .select('game_progress')
+                .eq('user_id', userData.user.id)
+                .maybeSingle();
+            if (readError) throw readError;
+            const gameProgress = profile?.game_progress || {};
+            const nextGameProgress = {
+                ...gameProgress,
+                [UEM_GAME_NAME]: completed,
+                __totals: { ...(gameProgress.__totals || {}), [UEM_GAME_NAME]: total },
+                __uem_progress: progreso
+            };
+            const { error: updateError } = await client
+                .from('profiles')
+                .update({ game_progress: nextGameProgress })
+                .eq('user_id', userData.user.id);
+            if (updateError) throw updateError;
+        } catch (error) {
+            console.warn('No se pudo sincronizar el progreso UEM', error);
+        }
+    }
+
+    async function sincronizarProgresoUEM() {
+        const config = window.CAMO_SUPABASE_CONFIG || {};
+        if (!config.url || !config.anonKey || !window.supabase) return;
+        try {
+            const client = window.supabase.createClient(config.url, config.anonKey);
+            const { data: userData } = await client.auth.getUser();
+            if (!userData.user) return;
+            const { data: profile, error } = await client
+                .from('profiles')
+                .select('game_progress')
+                .eq('user_id', userData.user.id)
+                .maybeSingle();
+            if (error) throw error;
+            const remote = profile?.game_progress?.__uem_progress;
+            if (remote) {
+                aplicarProgresoUEM(remote);
+                localStorage.setItem(UEM_PROGRESS_KEY, JSON.stringify(remote));
+                actualizarTodo();
+            }
+            await guardarProgresoUEM();
+        } catch (error) {
+            console.warn('No se pudo cargar el progreso UEM', error);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', sincronizarProgresoUEM);
 
     // Buscador y Selectores (Tus funciones originales)
     document.getElementById('weaponSearch').addEventListener('input', filtrarTodo);

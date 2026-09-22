@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -29,7 +29,7 @@
             justify-content: center;
         }
 
-        /* Ocultar imÃ¡genes con marcador de posiciÃ³n '##' para evitar rutas rotas */
+        /* Ocultar imÃƒÂ¡genes con marcador de posiciÃƒÂ³n '##' para evitar rutas rotas */
         img[src="##"] { display: none !important; }
 
         .brand { 
@@ -75,7 +75,7 @@
             color: #fff;
         }
 
-        /* --- ESTRUCTURA DE CATEGORÃAS --- */
+        /* --- ESTRUCTURA DE CATEGORÃƒÂAS --- */
         .category-group { 
             margin-bottom: 50px; 
         }
@@ -410,7 +410,7 @@
         }
 
         .codm-special-skin.checked::after {
-            content: "âœ“";
+            content: "Ã¢Å“â€œ";
             position: absolute;
             inset: 0;
             display: grid;
@@ -512,7 +512,7 @@
             grid-column: auto;
         }
 
-        /* MenÃº desplegable (botÃ³n) */
+        /* MenÃƒÂº desplegable (botÃƒÂ³n) */
         .left-menu { position: relative; margin-right: 12px; display: flex; align-items: center; }
         .menu-toggle { display: none; }
         .menu-btn { 
@@ -550,8 +550,8 @@
             position: absolute; 
             left: 0; 
             top: 56px; 
-            min-width: 423px; /* ligeramente mÃ¡s grande */
-            max-width: min(640px, 92vw); /* evita desbordes en pantallas pequeÃ±as */
+            min-width: 423px; /* ligeramente mÃƒÂ¡s grande */
+            max-width: min(640px, 92vw); /* evita desbordes en pantallas pequeÃƒÂ±as */
             background: linear-gradient(180deg, rgba(15, 23, 36, 0.98), rgba(11, 15, 25, 0.96)); 
             border-radius: 10px; 
             padding: 8px; 
@@ -564,7 +564,7 @@
             z-index: 60; 
         }
         
-        /* Hacer el menÃº desplazable si hay muchos items */
+        /* Hacer el menÃƒÂº desplazable si hay muchos items */
         .dropdown-menu {
             max-height: 60vh;
             overflow-y: auto;
@@ -575,7 +575,7 @@
         .dropdown-menu::-webkit-scrollbar { width: 8px; }
         .dropdown-menu::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 8px; }
 
-        /* En pantallas pequeÃ±as, mostrar el menÃº como panel ancho y fijo para que sea completamente visible */
+        /* En pantallas pequeÃƒÂ±as, mostrar el menÃƒÂº como panel ancho y fijo para que sea completamente visible */
         @media (max-width: 640px) {
             .dropdown-menu {
                 position: fixed;
@@ -712,7 +712,7 @@
             box-shadow: 0 0 0 1px rgba(255, 157, 0, 0.7), 0 10px 18px rgba(0,0,0,0.35);
         }
 
-        /* Cuadros grandes para categorÃ­a 11 */
+        /* Cuadros grandes para categorÃƒÂ­a 11 */
         .skin.large {
             grid-column: span 2;
             grid-row: span 2;
@@ -824,7 +824,7 @@
         }
 
         .camo-toggle-item.completed::after {
-            content: "âœ“";
+            content: "Ã¢Å“â€œ";
             position: absolute;
             inset: 0;
             display: grid;
@@ -841,7 +841,7 @@
         }
 
         .codm-dmz-panel .camo-toggle-item.dmz-completed::after {
-            content: "âœ“" !important;
+            content: "Ã¢Å“â€œ" !important;
         }
 
         .camo-toggle-text {
@@ -856,19 +856,19 @@
         }
 
         .skin.checked::after {
-            content: "âœ“"; 
+            content: "Ã¢Å“â€œ"; 
             position: absolute; 
             top: 50%; 
             left: 50%;
             transform: translate(-50%, -50%); 
             color: var(--accent-orange);
-            font-size: 14px; /* Un poco mÃ¡s grande para que resalte */
+            font-size: 14px; /* Un poco mÃƒÂ¡s grande para que resalte */
             font-weight: 900; 
             z-index: 2;
             text-shadow: 0px 0px 5px rgba(0,0,0,0.8); /* Sombra para que resalte */
         }
 
-        /* Etiqueta dentro del propio cuadro, igual que una mini notificaciÃ³n */
+        /* Etiqueta dentro del propio cuadro, igual que una mini notificaciÃƒÂ³n */
         .skin:hover::before {
             content: attr(data-title);
             position: absolute;
@@ -900,7 +900,7 @@
         }
 
         /* =========================================
-            HEADER Y NAVEGACIÃ“N
+            HEADER Y NAVEGACIÃƒâ€œN
            ========================================= */
         .site-header { 
             backdrop-filter: blur(6px); 
@@ -940,7 +940,7 @@
             align-items: center;
         }
 
-        /* Forzar alineado izquierdo igual que la pÃ¡gina de inicio */
+        /* Forzar alineado izquierdo igual que la pÃƒÂ¡gina de inicio */
         .site-header .nav { display:flex !important; }
         .site-header .nav > .nav-left { display:flex !important; align-items:center !important; gap:12px !important; margin-right:auto !important; }
         .site-header .nav .brand { display:flex !important; align-items:center !important; gap:12px !important; margin:0 !important; }
@@ -1112,7 +1112,7 @@
             height: auto !important;
         }
 
-        /* Estilos especÃ­ficos para la tarjeta de filtro */
+        /* Estilos especÃƒÂ­ficos para la tarjeta de filtro */
         .wzhub-filter-card {
             background-color: var(--card-bg);
             padding: 20px;
@@ -1161,7 +1161,7 @@
             transition: all 0.3s ease;
         }
 
-        /* Encabezado: Esto empuja el tÃ­tulo a la izquierda y la flecha a la derecha */
+        /* Encabezado: Esto empuja el tÃƒÂ­tulo a la izquierda y la flecha a la derecha */
         .panel-header {
             display: flex;
             justify-content: space-between; /* Manda la flecha al extremo derecho */
@@ -1169,7 +1169,7 @@
             cursor: pointer;
         }
 
-        /* Flecha: PosiciÃ³n inicial (Abierto - hacia abajo) */
+        /* Flecha: PosiciÃƒÂ³n inicial (Abierto - hacia abajo) */
         .arrow-icon { 
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
             stroke: var(--accent-orange);
@@ -1549,7 +1549,7 @@
                     <span></span>
                     <span></span>
                 </label>
-                <div class="dropdown-menu" role="menu" aria-label="CaracterÃ­sticas">
+                <div class="dropdown-menu" role="menu" aria-label="CaracterÃƒÂ­sticas">
                     <a role="menuitem" href="../index/Camos UEM.html">Proyectos</a>
                     <a role="menuitem" href="../index/leaderboard.html">Leaderboard</a>
                     <a role="menuitem" href="../MW2007/MW2007.html">CALL OF DUTY4: MODERN WARFARE <span style="font-size: 11px; color: #7c3aed;">2007</span></a>
@@ -1619,7 +1619,7 @@
 
         <div class="expand-panel" id="advPanel">
             <div class="custom-select" id="catSelect">
-                <span class="wz-label">CategorÃ­a</span>
+                <span class="wz-label">CategorÃƒÂ­a</span>
                 <div class="select-header"><span>TODAS</span><div class="chevron"></div></div>
                 <div class="options-menu">
                     <div class="option-item" data-val="all">TODAS</div>
@@ -1628,7 +1628,7 @@
                     <div class="option-item" data-val="shotguns">ESCOPETAS</div>
                     <div class="option-item" data-val="lmg">AMETRALLADORAS</div>
                     <div class="option-item" data-val="tactical">FUSILES TACTICOS</div>
-                    <div class="option-item" data-val="snipers">FUSILES DE PRECISIÃ“N</div>
+                    <div class="option-item" data-val="snipers">FUSILES DE PRECISIÃƒâ€œN</div>
                     <div class="option-item" data-val="pistols">ARMAS CORTAS</div>
                     <div class="option-item" data-val="launchers">LANZADORES</div>
                     <div class="option-item" data-val="melee">CUERPO A CUERPO</div>
@@ -1658,8 +1658,8 @@
 
 <dialog id="clearProgressDialog" class="clear-progress-dialog">
     <form method="dialog">
-        <h2>Â¿Desmarcar todo?</h2>
-        <p>Se eliminarÃ¡ todo el progreso de camuflajes de Modern Warfare, incluidos los camuflajes especiales. Esta acciÃ³n no se puede deshacer.</p>
+        <h2>Ã‚Â¿Desmarcar todo?</h2>
+        <p>Se eliminarÃƒÂ¡ todo el progreso de camuflajes de Modern Warfare, incluidos los camuflajes especiales. Esta acciÃƒÂ³n no se puede deshacer.</p>
         <div class="clear-progress-actions">
             <button type="button" class="btn ghost" id="cancelClearCamosBtn">Cancelar</button>
             <button type="button" class="clear-all-btn" id="confirmClearCamosBtn" disabled>Confirmar (5)</button>
@@ -1668,7 +1668,7 @@
 </dialog>
 
 <div class="master-panel closed" id="masterPanel">
-    <div class="panel-header">
+    <div class="panel-header" onclick="toggleMaster()">
     <div class="master-title-row">
         <h1>Seguimientos Completo</h1>
     </div>
@@ -1695,7 +1695,7 @@
             <div class="stat-card"><span>ESCOPETAS</span><span id="shotguns-stat">0%</span></div>
             <div class="stat-card"><span>AMETRALLADORAS</span><span id="lmg-stat">0%</span></div>
             <div class="stat-card"><span>FUSILES TACTICOS</span><span id="tactical-stat">0%</span></div>
-            <div class="stat-card"><span>FUSILES DE PRECISIÃ“N</span><span id="snipers-stat">0%</span></div>
+            <div class="stat-card"><span>FUSILES DE PRECISIÃƒâ€œN</span><span id="snipers-stat">0%</span></div>
             <div class="stat-card"><span>ARMAS CORTAS</span><span id="pistols-stat">0%</span></div>
             <div class="stat-card"><span>LANZADORES</span><span id="launchers-stat">0%</span></div>
             <div class="stat-card"><span>CUERPO A CUERPO</span><span id="melee-stat">0%</span></div>
@@ -1789,7 +1789,7 @@
     </div>
 
     <div class="category-group" data-category="snipers">
-        <div class="category-header"><h1>FUSILES DE PRECISIÃ“N</h1></div>
+        <div class="category-header"><h1>FUSILES DE PRECISIÃƒâ€œN</h1></div>
         <div class="weapons-grid">
             <div class="weapon-card" data-name="XPR-50">
                 <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>XPR-50</h2><img src="##" class="weapon-img"></div>
@@ -1846,10 +1846,10 @@
         <div class="container footer-grid">
             <div>
                 <strong>CAMO COD HQ</strong>
-                <p class="muted">Hecho con ❤️ para la comunidad.</p>
+                <p class="muted">Hecho con â¤ï¸ para la comunidad.</p>
             </div>
             <div class="links">
-                <a href="#">Términos</a>
+                <a href="#">TÃ©rminos</a>
                 <a href="#">Privacidad</a>
             </div>
         </div>
@@ -1862,8 +1862,8 @@
 <script src="camuflajes-mw-template.js?v=20260921-1"></script>
 <script>
 (() => {
-    const armas = { ar: ['KN-44','XR-2','HVK-30','ICR-1','Man-O-War','Sheiva','M8A7','FFAR'], smg: ['Kuda','VMP','Weevil','Vesper','Pharo','Razorback','HG 40'], shotguns: ['KRM-262','205 Brecci','Haymaker 12','Argus'], lmg: ['Dingo','Gorgon','48 Dredge','BRM'], tactical: [], snipers: ['Drakon','Locus','P-06','SVG-100'], pistols: ['MR6','RK5','L-CAR 9'], launchers: ['XM-53','Blackcell'], melee: ['Cuchillo de combate','Bastón eléctrico','Puños de combate','Cuchillo mariposa'] };
-    const nombres = { ar:'Fusiles de asalto', smg:'Subfusiles', shotguns:'Escopetas', lmg:'Ametralladoras', tactical:'Fusiles tácticos', snipers:'Fusiles de precisión', pistols:'Armas cortas', launchers:'Lanzadores', melee:'Cuerpo a cuerpo' };
+    const armas = { ar: ['KN-44','XR-2','HVK-30','ICR-1','Man-O-War','Sheiva','M8A7','FFAR'], smg: ['Kuda','VMP','Weevil','Vesper','Pharo','Razorback','HG 40'], shotguns: ['KRM-262','205 Brecci','Haymaker 12','Argus'], lmg: ['Dingo','Gorgon','48 Dredge','BRM'], tactical: [], snipers: ['Drakon','Locus','P-06','SVG-100'], pistols: ['MR6','RK5','L-CAR 9'], launchers: ['XM-53','Blackcell'], melee: ['Cuchillo de combate','BastÃ³n elÃ©ctrico','PuÃ±os de combate','Cuchillo mariposa'] };
+    const nombres = { ar:'Fusiles de asalto', smg:'Subfusiles', shotguns:'Escopetas', lmg:'Ametralladoras', tactical:'Fusiles tÃ¡cticos', snipers:'Fusiles de precisiÃ³n', pistols:'Armas cortas', launchers:'Lanzadores', melee:'Cuerpo a cuerpo' };
     const host = document.querySelector('.category-group')?.parentNode;
     const footer = document.querySelector('footer');
     document.querySelectorAll('.category-group').forEach(group => group.remove());
@@ -1885,7 +1885,7 @@
     let filtroCatActual = "all";
     let filtroEstadoActual = "all";
 
-    // 2. LÃ“GICA DE LOS SELECTORES WZHUB (Corregida para no romper el layout)
+    // 2. LÃƒâ€œGICA DE LOS SELECTORES WZHUB (Corregida para no romper el layout)
     function inicializarSelectores() {
         document.querySelectorAll('.custom-select').forEach(select => {
             const header = select.querySelector('.select-header');
@@ -2019,19 +2019,19 @@
         skins.forEach(s => s.classList.remove('large'));
 
         if (category !== '11') {
-            // Mostrar solo las skins reales de la categorÃ­a
+            // Mostrar solo las skins reales de la categorÃƒÂ­a
             skins.forEach(skin => {
                 skin.style.display = (skin.dataset && skin.dataset.category === category) ? '' : 'none';
             });
         } else {
-            // CategorÃ­a 11: mostrar solo las 5 Ãºltimas skins y en grande
+            // CategorÃƒÂ­a 11: mostrar solo las 5 ÃƒÂºltimas skins y en grande
             const cat11 = skins.filter(s => s.dataset && s.dataset.category === '11');
             const last5 = cat11.slice(-5);
 
             // Ocultar todos
             skins.forEach(skin => skin.style.display = 'none');
 
-            // Mostrar y marcar grandes los Ãºltimos 5
+            // Mostrar y marcar grandes los ÃƒÂºltimos 5
             last5.forEach(skin => {
                 skin.style.display = '';
                 skin.classList.add('large');
@@ -2525,7 +2525,7 @@
                 const item = document.createElement('div');
                 item.className = 'camo-toggle-item';
                 item.dataset.category = String(i);
-                const nombreCategoria = `Categoría ${i}`;
+                const nombreCategoria = `CategorÃ­a ${i}`;
                 const tooltip = document.createElement('span');
                 tooltip.className = 'camo-toggle-tooltip';
                 tooltip.textContent = nombreCategoria;
@@ -2583,7 +2583,7 @@
 
     function inicializarTabsCamuflajes() {
         const tabs = [
-            ['torneos', 'CAMPAÑA'],
+            ['torneos', 'CAMPAÃ‘A'],
             ['multiplayer', 'MULTIJUGADOR'],
             ['zombies', 'ZOMBIS'],
             ['cajas', 'MERCADO NEGRO'],
@@ -2646,7 +2646,7 @@
                         toggleRow.className = 'camo-toggle-row';
                         const categoryButtons = [];
                         const categoryGrids = [];
-                        const categoriasMercado = ['COMÚN', 'RARO', 'LEGENDARIO', 'ÉPICO'];
+                        const categoriasMercado = ['COMÃšN', 'RARO', 'LEGENDARIO', 'Ã‰PICO'];
 
                         categoriasMercado.forEach((nombre, categoryIndex) => {
                             const button = document.createElement('div');
@@ -2716,7 +2716,7 @@
                         content.append(toggleRow, ...categoryGrids);
                     } else {
                         content.className = 'codm-camo-placeholder';
-                        content.textContent = `${label}: camuflajes pendientes de aÃ±adir`;
+                        content.textContent = `${label}: camuflajes pendientes de aÃƒÂ±adir`;
                     }
 
                     const panel = document.createElement('div');
@@ -2771,12 +2771,12 @@
 
             const preview = document.createElement('div');
             preview.className = 'mw-camo-preview';
-            preview.setAttribute('aria-label', 'Previsualización de camuflajes');
+            preview.setAttribute('aria-label', 'PrevisualizaciÃ³n de camuflajes');
             [
-                ['Camuflajes/campaña/Arctic_Camouflage_BO3.webp', 'Ártico'],
+                ['Camuflajes/campaÃ±a/Arctic_Camouflage_BO3.webp', 'Ãrtico'],
                 ['Camuflajes/multijugador/Ardent_Camouflage_BO3.webp', 'Ardent'],
                 ['Camuflajes/multijugador/Dark_Matter_Camouflage_BO3.webp', 'Materia oscura'],
-                ['Camuflajes/extras/Cosmic_Camouflage_BO3.webp', 'Cósmico']
+                ['Camuflajes/extras/Cosmic_Camouflage_BO3.webp', 'CÃ³smico']
             ].forEach(([src, name]) => {
                 const item = document.createElement('div');
                 item.className = 'mw-camo-preview-item';
@@ -2793,7 +2793,7 @@
         });
     }
 
-    // 3. FUNCIÃ“N DE FILTRADO (ARREGLADA: Evita que las tarjetas se vuelvan pequeÃ±as)
+    // 3. FUNCIÃƒâ€œN DE FILTRADO (ARREGLADA: Evita que las tarjetas se vuelvan pequeÃƒÂ±as)
     function filtrarTodo() {
         const busqueda = document.getElementById('weaponSearch').value.toLowerCase();
 
@@ -2813,8 +2813,8 @@
                 if(filtroEstadoActual === 'pending') matchEstado = (porcentaje < 100);
 
                 if(matchCat && matchBusqueda && matchEstado) {
-                    // CAMBIO CLAVE: Usamos cadena vacÃ­a para que herede el estilo del CSS original
-                    // Esto evita que 'display: flex' fuerce un tamaÃ±o incorrecto
+                    // CAMBIO CLAVE: Usamos cadena vacÃƒÂ­a para que herede el estilo del CSS original
+                    // Esto evita que 'display: flex' fuerce un tamaÃƒÂ±o incorrecto
                     card.style.display = ''; 
                     visiblesEnGrupo++;
                 } else {
@@ -2826,10 +2826,9 @@
         });
     }
 
-    // 4. INICIALIZACIÃ“N
+    // 4. INICIALIZACIÃƒâ€œN
     document.addEventListener('DOMContentLoaded', () => {
         inicializarSelectores();
-        sincronizarCamuflajesEntreArmas();
         inicializarCamoCollapsibles();
         inicializarTabsCamuflajes();
         inicializarSeguimientoEspecial();
@@ -2941,7 +2940,7 @@
         document.getElementById('masterPanel').classList.toggle('closed'); 
     }
 
-    // 1. FunciÃ³n principal que actualiza TODO (Armas + Global)
+    // 1. FunciÃƒÂ³n principal que actualiza TODO (Armas + Global)
     function actualizarTodo() {
         const todasLasArmas = document.querySelectorAll('.weapon-card');
         const groups = document.querySelectorAll('.category-group');
@@ -2960,7 +2959,7 @@
         if(progressBar) progressBar.style.width = pct + '%';
     });
 
-    // B. Actualizar estadÃ­sticas por categorÃ­a (AR, SMG, etc.)
+    // B. Actualizar estadÃƒÂ­sticas por categorÃƒÂ­a (AR, SMG, etc.)
     let sumaProgresosGlobal = 0;
     let totalGruposConStats = 0;
 
@@ -2993,7 +2992,7 @@
     if(globalText) globalText.innerText = promedioGlobal + '%';
 }
 
-    // Cerrar el menÃº al hacer clic fuera, con la tecla Esc, y al hacer scroll en mÃ³viles
+    // Cerrar el menÃƒÂº al hacer clic fuera, con la tecla Esc, y al hacer scroll en mÃƒÂ³viles
         (function(){
             const menuToggle = document.getElementById('menuToggle');
             const leftMenu = document.querySelector('.left-menu');
@@ -3004,7 +3003,7 @@
                 menuToggle.setAttribute('aria-expanded', menuToggle.checked ? 'true' : 'false');
             });
 
-            // Cerrar al clicar fuera del contenedor del menÃº
+            // Cerrar al clicar fuera del contenedor del menÃƒÂº
             document.addEventListener('click', (e) => {
                 if (!leftMenu.contains(e.target)) {
                     menuToggle.checked = false;
@@ -3020,7 +3019,7 @@
                 }
             });
 
-            // Cerrar al hacer scroll (solo en mÃ³viles)
+            // Cerrar al hacer scroll (solo en mÃƒÂ³viles)
             window.addEventListener('scroll', () => {
                 try {
                     if (window.innerWidth <= 640 && menuToggle.checked) {
@@ -3028,7 +3027,7 @@
                         menuToggle.setAttribute('aria-expanded', 'false');
                     }
                 } catch (err) {
-                    // no bloquear si ocurre algÃºn error
+                    // no bloquear si ocurre algÃƒÂºn error
                     console.warn('menu scroll close error', err);
                 }
             }, { passive: true });
@@ -3037,3 +3036,5 @@
 </script>
 </body>
 </html>
+
+

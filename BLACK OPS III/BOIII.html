@@ -1670,7 +1670,7 @@
 </dialog>
 
 <div class="master-panel closed" id="masterPanel">
-    <div class="panel-header">
+    <div class="panel-header" onclick="toggleMaster()">
     <div class="master-title-row">
         <h1>Seguimientos Completo</h1>
     </div>
@@ -2831,7 +2831,6 @@
     // 4. INICIALIZACIÃ“N
     document.addEventListener('DOMContentLoaded', () => {
         inicializarSelectores();
-        sincronizarCamuflajesEntreArmas();
         inicializarCamoCollapsibles();
         inicializarTabsCamuflajes();
         inicializarSeguimientoEspecial();
@@ -3039,3 +3038,5 @@
 </script>
 </body>
 </html>
+
+

@@ -42,8 +42,171 @@
         0, 2, 4, 7, 10, 14, 18, 23, 28, 35
     ];
 
+    // Algunos tipos de arma tienen requisitos propios. Las categorías que aún
+    // no tienen tabla específica usan bajasPorCamuflaje como valor de respaldo.
+    const requisitosPorCategoriaDeArma = {
+        ar: {
+            spray: [0, 25, 50, 100, 150, 225, 325, 450, 600, 800],
+            bosque: [0, 5, 10, 20, 30, 45, 60, 80, 100, 125],
+            digital: [, , , , , , , , , ],
+            dragon: [, , , , , , , , , ],
+            escindida: [, , , , , , , , , ],
+            topo: [, , , , , , , , , ],
+            tiger: [, , , , , , , , , ],
+            rayas: [, , , , , , , , , ],
+            reptil: [, , , , , , , , , ],
+            calaveras: [, , , , , , , , , ]
+        },
+        smg: {    
+            spray: [, , , , , , , , , ],
+            bosque: [0, 5, 10, 15, 20, 30, 45, 60, 80, 100],
+            digital: [, , , , , , , , , ],
+            dragon: [, , , , , , , , , ],
+            escindida: [, , , , , , , , , ],
+            topo: [, , , , , , , , , ],
+            tiger: [, , , , , , , , , ],
+            rayas: [, , , , , , , , , ],
+            reptil: [, , , , , , , , , ],
+            calaveras: [, , , , , , , , , ]
+        },
+        shotguns: {
+            spray: [, , , , , , , , , ],
+            bosque: [0, 3, 6, 9, 12, 15, 25, 35, 50, 75],
+            digital: [, , , , , , , , , ],
+            dragon: [, , , , , , , , , ],
+            escindida: [, , , , , , , , , ],
+            topo: [, , , , , , , , , ],
+            tiger: [, , , , , , , , , ],
+            rayas: [, , , , , , , , , ],
+            reptil: [, , , , , , , , , ],
+            calaveras: [, , , , , , , , , ]
+        },
+        lmg: {
+            spray: [, , , , , , , , , ],
+            bosque: [0, 5, 10, 15, 25, 35, 45, 45, 65, 75],
+            digital: [, , , , , , , , , ],
+            dragon: [, , , , , , , , , ],
+            escindida: [, , , , , , , , , ],
+            topo: [, , , , , , , , , ],
+            tiger: [, , , , , , , , , ],
+            rayas: [, , , , , , , , , ],
+            reptil: [, , , , , , , , , ],
+            calaveras: [, , , , , , , , , ]
+        },
+        tactical: {
+            spray: [, , , , , , , , , ],
+            bosque: [0, 5, 10, 15, 20, 25, 30, 40, 50, 60],
+            digital: [, , , , , , , , , ],
+            dragon: [, , , , , , , , , ],
+            escindida: [, , , , , , , , , ],
+            topo: [, , , , , , , , , ],
+            tiger: [, , , , , , , , , ],
+            rayas: [, , , , , , , , , ],
+            reptil: [, , , , , , , , , ],
+            calaveras: [, , , , , , , , , ]
+        },
+        snipers: {
+            spray: [, , , , , , , , , ],
+            bosque: [0, 5, 10, 15, 20, 25, 30, 40, 50, 60],
+            digital: [, , , , , , , , , ],
+            dragon: [, , , , , , , , , ],
+            escindida: [, , , , , , , , , ],
+            topo: [, , , , , , , , , ],
+            tiger: [, , , , , , , , , ],
+            rayas: [, , , , , , , , , ],
+            reptil: [, , , , , , , , , ],
+            calaveras: [, , , , , , , , , ]
+        },
+        pistols: {
+            spray: [0, 10, 25, 40, 55, 70, 100, 150, 200, 250],
+            bosque: [0, 5, 10, 15, 20, 25, 30, 35, 40, 50],
+            digital: [0, 2, 5, 8, 10, 15, 20, 25, 30, 40],
+            dragon: [0, 1, 3, 6, 9, 12, 16, 20, 25, 30],
+            escindida: [0, 1, 3, 6, 9, 12, 16, 20, 25, 30],
+            topo: [0, 1, 3, 6, 9, 12, 15, 18, 21, 25],
+            tiger: [0, 5, 15, 25, 35, 45, 60, 75, 90, 110],
+            rayas: [0, 2, 4, 6, 8, 10, 13, 16, 19, 25],
+            reptil: [0, 5, 10, 15, 25, 35, 45, 55, 65, 75],
+            calaveras: [0, 2, 4, 6, 8, 10, 13, 16, 19, 25]
+        },
+        launchers: {
+            comun: {
+                spray: [
+                    'Desbloqueo de la base',
+                    '10 bajas',
+                    'Destruye 10 UAV',
+                    'Destruye 15 rachas de bajas',
+                    'Destruye 20 vehículos'
+                ],
+                bosque: [
+                    'Desbloqueo de la base',
+                    '20 bajas',
+                    'Destruye 15 UAV',
+                    'Destruye 35 rachas de bajas',
+                    'Destruye 50 vehículos'
+                ]
+            },
+            porArma: {
+                PILA: {
+                    spray: [
+                        'Desbloqueo de la base',
+                        '10 bajas',
+                        'Destruye 10 UAV',
+                        'Destruye 15 rachas de bajas',
+                        'Destruye 20 vehículos'
+                    ],
+                    bosque: [
+                    'Desbloqueo de la base',
+                    '20 bajas',
+                    'Destruye 15 UAV',
+                    'Destruye 35 rachas de bajas',
+                    'Destruye 50 vehículos'
+                ]
+                }
+            },
+            bosque: [, , , , , , , , , ],
+            digital: [, , , , , , , , , ],
+            dragon: [, , , , , , , , , ],
+            escindida: [, , , , , , , , , ],
+            topo: [, , , , , , , , , ],
+            tiger: [, , , , , , , , , ],
+            rayas: [, , , , , , , , , ],
+            reptil: [, , , , , , , , , ],
+            calaveras: [, , , , , , , , , ]
+        },
+        melee: {
+            spray: [, , , , , , , , , ],
+            bosque: [0, 5, 10, 15, 20, 25, 30, 35, 40, 50],
+            digital: [, , , , , , , , , ],
+            dragon: [, , , , , , , , , ],
+            escindida: [, , , , , , , , , ],
+            topo: [, , , , , , , , , ],
+            tiger: [, , , , , , , , , ],
+            rayas: [, , , , , , , , , ],
+            reptil: [, , , , , , , , , ],
+            calaveras: [, , , , , , , , , ]
+        }
+    };
+
+    const obtenerTituloCamuflaje = (categoriaArma, nombreArma, categoriaCamuflaje, indice) => {
+        if (categoriaCamuflaje === 10) {
+            return ['Oro', 'Platino', 'Damasco', 'Obsidiana'][indice] || 'Completista';
+        }
+
+        const nombresCategoriasDatos = ['spray', 'bosque', 'digital', 'dragon', 'escindida', 'topo', 'tiger', 'rayas', 'reptil', 'calaveras'];
+        const nombreCategoria = nombresCategoriasDatos[categoriaCamuflaje];
+        const datosArma = requisitosPorCategoriaDeArma[categoriaArma];
+        const requisitos = datosArma?.porArma?.[nombreArma]?.[nombreCategoria]
+            ?? datosArma?.comun?.[nombreCategoria]
+            ?? datosArma?.[nombreCategoria];
+        const posicion = categoriaCamuflaje * 10 + indice;
+        const bajas = requisitos?.[indice] ?? bajasPorCamuflaje[posicion];
+        if (typeof bajas === 'string') return bajas;
+        return bajas === 0 ? 'Desbloqueo de la base' : `${bajas} bajas`;
+    };
+
     const camuflajes = categorias.flatMap(([categoria, nombres], categoriaIndex) => nombres.map((nombre, index) => ({
-        title: categoriaIndex === 10 ? `Categoría 11 - ${index + 1}` : `${bajasPorCamuflaje[categoriaIndex * 10 + index]} bajas`,
+        title: obtenerTituloCamuflaje('ar', '', categoriaIndex, index),
         image: rutaCamuflaje(categoria, nombre),
         className: categoriaIndex === 10 ? `mastery-preview${index ? `-${index + 1}` : ''}` : ''
     })));
@@ -55,11 +218,15 @@
 
     window.sincronizarCamuflajesEntreArmas = () => {
         document.querySelectorAll('.weapon-card[data-name] .camo-section').forEach(seccion => {
+            const categoriaArma = seccion.closest('.category-group')?.dataset.category || 'ar';
+            const nombreArma = seccion.closest('.weapon-card')?.dataset.name || '';
             Object.entries(imagenesCategorias).forEach(([atributo, valor]) => seccion.setAttribute(atributo, valor));
-            seccion.replaceChildren(...camuflajes.map(({ title, image, className }) => {
+            seccion.replaceChildren(...camuflajes.map(({ image, className }, indice) => {
+                const categoriaCamuflaje = Math.floor(indice / 10);
+                const indiceEnCategoria = indice % 10;
                 const skin = document.createElement('div');
                 skin.className = `skin${className ? ` ${className}` : ''}`;
-                skin.dataset.title = title;
+                skin.dataset.title = obtenerTituloCamuflaje(categoriaArma, nombreArma, categoriaCamuflaje, indiceEnCategoria);
                 skin.style.backgroundImage = `url("${encodeURI(image).replace(/"/g, '\\"')}")`;
                 return skin;
             }));
@@ -68,4 +235,5 @@
 
     window.MW2019_CAMUFLAJES = camuflajes;
     window.MW2019_NOMBRES_CATEGORIAS = nombresCategorias;
+    window.MW2019_REQUISITOS_POR_CATEGORIA = requisitosPorCategoriaDeArma;
 })();

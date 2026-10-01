@@ -166,8 +166,54 @@
         .codm-camo-tab:hover,
         .codm-camo-tab.active {
             color: #fff;
-            border-color: var(--accent-orange);
-            background: rgba(255,157,0,0.12);
+            border-color: #ffc04d;
+            background: linear-gradient(180deg, rgba(255,157,0,0.3), rgba(255,157,0,0.12));
+        }
+
+        .codm-camo-tab.active {
+            box-shadow: 0 0 0 1px rgba(255,157,0,0.22), inset 0 0 12px rgba(255,157,0,0.12);
+        }
+
+        .codm-camo-tab:focus-visible,
+        .camo-toggle-item:focus-visible {
+            outline: 2px solid #fff;
+            outline-offset: 2px;
+        }
+
+        .camo-row-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin: 8px 2px 5px;
+            color: var(--muted);
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .camo-row-label-value {
+            color: #fff;
+            text-align: right;
+            font-size: 10px;
+            letter-spacing: 0;
+            text-transform: none;
+        }
+
+        .camo-toggle-item.image-unavailable {
+            background: linear-gradient(145deg, #27313b, #121820 70%);
+        }
+
+        .camo-toggle-item.image-unavailable .camo-toggle-text {
+            display: block;
+            color: #d5dce4;
+            font-size: 10px;
+            font-weight: 900;
+        }
+
+        .camo-toggle-item.image-unavailable::before {
+            background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(0,0,0,0.28));
         }
 
         .codm-camo-placeholder {
@@ -354,13 +400,21 @@
         .codm-special-skin.checked::after {
             content: "✓";
             position: absolute;
-            inset: 0;
+            top: 2px;
+            bottom: auto;
+            left: auto;
+            right: 2px;
             display: grid;
             place-items: center;
             color: var(--accent-orange);
-            font-size: 20px;
+            width: 14px;
+            height: 14px;
+            border: 1px solid var(--accent-orange);
+            border-radius: 2px;
+            background: rgba(8, 11, 15, 0.92);
+            font-size: 9px;
             font-weight: 900;
-            text-shadow: 0 0 5px rgba(0,0,0,0.9);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.65);
             z-index: 1;
         }
 
@@ -564,15 +618,54 @@
             margin: 5px 0 15px 0; 
         }
 
+        .progress-container .bar-bg,
+        .codm-special-progress .bar-bg {
+            height: 10px;
+            padding: 1px;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 999px;
+            background: linear-gradient(180deg, #080b10, #151b23);
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.85), 0 2px 8px rgba(0,0,0,0.24);
+        }
+
+        .progress-container .bar-fill,
+        .codm-special-progress .bar-fill {
+            position: relative;
+            min-width: 0;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #f06a00 0%, #ff9d00 58%, #ffd34e 100%);
+            box-shadow: 0 0 8px rgba(255,157,0,0.48), inset 0 1px 0 rgba(255,255,255,0.38);
+            transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .progress-container .bar-fill::after,
+        .codm-special-progress .bar-fill::after {
+            content: "";
+            position: absolute;
+            inset: 1px 2px auto;
+            height: 2px;
+            border-radius: inherit;
+            background: rgba(255,255,255,0.34);
+        }
+
         .pct-text { 
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 8px;
             font-size: 11px; 
             font-weight: bold; 
             margin-bottom: 5px; 
-            display: block; 
+        }
+
+        .pct-count {
+            color: #d5d9df;
+            font-size: 10px;
+            font-weight: 700;
         }
 
         .bar-bg { 
-            height: 4px; 
+            height: 8px; 
             background: #222; 
             border-radius: 10px; 
             overflow: hidden; 
@@ -593,10 +686,10 @@
             grid-auto-rows: 52px;
             grid-auto-flow: row;
             gap: 5px;
-            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.45));
+            background: transparent;
             border: 1px solid rgba(255,255,255,0.07);
-            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.55), 0 0 0 1px rgba(255, 157, 0, 0.05);
-            padding: 10px;
+            box-shadow: none;
+            padding: 4px;
             border-radius: 8px;
             margin: 0 auto auto;
             justify-content: center;
@@ -716,36 +809,6 @@
             background: rgba(0,0,0,0.2);
         }
 
-        .camo-toggle-item .camo-toggle-tooltip {
-            position: absolute;
-            top: -34px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #000;
-            color: #ff9d00;
-            padding: 6px 8px;
-            border: 1px solid #ff9d00;
-            border-radius: 999px;
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 0.03em;
-            line-height: 1;
-            white-space: nowrap;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.15s ease;
-            z-index: 2000;
-        }
-
-        .camo-toggle-item[data-category="1"] .camo-toggle-tooltip,
-        .camo-toggle-item[data-category="10"] .camo-toggle-tooltip {
-            left: calc(50% + 36px);
-        }
-
-        .camo-toggle-item:hover .camo-toggle-tooltip {
-            opacity: 1;
-        }
-
         .camo-toggle-item .camo-toggle-text {
             position: relative;
             z-index: 1;
@@ -760,22 +823,33 @@
         }
 
         .camo-toggle-item.active {
-            border-color: var(--accent-orange);
-            color: var(--accent-orange);
+            border-color: #ffc04d;
+            color: #fff;
+            background-color: rgba(255,157,0,0.22);
+            box-shadow: 0 0 0 2px rgba(255,157,0,0.35), 0 0 14px rgba(255,157,0,0.22);
             transform: translateY(-1px);
+            z-index: 1;
         }
 
-        .camo-toggle-item.completed::after {
+        .camo-toggle-item.completed::after,
+        .codm-dmz-panel .camo-toggle-item.dmz-completed::after {
             content: "✓";
             position: absolute;
-            inset: 0;
+            top: 2px;
+            right: 2px;
             display: grid;
             place-items: center;
+            width: 14px;
+            height: 14px;
+            border: 1px solid var(--accent-orange);
+            border-radius: 2px;
             color: var(--accent-orange);
-            font-size: 18px;
+            background: rgba(8, 11, 15, 0.92);
+            font-size: 9px;
             font-weight: 900;
-            text-shadow: 0 0 5px rgba(0,0,0,0.8);
             pointer-events: none;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.65);
+            z-index: 2;
         }
 
         .codm-dmz-panel .camo-toggle-item::after {
@@ -800,14 +874,20 @@
         .skin.checked::after {
             content: "✓"; 
             position: absolute; 
-            top: 50%; 
-            left: 50%;
-            transform: translate(-50%, -50%); 
+            top: 2px; 
+            right: 2px;
+            display: grid;
+            place-items: center;
+            width: 14px;
+            height: 14px;
+            border: 1px solid var(--accent-orange);
+            border-radius: 2px;
             color: var(--accent-orange);
-            font-size: 14px; /* Un poco más grande para que resalte */
+            background: rgba(8, 11, 15, 0.92);
+            font-size: 9px;
             font-weight: 900; 
             z-index: 2;
-            text-shadow: 0px 0px 5px rgba(0,0,0,0.8); /* Sombra para que resalte */
+            box-shadow: 0 1px 4px rgba(0,0,0,0.65);
         }
 
         /* Etiqueta dentro del propio cuadro, igual que una mini notificación */
@@ -981,7 +1061,21 @@
             border-color: var(--accent-orange); 
             filter: brightness(0.6); /* Esto oscurece la imagen de fondo */
             position: relative;
+            box-shadow: 0 0 0 2px rgba(255,157,0,0.65), inset 0 0 0 1px rgba(255,255,255,0.32), inset 0 0 18px rgba(0,0,0,0.45);
         }
+        .xp-notification {
+            position:fixed; top:24px; right:24px; z-index:1000;
+            display:flex; flex-direction:column; align-items:flex-start; gap:4px; padding:12px 16px;
+            border:1px solid var(--theme-accent, var(--accent-2));
+            border-radius:10px; background:var(--theme-surface, #111827);
+            color:var(--theme-text, #fff); box-shadow:0 8px 24px rgba(0,0,0,.35);
+            font-weight:800; pointer-events:none;
+            animation:xp-notification-in .25s ease-out, xp-notification-out .3s ease-in 2.2s forwards;
+        }
+        .xp-notification strong { color:var(--theme-accent, var(--accent-2)); }
+        .xp-notification .progression { color:var(--theme-text, #f4f8fa); font-size:.82rem; }
+        @keyframes xp-notification-in { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes xp-notification-out { to { opacity:0; transform:translateY(-8px); } }
 
         /* =========================================
             FOOTER
@@ -1069,10 +1163,34 @@
             padding: 15px; 
             border-radius: 12px; 
             border: 1px solid #222; 
-            display: flex; 
-            justify-content: space-between; 
+            display: grid; 
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 10px 12px;
             font-size: 13px; 
             font-weight: 800; 
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+            gap: 10px;
+        }
+
+        .category-stat-progress {
+            grid-column: 1 / -1;
+            height: 6px;
+            overflow: hidden;
+            border-radius: 999px;
+            background: #252525;
+        }
+
+        .category-stat-fill {
+            width: 0%;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #ff7300, var(--accent-orange));
+            transition: width 0.35s ease;
         }
 
         /* Estilos de la Barra de Progreso */
@@ -1213,6 +1331,27 @@
         .clear-all-btn:hover {
             background: rgba(255, 157, 0, 0.14);
             transform: translateY(-1px);
+        }
+
+        .clear-filters-btn {
+            grid-column: 1 / -1;
+            width: 100%;
+            margin: 0;
+            padding: 10px 12px;
+            border: 1px solid rgba(6, 182, 212, 0.35);
+            border-radius: 10px;
+            color: #8be8f5;
+            background: rgba(6, 182, 212, 0.07);
+            font: inherit;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .clear-filters-btn:hover {
+            border-color: rgba(6, 182, 212, 0.7);
+            background: rgba(6, 182, 212, 0.13);
         }
 
         .progress-actions {
@@ -1492,7 +1631,6 @@
                     <span></span>
                 </label>
                 <div class="dropdown-menu" role="menu" aria-label="Características">
-                    <a role="menuitem" href="../index/Camos UEM.html">Proyectos</a>
                     <a role="menuitem" href="../index/leaderboard.html">Leaderboard</a>
                     <a role="menuitem" href="../MW2007/MW2007.html">CALL OF DUTY4: MODERN WARFARE <span style="font-size: 11px; color: #7c3aed;">2007</span></a>
                     <a role="menuitem" href="../MW2/MW2.html">CALL OF DUTY: MODERN WARFARE 2 <span style="font-size: 11px; color: #7c3aed;">2009</span></a>
@@ -1555,11 +1693,10 @@
             <button type="button" class="btn-settings">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:20px; stroke:#ff9d00;"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="2" y1="14" x2="6" y2="14"></line><line x1="10" y1="8" x2="14" y2="8"></line><line x1="18" y1="16" x2="22" y2="16"></line></svg>
             </button>
-            
         </div>
 
-
         <div class="expand-panel" id="advPanel">
+            <button type="button" id="clearFiltersBtn" class="clear-filters-btn">Limpiar filtros</button>
             <div class="custom-select" id="catSelect">
                 <span class="wz-label">Categoría</span>
                 <div class="select-header"><span>TODAS</span><div class="chevron"></div></div>
@@ -1610,7 +1747,7 @@
 </dialog>
 
 <div class="master-panel closed" id="masterPanel">
-    <div class="panel-header">
+    <div class="panel-header" onclick="toggleMaster()">
     <div class="master-title-row">
         <h1>Seguimientos Completo</h1>
     </div>
@@ -1632,15 +1769,15 @@
         </div>
 
         <div class="stats-grid">
-            <div class="stat-card"><span>AR</span><span id="ar-stat">0%</span></div>
-            <div class="stat-card"><span>SMG</span><span id="smg-stat">0%</span></div>
-            <div class="stat-card"><span>ESCOPETAS</span><span id="shotguns-stat">0%</span></div>
-            <div class="stat-card"><span>AMETRALLADORAS</span><span id="lmg-stat">0%</span></div>
-            <div class="stat-card"><span>FUSILES TACTICOS</span><span id="tactical-stat">0%</span></div>
-            <div class="stat-card"><span>FUSILES DE PRECISIÓN</span><span id="snipers-stat">0%</span></div>
-            <div class="stat-card"><span>ARMAS CORTAS</span><span id="pistols-stat">0%</span></div>
-            <div class="stat-card"><span>LANZADORES</span><span id="launchers-stat">0%</span></div>
-            <div class="stat-card"><span>CUERPO A CUERPO</span><span id="melee-stat">0%</span></div>
+            <div class="stat-card"><span>AR</span><span id="ar-stat">0%</span><div class="category-stat-progress" role="progressbar" aria-label="Progreso de fusiles de asalto" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="category-stat-fill"></div></div></div>
+            <div class="stat-card"><span>SMG</span><span id="smg-stat">0%</span><div class="category-stat-progress" role="progressbar" aria-label="Progreso de subfusiles" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="category-stat-fill"></div></div></div>
+            <div class="stat-card"><span>ESCOPETAS</span><span id="shotguns-stat">0%</span><div class="category-stat-progress" role="progressbar" aria-label="Progreso de escopetas" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="category-stat-fill"></div></div></div>
+            <div class="stat-card"><span>AMETRALLADORAS</span><span id="lmg-stat">0%</span><div class="category-stat-progress" role="progressbar" aria-label="Progreso de ametralladoras" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="category-stat-fill"></div></div></div>
+            <div class="stat-card"><span>FUSILES TACTICOS</span><span id="tactical-stat">0%</span><div class="category-stat-progress" role="progressbar" aria-label="Progreso de fusiles tácticos" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="category-stat-fill"></div></div></div>
+            <div class="stat-card"><span>FUSILES DE PRECISIÓN</span><span id="snipers-stat">0%</span><div class="category-stat-progress" role="progressbar" aria-label="Progreso de fusiles de precisión" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="category-stat-fill"></div></div></div>
+            <div class="stat-card"><span>ARMAS CORTAS</span><span id="pistols-stat">0%</span><div class="category-stat-progress" role="progressbar" aria-label="Progreso de armas cortas" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="category-stat-fill"></div></div></div>
+            <div class="stat-card"><span>LANZADORES</span><span id="launchers-stat">0%</span><div class="category-stat-progress" role="progressbar" aria-label="Progreso de lanzadores" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="category-stat-fill"></div></div></div>
+            <div class="stat-card"><span>CUERPO A CUERPO</span><span id="melee-stat">0%</span><div class="category-stat-progress" role="progressbar" aria-label="Progreso de cuerpo a cuerpo" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="category-stat-fill"></div></div></div>
         </div>
     </div>
 </div>
@@ -1651,14 +1788,14 @@
         <div class="weapons-grid">
             <div class="weapon-card" data-name="TYPE 25">
                 <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>TYPE 25</h2><img src="##" class="weapon-img"></div>     
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                 </div>
             </div>
 
                 <div class="weapon-card" data-name="AK-117">
                 <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>AK-117</h2><img src="##" class="weapon-img"></div>     
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                 </div>
             </div>
@@ -1672,14 +1809,14 @@
         <div class="weapons-grid">
             <div class="weapon-card" data-name="RUS-79U">
                 <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>RUS-79U</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                 </div>
             </div>
 
             <div class="weapon-card" data-name="CHICOM">
                 <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>CHICOM</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                 </div>
             </div>
@@ -1693,7 +1830,7 @@
         <div class="weapons-grid">
             <div class="weapon-card" data-name="HS2126">
                 <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>HS2126</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                 </div>
             </div>
@@ -1707,7 +1844,7 @@
         <div class="weapons-grid">
             <div class="weapon-card" data-name="S36">
                 <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>S36</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                 </div>
             </div>
@@ -1721,7 +1858,7 @@
         <div class="weapons-grid">
             <div class="weapon-card" data-name="KILO CON MECANISMO DE CRROJO">
                 <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>KILO CON MECANISMO DE CRROJO</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                 </div>
             </div>
@@ -1735,7 +1872,7 @@
         <div class="weapons-grid">
             <div class="weapon-card" data-name="XPR-50">
                 <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>XPR-50</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                 </div>
             </div>
@@ -1749,7 +1886,7 @@
         <div class="weapons-grid">
             <div class="weapon-card" data-name="J358">
                 <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>J358</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                 </div>
             </div>
@@ -1763,7 +1900,7 @@
         <div class="weapons-grid">
             <div class="weapon-card" data-name="FHJ-18">
                 <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>FHJ-18</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                 </div>
             </div>
@@ -1777,7 +1914,7 @@
         <div class="weapons-grid">
             <div class="weapon-card" data-name="CUCHILLO">
                 <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>CUCHILLO</h2><img src="##" class="weapon-img"></div>
-                <div class="progress-container"><span class="pct-text"><span class="pct-val">0</span>%</span><div class="bar-bg"><div class="bar-fill"></div></div></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                 </div>
             </div>
@@ -1800,6 +1937,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../index/xp-config.js?v=20260930-xp-history"></script>
 <script src="../index/supabase-config.js"></script>
 <script src="camuflajes-codm-template.js?v=20260920-2"></script>
 <script>
@@ -1833,6 +1971,21 @@
                 });
             });
         });
+    }
+
+    function limpiarFiltros() {
+        document.getElementById('weaponSearch').value = '';
+        filtroCatActual = 'all';
+        filtroEstadoActual = 'all';
+
+        ['catSelect', 'statusSelect'].forEach(selectId => {
+            const select = document.getElementById(selectId);
+            const defaultOption = select.querySelector('.option-item[data-val="all"]');
+            select.querySelector('.select-header span').innerText = defaultOption.innerText;
+            select.classList.remove('active');
+        });
+
+        filtrarTodo();
     }
 
     function asignarCategorias(section) {
@@ -1963,9 +2116,13 @@
 
     function resetearBaseALaPrimeraCategoria(section) {
         if (!section) return;
+        const wrapper = section.parentElement;
         section.dataset.currentCategory = '';
-        section.querySelectorAll('.camo-toggle-item').forEach(item => {
+        const categoryLabel = wrapper.querySelector('.camo-row-label-value');
+        if (categoryLabel) categoryLabel.textContent = 'Elige una categoría';
+        wrapper.querySelectorAll('.camo-toggle-item').forEach(item => {
             item.classList.remove('active');
+            item.setAttribute('aria-pressed', 'false');
         });
         section.querySelectorAll('.skin').forEach(skin => {
             skin.style.display = 'none';
@@ -1977,7 +2134,79 @@
     const SPECIAL_PROGRESS_KEY = 'camo-cod-hq-codm-special-progress';
     const MASTERY_KEY = 'camo-cod-hq-codm-mastery';
     const GAME_NAME = 'Mobile';
+    const XP_PER_CAMO = window.getXpPerCamo(GAME_NAME);
     let maestriasDesbloqueadas = {};
+    let xpNotificationTimer;
+    const xpLedger = window.getXpClaimLedger(GAME_NAME);
+
+    function contarCamuflajesCompletadosEnPantalla() {
+        return document.querySelectorAll('.weapon-card .skin.checked, .weapon-card .codm-special-skin.checked').length;
+    }
+
+    function contarXpCobrada() {
+        return window.getXpClaimLedger(GAME_NAME).claims.size;
+    }
+
+    function obtenerIdCamuflaje(skin) {
+        const card = skin.closest('.weapon-card');
+        const type = skin.classList.contains('codm-special-skin') ? 'special' : 'standard';
+        const group = skin.dataset.specialGroup || '';
+        const index = type === 'special'
+            ? skin.dataset.specialIndex || ''
+            : Array.from(card?.querySelectorAll('.skin') || []).indexOf(skin);
+        return `${card?.dataset.name || 'unknown'}:${type}:${group}:${index}`;
+    }
+
+    function registrarXpDeCamuflajesMarcados() {
+        let gainedCamos = 0;
+        let gainedXp = 0;
+        xpLedger.claims = window.getXpClaimLedger(GAME_NAME).claims;
+        document.querySelectorAll('.weapon-card .skin.checked, .weapon-card .codm-special-skin.checked').forEach(skin => {
+            const id = obtenerIdCamuflaje(skin);
+            if (!xpLedger.claims.has(id)) {
+                const xp = window.CAMO_XP_TOKENS.awardCamoXp(GAME_NAME, id, XP_PER_CAMO);
+                if (!xp) return;
+                xpLedger.claims.add(id);
+                gainedCamos += 1;
+                gainedXp += xp;
+            }
+        });
+        return { gainedCamos, gainedXp };
+    }
+
+    function obtenerProgresion(xpCobrada, bonusXp = window.CAMO_XP_TOKENS.getBonusXp()) {
+        return window.getLevelInfoFromXp((Number(xpCobrada) || 0) * XP_PER_CAMO + bonusXp);
+    }
+
+    function mostrarNotificacionXp(reward, claimedBefore, claimedAfter) {
+        if (reward.gainedCamos <= 0) return;
+        document.querySelector('.xp-notification')?.remove();
+        clearTimeout(xpNotificationTimer);
+        const notification = document.createElement('div');
+        notification.className = 'xp-notification';
+        notification.setAttribute('role', 'status');
+        const label = reward.gainedCamos === 1 ? 'Camuflaje completado' : `${reward.gainedCamos} camuflajes completados`;
+        const bonusGained = reward.gainedXp - reward.gainedCamos * XP_PER_CAMO;
+        const previous = obtenerProgresion(claimedBefore, Math.max(0, window.CAMO_XP_TOKENS.getBonusXp() - bonusGained));
+        const current = obtenerProgresion(claimedAfter);
+        const progression = [];
+        if (current.prestige > previous.prestige) {
+            progression.push(`¡Prestigio ${current.prestige} alcanzado!`);
+        } else if (current.level > previous.level) {
+            progression.push(`¡Nivel ${current.level} alcanzado!`);
+        }
+        const progressionMarkup = progression.length
+            ? `<span class="progression">${progression.join(' ')}</span>`
+            : '';
+        const multiplier = reward.gainedCamos ? reward.gainedXp / (reward.gainedCamos * XP_PER_CAMO) : 1;
+        notification.innerHTML = `<span>${label}</span><strong>+${reward.gainedXp} XP${multiplier > 1 ? ` (x${multiplier})` : ''}</strong>${progressionMarkup}`;
+        document.body.appendChild(notification);
+        window.CAMO_XP_TOKENS.layoutNotifications();
+        xpNotificationTimer = window.setTimeout(() => {
+            notification.remove();
+            window.CAMO_XP_TOKENS.layoutNotifications();
+        }, 2600);
+    }
 
     function obtenerTotalCatalogo() {
         const baseTotal = document.querySelectorAll('.weapon-card[data-name] .skin').length;
@@ -2250,7 +2479,11 @@
             const value = panel.querySelector('.codm-special-pct');
             const bar = panel.querySelector('.codm-special-fill');
             if (value) value.textContent = `${percentage}%`;
-            if (bar) bar.style.width = `${percentage}%`;
+            if (bar) {
+                bar.style.width = `${percentage}%`;
+                const progressTrack = bar.closest('.bar-bg');
+                progressTrack?.setAttribute('aria-valuenow', String(percentage));
+            }
 
             if (panel.dataset.specialGroup === 'dmz') {
                 const buttons = panel.querySelectorAll('.camo-toggle-item');
@@ -2291,7 +2524,11 @@
     function inicializarSeguimientoEspecial() {
         document.querySelectorAll('.codm-special-skin[data-special-index]').forEach(skin => {
             skin.addEventListener('click', () => {
+                const completedBefore = contarCamuflajesCompletadosEnPantalla();
                 skin.classList.toggle('checked');
+                const completedAfter = contarCamuflajesCompletadosEnPantalla();
+                const reward = registrarXpDeCamuflajesMarcados();
+                mostrarNotificacionXp(reward, completedBefore, completedAfter);
                 guardarProgresoEspecial();
                 actualizarProgresosEspeciales();
             });
@@ -2439,8 +2676,17 @@
             const wrapper = document.createElement('div');
             wrapper.className = 'camo-collapsible';
 
+            const categoryLabel = document.createElement('div');
+            categoryLabel.className = 'camo-row-label';
+            categoryLabel.textContent = 'Categorías de progreso';
+
             const toggleRow = document.createElement('div');
             toggleRow.className = 'camo-toggle-row';
+
+            const camoLabel = document.createElement('div');
+            camoLabel.className = 'camo-row-label';
+            camoLabel.innerHTML = '<span>Camuflajes</span><span class="camo-row-label-value">Elige una categoría</span>';
+            camoLabel.querySelector('.camo-row-label-value').setAttribute('aria-live', 'polite');
 
             const buttons = [];
             for (let i = 1; i <= 11; i++) {
@@ -2448,40 +2694,67 @@
                 item.className = 'camo-toggle-item';
                 item.dataset.category = String(i);
                 const nombreCategoria = window.CODM_NOMBRES_CATEGORIAS?.[i - 1] || `Categoría ${i}`;
-                const tooltip = document.createElement('span');
-                tooltip.className = 'camo-toggle-tooltip';
-                tooltip.textContent = nombreCategoria;
+                item.setAttribute('role', 'button');
+                item.setAttribute('tabindex', '0');
+                item.setAttribute('aria-pressed', 'false');
+                item.setAttribute('aria-label', nombreCategoria);
+                item.title = nombreCategoria;
                 const toggleImage = section.dataset[`toggle${i}`];
                 if (toggleImage) {
                     const thumb = document.createElement('img');
                     thumb.className = 'camo-toggle-thumb';
-                    thumb.src = toggleImage;
-                    thumb.alt = `Imagen ${nombreCategoria}`;
+                    thumb.alt = '';
+                    thumb.addEventListener('error', () => {
+                        item.classList.remove('has-image');
+                        item.classList.add('image-unavailable');
+                        thumb.remove();
+                    }, { once: true });
                     item.appendChild(thumb);
                     item.classList.add('has-image');
+                    thumb.src = toggleImage;
                 }
-                item.appendChild(tooltip);
-                item.addEventListener('click', (e) => {
-                    e.stopPropagation();
+                const fallbackText = document.createElement('span');
+                fallbackText.className = 'camo-toggle-text';
+                fallbackText.textContent = String(i).padStart(2, '0');
+                fallbackText.setAttribute('aria-hidden', 'true');
+                item.appendChild(fallbackText);
+                const seleccionarCategoria = (e) => {
+                    e?.stopPropagation();
                     const isActive = item.classList.contains('active');
 
                     if (isActive) {
                         item.classList.remove('active');
+                        item.setAttribute('aria-pressed', 'false');
                         section.classList.add('collapsed');
-                        return;
+                        resetearBaseALaPrimeraCategoria(section);
+                        actualizarTodo();
+                    } else {
+                        buttons.forEach(btn => {
+                            btn.classList.remove('active');
+                            btn.setAttribute('aria-pressed', 'false');
+                        });
+                        item.classList.add('active');
+                        item.setAttribute('aria-pressed', 'true');
+                        section.classList.remove('collapsed');
+                        mostrarCategoria(section, String(i));
+                        const nombreCorto = nombreCategoria.split(' (')[0];
+                        camoLabel.querySelector('.camo-row-label-value').textContent = `${nombreCorto} · 0/${section.querySelectorAll(`.skin[data-category="${i}"]`).length}`;
+                        actualizarTodo();
                     }
-
-                    buttons.forEach(btn => btn.classList.remove('active'));
-                    item.classList.add('active');
-                    section.classList.remove('collapsed');
-                    mostrarCategoria(section, String(i));
+                };
+                item.addEventListener('click', seleccionarCategoria);
+                item.addEventListener('keydown', event => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        seleccionarCategoria(event);
+                    }
                 });
                 buttons.push(item);
                 toggleRow.appendChild(item);
             }
 
             section.parentNode.insertBefore(wrapper, section);
-            wrapper.appendChild(toggleRow);
+            wrapper.append(categoryLabel, toggleRow, camoLabel);
             wrapper.appendChild(section);
 
             actualizarCategorias(section);
@@ -2534,7 +2807,7 @@
                 if (id !== 'base') {
                     const specialProgress = document.createElement('div');
                     specialProgress.className = 'codm-special-progress';
-                    specialProgress.innerHTML = '<span class="pct-text"><span class="codm-special-pct">0%</span></span><div class="bar-bg"><div class="bar-fill codm-special-fill"></div></div>';
+                    specialProgress.innerHTML = '<span class="pct-text"><span class="codm-special-pct">0%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes especiales" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill codm-special-fill"></div></div>';
 
                     const content = document.createElement('div');
                     content.className = 'codm-special-content';
@@ -2639,7 +2912,10 @@
 
                     if (id !== 'base' && baseSection) {
                         baseSection.classList.add('collapsed');
-                        baseSection.querySelectorAll('.camo-toggle-item').forEach(item => item.classList.remove('active'));
+                        baseCollapsible.querySelectorAll('.camo-toggle-item').forEach(item => {
+                            item.classList.remove('active');
+                            item.setAttribute('aria-pressed', 'false');
+                        });
                         baseSection.dataset.currentCategory = '1';
                     }
 
@@ -2701,12 +2977,15 @@
 
     // 4. INICIALIZACIÓN
     document.addEventListener('DOMContentLoaded', () => {
+        if (typeof window.sincronizarCamuflajesEntreArmas === 'function') {
+            window.sincronizarCamuflajesEntreArmas();
+        }
         inicializarSelectores();
-        sincronizarCamuflajesEntreArmas();
         inicializarCamoCollapsibles();
         inicializarTabsCamuflajes();
         inicializarSeguimientoEspecial();
         restaurarProgreso();
+        window.CAMO_XP_TOKENS.seedExistingClaims(GAME_NAME);
         actualizarTodo();
         sincronizarProgresoConCuenta();
         document.querySelector('.btn-settings')?.addEventListener('click', () => {
@@ -2753,7 +3032,6 @@
             }
             cerrarConfirmacionBorrado();
         });
-        document.querySelector('#masterPanel .panel-header')?.addEventListener('click', toggleMaster);
         const exportProgressBtn = document.getElementById('exportProgressBtn');
         const importProgressBtn = document.getElementById('importProgressBtn');
         const importProgressInput = document.getElementById('importProgressInput');
@@ -2767,6 +3045,7 @@
         });
 
         document.getElementById('weaponSearch').addEventListener('input', filtrarTodo);
+        document.getElementById('clearFiltersBtn').addEventListener('click', limpiarFiltros);
         document.addEventListener('click', () => {
             document.querySelectorAll('.custom-select').forEach(s => s.classList.remove('active'));
         });
@@ -2774,6 +3053,7 @@
         document.querySelectorAll('.skin').forEach(skin => {
             skin.onclick = (e) => {
                 e.stopPropagation();
+                const claimedBefore = contarXpCobrada();
                 const card = skin.closest('.weapon-card');
                 const skins = obtenerSkinsDeSeguimiento(card);
                 const index = skins.indexOf(skin);
@@ -2798,6 +3078,9 @@
                 actualizarBloqueoCompletista();
                 actualizarCategorias(card.querySelector('.camo-section'));
                 actualizarTodo();
+                const reward = registrarXpDeCamuflajesMarcados();
+                const claimedAfter = contarXpCobrada();
+                mostrarNotificacionXp(reward, claimedBefore, claimedAfter);
                 guardarProgreso();
                 const sync = window.camoProgressSync;
                 if (sync) {
@@ -2827,10 +3110,27 @@
 
         // Actualizar texto y barra de la tarjeta
         const pctVal = card.querySelector('.pct-val');
+        const pctCount = card.querySelector('.pct-count');
         const progressBar = card.querySelector('.bar-fill');
+        const progressTrack = card.querySelector('.progress-container .bar-bg');
+        const camoSection = card.querySelector('.camo-section');
+        const category = camoSection?.dataset.currentCategory;
+        const categoryLabel = card.querySelector('.camo-row-label-value');
 
         if(pctVal) pctVal.innerText = pct;
+        if(pctCount) pctCount.textContent = `${checked}/${skins.length} camuflajes`;
         if(progressBar) progressBar.style.width = pct + '%';
+        if(progressTrack) {
+            progressTrack.setAttribute('aria-valuenow', String(pct));
+            progressTrack.setAttribute('aria-label', `Progreso de camuflajes de ${card.dataset.name}`);
+        }
+        if(categoryLabel && category) {
+            const categorySkins = camoSection.querySelectorAll(`.skin[data-category="${category}"]`);
+            const completed = camoSection.querySelectorAll(`.skin[data-category="${category}"].checked`).length;
+            const categoryName = window.CODM_NOMBRES_CATEGORIAS?.[Number(category) - 1] || `Categoría ${category}`;
+            const shortCategoryName = categoryName.split(' (')[0];
+            categoryLabel.textContent = `${shortCategoryName} · ${completed}/${categorySkins.length}`;
+        }
     });
 
     // B. Actualizar estadísticas por categoría (AR, SMG, etc.)
@@ -2847,11 +3147,16 @@
         });
 
         const promedioGrupo = Math.round(sumaGrupo / (armasEnGrupo.length || 1)) || 0;
+        const progresoCategoria = Math.min(100, Math.max(0, promedioGrupo));
 
         // Buscar el cuadrito de stat correspondiente en el Apocalypse Tracker
         const statEl = document.getElementById(catId + '-stat');
         if(statEl) {
             statEl.innerText = promedioGrupo + '%';
+            const progressTrack = statEl.parentElement.querySelector('.category-stat-progress');
+            const progressFill = progressTrack.querySelector('.category-stat-fill');
+            progressTrack.setAttribute('aria-valuenow', String(progresoCategoria));
+            progressFill.style.width = progresoCategoria + '%';
             sumaProgresosGlobal += promedioGrupo;
             totalGruposConStats++;
         }

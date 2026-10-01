@@ -1171,7 +1171,6 @@
                     <span></span>
                 </label>
                 <div class="dropdown-menu" role="menu" aria-label="Características">
-                    <a role="menuitem" href="../index/Camos UEM.html">Proyectos</a>
                     <a role="menuitem" href="../index/leaderboard.html">Leaderboard</a>
                     <a role="menuitem" href="../MW2007/MW2007.html">CALL OF DUTY4: MODERN WARFARE <span style="font-size: 11px; color: #7c3aed;">2007</span></a>
                     <a role="menuitem" href="../MW2/MW2.html">CALL OF DUTY: MODERN WARFARE 2 <span style="font-size: 11px; color: #7c3aed;">2009</span></a>
@@ -1289,7 +1288,7 @@
 </dialog>
 
 <div class="master-panel closed" id="masterPanel">
-    <div class="panel-header">
+    <div class="panel-header" onclick="toggleMaster()">
     <div class="master-title-row">
         <h1>Seguimientos Completo</h1>
     </div>
@@ -1467,6 +1466,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../index/xp-config.js?v=20260930-xp-history"></script>
 <script src="../index/supabase-config.js"></script>
 <script src="camuflajes-template.js?v=20260921-8"></script>
 <script>
@@ -2031,7 +2031,6 @@
     // 4. INICIALIZACIÓN
     document.addEventListener('DOMContentLoaded', () => {
         inicializarSelectores();
-        sincronizarCamuflajesEntreArmas();
         inicializarCamoCollapsibles();
         restaurarProgreso();
         actualizarTodo();
@@ -2039,7 +2038,6 @@
         document.querySelector('.btn-settings')?.addEventListener('click', () => {
             document.getElementById('advPanel').classList.toggle('open');
         });
-        document.querySelector('#masterPanel .panel-header')?.addEventListener('click', toggleMaster);
         const exportProgressBtn = document.getElementById('exportProgressBtn');
         const importProgressBtn = document.getElementById('importProgressBtn');
         const importProgressInput = document.getElementById('importProgressInput');
@@ -2239,3 +2237,5 @@
 </script>
 </body>
 </html>
+
+

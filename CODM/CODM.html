@@ -135,6 +135,10 @@
             margin: 0 0 10px;
             padding: 3px;
             overflow-x: auto;
+            overflow-y: hidden;
+            overscroll-behavior-x: contain;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-x;
             border: 1px solid rgba(255,255,255,0.07);
             border-radius: 6px;
             background: rgba(255,255,255,0.025);
@@ -1521,6 +1525,10 @@
                 background: transparent;
             }
 
+            .site-header {
+                position: relative;
+            }
+
             body {
                 padding: 12px;
             }
@@ -1587,6 +1595,24 @@
             .camo-section {
                 grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
                 gap: 4px;
+            }
+
+            .camo-section[data-current-category='11'] {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-auto-rows: auto;
+            }
+
+            .camo-section[data-current-category='11'] .skin.large,
+            .camo-section[data-current-category='11'] .skin.mastery-preview,
+            .camo-section[data-current-category='11'] .skin.mastery-preview-2,
+            .camo-section[data-current-category='11'] .skin.mastery-preview-3,
+            .camo-section[data-current-category='11'] .skin.mastery-preview-4 {
+                grid-column: span 1;
+                grid-row: span 1;
+                min-width: 0;
+                min-height: 0;
+                height: auto;
+                aspect-ratio: 1 / 1;
             }
 
             .skin,
@@ -1793,8 +1819,260 @@
                 </div>
             </div>
 
+                <div class="weapon-card" data-name="M16">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>M16</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
                 <div class="weapon-card" data-name="AK-117">
                 <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>AK-117</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="AK-47">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>AK-47</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="ASM10">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>ASM10</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="M4">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>M4</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="BK57">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>BK57</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="LK24">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>LK24</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="ICR-1">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>ICR-1</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Man-O-War">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Man-O-War</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="KN-44">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>KN-44</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="HBRa3">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>HBRa3</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="HVK-30">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>HVK-30</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="DR-H">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>DR-H</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Peacekeeper MK2">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Peacekeeper MK2</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="FR .556">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>FR .556</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="AS VAL">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>AS VAL</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="CR-56 AMAX">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>CR-56 AMAX</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="M13">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>M13</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Swordfish">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Swordfish</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Kilo 141">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Kilo 141</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" ariavaluenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Oden">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Oden</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Krig 6">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Krig 6</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="EM2">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>EM2</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Maddox">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Maddox</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="FFAR 1">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>FFAR 1</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Grau 5.56">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Grau 5.56</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Groza">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Groza</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Type 19">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Type 19</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="BP50">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>BP50</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="LAG 53">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>LAG 53</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="XM4">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>XM4</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Vargo-S">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Vargo-S</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="RAM-7">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>RAM-7</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Lachmann-556">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Lachmann-556</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="BAL-27">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>BAL-27</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Cronen Squall">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Cronen Squall</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="ISO Hemlock">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>ISO Hemlock</h2><img src="##" class="weapon-img"></div>     
                 <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                 </div>
@@ -1821,6 +2099,216 @@
                 </div>
             </div>
 
+            <div class="weapon-card" data-name="PDW-57">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>PDW-57</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Razorback">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Razorback</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="MSMC">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>MSMC</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="HG 40">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>HG 40</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Pharo">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Pharo</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="GKS">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>GKS</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Cordite">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Cordite</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="QQ9">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>QQ9</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Fennec">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Fennec</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="AGR 556">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>AGR 556</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="QXR">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>QXR</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="PP19 Bizon">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>PP19 Bizon</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="MX9">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>MX9</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="CBR4">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>CBR4</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="PPSh-41">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>PPSh-41</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="MAC-10">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>MAC-10</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="KSP 45">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>KSP 45</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Switchblade X9">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Switchblade X9</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="LAPA">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>LAPA</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="OTs 9">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>OTs 9</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Striker 45">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Striker 45</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="CX-9">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>CX-9</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="TEC-9">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>TEC-9</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="ISO">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>ISO</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="USS 9">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>USS 9</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="VMP">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>VMP</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Sten">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Sten</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="LC10">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>LC10</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="FSS Hurricane">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>FSS Hurricane</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Static-HV">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Static-HV</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
             
         </div>
     </div>
@@ -1830,6 +2318,83 @@
         <div class="weapons-grid">
             <div class="weapon-card" data-name="HS2126">
                 <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>HS2126</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="BY15">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>BY15</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="HS0405">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>HS0405</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Striker">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Striker</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="KRM-262">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>KRM-262</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Echo">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Echo</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="R9-0">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>R9-0</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="JAK-12">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>JAK-12</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Argus">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Argus</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="VLK Rogue">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>VLK Rogue</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Einhorn Revolving">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Einhorn Revolving</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="MX Guardian">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>MX Guardian</h2><img src="##" class="weapon-img"></div>     
                 <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                 </div>
@@ -1849,6 +2414,97 @@
                 </div>
             </div>
 
+            <div class="weapon-card" data-name="UL736">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>UL736</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="RPD">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>RPD</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="M4LMG">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>M4LMG</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Chopper">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Chopper</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Holger 26">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Holger 26</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Hades">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Hades</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="PKM">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>PKM</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Dingo">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Dingo</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Bruen MK9">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Bruen MK9</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="MG42">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>MG42</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="RAAL MG">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>RAAL MG</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="MG 82">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>MG 82</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="DP27">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>DP27</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
             
         </div>
     </div>
@@ -1858,6 +2514,48 @@
         <div class="weapons-grid">
             <div class="weapon-card" data-name="KILO CON MECANISMO DE CRROJO">
                 <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>KILO CON MECANISMO DE CRROJO</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="SKS">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>SKS</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="SP-R 208">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>SP-R 208</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="MK2">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>MK2</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Type 63">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Type 63</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="M1 Garand">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>M1 Garand</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="SO-14">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>SO-14</h2><img src="##" class="weapon-img"></div>     
                 <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                 </div>
@@ -1877,7 +2575,97 @@
                 </div>
             </div>
 
- 
+            <div class="weapon-card" data-name="Arctic .50">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Arctic .50</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="M21 EBR">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>M21 EBR</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="DL Q33">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>DL Q33</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Locus">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Locus</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="NA-45">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>NA-45</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Outlaw">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Outlaw</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Rytec AMR">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Rytec AMR</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="SVD">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>SVD</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Koshka">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Koshka</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="ZRG 20mm">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>ZRG 20mm</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="HDR">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>HDR</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="LW3-Tundra">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>LW3-Tundra</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Fusil de tres líneas">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Fusil de tres líneas</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -1891,6 +2679,68 @@
                 </div>
             </div>
 
+            <div class="weapon-card" data-name="MW11">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>MW11</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name=".50 GS">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>.50 GS</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Renetti">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Renetti</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Shorty">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Shorty</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Ballesta">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Ballesta</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="L-CAR 9">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>L-CAR 9</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Dobvra">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Dobvra</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Pistola de clavos">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Pistola de clavos</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Pistola ametralladora">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Pistola ametralladora</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
 
         </div>
     </div>
@@ -1905,6 +2755,26 @@
                 </div>
             </div>
 
+            <div class="weapon-card" data-name="SMRS">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>SMRS</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Thumper">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Thumper</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="D13 Sector">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>D13 Sector</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
 
         </div>
     </div>
@@ -1914,6 +2784,104 @@
         <div class="weapons-grid">
             <div class="weapon-card" data-name="CUCHILLO">
                 <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>CUCHILLO</h2><img src="##" class="weapon-img"></div>
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Hacha">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Hacha</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Pala">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Pala</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Bate de béisbol">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Bate de béisbol</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Nunchakus">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Nunchakus</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Katana">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Katana</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Buscapremios">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Buscapremios</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Llave inglesa">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Llave inglesa</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Hoz">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Hoz</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Machete">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Machete</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Palos de kali">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Palos de kali</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Navaja mariposa">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Navaja mariposa</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Sai">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Sai</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Cuchillo balistico">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Cuchillo balistico</h2><img src="##" class="weapon-img"></div>     
+                <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
+                <div class="camo-section">
+                </div>
+            </div>
+
+            <div class="weapon-card" data-name="Lanza">
+                <div class="weapon-header"><h2 class="weapon-name"><span class="highlight"></span>Lanza</h2><img src="##" class="weapon-img"></div>     
                 <div class="progress-container"><span class="pct-text"><span class="pct-count">0/104 camuflajes</span><span><span class="pct-val">0</span>%</span></span><div class="bar-bg" role="progressbar" aria-label="Progreso de camuflajes del arma" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill"></div></div></div>
                 <div class="camo-section">
                 </div>
@@ -2791,6 +3759,16 @@
             const tabRow = document.createElement('div');
             tabRow.className = 'codm-camo-tabs';
             tabRow.setAttribute('role', 'tablist');
+            tabRow.addEventListener('wheel', event => {
+                if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+
+                const maxScrollLeft = tabRow.scrollWidth - tabRow.clientWidth;
+                const nextScrollLeft = Math.max(0, Math.min(maxScrollLeft, tabRow.scrollLeft + event.deltaY));
+                if (nextScrollLeft === tabRow.scrollLeft) return;
+
+                event.preventDefault();
+                tabRow.scrollLeft = nextScrollLeft;
+            }, { passive: false });
 
             const basePanel = card.querySelector('.camo-collapsible');
             const panels = { base: basePanel };

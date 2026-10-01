@@ -8,6 +8,38 @@ alter table public.profiles add column if not exists game_progress jsonb not nul
 alter table public.profiles add column if not exists medal_earned_at jsonb not null default '{}'::jsonb;
 alter table public.profiles add column if not exists previous_rank integer;
 
+create or replace function public.count_profile_camos(progress jsonb)
+returns bigint
+language plpgsql
+immutable
+as $$
+declare
+    entry record;
+    total bigint := 0;
+begin
+    case jsonb_typeof(progress)
+        when 'number' then
+            return greatest(0, trunc((progress #>> '{}')::numeric))::bigint;
+        when 'string' then
+            if (progress #>> '{}') ~ '^[0-9]+$' then
+                return (progress #>> '{}')::bigint;
+            end if;
+            return 0;
+        when 'array' then
+            return jsonb_array_length(progress);
+        when 'object' then
+            for entry in select key, value from jsonb_each(progress) loop
+                if entry.key not in ('__totals', '__mastery') then
+                    total := total + public.count_profile_camos(entry.value);
+                end if;
+            end loop;
+            return total;
+        else
+            return 0;
+    end case;
+end;
+$$;
+
 create view public.leaderboard_stats as
 select
     profiles.user_id,
@@ -21,15 +53,9 @@ select
     profiles.previous_rank,
     profiles.created_at,
     profiles.icon_url,
-    coalesce(
-        (
-            select sum((value)::integer)
-            from jsonb_each_text(profiles.game_progress) as game_entry
-            where game_entry.key not in ('__totals', '__mastery')
-        ),
-        0
-    )::integer as completed
+    coalesce(public.count_profile_camos(profiles.game_progress), 0)::integer as completed
 from public.profiles
 where profiles.is_public or profiles.user_id = auth.uid();
 
+grant execute on function public.count_profile_camos(jsonb) to anon, authenticated;
 grant select on public.leaderboard_stats to anon, authenticated;

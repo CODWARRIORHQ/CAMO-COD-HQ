@@ -184,6 +184,7 @@
             color: var(--gold);
             font-weight: 700;
         }
+        .podium-level { margin-top: 5px; color: var(--accent-2); font-size: 12px; font-weight: 700; }
         .podium-medals { margin-top:6px; color:var(--muted); font-size:12px; }
 
         .toolbar {
@@ -270,6 +271,7 @@
         .name-icon { width: 28px; height: 28px; object-fit: contain; vertical-align: middle; margin-right: 6px; }
         .player { font-weight: 700; }
         .score { color: var(--gold); font-weight: 800; text-align: right; }
+        .score-level { display:block; margin-top:4px; color:var(--accent-2); font-size:12px; font-weight:700; }
         .score-medals { display:block; margin-top:4px; color:var(--muted); font-size:11px; font-weight:600; }
         .player { color: var(--cyan); }
         .message { color: var(--muted); padding: 22px; }
@@ -322,6 +324,7 @@
     <script src="../pwa-register.js" defer></script>
     <link rel="stylesheet" href="css/themes.css">
     <script src="theme.js"></script>
+    <script src="xp-config.js?v=20260930-xp-history"></script>
 </head>
 <body>
     <header class="site-header">
@@ -362,7 +365,7 @@
             <div class="leaderboard-header">
                 <span>Posición</span>
                 <span>Jugador</span>
-                <span>Puntuación</span>
+                <span>Puntuación / nivel</span>
             </div>
             <p class="message" id="leaderboardMessage">Cargando clasificación...</p>
         </section>
@@ -372,13 +375,25 @@
     <script>
         const config = window.CAMO_SUPABASE_CONFIG || {};
         const client = config.url && config.anonKey ? window.supabase.createClient(config.url, config.anonKey) : null;
-        const countProgress = progress => Object.entries(progress || {}).reduce((total, [gameName, value]) => {
-            if (gameName === '__totals' || gameName === '__mastery') return total;
-            return total + (Number(value) || 0);
-        }, 0);
+        const countProgress = progress => {
+            if (Array.isArray(progress)) return progress.length;
+            if (!progress || typeof progress !== 'object') return Math.max(0, Number(progress) || 0);
+            return Object.entries(progress).reduce((total, [gameName, value]) => {
+                if (gameName === '__totals' || gameName === '__mastery') return total;
+                return total + countProgress(value);
+            }, 0);
+        };
         const state = { limit: 10, search: '' };
         const leaderboardGames = ['Modern Warfare 2007', 'Modern Warfare 2', 'Black Ops', 'Modern Warfare 3', 'Black Ops II', 'Ghosts', 'Advanced Warfare', 'Black Ops III', 'Infinite Warfare', 'Modern Warfare Remastered', 'WWII', 'Black Ops IIII', 'Mobile', 'Modern Warfare 2019', 'Modern Warfare 2 Remastered', 'Black Ops Cold War', 'Vanguard', 'Modern Warfare II', 'Modern Warfare III', 'Black Ops 6', 'Black Ops 7', 'Modern Warfare 4', 'Warzone', 'Black Ops III UEM'];
         const camouflageMilestones = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 2750, 3000, 3500, 4000, 4500, 5000, 6000, 7000, 8000, 9000, 10000];
+        const getLevelInfo = completed => {
+            const xpPerCamo = window.getXpPerCamo('default');
+            const levelInfo = window.getLevelInfoFromXp((Number(completed) || 0) * xpPerCamo);
+            return {
+                level: levelInfo.level,
+                prestige: levelInfo.prestige
+            };
+        };
         const getMedalCount = (player, position = null) => {
             const completed = countProgress(player?.game_progress || {}) || Number(player?.completed) || 0;
             const progress = player?.game_progress || {};
@@ -422,6 +437,7 @@
                         <div class="podium-rank">${label}</div>
                         <span class="podium-name">${player.username}</span>
                         <div class="podium-score">${player.completed} camuflajes</div>
+                        <div class="podium-level">Prestigio ${getLevelInfo(player.completed).prestige} · Nivel ${getLevelInfo(player.completed).level}</div>
                         <div class="podium-medals">${getMedalCount(player, index)} medallas conseguidas</div>
                     </div>
                 `;
@@ -489,7 +505,8 @@
                 }
                 const score = document.createElement('span');
                 score.className = 'score';
-                score.innerHTML = `${player.completed} camuflajes<span class="score-medals">${getMedalCount(player, index)} medallas</span>`;
+                const levelInfo = getLevelInfo(player.completed);
+                score.innerHTML = `${player.completed} camuflajes<span class="score-level">Prestigio ${levelInfo.prestige} · Nivel ${levelInfo.level}</span><span class="score-medals">${getMedalCount(player, index)} medallas</span>`;
 
                 row.append(rankCell, playerLink, score);
                 board.appendChild(row);
@@ -499,12 +516,15 @@
         const loadLeaderboard = async () => {
             const message = document.querySelector('#leaderboardMessage');
             if (!client) { message.textContent = 'Supabase no está configurado.'; return; }
-            const [{ error: profileError }, { data: progressRows, error: progressError }] = await Promise.all([
-                client.from('profiles').select('user_id, username').limit(1),
-                client.from('leaderboard_stats').select('user_id, username, completed, accent_color, icon_url, selected_medals, game_progress, previous_rank, created_at')
-            ]);
-            if (profileError || progressError) throw profileError || progressError;
-            const scores = (progressRows || []).sort((a, b) => b.completed - a.completed);
+            const { data: profileRows, error: profileError } = await client
+                .from('profiles')
+                .select('user_id, username, accent_color, icon_url, selected_medals, game_progress, previous_rank, created_at')
+                .eq('is_public', true);
+            if (profileError) throw profileError;
+            const scores = (profileRows || []).map(player => ({
+                ...player,
+                completed: countProgress(player.game_progress)
+            })).sort((a, b) => b.completed - a.completed);
             const firstUsers = scores.filter(player => player.created_at).slice().sort((a, b) => new Date(a.created_at) - new Date(b.created_at)).slice(0, 10);
             const founderIds = new Set(firstUsers.map(player => player.user_id));
             scores.forEach(player => { player._founder = founderIds.has(player.user_id); });

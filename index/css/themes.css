@@ -106,6 +106,14 @@ html, body {
   color: var(--theme-text);
 }
 
+html[data-font="gothic"] * {
+  font-family: "UnifrakturCook", "Old English Text MT", Georgia, serif !important;
+}
+
+html[data-font="oswald"] * {
+  font-family: "Oswald", Arial, sans-serif !important;
+}
+
 /*
  * Shared CAMO COD HQ visual system.  This layer intentionally comes after
  * each page's artwork/template CSS, so legacy game-specific layouts and
@@ -325,6 +333,12 @@ html[data-theme="black"] :is(.site-header, header, .card, .panel, .modal,
 }
 
 html[data-theme="black"] :is(input, select, textarea, button, .btn, .filter-button) {
+  background: #000000 !important;
+}
+
+html[data-theme="black"] :is(.btn.primary, .filter-button.active) {
+  color: var(--theme-accent-2) !important;
+  border-color: var(--theme-accent-2) !important;
   background: #000000 !important;
 }
 

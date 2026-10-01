@@ -25,6 +25,43 @@
         .profile-heading { display:flex; align-items:center; gap:18px; }
         .profile-name-icon { width:54px; height:54px; object-fit:contain; }
         .profile-rank-icon { width:72px; height:72px; object-fit:contain; }
+        .level-card { display:grid; place-items:center; min-height:430px; margin-top:34px; padding:18px; border:0; border-radius:18px; background:radial-gradient(ellipse at center,rgba(24,43,56,.34),rgba(3,7,12,.98) 72%); overflow:hidden; }
+        .level-ring { position:relative; width:min(88vw,420px); aspect-ratio:1; }
+        .level-ring svg { display:block; width:100%; height:100%; overflow:visible; }
+        .level-ring .ring-sector,
+        .level-ring .ring-sector.red { fill:var(--theme-surface-raised,#0b141d); opacity:1; }
+        .level-ring .ring-track { fill:none; stroke:rgba(196,215,225,.34); stroke-width:4; }
+        .level-ring .ring-segments { fill:none; stroke:rgba(112,135,148,.42); stroke-width:12; stroke-linecap:butt; stroke-dasharray:1.15 1.35; transform:rotate(-90deg); transform-origin:50% 50%; }
+        .level-ring .ring-progress { fill:none; stroke:var(--theme-accent,var(--accent)); stroke-width:12; stroke-linecap:butt; filter:drop-shadow(0 0 7px var(--theme-accent,var(--accent))); transform:rotate(-90deg); transform-origin:50% 50%; stroke-dasharray:0 100; transition:stroke-dasharray .7s ease,stroke .25s ease; }
+        .level-ring .ring-fine-outline { fill:none; stroke:rgba(214,231,238,.58); stroke-width:1.1; }
+        .level-ring .ring-inner { fill:var(--theme-surface-raised,#0b141d); stroke:rgba(210,229,238,.36); stroke-width:2; }
+        .level-ring .ring-inner-line { fill:none; stroke:rgba(210,229,238,.2); stroke-width:1.5; }
+        .level-ring .ring-ticks { fill:none; stroke:rgba(197,217,225,.52); stroke-width:2; }
+        .level-ring #ringTickMarks { transform:none; }
+        .level-ring .ring-tick { stroke:rgba(197,217,225,.42); stroke-width:1.5; stroke-linecap:butt; }
+        .level-ring .ring-tick.major { stroke:rgba(220,235,242,.62); stroke-width:2; }
+        .level-ring .ring-arrow { fill:var(--theme-text,#f4f8fa); stroke:var(--theme-accent,var(--accent)); stroke-width:1.6; stroke-linejoin:round; paint-order:stroke fill; filter:drop-shadow(0 0 4px var(--theme-accent,var(--accent))) drop-shadow(0 0 2px rgba(255,255,255,.8)); transform-origin:200px 200px; transition:transform .7s ease; }
+        .level-content { position:absolute; inset:0; display:grid; align-content:center; justify-items:center; gap:4px; padding-top:2px; text-align:center; }
+        .level-prestige { color:#e9e4c8; font-size:10px; font-weight:500; letter-spacing:.06em; text-transform:uppercase; }
+        .level-emblem { width:86px; height:70px; margin:8px 0 1px; object-fit:contain; filter:drop-shadow(0 0 8px rgba(235,194,69,.55)); }
+        .level-label { margin-top:5px; color:#fff; font-size:11px; letter-spacing:.08em; }
+        .level-number { color:#fff; font-size:clamp(58px,11vw,86px); font-weight:800; line-height:.86; letter-spacing:-.05em; text-shadow:0 3px 16px rgba(0,0,0,.8); }
+        .level-xp { margin-top:8px; color:var(--muted); font-size:11px; }
+        .xp-guide { display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,.85fr); gap:24px; margin-top:24px; padding:22px; border:1px solid rgba(6,182,212,.24); border-radius:12px; background:linear-gradient(130deg,rgba(6,182,212,.07),rgba(16,23,34,.9) 48%); }
+        .xp-guide[hidden] { display:none; }
+        .xp-guide h2 { margin:0 0 8px; font-size:18px; }
+        .xp-guide-intro { margin:0 0 16px; color:var(--muted); font-size:13px; line-height:1.55; }
+        .xp-earning-list { display:grid; gap:10px; margin:0; padding:0; list-style:none; }
+        .xp-earning-list li { display:flex; justify-content:space-between; align-items:flex-start; gap:14px; padding:11px 12px; border:1px solid var(--border); border-radius:8px; background:rgba(5,6,10,.36); font-size:13px; }
+        .xp-earning-list strong { color:var(--cyan); text-align:right; white-space:nowrap; }
+        .xp-history { min-width:0; padding-left:22px; border-left:1px solid var(--border); }
+        .xp-history h3 { margin:0 0 12px; font-size:14px; }
+        .xp-history-list { display:grid; gap:8px; margin:0; padding:0; list-style:none; }
+        .xp-history-item { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:4px 12px; padding:10px 12px; border-radius:8px; background:rgba(5,6,10,.36); }
+        .xp-history-game { overflow:hidden; font-size:12px; font-weight:700; text-overflow:ellipsis; white-space:nowrap; }
+        .xp-history-amount { color:var(--gold); font-size:13px; font-weight:800; white-space:nowrap; }
+        .xp-history-date,.xp-history-detail { color:var(--muted); font-size:10px; }
+        .xp-history-empty { margin:0; color:var(--muted); font-size:12px; line-height:1.5; }
         .rank-stat { display:flex; align-items:center; gap:12px; }
         .rank-stat-icon { width:42px; height:42px; object-fit:contain; }
         .summary { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:40px; }
@@ -39,7 +76,9 @@
         .game.favorite { border-color:var(--cyan); box-shadow:inset 3px 0 0 var(--cyan); }
         .game.best { border-color:var(--gold); }
         .game-icon { display:inline-grid; place-items:center; box-sizing:border-box; width:34px; height:34px; margin-right:9px; border:1px solid rgba(255,255,255,.16); border-radius:7px; color:var(--cyan); font-size:clamp(8px, 2.5vw, 10px); font-weight:800; line-height:1; white-space:nowrap; overflow:hidden; vertical-align:middle; }
+        .game-icon-wide { width:46px; height:30px; font-size:9px; letter-spacing:-.04em; }
         .game-link { display:inline-grid; place-items:center; box-sizing:border-box; width:34px; height:34px; margin-right:9px; color:inherit; vertical-align:middle; }
+        .game-link-wide { width:46px; height:34px; }
         .game-link .game-icon { margin-right:0; }
         .game-link:hover .game-icon { border-color:var(--cyan); background:rgba(6,182,212,.12); transform:translateY(-1px); }
         .game-status { display:block; margin-top:7px; color:var(--muted); font-size:11px; }
@@ -50,6 +89,20 @@
         .game-subcategory-header span { display:block; margin-top:6px; color:var(--muted); font-size:12px; }
         .message { color:var(--muted); }
         .action-row { display:flex; justify-content:flex-start; margin-top:28px; }
+        .profile-features { display:grid; grid-template-columns:1fr; gap:18px; margin-top:28px; }
+        .feature-panel { padding:20px; border:1px solid var(--border); border-radius:12px; background:rgba(16,23,34,.85); }
+        .feature-panel h2 { margin:0 0 8px; font-size:18px; }
+        .feature-panel p { margin:0; color:var(--muted); font-size:13px; }
+        .xp-token-panel { margin-top:28px; }
+        .xp-token-status { margin:12px 0 16px !important; color:var(--cyan) !important; font-weight:700; }
+        .xp-token-list { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-top:16px; }
+        .xp-token { display:grid; align-content:start; gap:10px; padding:16px; border:1px solid var(--border); border-radius:9px; background:rgba(5,6,10,.42); }
+        .xp-token h3 { margin:0; color:var(--gold); }
+        .xp-token label { display:grid; gap:6px; color:var(--muted); font-size:12px; }
+        .xp-token input { width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; background:#080d14; color:#fff; }
+        .xp-token button:disabled { opacity:.5; cursor:not-allowed; }
+        .feature-value { display:block; margin:12px 0 4px; color:var(--gold); font-size:34px; font-weight:800; }
+        @media (max-width:600px) { .profile-features { grid-template-columns:1fr; } }
         .btn.primary { background:linear-gradient(135deg,var(--accent),var(--cyan)); border:none; color:#fff; font-weight:700; }
         .compare-panel { margin-top:28px; padding:22px; border:1px solid var(--border); border-radius:12px; background:rgba(16,23,34,.85); }
         .compare-header { display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap; }
@@ -99,6 +152,20 @@
             .game-progress { display:block; width:100%; height:8px; margin-top:12px; overflow:hidden; border:1px solid rgba(255,255,255,.08); border-radius:999px; background:#05060a; }
             .game-progress span { display:block; width:0; max-width:100%; height:100%; border-radius:inherit; background:linear-gradient(90deg,var(--cyan),#38d6c5); box-shadow:0 0 10px rgba(6,182,212,.35); transition:width .35s ease; }
             .medal-date { color:var(--muted); font-size:11px; }
+        .streak-modal[hidden] { display:none !important; }
+        .streak-modal { position:fixed; inset:0; z-index:1000; display:grid; place-items:center; padding:20px; background:rgba(0,0,0,.78); backdrop-filter:blur(5px); }
+        .streak-dialog { position:relative; width:min(100%,560px); overflow:hidden; border:1px solid var(--theme-accent,var(--cyan)); border-radius:20px; background:linear-gradient(135deg,#091c2d,#101020 58%,#251038); box-shadow:0 0 40px rgba(6,182,212,.22),0 24px 80px rgba(0,0,0,.65); text-align:center; }
+        .streak-dialog::before { content:""; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 15% 20%,rgba(255,204,51,.2),transparent 28%),radial-gradient(circle at 90% 15%,rgba(6,182,212,.2),transparent 30%); }
+        .streak-dialog-content { position:relative; padding:38px 28px 30px; }
+        .streak-close { position:absolute; z-index:2; top:12px; right:12px; width:36px; height:36px; padding:0; border:1px solid rgba(255,255,255,.25); border-radius:9px; background:rgba(0,0,0,.35); color:#fff; font-size:24px; line-height:1; cursor:pointer; }
+        .streak-close:hover { border-color:var(--theme-accent,var(--cyan)); color:var(--theme-accent,var(--cyan)); }
+        .streak-icon { display:grid; place-items:center; width:86px; height:86px; margin:0 auto 14px; border:2px solid var(--gold); border-radius:50%; background:rgba(255,204,51,.14); color:var(--gold); font-size:48px; box-shadow:0 0 24px rgba(255,204,51,.28); }
+        .streak-dialog h2 { position:relative; margin:0; color:#fff; font-size:clamp(26px,6vw,42px); letter-spacing:.04em; text-transform:uppercase; }
+        .streak-dialog p { position:relative; margin:10px 0 0; color:var(--theme-muted,var(--muted)); }
+        .streak-count { position:relative; display:block; margin:18px 0 4px; color:var(--gold); font-size:clamp(64px,14vw,104px); font-weight:900; line-height:.9; text-shadow:0 4px 18px rgba(255,204,51,.3); }
+        .streak-count-label { position:relative; color:#fff; font-size:15px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
+        .streak-continue { position:relative; margin-top:24px; min-width:150px; }
+        @media (max-width:800px) { .xp-token-list { grid-template-columns:1fr; } .xp-guide { grid-template-columns:1fr; } .xp-history { padding:18px 0 0; border-top:1px solid var(--border); border-left:0; } }
         @media (max-width:600px) { body { padding:12px; } main { padding:44px 0; } .profile-heading { display:grid; grid-template-columns:auto minmax(0,1fr); align-items:center; gap:10px; } .profile-heading h1 { min-width:0; font-size:clamp(32px,10vw,48px); overflow-wrap:anywhere; } #profileBadges { grid-column:1 / -1; margin:4px 0 0; gap:5px; } #profileBadges .achievement-badge { max-width:100%; padding:4px 7px; font-size:11px; } .summary { grid-template-columns:1fr; } .game-grid { grid-template-columns:1fr; padding:10px; } .game { min-height:100px; } .compare-grid { grid-template-columns:1fr; } .medal-options { grid-template-columns:1fr; max-height:260px; } .medal-options .stat-label { grid-column:auto; } }
     </style>
     <link rel="manifest" href="../manifest.webmanifest">
@@ -107,24 +174,45 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <script src="../pwa-register.js" defer></script>
     <link rel="stylesheet" href="css/themes.css">
-    <script src="theme.js"></script>
+    <script src="theme.js?v=20260924-stable"></script>
+    <script src="xp-config.js?v=20260930-xp-history"></script>
 </head>
 <body>
     <header><nav class="nav container"><a class="brand" href="Camos UEM.html"><span class="logo"><img src="../MW 2019/logo.png" alt="CAMO COD HQ"></span><span class="brand-text"><span class="site-name">CAMO COD HQ</span><small class="site-tag">Tu hub de camuflajes</small></span></a><a class="btn" href="leaderboard.html">Leaderboard</a></nav></header>
-    <main class="container"><p class="eyebrow">Perfil de jugador</p><div class="profile-heading"><img class="profile-name-icon" id="profileNameIcon" alt="" hidden><img class="profile-rank-icon" id="profileRankIcon" alt="" hidden><h1 id="profileName">Cargando...</h1></div><section class="summary"><div class="stat"><span class="stat-label">Posición global</span><div class="rank-stat"><img class="rank-stat-icon" id="profileRankStatIcon" alt="" hidden><strong class="stat-value" id="profileRank">-</strong></div></div><div class="stat"><span class="stat-label">Camuflajes completados</span><strong class="stat-value" id="profileCompleted">0 / 668</strong></div><div class="stat"><span class="stat-label">Progreso total</span><strong class="stat-value" id="profilePercent">0%</strong></div></section><div class="action-row"><button class="btn primary" id="shareProfileBtn" type="button">Compartir perfil</button></div><section class="compare-panel" id="comparePanel" aria-label="Comparar con otro jugador"><div class="compare-header"><h2>Comparar con otro jugador</h2><label class="compare-select-wrap" for="comparePlayerSearch"><span>Jugador</span><input id="comparePlayerSearch" type="text" list="comparePlayerOptions" placeholder="Buscar jugador..." autocomplete="off"><datalist id="comparePlayerOptions"></datalist></label></div><div class="compare-grid"><article class="compare-card"><h3>Tu perfil</h3><p class="compare-name" id="compareCurrentName">Cargando...</p><ul class="compare-list"><li><span>Camuflajes</span><strong id="compareCurrentScore">0</strong></li><li><span>Posición</span><strong id="compareCurrentRank">-</strong></li><li><span>Progreso</span><strong id="compareCurrentPercent">0%</strong></li></ul></article><article class="compare-card"><h3>Jugador rival</h3><p class="compare-name" id="compareOpponentName">Sin selección</p><ul class="compare-list"><li><span>Camuflajes</span><strong id="compareOpponentScore">0</strong></li><li><span>Posición</span><strong id="compareOpponentRank">-</strong></li><li><span>Progreso</span><strong id="compareOpponentPercent">0%</strong></li></ul></article></div><p class="message" id="compareMessage" role="status">Selecciona otro jugador para comparar su progreso.</p></section><section class="profile-editor" id="profileEditor" aria-label="Personalizar perfil"><h2>Personalizar perfil</h2><label for="accentColor">Color del nombre <input id="accentColor" type="color" value="#06b6d4" title="Elegir cualquier color"></label><div class="customization-row"><label for="profileIcon">Icono del nombre</label><select id="profileIcon"><option value="">Sin icono</option><option value="rank icon/leaderboards-rank-1.png">Icono rango 1</option><option value="rank icon/leaderboards-rank-2.png">Icono rango 2</option><option value="rank icon/leaderboards-rank-3.png">Icono rango 3</option></select></div><div class="customization-row"><label for="callingCard">Calling card</label><select id="callingCard" disabled><option>Próximamente</option></select></div><button class="btn" id="saveProfileStyle" type="button">Guardar personalización</button><p class="message" id="profileStyleMessage" role="status"></p></section><section class="games" id="gameStats" aria-label="Estadísticas por juego"><p class="message">Cargando estadísticas...</p></section></main>
+    <main class="container"><p class="eyebrow">Perfil de jugador</p><div class="profile-heading"><img class="profile-name-icon" id="profileNameIcon" alt="" hidden><img class="profile-rank-icon" id="profileRankIcon" alt="" hidden><h1 id="profileName">Cargando...</h1></div><section class="level-card" aria-label="Nivel del jugador"><div class="level-ring" id="levelRing"><svg viewBox="0 0 400 400" role="img" aria-label="Progreso de nivel"><path class="ring-sector" d="M200 200L200 57A143 143 0 0 1 334 200Z"></path><path class="ring-sector red" d="M200 200L334 200A143 143 0 0 1 200 343Z"></path><path class="ring-sector red" d="M200 200L200 343A143 143 0 0 1 66 200Z"></path><g id="ringTickMarks" aria-hidden="true"></g><circle class="ring-track" cx="200" cy="200" r="160"></circle><circle class="ring-segments" cx="200" cy="200" r="160"></circle>        <circle class="ring-progress" id="levelProgressRing" pathLength="100" cx="200" cy="200" r="160"></circle><circle class="ring-fine-outline" cx="200" cy="200" r="181"></circle><circle class="ring-inner" cx="200" cy="200" r="143"></circle><circle class="ring-inner-line" cx="200" cy="200" r="125"></circle><path class="ring-arrow" id="levelProgressArrow" d="M200 2 L191 -12 L200 -8 L209 -12 Z"></path></svg><div class="level-content"><span class="level-prestige" id="levelPrestige">Prestigio 0</span><img class="level-emblem" src="rank icon/leaderboards-rank-1.png" alt="Insignia de nivel"><span class="level-label">NIVEL</span><strong class="level-number" id="levelNumber">1</strong><span class="level-xp" id="levelXp">0 / 5.000 XP</span></div></div></section><section class="xp-guide" id="xpGuide" aria-label="Cómo ganar experiencia" hidden><div><h2>⚡ Cómo ganar XP</h2><p class="xp-guide-intro" id="xpGuideIntro"></p><ul class="xp-earning-list"><li><span>Completar un camuflaje nuevo</span><strong id="xpPerCamoValue"></strong></li><li><span>Usar una ficha de XP activa</span><strong>Multiplica la XP nueva</strong></li><li><span>Completar hitos de armas</span><strong>Fichas aleatorias</strong></li></ul><p class="xp-guide-intro" style="margin:12px 0 0">Las fichas de XP duran 15 min (x2), 30 min (x5) o 1 hora (x10). Los hitos conceden fichas; no suman XP directamente.</p></div><div class="xp-history"><h3>Historial de XP reciente</h3><ol class="xp-history-list" id="xpHistoryList" aria-live="polite"><li class="xp-history-empty">Cargando historial...</li></ol><p class="xp-history-empty" id="xpHistoryNote"></p></div></section><section class="summary"><div class="stat"><span class="stat-label">Posición global</span><div class="rank-stat"><img class="rank-stat-icon" id="profileRankStatIcon" alt="" hidden><strong class="stat-value" id="profileRank">-</strong></div></div><div class="stat"><span class="stat-label">Camuflajes completados</span><strong class="stat-value" id="profileCompleted">0 / 668</strong></div><div class="stat"><span class="stat-label">Progreso total</span><strong class="stat-value" id="profilePercent">0%</strong></div></section><div class="action-row"><button class="btn primary" id="shareProfileBtn" type="button">Compartir perfil</button></div><section class="profile-features" aria-label="Actividad y armas favoritas"><article class="feature-panel"><h2>🔥 Racha / progreso diario</h2><span class="feature-value" id="profileStreak">0 días</span><p id="profileStreakMessage">Completa progreso en días consecutivos para mantener tu racha.</p></article></section><section class="compare-panel" id="comparePanel" aria-label="Comparar con otro jugador"><div class="compare-header"><h2>Comparar con otro jugador</h2><label class="compare-select-wrap" for="comparePlayerSearch"><span>Jugador</span><input id="comparePlayerSearch" type="text" list="comparePlayerOptions" placeholder="Buscar jugador..." autocomplete="off"><datalist id="comparePlayerOptions"></datalist></label></div><div class="compare-grid"><article class="compare-card"><h3>Tu perfil</h3><p class="compare-name" id="compareCurrentName">Cargando...</p><ul class="compare-list"><li><span>Camuflajes</span><strong id="compareCurrentScore">0</strong></li><li><span>Posición</span><strong id="compareCurrentRank">-</strong></li><li><span>Progreso</span><strong id="compareCurrentPercent">0%</strong></li></ul></article><article class="compare-card"><h3>Jugador rival</h3><p class="compare-name" id="compareOpponentName">Sin selección</p><ul class="compare-list"><li><span>Camuflajes</span><strong id="compareOpponentScore">0</strong></li><li><span>Posición</span><strong id="compareOpponentRank">-</strong></li><li><span>Progreso</span><strong id="compareOpponentPercent">0%</strong></li></ul></div><p class="message" id="compareMessage" role="status">Selecciona otro jugador para comparar su progreso.</p></section>    <section class="profile-editor" id="profileEditor" aria-label="Personalizar perfil"><h2>Personalizar perfil</h2><label for="accentColor">Color del nombre <input id="accentColor" type="color" value="#06b6d4" title="Elegir cualquier color"></label><div class="customization-row"><label for="profileIcon">Icono del nombre</label><select id="profileIcon"><option value="">Sin icono</option><option value="rank icon/leaderboards-rank-1.png">Icono rango 1</option><option value="rank icon/leaderboards-rank-2.png">Icono rango 2</option><option value="rank icon/leaderboards-rank-3.png">Icono rango 3</option></select></div><div class="customization-row"><label for="callingCard">Calling card</label><select id="callingCard" disabled><option>Próximamente</option></select></div><button class="btn" id="saveProfileStyle" type="button">Guardar personalización</button><p class="message" id="profileStyleMessage" role="status"></p></section><section class="games" id="gameStats" aria-label="Estadísticas por juego"><p class="message">Cargando estadísticas...</p></section></main>
+    <div class="streak-modal" id="streakModal" role="dialog" aria-modal="true" aria-labelledby="streakModalTitle" hidden>
+        <div class="streak-dialog">
+            <button class="streak-close" id="streakModalClose" type="button" aria-label="Cerrar" onclick="window.CamoStreak && window.CamoStreak.close()">×</button>
+            <div class="streak-dialog-content">
+                <span class="streak-icon" aria-hidden="true">★</span>
+                <h2 id="streakModalTitle">Racha diaria</h2>
+                <p>¡Has vuelto a CAMO COD HQ!</p>
+                <strong class="streak-count" id="streakModalCount">0</strong>
+                <span class="streak-count-label" id="streakModalLabel">días consecutivos</span>
+                <p>Entra cada día para mantener tu racha.</p>
+                <button class="btn primary streak-continue" id="streakModalContinue" type="button" onclick="window.CamoStreak && window.CamoStreak.close()">Continuar</button>
+            </div>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js"></script>
     <script>
         const config = window.CAMO_SUPABASE_CONFIG || {};
         const client = config.url && config.anonKey ? window.supabase.createClient(config.url, config.anonKey) : null;
         const userId = new URLSearchParams(location.search).get('user');
+        window.CAMO_XP_USER_ID = userId;
         const availableGameTotals = {
             'Modern Warfare 2019': 3328,
             'Mobile': 5988,
             'Black Ops III UEM': 504
         };
-        const sumGameProgress = (progress = {}) => Object.entries(progress || {})
-            .filter(([gameName]) => gameName !== '__totals' && gameName !== '__mastery')
-            .reduce((sum, [, value]) => sum + (Number(value) || 0), 0);
+        const sumGameProgress = (progress = {}) => {
+            if (Array.isArray(progress)) return progress.length;
+            if (!progress || typeof progress !== 'object') return Math.max(0, Number(progress) || 0);
+            return Object.entries(progress).reduce((sum, [gameName, value]) => {
+                if (gameName === '__totals' || gameName === '__mastery') return sum;
+                return sum + sumGameProgress(value);
+            }, 0);
+        };
         const sumAvailableGameTotals = (gameTotals = {}) => {
             const mergedTotals = { ...availableGameTotals, ...(gameTotals || {}) };
             return Object.entries(mergedTotals)
@@ -134,6 +222,27 @@
         let total = sumAvailableGameTotals();
         document.querySelector('#profileCompleted').textContent = `0 / ${total}`;
         const validColor = color => /^#[0-9a-f]{6}$/i.test(color);
+        const createLevelTickMarks = () => {
+            const group = document.querySelector('#ringTickMarks');
+            if (!group || group.childElementCount) return;
+            const namespace = 'http://www.w3.org/2000/svg';
+            for (let index = 0; index < 120; index += 1) {
+                const angle = index * 3 * Math.PI / 180;
+                const isMajor = index % 5 === 0;
+                const innerRadius = isMajor ? 184 : 185;
+                const outerRadius = isMajor ? 193 : 189;
+                const line = document.createElementNS(namespace, 'line');
+                line.setAttribute('x1', String(200 + Math.sin(angle) * innerRadius));
+                line.setAttribute('y1', String(200 - Math.cos(angle) * innerRadius));
+                line.setAttribute('x2', String(200 + Math.sin(angle) * outerRadius));
+                line.setAttribute('y2', String(200 - Math.cos(angle) * outerRadius));
+                line.setAttribute('class', isMajor ? 'ring-tick major' : 'ring-tick');
+                line.style.transform = 'none';
+                line.style.animation = 'none';
+                group.appendChild(line);
+            }
+        };
+        createLevelTickMarks();
         const applyColor = color => {
             if (!validColor(color)) return;
             document.documentElement.style.setProperty('--accent', color);
@@ -211,6 +320,7 @@
                 client.from('leaderboard_stats').select('username,completed,is_public,favorite_game,selected_medals,created_at,accent_color,icon_url,game_progress,medal_earned_at,previous_rank').eq('user_id', userId).maybeSingle(),
                 client.from('leaderboard_stats').select('user_id,username,completed,created_at')
             ]);
+            document.querySelector('#xpGuide').hidden = false;
             const currentPlayer = profile ? { ...profile, user_id: userId, rankText: '-' } : null;
             const sortedPlayers = ((allProfiles || []).slice().sort((a, b) => b.completed - a.completed));
             if (currentPlayer) {
@@ -218,6 +328,10 @@
                 currentPlayer.rankText = currentRank > 0 ? `#${currentRank}` : '-';
             }
             const completed = sumGameProgress(profile?.game_progress || {});
+            const testXpParam = new URLSearchParams(window.location.search).get('testXp');
+            const testXp = window.location.hostname === 'localhost' && testXpParam !== null
+                ? Math.max(0, Number(testXpParam) || 0)
+                : null;
             const storedGameTotals = profile?.game_progress?.__totals || {};
             const getGameTotal = gameName => Number(storedGameTotals[gameName]) || availableGameTotals[gameName] || 668;
             const hasGameCatalog = gameName => Number(storedGameTotals[gameName]) > 0 || Number(availableGameTotals[gameName]) > 0;
@@ -278,7 +392,7 @@
             if (badgeData.length) {
                 const badgesElement = document.createElement('span');
                 badgesElement.id = 'profileBadges';
-                badgeData.forEach(([, name]) => { const badgeElement = document.createElement('span'); badgeElement.className = 'achievement-badge'; badgeElement.textContent = `★ ${name}`; badgesElement.appendChild(badgeElement); });
+                badgeData.forEach(([, name]) => { const badgeElement = document.createElement('span'); badgeElement.className = 'achievement-badge'; badgeElement.textContent = `\u2605 ${name}`; badgesElement.appendChild(badgeElement); });
                 profileHeading.appendChild(badgesElement);
             }
             let profileMeta = document.querySelector('#profileMeta');
@@ -374,6 +488,66 @@
             }
             document.querySelector('#profileCompleted').textContent = `${completed} / ${total}`;
             document.querySelector('#profilePercent').textContent = `${Math.min(Math.round(completed / total * 100), 100)}%`;
+            const xpPerCamo = window.getXpPerCamo('default');
+            const levelXpTotal = testXp ?? (completed * xpPerCamo + (isOwner ? window.CAMO_XP_TOKENS.getBonusXp(userId) : 0));
+            document.querySelector('#xpPerCamoValue').textContent = `+${xpPerCamo} XP base`;
+            document.querySelector('#xpGuideIntro').textContent = `La XP de nivel se obtiene al completar camuflajes nuevos. El historial empieza a registrarse desde esta actualización; no incluye ganancias anteriores.`;
+            const xpHistoryList = document.querySelector('#xpHistoryList');
+            const xpHistoryNote = document.querySelector('#xpHistoryNote');
+            if (isOwner) {
+                const history = window.CAMO_XP_TOKENS.getXpHistory(userId);
+                xpHistoryList.replaceChildren();
+                xpHistoryNote.textContent = 'Visible solo para ti en este navegador. Se guardan las 10 ganancias más recientes.';
+                if (!history.length) {
+                    const emptyItem = document.createElement('li');
+                    emptyItem.className = 'xp-history-empty';
+                    emptyItem.textContent = 'Aún no hay ganancias registradas. Completa un camuflaje nuevo para empezar.';
+                    xpHistoryList.appendChild(emptyItem);
+                } else {
+                    history.forEach(entry => {
+                        const item = document.createElement('li');
+                        item.className = 'xp-history-item';
+                        const game = document.createElement('span');
+                        game.className = 'xp-history-game';
+                        game.textContent = entry.game;
+                        const amount = document.createElement('strong');
+                        amount.className = 'xp-history-amount';
+                        amount.textContent = `+${Number(entry.xp).toLocaleString('es-ES')} XP`;
+                        const date = document.createElement('span');
+                        date.className = 'xp-history-date';
+                        const parsedDate = new Date(entry.date);
+                        date.textContent = Number.isNaN(parsedDate.getTime())
+                            ? 'Fecha no disponible'
+                            : parsedDate.toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' });
+                        const detail = document.createElement('span');
+                        detail.className = 'xp-history-detail';
+                        detail.textContent = `Base ${Number(entry.baseXp || entry.xp).toLocaleString('es-ES')} XP · Multiplicador x${Number(entry.multiplier) || 1}`;
+                        item.append(game, amount, date, detail);
+                        xpHistoryList.appendChild(item);
+                    });
+                }
+            } else {
+                xpHistoryList.replaceChildren();
+                const privateItem = document.createElement('li');
+                privateItem.className = 'xp-history-empty';
+                privateItem.textContent = 'El historial detallado solo está disponible para el propietario del perfil.';
+                xpHistoryList.appendChild(privateItem);
+                xpHistoryNote.textContent = 'Este perfil puede mostrar XP acumulada, pero no el historial privado del jugador.';
+            }
+            const levelInfo = window.getLevelInfoFromXp(levelXpTotal);
+            const prestige = levelInfo.prestige;
+            const level = levelInfo.level;
+            const currentLevelXp = levelInfo.currentLevelXp;
+            const levelProgress = Math.min(Math.round(currentLevelXp / levelInfo.xpForNextLevel * 100), 100);
+            document.querySelector('#levelNumber').textContent = level;
+            document.querySelector('#levelPrestige').textContent = `Prestigio ${prestige}`;
+            document.querySelector('#levelXp').textContent = `${currentLevelXp.toLocaleString('es-ES')} / ${levelInfo.xpForNextLevel.toLocaleString('es-ES')} XP`;
+            const progressRing = document.querySelector('#levelProgressRing');
+            const progressAngle = levelProgress * 3.6;
+            progressRing.style.strokeDasharray = `${levelProgress} ${100 - levelProgress}`;
+            const progressArrow = document.querySelector('#levelProgressArrow');
+            progressArrow.style.transform = `rotate(${progressAngle}deg)`;
+            progressArrow.style.transformOrigin = '200px 200px';
             const ranking = getRankNumber(sortedPlayers, userId);
             document.querySelector('#profileRank').textContent = ranking > 0 ? `#${ranking}` : '-';
             const rankIcon = document.querySelector('#profileRankIcon');
@@ -413,6 +587,79 @@
             });
             document.querySelector('#shareProfileBtn').addEventListener('click', shareProfile);
             const actionRow = document.querySelector('.action-row');
+            const xpTokenPanel = document.createElement('section');
+            xpTokenPanel.className = 'feature-panel xp-token-panel';
+            xpTokenPanel.id = 'xpTokenPanel';
+            xpTokenPanel.setAttribute('aria-label', 'Fichas temporales de XP');
+            xpTokenPanel.hidden = !isOwner;
+            xpTokenPanel.innerHTML = '<h2>⚡ Fichas temporales de XP</h2><p>Activa una ficha para multiplicar la XP nueva que ganes en cualquier juego. Las fichas usadas y el progreso anterior no se modifican.</p><p class="xp-token-status" id="xpTokenStatus" role="status"></p><div class="xp-token-list" id="xpTokenList"></div><p class="message" id="xpTokenMessage" role="status"></p>';
+            actionRow.after(xpTokenPanel);
+            const xpTokenTypes = window.CAMO_XP_TOKENS.types;
+            const xpTokenStatus = xpTokenPanel.querySelector('#xpTokenStatus');
+            const xpTokenList = xpTokenPanel.querySelector('#xpTokenList');
+            const xpTokenMessage = xpTokenPanel.querySelector('#xpTokenMessage');
+            let xpTokenTimerActive = false;
+            const formatRemaining = milliseconds => {
+                const seconds = Math.max(0, Math.floor(milliseconds / 1000));
+                const hours = Math.floor(seconds / 3600);
+                const minutes = Math.floor((seconds % 3600) / 60);
+                return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
+            };
+            const renderXpTokenPanel = () => {
+                if (!isOwner) return;
+                const state = window.CAMO_XP_TOKENS.getState(userId);
+                const activeToken = state.active;
+                const formatDuration = minutes => minutes < 60
+                    ? `${minutes} minutos`
+                    : `${minutes / 60} hora${minutes === 60 ? '' : 's'}`;
+                xpTokenStatus.innerHTML = activeToken
+                    ? `Ficha ${xpTokenTypes[activeToken.type].label} activa · <span id="xpTokenRemaining"></span><button class="btn" type="button" data-deactivate-token>Desactivar</button>`
+                    : 'No hay ninguna ficha activa.';
+                xpTokenTimerActive = Boolean(activeToken);
+                xpTokenList.innerHTML = Object.entries(xpTokenTypes).map(([type, token]) => `
+                    <article class="xp-token">
+                        <h3>Ficha ${token.label}</h3>
+                        <span>En inventario: <strong>${state.inventory[type]}</strong></span>
+                        <span>Duración: <strong>${formatDuration(token.durationMinutes)}</strong></span>
+                        <button class="btn" type="button" data-activate-token="${type}" ${activeToken || state.inventory[type] < 1 ? 'disabled' : ''}>Activar ficha</button>
+                    </article>`).join('');
+                if (activeToken) {
+                    xpTokenStatus.querySelector('#xpTokenRemaining').textContent = formatRemaining(activeToken.expiresAt - Date.now());
+                }
+            };
+            const updateXpTokenTimer = () => {
+                const activeToken = window.CAMO_XP_TOKENS.getActiveToken(userId);
+                if (!activeToken && xpTokenTimerActive) {
+                    renderXpTokenPanel();
+                    return;
+                }
+                if (!activeToken) return;
+                const remaining = xpTokenStatus.querySelector('#xpTokenRemaining');
+                if (remaining) remaining.textContent = formatRemaining(activeToken.expiresAt - Date.now());
+            };
+            xpTokenPanel.addEventListener('click', event => {
+                const activateButton = event.target.closest('[data-activate-token]');
+                const deactivateButton = event.target.closest('[data-deactivate-token]');
+                if (activateButton) {
+                    const result = window.CAMO_XP_TOKENS.activate(activateButton.dataset.activateToken, userId);
+                    xpTokenMessage.textContent = result.ok
+                        ? 'Ficha activada. Su duración ya está en marcha.'
+                        : result.reason === 'active'
+                        ? 'Desactiva la ficha actual antes de activar otra.'
+                        : result.reason === 'empty'
+                        ? 'No tienes más fichas de ese tipo.'
+                        : 'No se pudo activar la ficha.';
+                    renderXpTokenPanel();
+                } else if (deactivateButton) {
+                    const result = window.CAMO_XP_TOKENS.deactivate(userId);
+                    xpTokenMessage.textContent = result.ok
+                        ? 'Ficha desactivada. La ficha consumida no se devuelve al inventario.'
+                        : 'No se pudo desactivar la ficha.';
+                    renderXpTokenPanel();
+                }
+            });
+            renderXpTokenPanel();
+            window.setInterval(updateXpTokenTimer, 1000);
             if (!actionRow.querySelector('[data-medals-link]')) actionRow.insertAdjacentHTML('beforeend', `<a class="btn" data-medals-link href="medals.html?user=${encodeURIComponent(userId)}">Ver todas las medallas</a>`);
             const favoriteGame = profile?.favorite_game || 'Modern Warfare 2019';
             const gameCatalog = profile?.game_progress || {};
@@ -443,10 +690,100 @@
                 'Modern Warfare 4': '../MW 4/MW4.html',
                 'Warzone': '../WARZONE/WARZONE.html'
             };
+            const activeDaysKey = 'camo-cod-hq-active-days';
+            const formatDayKey = date => {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            };
+            const todayKey = formatDayKey(new Date());
+            const activeDays = (() => {
+                try {
+                    const days = JSON.parse(localStorage.getItem(activeDaysKey) || '[]');
+                    const normalized = Array.isArray(days) ? [...new Set(days.filter(value => /^\d{4}-\d{2}-\d{2}$/.test(value)))] : [];
+                    if (!normalized.includes(todayKey)) normalized.push(todayKey);
+                    localStorage.setItem(activeDaysKey, JSON.stringify(normalized.slice(-5000)));
+                    return normalized;
+                } catch (error) {
+                    return [todayKey];
+                }
+            })();
+            const calculateStreak = days => {
+                const dates = new Set(days);
+                let streak = 0;
+                const cursor = new Date(`${todayKey}T00:00:00`);
+                while (dates.has(formatDayKey(cursor))) {
+                    streak += 1;
+                    cursor.setDate(cursor.getDate() - 1);
+                }
+                return streak;
+            };
+            const streak = calculateStreak(activeDays);
+            if (isOwner) {
+                renderXpTokenPanel();
+            }
+            document.querySelector('#profileStreak').textContent = `${streak} ${streak === 1 ? 'día' : 'días'}`;
+            document.querySelector('#profileStreakMessage').textContent = streak > 0
+                ? 'Sigue entrando y avanzando cada día para mantenerla.'
+                : 'Completa progreso en días consecutivos para mantener tu racha.';
+            const streakModal = document.querySelector('#streakModal');
+            const closeStreakModal = () => {
+                if (streakModal.contains(document.activeElement)) document.activeElement.blur();
+                streakModal.hidden = true;
+                streakModal.style.display = 'none';
+                streakModal.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
+            };
+            window.CamoStreak = { close: closeStreakModal };
+            const streakPopupKey = 'camo-cod-hq-streak-popup';
+            streakModal.hidden = true;
+            streakModal.style.display = 'none';
+            streakModal.setAttribute('aria-hidden', 'true');
+            let lastPopupDay = '';
+            try {
+                lastPopupDay = localStorage.getItem(streakPopupKey) || sessionStorage.getItem(streakPopupKey) || '';
+            } catch (error) {
+                console.warn('No se pudo comprobar si la racha ya se mostró hoy', error);
+            }
+            if (lastPopupDay !== todayKey) {
+                let markedForToday = false;
+                try {
+                    localStorage.setItem(streakPopupKey, todayKey);
+                    markedForToday = localStorage.getItem(streakPopupKey) === todayKey;
+                } catch (error) {
+                    console.warn('No se pudo guardar la visualización diaria de la racha', error);
+                }
+                if (!markedForToday) {
+                    try {
+                        sessionStorage.setItem(streakPopupKey, todayKey);
+                        markedForToday = sessionStorage.getItem(streakPopupKey) === todayKey;
+                    } catch (error) {
+                        console.warn('No se pudo guardar la visualización diaria de la racha en esta sesión', error);
+                    }
+                }
+                if (markedForToday) {
+                    document.querySelector('#streakModalCount').textContent = streak;
+                    document.querySelector('#streakModalLabel').textContent = streak === 1 ? 'día consecutivo' : 'días consecutivos';
+                    streakModal.hidden = false;
+                    streakModal.style.display = 'grid';
+                    streakModal.setAttribute('aria-hidden', 'false');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+            document.querySelector('#streakModalClose').addEventListener('click', closeStreakModal);
+            document.querySelector('#streakModalContinue').addEventListener('click', closeStreakModal);
+            streakModal.addEventListener('click', event => {
+                if (event.target === streakModal) closeStreakModal();
+            });
+            document.addEventListener('keydown', event => {
+                if (event.key === 'Escape' && !streakModal.hidden) closeStreakModal();
+            });
+
             const bestValue = Math.max(...gameValues);
             const gameLabels = { 'Black Ops': 'Black Ops I' };
-            const gameCodes = Object.fromEntries(gameNames.map(name => [name, name === 'Black Ops' ? 'BOI' : name === 'Black Ops II' ? 'BOII' : name === 'Black Ops III' ? 'BOIII' : name === 'Black Ops IIII' ? 'BOIIII' : name === 'Mobile' ? 'CODM' : name === 'Modern Warfare 2 Remastered' ? 'MW2R' : name === 'Black Ops Cold War' ? 'BOCW' : name === 'Modern Warfare II' ? 'MWII' : name === 'Modern Warfare III' ? 'MWIII' : name.split(' ').map(part => part[0]).join('').slice(0, 3).toUpperCase()]));
-            const gamesMarkup = gameNames.map((name, index) => { const value = gameValues[index]; const gameTotal = getGameTotal(name); const percent = Math.min(Math.round(value / gameTotal * 100), 100); const favoriteLabel = name === favoriteGame ? ' · Favorito' : ''; const favoriteClass = name === favoriteGame ? ' favorite' : ''; const bestClass = value === bestValue && value > 0 ? ' best' : ''; const status = percent === 100 ? 'Completado' : percent > 0 ? 'En progreso' : 'Sin comenzar'; const gameLink = gameLinks[name]; const displayName = gameLabels[name] || name; const iconMarkup = gameLink ? `<a class="game-link" href="${gameLink}" aria-label="Abrir ${displayName}"><span class="game-icon">${gameCodes[name]}</span></a>` : `<span class="game-icon">${gameCodes[name]}</span>`; return `<div class="game${favoriteClass}${bestClass}"><span>${iconMarkup}<span class="game-title">${displayName}${favoriteLabel}</span><span class="game-meta">${value} / ${gameTotal} camuflajes</span><span class="game-progress"><span style="width:${percent}%"></span></span><span class="game-status">${status}</span></span><span class="game-score">${percent}%</span></div>`; }).join('');
+            const gameCodes = Object.fromEntries(gameNames.map(name => [name, name === 'Modern Warfare 2019' ? 'MW2019' : name === 'WWII' ? 'WWII' : name === 'Black Ops' ? 'BOI' : name === 'Black Ops II' ? 'BOII' : name === 'Black Ops III' ? 'BOIII' : name === 'Black Ops IIII' ? 'BOIIII' : name === 'Mobile' ? 'CODM' : name === 'Modern Warfare 2 Remastered' ? 'MW2R' : name === 'Black Ops Cold War' ? 'BOCW' : name === 'Modern Warfare II' ? 'MWII' : name === 'Modern Warfare III' ? 'MWIII' : name.split(' ').map(part => part[0]).join('').slice(0, 3).toUpperCase()]));
+            const gamesMarkup = gameNames.map((name, index) => { const value = gameValues[index]; const gameTotal = getGameTotal(name); const percent = Math.min(Math.round(value / gameTotal * 100), 100); const favoriteLabel = name === favoriteGame ? ' · Favorito' : ''; const favoriteClass = name === favoriteGame ? ' favorite' : ''; const bestClass = value === bestValue && value > 0 ? ' best' : ''; const status = percent === 100 ? 'Completado' : percent > 0 ? 'En progreso' : 'Sin comenzar'; const gameLink = gameLinks[name]; const displayName = gameLabels[name] || name; const isWideGameCode = gameCodes[name] === 'MW2019'; const gameCodeClass = isWideGameCode ? 'game-icon game-icon-wide' : 'game-icon'; const gameLinkClass = isWideGameCode ? 'game-link game-link-wide' : 'game-link'; const iconMarkup = gameLink ? `<a class="${gameLinkClass}" href="${gameLink}" aria-label="Abrir ${displayName}"><span class="${gameCodeClass}">${gameCodes[name]}</span></a>` : `<span class="${gameCodeClass}">${gameCodes[name]}</span>`; return `<div class="game${favoriteClass}${bestClass}"><span>${iconMarkup}<span class="game-title">${displayName}${favoriteLabel}</span><span class="game-meta">${value} / ${gameTotal} camuflajes</span><span class="game-progress"><span style="width:${percent}%"></span></span><span class="game-status">${status}</span></span><span class="game-score">${percent}%</span></div>`; }).join('');
             const uemValue = Number(gameCatalog['Black Ops III UEM']) || 0;
             const uemTotal = getGameTotal('Black Ops III UEM');
             const uemPercent = Math.min(Math.round(uemValue / uemTotal * 100), 100);
@@ -454,7 +791,10 @@
             const uemGameMarkup = `<div class="game-grid"><div class="game"><span><a class="game-link" href="../uem/con UEM/card.html" aria-label="Abrir Black Ops III UEM"><span class="game-icon">UEM</span></a><span class="game-title">Black Ops III UEM</span><span class="game-meta">${uemValue} / ${uemTotal} camuflajes</span><span class="game-progress"><span style="width:${uemPercent}%"></span></span><span class="game-status">${uemStatus}</span></span><span class="game-score">${uemPercent}%</span></div></div>`;
             gameStats.innerHTML = `<div class="games-header"><h2>Progreso por juego</h2><span>${gameNames.length} juegos registrados</span></div><div class="game-grid">${gamesMarkup}</div><div class="game-subcategory"><div class="game-subcategory-header"><h3>Juegos UEM</h3><span>Experiencias y modificaciones de Call of Duty</span></div>${uemGameMarkup}</div>`;
         };
-        render().catch(() => { document.querySelector('#gameStats').innerHTML = '<p class="message">No se pudieron cargar las estadísticas.</p>'; });
+        render().catch(error => {
+            console.error('No se pudo cargar el perfil:', error);
+            document.querySelector('#gameStats').innerHTML = '<p class="message">No se pudieron cargar las estadísticas.</p>';
+        });
     </script>
 </body>
 </html>

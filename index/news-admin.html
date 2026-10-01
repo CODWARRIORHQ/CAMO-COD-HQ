@@ -23,16 +23,18 @@
     <p id="status">Comprobando sesión...</p>
     <form id="newsForm" hidden>
         <label>Título
-            <input id="title" maxlength="160" required>
+            <input id="title" required>
         </label>
         <label>Contenido
-            <textarea id="body" maxlength="2000" required></textarea>
+            <textarea id="body" rows="12" required></textarea>
+            <small>Sin límite de caracteres establecido para las noticias de administración.</small>
             <small>Para crear una lista, escribe cada elemento en una línea empezando por <code>-</code>.</small>
         </label>
         <label>Publicar el
             <input id="publishAt" type="datetime-local" required>
         </label>
         <button type="submit">Enviar noticia programada</button>
+        <button class="secondary" type="button" id="exitAdmin">Salir</button>
         <button class="secondary" type="button" id="signOut">Cerrar sesión</button>
     </form>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -87,6 +89,10 @@
             await client.auth.signOut();
             form.hidden = true;
             status.textContent = 'Sesión cerrada.';
+        });
+
+        document.querySelector('#exitAdmin').addEventListener('click', () => {
+            window.location.href = 'Camos UEM.html';
         });
 
         init().catch(error => { status.textContent = error.message; });

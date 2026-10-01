@@ -831,7 +831,6 @@
         }
 
         @media (max-width: 920px) {
-            .nav-links > li.secondary-nav-link { display:none; }
             .nav-links { flex:1 0 100%; flex-wrap:wrap; gap:8px; justify-content:center; margin:0; padding-top:4px; border-top:1px solid rgba(255,255,255,.08); }
         }
 
@@ -844,26 +843,32 @@
             .nav-links {
                 display: flex;
                 flex: 1 0 100%;
-                justify-content: center;
+                justify-content: space-between;
+                align-content: center;
                 flex-wrap: wrap;
-                gap: 4px;
+                gap: 4px 2px;
                 margin: 0;
                 padding-top: 4px;
                 border-top: 1px solid rgba(255, 255, 255, 0.08);
             }
 
+            .nav-links > li { flex:0 0 auto; }
+
             .nav-links a,
             .nav-links .btn {
-                padding: 7px 8px;
-                font-size: 12px;
+                padding: 4px;
+                font-size: 10px;
+                white-space: nowrap;
             }
+
+            .tools-switch summary,
+            .lang-switch summary { padding:5px 4px; font-size:11px; }
+            .auth-button { padding:5px 6px; font-size:10px; }
 
             .tools-switch {
                 position: static;
             }
             .nav-links > li:last-child { margin-left:0; padding-left:0; border-left:0; }
-            .nav-links > li.secondary-nav-link { display:none; }
-            .nav-links { justify-content:flex-end; }
 
             .tools-menu {
                 position: fixed;
@@ -886,8 +891,12 @@
             .meta-title { font-size: 22px; letter-spacing: 3px; }
         }
         @media (max-width: 380px) {
-            .auth-button { max-width:112px; font-size:11px; padding:7px 8px; }
-            .nav-links { gap:2px; }
+            .nav-links a,
+            .nav-links .btn { font-size:9px; padding:3px 4px; }
+            .tools-switch summary,
+            .lang-switch summary { padding:4px; font-size:10px; }
+            .auth-button { max-width:none; font-size:9px; padding:4px; }
+            .nav-links { gap:4px 2px; }
             .nav-links > li:last-child { margin-left:0; padding-left:0; }
         }
         .projects-carousel { position:relative; margin-top:6px; }

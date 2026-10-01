@@ -26,7 +26,7 @@
         .profile-name-icon { width:54px; height:54px; object-fit:contain; }
         .profile-rank-icon { width:72px; height:72px; object-fit:contain; }
         .level-card { display:grid; place-items:center; min-height:430px; margin-top:34px; padding:18px; border:0; border-radius:18px; background:radial-gradient(ellipse at center,rgba(24,43,56,.34),rgba(3,7,12,.98) 72%); overflow:hidden; }
-        .level-ring { position:relative; width:min(88vw,420px); aspect-ratio:1; }
+        .level-ring { position:relative; width:min(100%,420px); aspect-ratio:1; }
         .level-ring svg { display:block; width:100%; height:100%; overflow:visible; }
         .level-ring .ring-sector,
         .level-ring .ring-sector.red { fill:var(--theme-surface-raised,#0b141d); opacity:1; }
@@ -166,7 +166,22 @@
         .streak-count-label { position:relative; color:#fff; font-size:15px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
         .streak-continue { position:relative; margin-top:24px; min-width:150px; }
         @media (max-width:800px) { .xp-token-list { grid-template-columns:1fr; } .xp-guide { grid-template-columns:1fr; } .xp-history { padding:18px 0 0; border-top:1px solid var(--border); border-left:0; } }
-        @media (max-width:600px) { body { padding:12px; } main { padding:44px 0; } .profile-heading { display:grid; grid-template-columns:auto minmax(0,1fr); align-items:center; gap:10px; } .profile-heading h1 { min-width:0; font-size:clamp(32px,10vw,48px); overflow-wrap:anywhere; } #profileBadges { grid-column:1 / -1; margin:4px 0 0; gap:5px; } #profileBadges .achievement-badge { max-width:100%; padding:4px 7px; font-size:11px; } .summary { grid-template-columns:1fr; } .game-grid { grid-template-columns:1fr; padding:10px; } .game { min-height:100px; } .compare-grid { grid-template-columns:1fr; } .medal-options { grid-template-columns:1fr; max-height:260px; } .medal-options .stat-label { grid-column:auto; } }
+        @media (max-width:600px) {
+            body { padding:12px; }
+            main { padding:44px 0; }
+            .profile-heading { display:grid; grid-template-columns:auto minmax(0,1fr); align-items:center; gap:10px; }
+            .profile-heading h1 { min-width:0; font-size:clamp(24px,7vw,36px); overflow-wrap:anywhere; }
+            #profileBadges { grid-column:1 / -1; margin:4px 0 0; gap:5px; }
+            #profileBadges .achievement-badge { max-width:100%; padding:4px 7px; font-size:11px; }
+            .level-card { min-height:0; margin-top:22px; padding:12px; }
+            .level-ring { width:min(100%,340px); }
+            .summary { grid-template-columns:1fr; }
+            .game-grid { grid-template-columns:1fr; padding:10px; }
+            .game { min-height:100px; }
+            .compare-grid { grid-template-columns:1fr; }
+            .medal-options { grid-template-columns:1fr; max-height:260px; }
+            .medal-options .stat-label { grid-column:auto; }
+        }
     </style>
     <link rel="manifest" href="../manifest.webmanifest">
     <meta name="mobile-web-app-capable" content="yes">

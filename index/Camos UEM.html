@@ -1692,6 +1692,16 @@
             const track = document.querySelector('#projectsTrack');
             if (!track) return;
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+            const cleanupGameEntryTransition = () => {
+                document.querySelectorAll('.game-entry-transition, .game-entry-backdrop').forEach(element => {
+                    element.getAnimations({ subtree: true }).forEach(animation => animation.cancel());
+                    element.remove();
+                });
+            };
+            cleanupGameEntryTransition();
+            window.addEventListener('pagehide', cleanupGameEntryTransition);
+            window.addEventListener('pageshow', cleanupGameEntryTransition);
+
             const releaseDates = {
                 MW2007: ['2007-11-05', '2007'],
                 MW2: ['2009-11-10', '2009'],

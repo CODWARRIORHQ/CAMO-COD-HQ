@@ -361,6 +361,21 @@
             border-radius: 8px;
         }
 
+        @media (max-width: 650px) {
+            .camo-toggle-row {
+                display: flex;
+                justify-content: flex-start;
+                overflow-x: auto;
+                overscroll-behavior-x: contain;
+                touch-action: pan-x;
+                scrollbar-width: thin;
+            }
+
+            .camo-toggle-item {
+                flex: 0 0 44px;
+            }
+        }
+
         .camo-toggle-item {
             position: relative;
             display: inline-flex;
@@ -377,6 +392,30 @@
             cursor: pointer;
             transition: background 0.2s, transform 0.2s, border-color 0.2s, color 0.2s;
             overflow: visible;
+        }
+
+        .camo-toggle-progress {
+            position: absolute;
+            right: 2px;
+            bottom: 2px;
+            z-index: 2;
+            padding: 2px 3px;
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 3px;
+            color: #fff;
+            background: rgba(0,0,0,0.82);
+            font-size: 8px;
+            font-weight: 800;
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        .camo-toggle-fallback {
+            position: relative;
+            z-index: 1;
+            color: #d5d9df;
+            font-size: 16px;
+            font-weight: 800;
         }
 
         .camo-toggle-item img.camo-toggle-thumb {
@@ -455,11 +494,16 @@
         .camo-toggle-item.completed::after {
             content: "✓";
             position: absolute;
-            inset: 0;
+            top: 2px;
+            left: 2px;
+            width: 14px;
+            height: 14px;
             display: grid;
             place-items: center;
+            border-radius: 50%;
             color: var(--accent-orange);
-            font-size: 18px;
+            background: rgba(0,0,0,0.85);
+            font-size: 10px;
             font-weight: 900;
             text-shadow: 0 0 5px rgba(0,0,0,0.8);
             pointer-events: none;
@@ -748,10 +792,30 @@
             padding: 15px; 
             border-radius: 12px; 
             border: 1px solid #222; 
-            display: flex; 
-            justify-content: space-between; 
             font-size: 13px; 
             font-weight: 800; 
+        }
+
+        .stat-card-info {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 9px;
+        }
+
+        .stat-progress-bar {
+            height: 4px;
+            overflow: hidden;
+            border-radius: 999px;
+            background: #272727;
+        }
+
+        .stat-progress-fill {
+            width: 0;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #ff9d00, #ffd166);
+            transition: width 0.35s ease;
         }
 
         /* Estilos de la Barra de Progreso */
@@ -1128,6 +1192,25 @@
             cursor: pointer;
         }
 
+        .clear-filters-btn {
+            grid-column: 1 / -1;
+            width: 100%;
+            border: 1px solid rgba(6,182,212,.45);
+            border-radius: 6px;
+            padding: 10px 14px;
+            color: #8feaf5;
+            background: rgba(6,182,212,.08);
+            font: inherit;
+            font-weight: 800;
+            cursor: pointer;
+            transition: background .2s ease, border-color .2s ease;
+        }
+
+        .clear-filters-btn:hover {
+            border-color: #06b6d4;
+            background: rgba(6,182,212,.16);
+        }
+
         .clear-progress-dialog {
             width: min(420px, calc(100% - 32px));
             border: 1px solid #ff9d00;
@@ -1265,6 +1348,7 @@
                 </div>
             </div>
 
+            <button type="button" id="clearFiltersBtn" class="clear-filters-btn">LIMPIAR FILTROS</button>
             <button type="button" id="clearAllCamosBtn" class="clear-all-btn">DESMARCAR TODO</button>
             <div class="progress-actions" aria-live="polite">
                 <button type="button" id="exportProgressBtn" class="btn ghost">EXPORTAR JSON</button>
@@ -1310,15 +1394,15 @@
         </div>
 
         <div class="stats-grid">
-            <div class="stat-card"><span>AR</span><span id="ar-stat">0%</span></div>
-            <div class="stat-card"><span>SMG</span><span id="smg-stat">0%</span></div>
-            <div class="stat-card"><span>ESCOPETAS</span><span id="shotguns-stat">0%</span></div>
-            <div class="stat-card"><span>AMETRALLADORAS</span><span id="lmg-stat">0%</span></div>
-            <div class="stat-card"><span>FUSILES TACTICOS</span><span id="tactical-stat">0%</span></div>
-            <div class="stat-card"><span>FUSILES DE PRECISIÓN</span><span id="snipers-stat">0%</span></div>
-            <div class="stat-card"><span>ARMAS CORTAS</span><span id="pistols-stat">0%</span></div>
-            <div class="stat-card"><span>LANZADORES</span><span id="launchers-stat">0%</span></div>
-            <div class="stat-card"><span>CUERPO A CUERPO</span><span id="melee-stat">0%</span></div>
+            <div class="stat-card"><div class="stat-card-info"><span>AR</span><span id="ar-stat">0%</span></div><div class="stat-progress-bar" role="progressbar" aria-label="Progreso de fusiles de asalto" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="stat-progress-fill"></div></div></div>
+            <div class="stat-card"><div class="stat-card-info"><span>SMG</span><span id="smg-stat">0%</span></div><div class="stat-progress-bar" role="progressbar" aria-label="Progreso de subfusiles" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="stat-progress-fill"></div></div></div>
+            <div class="stat-card"><div class="stat-card-info"><span>ESCOPETAS</span><span id="shotguns-stat">0%</span></div><div class="stat-progress-bar" role="progressbar" aria-label="Progreso de escopetas" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="stat-progress-fill"></div></div></div>
+            <div class="stat-card"><div class="stat-card-info"><span>AMETRALLADORAS</span><span id="lmg-stat">0%</span></div><div class="stat-progress-bar" role="progressbar" aria-label="Progreso de ametralladoras" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="stat-progress-fill"></div></div></div>
+            <div class="stat-card"><div class="stat-card-info"><span>FUSILES TACTICOS</span><span id="tactical-stat">0%</span></div><div class="stat-progress-bar" role="progressbar" aria-label="Progreso de fusiles tácticos" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="stat-progress-fill"></div></div></div>
+            <div class="stat-card"><div class="stat-card-info"><span>FUSILES DE PRECISIÓN</span><span id="snipers-stat">0%</span></div><div class="stat-progress-bar" role="progressbar" aria-label="Progreso de fusiles de precisión" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="stat-progress-fill"></div></div></div>
+            <div class="stat-card"><div class="stat-card-info"><span>ARMAS CORTAS</span><span id="pistols-stat">0%</span></div><div class="stat-progress-bar" role="progressbar" aria-label="Progreso de armas cortas" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="stat-progress-fill"></div></div></div>
+            <div class="stat-card"><div class="stat-card-info"><span>LANZADORES</span><span id="launchers-stat">0%</span></div><div class="stat-progress-bar" role="progressbar" aria-label="Progreso de lanzadores" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="stat-progress-fill"></div></div></div>
+            <div class="stat-card"><div class="stat-card-info"><span>CUERPO A CUERPO</span><span id="melee-stat">0%</span></div><div class="stat-progress-bar" role="progressbar" aria-label="Progreso de cuerpo a cuerpo" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="stat-progress-fill"></div></div></div>
         </div>
     </div>
 </div>
@@ -1594,7 +1678,12 @@
         card.querySelectorAll('.camo-toggle-item').forEach(item => {
             const category = item.dataset.category;
             const categorySkins = Array.from(section.querySelectorAll(`.skin[data-category="${category}"]`));
-            const completed = categorySkins.length > 0 && categorySkins.every(skin => skin.classList.contains('checked'));
+            const checkedCount = categorySkins.filter(skin => skin.classList.contains('checked')).length;
+            const completed = categorySkins.length > 0 && checkedCount === categorySkins.length;
+            const progress = item.querySelector('.camo-toggle-progress');
+            if (progress) progress.textContent = `${checkedCount}/${categorySkins.length}`;
+            item.setAttribute('aria-label', `${window.MW2019_NOMBRES_CATEGORIAS?.[Number(category) - 1] || `Categoría ${category}`}: ${checkedCount} de ${categorySkins.length}`);
+            item.setAttribute('aria-pressed', String(item.classList.contains('active')));
             item.classList.toggle('completed', completed);
         });
     }
@@ -1840,26 +1929,41 @@
                 const item = document.createElement('div');
                 item.className = 'camo-toggle-item';
                 item.dataset.category = String(i);
+                item.setAttribute('role', 'button');
+                item.tabIndex = 0;
                 const nombreCategoria = window.MW2019_NOMBRES_CATEGORIAS?.[i - 1] || `Categoría ${i}`;
                 const tooltip = document.createElement('span');
                 tooltip.className = 'camo-toggle-tooltip';
                 tooltip.textContent = nombreCategoria;
+                const progress = document.createElement('span');
+                progress.className = 'camo-toggle-progress';
+                progress.setAttribute('aria-hidden', 'true');
                 const toggleImage = section.dataset[`toggle${i}`];
                 if (toggleImage) {
                     const thumb = document.createElement('img');
                     thumb.className = 'camo-toggle-thumb';
                     thumb.src = toggleImage;
                     thumb.alt = `Imagen ${nombreCategoria}`;
+                    thumb.addEventListener('error', () => {
+                        const fallback = document.createElement('span');
+                        fallback.className = 'camo-toggle-fallback';
+                        fallback.textContent = '—';
+                        fallback.setAttribute('aria-label', 'Miniatura no disponible');
+                        thumb.replaceWith(fallback);
+                        item.classList.remove('has-image');
+                    }, { once: true });
                     item.appendChild(thumb);
                     item.classList.add('has-image');
                 }
                 item.appendChild(tooltip);
+                item.appendChild(progress);
                 item.addEventListener('click', (e) => {
                     e.stopPropagation();
                     const isActive = item.classList.contains('active');
 
                     if (isActive) {
                         item.classList.remove('active');
+                        item.setAttribute('aria-pressed', 'false');
                         section.classList.add('collapsed');
                         return;
                     }
@@ -1868,6 +1972,13 @@
                     item.classList.add('active');
                     section.classList.remove('collapsed');
                     mostrarCategoria(section, String(i));
+                    buttons.forEach(btn => btn.setAttribute('aria-pressed', String(btn === item)));
+                });
+                item.addEventListener('keydown', event => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        item.click();
+                    }
                 });
                 buttons.push(item);
                 toggleRow.appendChild(item);
@@ -1918,6 +2029,16 @@
 
             grupo.style.display = (visiblesEnGrupo > 0) ? 'block' : 'none';
         });
+    }
+
+    function limpiarFiltros() {
+        document.getElementById('weaponSearch').value = '';
+        filtroCatActual = 'all';
+        filtroEstadoActual = 'all';
+        document.querySelector('#catSelect .select-header span').textContent = 'TODAS';
+        document.querySelector('#statusSelect .select-header span').textContent = 'TODOS';
+        document.querySelectorAll('.custom-select').forEach(select => select.classList.remove('active'));
+        filtrarTodo();
     }
 
     function mostrarEstadoProgreso(mensaje, esError = false) {
@@ -2030,6 +2151,7 @@
 
     // 4. INICIALIZACIÓN
     document.addEventListener('DOMContentLoaded', () => {
+        window.sincronizarCamuflajesEntreArmas();
         inicializarSelectores();
         inicializarCamoCollapsibles();
         restaurarProgreso();
@@ -2051,6 +2173,7 @@
         });
 
         document.getElementById('weaponSearch').addEventListener('input', filtrarTodo);
+        document.getElementById('clearFiltersBtn').addEventListener('click', limpiarFiltros);
         const clearProgressDialog = document.getElementById('clearProgressDialog');
         const confirmClearCamosBtn = document.getElementById('confirmClearCamosBtn');
         const cancelClearCamosBtn = document.getElementById('cancelClearCamosBtn');
@@ -2175,10 +2298,13 @@
 
         const promedioGrupo = Math.round(sumaGrupo / (armasEnGrupo.length || 1)) || 0;
 
-        // Buscar el cuadrito de stat correspondiente en el Apocalypse Tracker
         const statEl = document.getElementById(catId + '-stat');
         if(statEl) {
             statEl.innerText = promedioGrupo + '%';
+            const progressBar = statEl.closest('.stat-card')?.querySelector('.stat-progress-bar');
+            const progressFill = progressBar?.querySelector('.stat-progress-fill');
+            if (progressFill) progressFill.style.width = `${promedioGrupo}%`;
+            if (progressBar) progressBar.setAttribute('aria-valuenow', String(promedioGrupo));
             sumaProgresosGlobal += promedioGrupo;
             totalGruposConStats++;
         }
@@ -2237,5 +2363,3 @@
 </script>
 </body>
 </html>
-
-

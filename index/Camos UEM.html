@@ -384,7 +384,8 @@
             right: 0;
             z-index: 80;
             display: grid;
-            min-width: 210px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            min-width: 360px;
             gap: 5px;
             padding: 8px;
             border: 1px solid var(--border);
@@ -698,6 +699,49 @@
         .news-grid { display: grid; gap: 12px; }
         .news-item { border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius); padding: 16px; background: var(--glass); }
         .news-item time { color: var(--accent-2); font-size: 12px; }
+        .tools-menu [hidden] { display:none !important; }
+        .report-count {
+            display:inline-grid;
+            place-items:center;
+            min-width:20px;
+            height:20px;
+            margin-left:auto;
+            padding:0 6px;
+            border-radius:999px;
+            background:#ef4444;
+            color:#fff;
+            font-size:11px;
+            font-weight:800;
+            line-height:1;
+            font-variant-numeric:tabular-nums;
+        }
+        .tools-report-count { margin-left:2px; }
+        .report-count[hidden] { display:none !important; }
+        .user-reports-dialog { max-height:min(760px,calc(100dvh - 32px)); overflow:auto; }
+        .user-reports-list { display:grid; gap:12px; max-height:min(55vh,520px); overflow:auto; }
+        .user-report-item { padding:14px; border:1px solid rgba(255,255,255,.1); border-radius:10px; background:var(--glass); }
+        .user-report-item h3 { margin:0 0 6px; font-size:15px; }
+        .user-report-item time { color:var(--accent-2); font-size:12px; }
+        .user-report-item p { margin:10px 0 0; color:var(--muted); white-space:pre-wrap; overflow-wrap:anywhere; }
+        .user-report-filters { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
+        .user-report-filters label { display:grid; gap:5px; color:var(--muted); font-size:12px; }
+        .user-report-filters select { min-width:0; padding:9px; border:1px solid rgba(255,255,255,.15); border-radius:8px; background:var(--surface); color:inherit; }
+        .user-report-status { display:inline-flex; margin-top:9px; padding:4px 8px; border:1px solid rgba(6,182,212,.3); border-radius:999px; color:var(--accent-2); font-size:11px; font-weight:700; }
+        .user-report-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+        .user-report-actions .btn { padding:7px 10px; font-size:12px; }
+        .tools-help { margin:0; }
+        .tools-menu .tools-help { grid-column:1 / -1; }
+        .tools-help summary { display:flex; align-items:center; gap:10px; width:100%; padding:8px 10px; border:1px solid transparent; border-radius:8px; background:linear-gradient(180deg,rgba(20,42,65,.82),rgba(10,25,42,.9)); color:var(--text); font-size:12px; font-weight:600; cursor:pointer; list-style:none; transition:background .18s,border-color .18s; }
+        .tools-help summary::-webkit-details-marker { display:none; }
+        .tools-help summary::before { content:"↔"; display:inline-grid; place-items:center; flex:0 0 24px; width:24px; height:24px; border:1px solid rgba(6,182,212,.2); border-radius:6px; color:var(--accent-2); font-size:13px; line-height:1; }
+        .tools-help summary::after { content:"＋"; margin-left:auto; color:var(--accent-2); font-size:14px; }
+        .tools-help[open] summary::after { content:"−"; }
+        .tools-help summary:hover { border-color:rgba(6,182,212,.24); background:rgba(6,182,212,.1); }
+        .tools-help summary:focus-visible { outline:2px solid var(--accent-2); outline-offset:2px; }
+        .tools-help p { margin:2px 4px 4px 44px; padding:8px 10px; border-left:1px solid rgba(6,182,212,.24); color:var(--muted); font-size:11px; line-height:1.45; }
+        @media (max-width:640px) {
+            .user-report-filters { grid-template-columns:1fr; }
+        }
         .news-changes {
             display: grid;
             gap: 5px;
@@ -883,6 +927,22 @@
                 box-sizing: border-box;
                 overflow-y: auto;
                 overscroll-behavior: contain;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 6px;
+            }
+            .tools-menu .btn {
+                gap:7px;
+                padding:7px 8px;
+                font-size:11px;
+                white-space:normal;
+            }
+            .tools-menu .btn::before {
+                flex-basis:22px;
+                width:22px;
+                height:22px;
+            }
+            .tools-menu .tools-help {
+                grid-column:1 / -1;
             }
             .dropdown-menu { top:var(--game-menu-top,160px); }
             .section-title { overflow-wrap: anywhere; }
@@ -965,6 +1025,11 @@
         .projects-grid .meta-card.is-featured .meta-media::after { opacity:.62; }
         .projects-grid .meta-annual-badge { display:inline-flex; align-items:center; gap:5px; max-width:100%; box-sizing:border-box; margin-bottom:10px; padding:5px 8px; border:1px solid rgba(105,245,255,.7); border-radius:999px; background:rgba(5,30,39,.9); color:#c5fbff; font-size:7px; font-weight:800; letter-spacing:.08em; line-height:1; white-space:nowrap; text-transform:uppercase; box-shadow:0 0 12px rgba(34,211,238,.28),inset 0 0 8px rgba(34,211,238,.12); }
         .projects-grid .meta-annual-badge::before { width:6px; height:6px; border-radius:50%; background:#75f4ff; box-shadow:0 0 10px #52e5f1; content:""; }
+        .projects-grid .meta-card.is-featured .meta-overlay { display:grid; grid-template-columns:minmax(0,1fr); grid-template-areas:"year" "title" "badge"; justify-items:start; align-items:center; row-gap:5px; inset:auto 12px 12px; }
+        .projects-grid .meta-card.is-featured .meta-release-year { grid-area:year; margin:0; }
+        .projects-grid .meta-card.is-featured .meta-annual-badge { grid-area:badge; gap:3px; margin:0; padding:4px 6px; font-size:6px; letter-spacing:.035em; }
+        .projects-grid .meta-card.is-featured .meta-annual-badge::before { width:5px; height:5px; flex:0 0 5px; }
+        .projects-grid .meta-card.is-featured .meta-title { grid-area:title; }
         .projects-grid .meta-title.small { font-size:clamp(12px,1.6vw,20px); line-height:1.05; letter-spacing:.035em; white-space:nowrap; text-shadow:0 2px 16px rgba(0,0,0,.9); }
         .projects-grid .meta-card:nth-child(6n+1) { --game-glow:rgba(197,91,50,.7); }
         .projects-grid .meta-card:nth-child(6n+2) { --game-glow:rgba(42,151,190,.68); }
@@ -973,6 +1038,33 @@
         .projects-grid .meta-card:nth-child(6n+5) { --game-glow:rgba(45,150,115,.64); }
         .projects-grid .meta-card:nth-child(6n) { --game-glow:rgba(176,61,78,.62); }
         .projects-grid .meta-card img.card-img { box-sizing:border-box; object-fit:contain; padding:24px 12px 88px; filter:brightness(.9) saturate(.95) drop-shadow(0 8px 18px rgba(0,0,0,.55)); }
+        .projects-grid .meta-card.card-codm img.card-img { object-fit:cover; object-position:center 34%; padding:0; filter:brightness(.84) saturate(.95); }
+        .projects-grid .meta-card.card-mw2019 img.card-img { object-fit:cover; object-position:center 34%; padding:0; filter:brightness(.84) saturate(.95); }
+        .meta-card.card-mw4 img.card-img { object-fit:cover; object-position:center 36%; padding:0; filter:brightness(.84) saturate(.95); }
+        .projects-grid .meta-card.card-warzone img.card-img { object-fit:cover; object-position:center 34%; padding:0; filter:brightness(.84) saturate(.95); }
+        .projects-grid .meta-card.card-boiii img.card-img { object-fit:cover; object-position:center 24%; padding:0; filter:brightness(.84) saturate(.95); }
+        .projects-grid .meta-card.card-boiiii img.card-img { object-fit:cover; object-position:center 34%; padding:0; filter:brightness(.84) saturate(.95); }
+        .projects-grid .meta-card.card-mwiii img.card-img { object-fit:cover; object-position:center 24%; padding:0; filter:brightness(.84) saturate(.95); }
+        .projects-grid .meta-card.card-mwii img.card-img { object-fit:cover; object-position:center 34%; padding:0; filter:brightness(.84) saturate(.95); }
+        .projects-grid .meta-card.card-bo6 img.card-img { object-fit:cover; object-position:center 34%; padding:0; filter:brightness(.84) saturate(.95); }
+        .projects-grid .meta-card.card-bo7 img.card-img { object-fit:cover; object-position:center 34%; padding:0; filter:brightness(.84) saturate(.95); }
+        .projects-grid .meta-card.card-vanguard img.card-img { object-fit:cover; object-position:center 34%; padding:0; filter:brightness(.84) saturate(.95); }
+        .projects-grid .meta-card.card-coldwar img.card-img { object-fit:cover; object-position:center 34%; padding:0; filter:brightness(.84) saturate(.95); }
+        .projects-grid .meta-card.card-mw2r img.card-img { object-fit:cover; object-position:center 34%; padding:0; filter:brightness(.84) saturate(.95); }
+        .projects-grid .meta-card.card-art img.card-img { object-fit:cover; object-position:center 34%; padding:0; filter:brightness(.84) saturate(.95); }
+        .game-entry-transition { position:fixed; z-index:99999; overflow:hidden; pointer-events:none; isolation:isolate; transform-style:preserve-3d; transform-origin:center center; background:#05070a; box-shadow:0 0 0 1px rgba(255,255,255,.24),0 28px 90px rgba(0,0,0,.82); will-change:left,top,width,height,transform,border-radius,opacity; }
+        .game-entry-transition img { position:absolute; inset:0; width:100%; height:100%; }
+        .game-entry-transition::before,.game-entry-transition::after { position:absolute; inset:-1px; z-index:1; pointer-events:none; content:""; }
+        .game-entry-transition::before { background:radial-gradient(ellipse at 50% 42%,transparent 18%,rgba(0,0,0,.18) 58%,rgba(0,0,0,.8) 115%),linear-gradient(120deg,transparent 28%,var(--entry-glow,rgba(69,198,255,.75)) 49%,transparent 68%); background-size:100% 100%,240% 100%; background-position:center,left center; mix-blend-mode:screen; opacity:.55; }
+        .game-entry-transition::after { background:repeating-linear-gradient(0deg,rgba(255,255,255,.12) 0 1px,transparent 1px 4px),linear-gradient(112deg,transparent 35%,rgba(255,255,255,.24) 47%,transparent 59%); background-size:100% 100%,240% 100%; background-position:center,left center; opacity:0; }
+        .game-entry-transition-shade { position:absolute; inset:0; z-index:2; background:linear-gradient(180deg,rgba(2,6,12,.04),rgba(2,6,12,.26) 60%,rgba(0,0,0,.66)); opacity:0; }
+        .game-entry-transition-flash { position:absolute; inset:0; z-index:4; background:radial-gradient(ellipse at center,rgba(255,255,255,.94),rgba(166,235,255,.68) 24%,transparent 72%); opacity:0; mix-blend-mode:screen; }
+        .game-entry-backdrop { position:fixed; inset:0; z-index:99998; pointer-events:none; background:radial-gradient(ellipse at center,rgba(8,15,25,.42),rgba(0,0,0,.96)); opacity:0; backdrop-filter:blur(0); }
+        .game-entry-caption { position:absolute; z-index:3; inset:auto 7% 11%; color:#fff; text-align:center; text-shadow:0 2px 18px rgba(0,0,0,.9); opacity:0; transform:translateY(20px); }
+        .game-entry-kicker { display:block; margin-bottom:12px; color:rgba(255,255,255,.78); font-size:9px; font-weight:800; letter-spacing:.34em; }
+        .game-entry-title { display:block; font-size:clamp(17px,4vw,38px); font-weight:950; letter-spacing:.18em; line-height:1; text-transform:uppercase; text-shadow:0 0 30px var(--entry-glow,rgba(69,198,255,.75)),0 2px 18px rgba(0,0,0,.9); }
+        .game-entry-progress { width:min(220px,52%); height:2px; margin:19px auto 0; overflow:hidden; background:rgba(255,255,255,.28); box-shadow:0 0 14px rgba(0,0,0,.7); }
+        .game-entry-progress-fill { width:100%; height:100%; background:linear-gradient(90deg,transparent,var(--entry-glow,rgba(69,198,255,.75)),#fff); box-shadow:0 0 12px var(--entry-glow,rgba(69,198,255,.75)); transform:scaleX(0); transform-origin:left center; }
         html[data-card-size="compact"] .projects-grid .meta-card { flex-basis:clamp(130px,14vw,165px); height:250px; }
         html[data-card-size="large"] .projects-grid .meta-card { flex-basis:clamp(170px,18vw,210px); height:315px; }
         @media (max-width:640px) {
@@ -1094,19 +1186,25 @@
                 <li class="secondary-nav-link"><a href="#contact" data-contact-open data-i18n="nav.contact">Contacto</a></li>
                 <li>
                     <details class="tools-switch">
-                        <summary>Herramientas</summary>
+                        <summary>Herramientas<span class="report-count tools-report-count" data-tools-report-count hidden>0</span></summary>
                         <div class="tools-menu" role="menu" aria-label="Herramientas">
                             <button class="btn" type="button" data-settings-open data-nav-icon="⚙">Personalizar</button>
                             <button class="btn" type="button" data-report-open data-nav-icon="!">Enviar un reporte</button>
                             <button class="btn" type="button" data-news-open data-nav-icon="▤">Noticias</button>
                             <button class="btn" type="button" data-registration-open data-nav-icon="♙">Usuarios registrados</button>
                             <a class="btn admin-news-link" href="news-admin.html" data-admin-news data-nav-icon="✎" hidden>Administrar noticias</a>
+                            <button class="btn" type="button" data-admin-reports data-nav-icon="▣" hidden>Reportes de usuario<span class="report-count" data-report-count hidden>0</span></button>
+                            <a class="btn" href="playtime-admin.html" data-admin-playtime data-nav-icon="◷" hidden>Revisar horas jugadas</a>
                             <button class="btn" type="button" data-help-open data-nav-icon="?">Centro de ayuda</button>
                             <button class="btn" type="button" data-overlay-open data-nav-icon="▣">Overlay OBS</button>
                             <button class="btn" type="button" data-export-card data-nav-icon="▧">Exportar perfil en PNG</button>
                             <button class="btn install-pwa-button" type="button" data-install-pwa data-nav-icon="↓" hidden>Instalar CAMO COD HQ</button>
-                            <button class="btn" type="button" data-export-progress data-nav-icon="⇧">Exportar progreso</button>
-                            <button class="btn" type="button" data-import-progress data-nav-icon="⇩">Importar progreso</button>
+                            <button class="btn" type="button" data-export-progress data-nav-icon="⇧">Descargar copia de seguridad</button>
+                            <button class="btn" type="button" data-import-progress data-nav-icon="⇩">Restaurar copia de seguridad</button>
+                            <details class="tools-help">
+                                <summary>Cómo cambiar de dispositivo</summary>
+                                <p>Descarga la copia en el dispositivo antiguo y pásala al nuevo. Allí, pulsa «Restaurar» y elige el archivo. Incluye el progreso local de todos los juegos y reemplaza el guardado en ese navegador.</p>
+                            </details>
                             <input type="file" accept="application/json,.json" data-import-file hidden>
                         </div>
                     </details>
@@ -1261,6 +1359,39 @@
         </div>
     </dialog>
 
+    <dialog class="settings-dialog user-reports-dialog" id="userReportsDialog" aria-labelledby="userReportsTitle">
+        <div class="settings-content">
+            <button class="auth-close" type="button" data-user-reports-close aria-label="Cerrar">&times;</button>
+            <h2 id="userReportsTitle">Reportes de usuario</h2>
+            <p class="muted" id="userReportsMessage" role="status">Cargando reportes...</p>
+            <div class="user-report-filters">
+                <label for="userReportsStatusFilter">Estado
+                    <select id="userReportsStatusFilter">
+                        <option value="pending">Pendientes</option>
+                        <option value="reviewed">Revisados</option>
+                        <option value="resolved">Resueltos</option>
+                        <option value="all">Todos</option>
+                    </select>
+                </label>
+                <label for="userReportsTypeFilter">Tipo
+                    <select id="userReportsTypeFilter">
+                        <option value="all">Todos</option>
+                        <option value="imagen">Imagen incorrecta</option>
+                        <option value="arma">Arma nueva</option>
+                        <option value="nombre">Nombre o requisito</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </label>
+                <label for="userReportsGameFilter">Juego
+                    <select id="userReportsGameFilter">
+                        <option value="all">Todos</option>
+                    </select>
+                </label>
+            </div>
+            <div class="user-reports-list" id="userReportsList"></div>
+        </div>
+    </dialog>
+
     <dialog class="registration-dialog" id="registrationDialog" aria-labelledby="registrationTitle">
         <button class="auth-close registration-close" type="button" data-registration-close aria-label="Cerrar">&times;</button>
         <div class="registration-content">
@@ -1319,163 +1450,185 @@
             <p class="projects-intro">Tu próxima misión empieza aquí. Explora los juegos y continúa completando cada camuflaje.</p>
             <div class="projects-carousel" role="region" aria-label="Juegos disponibles">
                 <div class="projects-grid" id="projectsTrack" tabindex="0" aria-label="Juegos disponibles. Usa la rueda del ratón, arrastra o usa las flechas del teclado para explorar.">
-                <a href="../WARZONE/WARZONE.html" class="meta-card small-card">
+                <a href="../WARZONE/WARZONE.html" class="meta-card small-card card-warzone">
                     <div class="meta-media">
-                        <img src="Warzone boton.png" alt="WARZONE" class="card-img">
+                        <img src="cartas/Operadores%20en%20la%20batalla%20de%20Verdansk.png" alt="Operadores de Call of Duty: Warzone en Verdansk" class="card-img">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">WARZONE</h4>
                         </div>
                     </div>
                 </a>
-                <a href="../MW II/MWII.html" class="meta-card small-card">
+                <a href="../MW II/MWII.html" class="meta-card small-card card-mwii">
                     <div class="meta-media">
+                        <img src="cartas/Operaci%C3%B3n%20SAS%20entre%20sombras%20y%20humo.png" alt="Operador de Call of Duty: Modern Warfare II" class="card-img">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">MWII</h4>
                         </div>
                     </div>
                 </a>
-                <a href="../MW III/MWIII.html" class="meta-card small-card">
+                <a href="../MW III/MWIII.html" class="meta-card small-card card-mwiii">
                     <div class="meta-media">
+                        <img src="cartas/MWIII.png" alt="Operador de Call of Duty: Modern Warfare III" class="card-img">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">MWIII</h4>
                         </div>
                     </div>
                 </a>
-                <a href="../BLACK OPS 6/BO6.html" class="meta-card small-card">
+                <a href="../BLACK OPS 6/BO6.html" class="meta-card small-card card-bo6">
                     <div class="meta-media">
+                        <img src="cartas/Operador%20entre%20humo%20y%20fuego.png" alt="Operador de Call of Duty: Black Ops 6" class="card-img">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">BO6</h4>
                         </div>
                     </div>
                 </a>
-                <a href="../BLACK OPS 7/BO7.html" class="meta-card small-card">
+                <a href="../BLACK OPS 7/BO7.html" class="meta-card small-card card-bo7">
                     <div class="meta-media">
+                        <img src="cartas/Operaci%C3%B3n%20Black%20Ops%207.png" alt="Operador de Call of Duty: Black Ops 7" class="card-img">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">BO7</h4>
                         </div>
                     </div>
                 </a>
-                <a href="../CODM/CODM.html" class="meta-card small-card">
+                <a href="../CODM/CODM.html" class="meta-card small-card card-codm">
                     <div class="meta-media">
+                        <img src="cartas/Fantasma%20en%20la%20zona%20de%20guerra.png" alt="Ghost, operador de Call of Duty: Mobile" class="card-img">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">CODM</h4>
                         </div>
                     </div>
                 </a>
-                <a href="../BLACK OPS I/BOI.html" class="meta-card small-card">
+                <a href="../BLACK OPS I/BOI.html" class="meta-card small-card card-art">
                     <div class="meta-media">
+                        <img src="cartas/BO%20I.png" alt="Operativo de Call of Duty: Black Ops" class="card-img">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">BOI</h4>
                         </div>
                     </div>
                 </a>
-                <a href="../BLACK OPS II/BOII.html" class="meta-card small-card">
+                <a href="../BLACK OPS II/BOII.html" class="meta-card small-card card-art">
                     <div class="meta-media">
+                        <img src="cartas/BO%20II.png" alt="Operativo de Call of Duty: Black Ops II" class="card-img">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">BOII</h4>
                         </div>
                     </div>
                 </a>
-                <a href="../BLACK OPS III/BOIII.html" class="meta-card small-card">
+                <a href="../BLACK OPS III/BOIII.html" class="meta-card small-card card-boiii">
                     <div class="meta-media">
+                        <img src="cartas/BOIII.png" alt="Operador de Call of Duty: Black Ops III" class="card-img">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">BOIII</h4>
                         </div>
                     </div>
                 </a>
-                <a href="../MW 2019/MW.html" class="meta-card small-card">
+                <a href="../MW 2019/MW.html" class="meta-card small-card card-mw2019">
                     <div class="meta-media">
+                        <img src="cartas/Capit%C3%A1n%20Price%20en%20zona%20de%20guerra.png" alt="Capitán Price de Call of Duty: Modern Warfare (2019)" class="card-img">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">MW2019</h4>
                         </div>
                     </div>
                 </a>
-                <a href="../MW 4/MW4.html" class="meta-card small-card">
+                <a href="../MW 4/MW4.html" class="meta-card small-card card-mw4">
                     <div class="meta-media">
+                        <img src="cartas/mw4.png" alt="Operador de Call of Duty: Modern Warfare 4" class="card-img">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">MW4</h4>
                         </div>
                     </div>
                 </a>
-                <a href="../WWII/WWII.html" class="meta-card small-card">
+                <a href="../WWII/WWII.html" class="meta-card small-card card-art">
                     <div class="meta-media">
+                        <img src="cartas/Asalto%20en%20la%20playa_%20Call%20of%20Duty%20WWII.png" alt="Soldado de Call of Duty: WWII" class="card-img">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">WWII</h4>
                         </div>
                     </div>
                 </a>
-                <a href="../VANGUARD/VANGUARD.html" class="meta-card small-card">
+                <a href="../VANGUARD/VANGUARD.html" class="meta-card small-card card-vanguard">
                     <div class="meta-media">
+                        <img src="cartas/Soldado%20entre%20ruinas%20y%20fuego%20velado.png" alt="Soldado de Call of Duty: Vanguard" class="card-img">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">VANGUARD</h4>
                         </div>
                     </div>
                 </a>
-                <a href="../MWREMASTERED/MWREMASTERED.html" class="meta-card small-card">
+                <a href="../MWREMASTERED/MWREMASTERED.html" class="meta-card small-card card-art">
                     <div class="meta-media">
+                        <img src="cartas/Soldado%20de%20guerra%20moderna%20remasterizada.png" alt="Soldado de Call of Duty: Modern Warfare Remastered" class="card-img">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">MWREMASTERED</h4>
                         </div>
                     </div>
                 </a>
-                <a href="../MW3/MW3.html" class="meta-card small-card">
+                <a href="../MW3/MW3.html" class="meta-card small-card card-art">
                     <div class="meta-media">
+                        <img src="cartas/Soldado%20entre%20ruinas%20y%20humo%D5%A1%D5%AF%D5%A1%D5%AC.png" alt="Soldado de Call of Duty: Modern Warfare 3" class="card-img">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">MW3</h4>
                         </div>
                     </div>
                 </a>
-                <a href="../MW2007/MW2007.html" class="meta-card small-card">
+                <a href="../MW2007/MW2007.html" class="meta-card small-card card-art">
                     <div class="meta-media">
+                        <img src="cartas/Soldado%20entre%20humo%20y%20ruinas.png" alt="Soldado de Call of Duty 4: Modern Warfare" class="card-img">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">MW2007</h4>
                         </div>
                     </div>
                 </a>
-                <a href="../MW2/MW2.html" class="meta-card small-card">
+                <a href="../MW2/MW2.html" class="meta-card small-card card-art">
                     <div class="meta-media">
+                        <img src="cartas/Soldado%20en%20ruinas%20bajo%20humo.png" alt="Soldado de Call of Duty: Modern Warfare 2" class="card-img">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">MW2</h4>
                         </div>
                     </div>
                 </a>
-                <a href="../MW 2 REMASTERED/MW2REMASTERED.html" class="meta-card small-card">
+                <a href="../MW 2 REMASTERED/MW2REMASTERED.html" class="meta-card small-card card-mw2r">
                     <div class="meta-media">
+                        <img src="cartas/Soldado%20en%20la%20bruma_%20Fuerza%20Operativa%20141.png" alt="Soldado de Call of Duty: Modern Warfare 2 Remastered" class="card-img">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">MW2REMASTERED</h4>
                         </div>
                     </div>
                 </a>
-                <a href="../INFINITE/INFINITE.html" class="meta-card small-card">
+                <a href="../INFINITE/INFINITE.html" class="meta-card small-card card-art">
                     <div class="meta-media">
+                        <img src="cartas/Soldado%20SATO%20en%20guerra%20espacial.png" alt="Soldado de Call of Duty: Infinite Warfare" class="card-img">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">INFINITE</h4>
                         </div>
                     </div>
                 </a>
-                <a href="../GHOSTS/GHOSTS.html" class="meta-card small-card">
+                <a href="../GHOSTS/GHOSTS.html" class="meta-card small-card card-art">
                     <div class="meta-media">
+                        <img src="cartas/Operaci%C3%B3n%20Fantasma%20en%20la%20Niebla.png" alt="Soldado de Call of Duty: Ghosts" class="card-img">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">GHOSTS</h4>
                         </div>
                     </div>
                 </a>
-                <a href="../COLD WAR/COLDWAR.html" class="meta-card small-card">
+                <a href="../COLD WAR/COLDWAR.html" class="meta-card small-card card-coldwar">
                     <div class="meta-media">
+                        <img src="cartas/Operativo%20de%20la%20Guerra%20Fr%C3%ADa.png" alt="Operativo de Call of Duty: Black Ops Cold War" class="card-img">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">COLD WAR</h4>
                         </div>
                     </div>
                 </a>
-                <a href="../BLACK OPS IIII/BOIIII.html" class="meta-card small-card">
+                <a href="../BLACK OPS IIII/BOIIII.html" class="meta-card small-card card-boiiii">
                     <div class="meta-media">
+                        <img src="cartas/Soldado%20t%C3%A1ctico%20entre%20humo%20y%20fuego.png" alt="Soldado de Call of Duty: Black Ops 4" class="card-img">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">BOIIII</h4>
                         </div>
                     </div>
                 </a>
-                <a href="../ADVANCED/ADVANCED.html" class="meta-card small-card">
+                <a href="../ADVANCED/ADVANCED.html" class="meta-card small-card card-art">
                     <div class="meta-media">
+                        <img src="cartas/Soldado%20Atlas%20en%20guerra%20futurista.png" alt="Soldado de Call of Duty: Advanced Warfare" class="card-img">
                         <div class="meta-overlay">
                             <h4 class="meta-title small">ADVANCED</h4>
                         </div>
@@ -1643,6 +1796,219 @@
                 event.preventDefault();
                 event.stopPropagation();
             }, true);
+            track.addEventListener('click', event => {
+                const link = event.target.closest('a.meta-card');
+                if (!(link instanceof HTMLAnchorElement) ||
+                    event.defaultPrevented ||
+                    event.button !== 0 ||
+                    event.ctrlKey || event.metaKey || event.shiftKey || event.altKey ||
+                    link.hasAttribute('download') ||
+                    (link.target && link.target !== '_self') ||
+                    prefersReducedMotion.matches) return;
+
+                const image = link.querySelector('img.card-img');
+                if (!image || typeof HTMLElement.prototype.animate !== 'function') return;
+
+                const destination = new URL(link.href, window.location.href);
+                if (destination.origin !== window.location.origin) return;
+
+                const bounds = image.getBoundingClientRect();
+                if (bounds.width <= 0 || bounds.height <= 0) return;
+
+                event.preventDefault();
+                const imageStyle = window.getComputedStyle(image);
+                const transition = document.createElement('div');
+                transition.className = 'game-entry-transition';
+                transition.setAttribute('aria-hidden', 'true');
+                const gameGlow = window.getComputedStyle(link).getPropertyValue('--game-glow').trim();
+                Object.assign(transition.style, {
+                    left: `${bounds.left}px`,
+                    top: `${bounds.top}px`,
+                    width: `${bounds.width}px`,
+                    height: `${bounds.height}px`,
+                    borderRadius: window.getComputedStyle(link).borderRadius,
+                    '--entry-glow': gameGlow || 'rgba(69,198,255,.75)'
+                });
+
+                const expandedImage = document.createElement('img');
+                expandedImage.src = image.currentSrc || image.src;
+                expandedImage.alt = '';
+                expandedImage.draggable = false;
+                Object.assign(expandedImage.style, {
+                    objectFit: 'contain',
+                    objectPosition: 'center',
+                    filter: imageStyle.filter
+                });
+                const shade = document.createElement('div');
+                shade.className = 'game-entry-transition-shade';
+                const flash = document.createElement('div');
+                flash.className = 'game-entry-transition-flash';
+                const backdrop = document.createElement('div');
+                backdrop.className = 'game-entry-backdrop';
+                document.body.append(backdrop);
+                const caption = document.createElement('div');
+                caption.className = 'game-entry-caption';
+                const kicker = document.createElement('span');
+                kicker.className = 'game-entry-kicker';
+                kicker.textContent = 'PREPARANDO OPERACIÓN';
+                const title = document.createElement('span');
+                title.className = 'game-entry-title';
+                title.textContent = link.querySelector('.meta-title')?.textContent.trim() || '';
+                const progress = document.createElement('div');
+                progress.className = 'game-entry-progress';
+                progress.setAttribute('aria-hidden', 'true');
+                const progressFill = document.createElement('div');
+                progressFill.className = 'game-entry-progress-fill';
+                progress.append(progressFill);
+                caption.append(kicker, title, progress);
+                const transitionDuration = 2000;
+                transition.append(expandedImage, shade, caption, flash);
+                document.body.append(transition);
+
+                const coverWidth = window.innerWidth;
+                const coverHeight = window.innerHeight;
+                const centerX = coverWidth / 2;
+                const centerY = coverHeight / 2;
+                const coverScale = Math.max(coverWidth / bounds.width, coverHeight / bounds.height);
+                const sourceFitScale = Math.min(
+                    bounds.width / image.naturalWidth,
+                    bounds.height / image.naturalHeight
+                );
+                const cleanScaleLimit = 1.35 / sourceFitScale;
+                const transitionScale = Math.min(coverScale, cleanScaleLimit);
+                const heroScale = Math.min(transitionScale, Math.min(
+                    Math.min(coverWidth * 0.56, 440) / bounds.width,
+                    Math.min(coverHeight * 0.7, 700) / bounds.height
+                ));
+                const heroWidth = bounds.width * heroScale;
+                const heroHeight = bounds.height * heroScale;
+                const heroLeft = centerX - heroWidth / 2;
+                const heroTop = centerY - heroHeight / 2;
+                const endWidth = bounds.width * transitionScale;
+                const endHeight = bounds.height * transitionScale;
+                const endLeft = centerX - endWidth / 2;
+                const endTop = centerY - endHeight / 2;
+                const imageNeedsQualityFade = transitionScale < coverScale;
+                const animationEndOpacity = imageNeedsQualityFade ? 0 : 1;
+                const animation = transition.animate([
+                    {
+                        left: `${bounds.left}px`,
+                        top: `${bounds.top}px`,
+                        width: `${bounds.width}px`,
+                        height: `${bounds.height}px`,
+                        borderRadius: window.getComputedStyle(link).borderRadius,
+                        opacity: 0.82,
+                        transform: 'perspective(1100px) rotateX(7deg) rotateY(-5deg)',
+                        easing: 'cubic-bezier(.2,.75,.25,1)'
+                    },
+                    {
+                        left: `${heroLeft}px`,
+                        top: `${heroTop}px`,
+                        width: `${heroWidth}px`,
+                        height: `${heroHeight}px`,
+                        borderRadius: '10px',
+                        opacity: 1,
+                        transform: 'perspective(1100px) rotateX(0deg) rotateY(0deg)',
+                        easing: 'cubic-bezier(.16,1,.3,1)',
+                        offset: 0.42
+                    },
+                    {
+                        left: `${heroLeft}px`,
+                        top: `${heroTop}px`,
+                        width: `${heroWidth}px`,
+                        height: `${heroHeight}px`,
+                        borderRadius: '10px',
+                        opacity: 1,
+                        transform: 'perspective(1100px) rotateX(0deg) rotateY(0deg)',
+                        easing: 'cubic-bezier(.65,0,.85,.15)',
+                        offset: 0.55
+                    },
+                    {
+                        left: `${endLeft}px`,
+                        top: `${endTop}px`,
+                        width: `${endWidth}px`,
+                        height: `${endHeight}px`,
+                        borderRadius: '0px',
+                        opacity: 1,
+                        transform: 'perspective(1100px) rotateX(0deg) rotateY(0deg)',
+                        easing: 'cubic-bezier(.18,.78,.22,1)',
+                        offset: 0.94
+                    },
+                    {
+                        left: `${endLeft}px`,
+                        top: `${endTop}px`,
+                        width: `${endWidth}px`,
+                        height: `${endHeight}px`,
+                        borderRadius: '0px',
+                        opacity: animationEndOpacity,
+                        transform: 'perspective(1100px) rotateX(0deg) rotateY(0deg)'
+                    }
+                ], {
+                    duration: transitionDuration,
+                    fill: 'forwards'
+                });
+                transition.animate([
+                    { opacity: 0.35, backgroundPosition: 'center,left center', offset: 0 },
+                    { opacity: 0.95, backgroundPosition: 'center,center center', offset: 0.42 },
+                    { opacity: 0.7, backgroundPosition: 'center,center center', offset: 0.55 },
+                    { opacity: 1, backgroundPosition: 'center,right center', offset: 0.88 },
+                    { opacity: 0.5, backgroundPosition: 'center,right center', offset: 1 }
+                ], {
+                    duration: transitionDuration,
+                    easing: 'ease-out',
+                    fill: 'forwards',
+                    pseudoElement: '::before'
+                });
+                transition.animate([
+                    { opacity: 0, backgroundPosition: 'center,left center', offset: 0 },
+                    { opacity: 0.15, backgroundPosition: 'center,center center', offset: 0.42 },
+                    { opacity: 0.05, backgroundPosition: 'center,center center', offset: 0.55 },
+                    { opacity: 0.82, backgroundPosition: 'center,right center', offset: 0.88 },
+                    { opacity: 0.2, backgroundPosition: 'center,right center', offset: 1 }
+                ], {
+                    duration: transitionDuration,
+                    easing: 'cubic-bezier(.2,.72,.18,1)',
+                    fill: 'forwards',
+                    pseudoElement: '::after'
+                });
+                shade.animate([{ opacity: 0 }, { opacity: 0.5, offset: 0.42 }, { opacity: 0.58, offset: 0.55 }, { opacity: 0.32, offset: 0.94 }, { opacity: 0.4 }], {
+                    duration: transitionDuration,
+                    easing: 'ease-out',
+                    fill: 'forwards'
+                });
+                title.animate([
+                    { opacity: 0, transform: 'translateY(22px) scale(.94)', offset: 0 },
+                    { opacity: 1, transform: 'translateY(0) scale(1)', offset: 0.34 },
+                    { opacity: 1, transform: 'translateY(0) scale(1)', offset: 0.54 },
+                    { opacity: 0, transform: 'translateY(-12px) scale(1.04)', offset: 0.78 },
+                    { opacity: 0, transform: 'translateY(-12px) scale(1.04)', offset: 1 }
+                ], { duration: transitionDuration, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'forwards' });
+                progressFill.animate([
+                    { transform: 'scaleX(0)', offset: 0 },
+                    { transform: 'scaleX(.68)', offset: 0.42 },
+                    { transform: 'scaleX(.75)', offset: 0.55 },
+                    { transform: 'scaleX(1)', offset: 0.93 },
+                    { transform: 'scaleX(1)', offset: 1 }
+                ], { duration: transitionDuration, easing: 'linear', fill: 'forwards' });
+                backdrop.animate([
+                    { opacity: 0, backdropFilter: 'blur(0px)' },
+                    { opacity: 1, backdropFilter: 'blur(5px)' }
+                ], { duration: transitionDuration * 0.3, easing: 'ease-out', fill: 'forwards' });
+                flash.animate([
+                    { opacity: 0, transform: 'scale(.45)', offset: 0 },
+                    { opacity: 0, transform: 'scale(.7)', offset: 0.72 },
+                    { opacity: 0.9, transform: 'scale(1.12)', offset: 0.87 },
+                    { opacity: 0, transform: 'scale(1.3)', offset: 1 }
+                ], { duration: transitionDuration, easing: 'ease-out', fill: 'forwards' });
+                let navigated = false;
+                const navigate = () => {
+                    if (navigated) return;
+                    navigated = true;
+                    window.location.assign(destination.href);
+                };
+                animation.onfinish = navigate;
+                window.setTimeout(navigate, transitionDuration + 700);
+            });
         })();
     </script>
 
@@ -1786,7 +2152,67 @@
             'camo-cod-hq-codm-special-progress',
             'camo-cod-hq-codm-mastery',
             'camo-cod-hq-mw2019-progress',
-            'camo-cod-hq-mw2019-mastery'
+            'camo-cod-hq-mw2019-mastery',
+            'camo-cod-hq-mw-progress',
+            'camo-cod-hq-mw-special-progress',
+            'camo-cod-hq-mw-mastery',
+            'camo-cod-hq-mw2-progress',
+            'camo-cod-hq-mw2-special-progress',
+            'camo-cod-hq-mw2-mastery',
+            'camo-cod-hq-boi-progress',
+            'camo-cod-hq-boi-special-progress',
+            'camo-cod-hq-boi-mastery',
+            'camo-cod-hq-boii-progress',
+            'camo-cod-hq-boii-special-progress',
+            'camo-cod-hq-boii-mastery',
+            'camo-cod-hq-mw3-progress',
+            'camo-cod-hq-mw3-special-progress',
+            'camo-cod-hq-mw3-mastery',
+            'camo-cod-hq-gosts-progress',
+            'camo-cod-hq-gosts-special-progress',
+            'camo-cod-hq-gosts-mastery',
+            'camo-cod-hq-aw-progress',
+            'camo-cod-hq-aw-special-progress',
+            'camo-cod-hq-aw-mastery',
+            'camo-cod-hq-boiii-progress',
+            'camo-cod-hq-boiii-special-progress',
+            'camo-cod-hq-boiii-mastery',
+            'camo-cod-hq-infinite-progress',
+            'camo-cod-hq-infinite-special-progress',
+            'camo-cod-hq-infinite-mastery',
+            'camo-cod-hq-mwr-progress',
+            'camo-cod-hq-mwr-special-progress',
+            'camo-cod-hq-mwr-mastery',
+            'camo-cod-hq-wwii-progress',
+            'camo-cod-hq-wwii-special-progress',
+            'camo-cod-hq-wwii-mastery',
+            'camo-cod-hq-boiiii-progress',
+            'camo-cod-hq-boiiii-special-progress',
+            'camo-cod-hq-boiiii-mastery',
+            'camo-cod-hq-bocw-progress',
+            'camo-cod-hq-bocw-special-progress',
+            'camo-cod-hq-bocw-mastery',
+            'camo-cod-hq-warzone-progress',
+            'camo-cod-hq-warzone-special-progress',
+            'camo-cod-hq-warzone-mastery',
+            'camo-cod-hq-mw2r-progress',
+            'camo-cod-hq-mw2r-special-progress',
+            'camo-cod-hq-mw2r-mastery',
+            'camo-cod-hq-vanguard-progress',
+            'camo-cod-hq-vanguard-special-progress',
+            'camo-cod-hq-vanguard-mastery',
+            'camo-cod-hq-mwii-progress',
+            'camo-cod-hq-mwii-special-progress',
+            'camo-cod-hq-mwii-mastery',
+            'camo-cod-hq-mwiii-progress',
+            'camo-cod-hq-mwiii-special-progress',
+            'camo-cod-hq-mwiii-mastery',
+            'camo-cod-hq-bo6-progress',
+            'camo-cod-hq-bo6-special-progress',
+            'camo-cod-hq-bo6-mastery',
+            'camo-cod-hq-bo7-progress',
+            'camo-cod-hq-bo7-special-progress',
+            'camo-cod-hq-bo7-mastery'
         ];
         const exportProgress = () => {
             const progress = {};
@@ -2050,15 +2476,50 @@
             if (!file) return;
             try {
                 const data = JSON.parse(await file.text());
-                if (data?.format !== 'camo-cod-hq' || !data.progress || typeof data.progress !== 'object') throw new Error('Formato no reconocido');
-                if (!confirm('La importación reemplazará el progreso local guardado. ¿Continuar?')) return;
-                Object.entries(data.progress).forEach(([key, value]) => {
-                    if (progressKeys.includes(key) && value && typeof value === 'object') localStorage.setItem(key, JSON.stringify(value));
-                });
-                alert('Progreso importado. Abre de nuevo el juego para verlo.');
+                if (
+                    data?.format !== 'camo-cod-hq'
+                    || data.version !== 1
+                    || !data.progress
+                    || typeof data.progress !== 'object'
+                    || Array.isArray(data.progress)
+                ) {
+                    throw new Error('Formato de copia no reconocido');
+                }
+                const entries = Object.entries(data.progress);
+                if (entries.some(([key, value]) => (
+                    !progressKeys.includes(key)
+                    || !value
+                    || typeof value !== 'object'
+                    || Array.isArray(value)
+                ))) {
+                    throw new Error('La copia contiene datos incompatibles');
+                }
+                if (!confirm('Restaurar reemplazará el progreso de Call of Duty guardado en este dispositivo. Para no perderlo, descarga primero una copia de seguridad. ¿Continuar?')) return;
+
+                const previousProgress = new Map(progressKeys.map(key => [key, localStorage.getItem(key)]));
+                try {
+                    progressKeys.forEach(key => {
+                        if (Object.prototype.hasOwnProperty.call(data.progress, key)) {
+                            localStorage.setItem(key, JSON.stringify(data.progress[key]));
+                        } else {
+                            localStorage.removeItem(key);
+                        }
+                    });
+                } catch (error) {
+                    try {
+                        progressKeys.forEach(key => localStorage.removeItem(key));
+                        previousProgress.forEach((value, key) => {
+                            if (value !== null) localStorage.setItem(key, value);
+                        });
+                    } catch (restoreError) {
+                        console.error('No se pudo revertir la restauración incompleta', restoreError);
+                    }
+                    throw error;
+                }
+                alert('Progreso restaurado. Recarga las páginas de juego que tengas abiertas para ver los cambios.');
             } catch (error) {
                 console.error('No se pudo importar el progreso', error);
-                alert('El archivo no es un respaldo válido de CAMO COD HQ.');
+                alert('No se pudo restaurar la copia. Comprueba que sea un archivo de copia de seguridad válido de CAMO COD HQ.');
             } finally {
                 importFile.value = '';
             }
@@ -2101,6 +2562,7 @@
             localStorage.setItem('camo-last-report', String(Date.now()));
             reportForm.reset();
             reportMessage.textContent = 'Reporte enviado. Gracias por ayudar a mejorar la web.';
+            window.dispatchEvent(new CustomEvent('camo-report-submitted'));
         });
 
         const newsDialog = document.querySelector('#newsDialog');
@@ -2110,6 +2572,208 @@
         const newsClient = newsConfig.url && newsConfig.anonKey
             ? window.supabase.createClient(newsConfig.url, newsConfig.anonKey)
             : null;
+        const adminReportsButton = document.querySelector('[data-admin-reports]');
+        const reportCountBadge = document.querySelector('[data-report-count]');
+        const toolsReportCountBadge = document.querySelector('[data-tools-report-count]');
+        const userReportsDialog = document.querySelector('#userReportsDialog');
+        const userReportsMessage = document.querySelector('#userReportsMessage');
+        const userReportsList = document.querySelector('#userReportsList');
+        const userReportsStatusFilter = document.querySelector('#userReportsStatusFilter');
+        const userReportsTypeFilter = document.querySelector('#userReportsTypeFilter');
+        const userReportsGameFilter = document.querySelector('#userReportsGameFilter');
+        const reportTypeLabels = {
+            imagen: 'Imagen incorrecta',
+            arma: 'Arma nueva',
+            nombre: 'Nombre o requisito incorrecto',
+            otro: 'Otro'
+        };
+        const reportStatusLabels = {
+            pending: 'Pendiente',
+            reviewed: 'Revisado',
+            resolved: 'Resuelto'
+        };
+        let userReports = [];
+
+        const refreshReportCount = async () => {
+            if (adminReportsButton.hidden || !newsClient) return;
+            try {
+                const { count, error } = await newsClient
+                    .from('camo_reports')
+                    .select('id', { count: 'exact', head: true })
+                    .is('read_at', null);
+                if (error) {
+                    console.warn('No se pudo actualizar el contador de reportes', error);
+                    return;
+                }
+                const unreadCount = count || 0;
+                [reportCountBadge, toolsReportCountBadge].forEach(badge => {
+                    if (!badge) return;
+                    badge.textContent = unreadCount > 99 ? '99+' : String(unreadCount);
+                    badge.hidden = unreadCount === 0;
+                    badge.setAttribute('aria-label', `${unreadCount} reportes sin leer`);
+                });
+            } catch (error) {
+                console.warn('No se pudo actualizar el contador de reportes', error);
+            }
+        };
+
+        const mostrarReportes = () => {
+            const statusFilter = userReportsStatusFilter.value;
+            const typeFilter = userReportsTypeFilter.value;
+            const gameFilter = userReportsGameFilter.value;
+            const filteredReports = userReports.filter(report => (
+                (statusFilter === 'all' || report.status === statusFilter)
+                && (typeFilter === 'all' || report.type === typeFilter)
+                && (gameFilter === 'all' || report.game === gameFilter)
+            ));
+
+            if (!filteredReports.length) {
+                userReportsList.replaceChildren();
+                userReportsMessage.textContent = userReports.length
+                    ? 'No hay reportes con esos filtros.'
+                    : 'Todavía no hay reportes.';
+                return;
+            }
+
+            userReportsList.replaceChildren(...filteredReports.map(report => {
+                const article = document.createElement('article');
+                article.className = 'user-report-item';
+
+                const heading = document.createElement('h3');
+                heading.textContent = `${reportTypeLabels[report.type] || 'Reporte'} · ${report.game}`;
+
+                const date = document.createElement('time');
+                const createdAt = new Date(report.created_at);
+                date.dateTime = createdAt.toISOString();
+                date.textContent = createdAt.toLocaleString('es-ES');
+
+                const details = document.createElement('p');
+                details.textContent = report.details;
+
+                const status = document.createElement('span');
+                status.className = 'user-report-status';
+                status.textContent = reportStatusLabels[report.status] || reportStatusLabels.pending;
+
+                const actions = document.createElement('div');
+                actions.className = 'user-report-actions';
+                const availableActions = report.status === 'pending'
+                    ? [['reviewed', 'Marcar revisado'], ['resolved', 'Marcar resuelto']]
+                    : report.status === 'reviewed'
+                        ? [['resolved', 'Marcar resuelto'], ['pending', 'Reabrir']]
+                        : [['pending', 'Reabrir']];
+                availableActions.forEach(([nextStatus, label]) => {
+                    const button = document.createElement('button');
+                    button.className = 'btn';
+                    button.type = 'button';
+                    button.dataset.reportId = String(report.id);
+                    button.dataset.reportStatus = nextStatus;
+                    button.textContent = label;
+                    actions.appendChild(button);
+                });
+
+                article.append(heading, date, status, details, actions);
+                return article;
+            }));
+            userReportsMessage.textContent = `Mostrando ${filteredReports.length} de ${userReports.length} reportes.`;
+        };
+
+        const actualizarFiltroJuegos = (reports) => {
+            const selectedGame = userReportsGameFilter.value;
+            const games = [...new Set(reports.map(report => report.game).filter(Boolean))]
+                .sort((left, right) => left.localeCompare(right, 'es'));
+            userReportsGameFilter.replaceChildren(new Option('Todos', 'all'));
+            games.forEach(game => userReportsGameFilter.add(new Option(game, game)));
+            userReportsGameFilter.value = games.includes(selectedGame) ? selectedGame : 'all';
+        };
+
+        const cargarReportesDeUsuario = async () => {
+            if (!newsClient) throw new Error('El servicio de reportes no está disponible.');
+
+            const { data: reports, error } = await newsClient
+                .from('camo_reports')
+                .select('id, type, game, details, created_at, read_at, status')
+                .order('created_at', { ascending: false })
+                .limit(100);
+            if (error) throw error;
+
+            userReports = reports || [];
+            actualizarFiltroJuegos(userReports);
+            mostrarReportes();
+            const unreadIds = (reports || []).filter(report => !report.read_at).map(report => report.id);
+            if (unreadIds.length) {
+                const { error: markReadError } = await newsClient
+                    .from('camo_reports')
+                    .update({ read_at: new Date().toISOString() })
+                    .in('id', unreadIds);
+                if (markReadError) {
+                    console.error('No se pudieron marcar los reportes como leídos', markReadError);
+                    userReportsMessage.textContent += ' No se pudieron marcar como leídos.';
+                }
+            }
+            await refreshReportCount();
+        };
+
+        [userReportsStatusFilter, userReportsTypeFilter, userReportsGameFilter].forEach(filter => {
+            filter.addEventListener('change', mostrarReportes);
+        });
+        userReportsList.addEventListener('click', async event => {
+            const button = event.target.closest('[data-report-id][data-report-status]');
+            if (!button) return;
+            button.disabled = true;
+            const report = userReports.find(item => String(item.id) === button.dataset.reportId);
+            if (!report) {
+                button.disabled = false;
+                return;
+            }
+            try {
+                const { error } = await newsClient
+                    .from('camo_reports')
+                    .update({ status: button.dataset.reportStatus })
+                    .eq('id', report.id);
+                if (error) throw error;
+                report.status = button.dataset.reportStatus;
+                mostrarReportes();
+                await refreshReportCount();
+            } catch (error) {
+                console.error('No se pudo actualizar el estado del reporte', error);
+                userReportsMessage.textContent = 'No se pudo actualizar el reporte. Inténtalo de nuevo.';
+                button.disabled = false;
+            }
+        });
+
+        adminReportsButton?.addEventListener('click', async () => {
+            if (adminReportsButton.hidden) return;
+            userReportsMessage.textContent = 'Cargando reportes...';
+            userReportsList.replaceChildren();
+            userReportsDialog.showModal();
+            try {
+                await cargarReportesDeUsuario();
+            } catch (error) {
+                console.error('No se pudieron cargar los reportes de usuario', error);
+                userReportsMessage.textContent = 'No se pudieron cargar los reportes. Comprueba que la migración de Supabase esté aplicada.';
+            }
+        });
+        document.querySelector('[data-user-reports-close]')?.addEventListener('click', () => userReportsDialog?.close());
+
+        window.addEventListener('camo-admin-access-updated', event => {
+            if (event.detail?.isAdmin) {
+                refreshReportCount();
+            } else if (reportCountBadge) {
+                reportCountBadge.hidden = true;
+                reportCountBadge.textContent = '0';
+                if (toolsReportCountBadge) {
+                    toolsReportCountBadge.hidden = true;
+                    toolsReportCountBadge.textContent = '0';
+                }
+            }
+        });
+        window.addEventListener('camo-report-submitted', refreshReportCount);
+        window.setInterval(() => {
+            if (!document.hidden) refreshReportCount();
+        }, 30000);
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) refreshReportCount();
+        });
 
         const mostrarNoticias = (news) => {
             newsList.replaceChildren(...news.map(item => {

@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#071026">
+    <title>Revisar horas jugadas - CAMO COD HQ</title>
+    <style>
+        :root { color-scheme:dark; font-family:Inter,system-ui,sans-serif; background:#071026; color:#fff; --muted:#98a0b3; --border:rgba(255,255,255,.12); }
+        * { box-sizing:border-box; }
+        body { width:min(100% - 32px,960px); margin:0 auto; padding:28px 0 56px; }
+        header { display:flex; justify-content:space-between; align-items:center; gap:14px; padding-bottom:18px; border-bottom:1px solid var(--border); }
+        h1 { margin:0; font-size:clamp(24px,5vw,36px); }
+        h2 { margin:0; font-size:17px; }
+        .muted,#status { color:var(--muted); line-height:1.5; }
+        #status { min-height:24px; }
+        .actions,.review-actions { display:flex; flex-wrap:wrap; gap:8px; }
+        button,a.btn { display:inline-flex; align-items:center; justify-content:center; min-height:40px; padding:9px 13px; border:1px solid #155e75; border-radius:8px; background:#0e7490; color:#fff; font:inherit; text-decoration:none; cursor:pointer; }
+        button.secondary,a.secondary { background:transparent; border-color:var(--border); }
+        button.reject { background:#7f1d1d; border-color:#991b1b; }
+        button:disabled { opacity:.55; cursor:wait; }
+        [hidden] { display:none !important; }
+        .review-list { display:grid; gap:16px; }
+        .review-card { display:grid; grid-template-columns:minmax(0,1fr) minmax(220px,.8fr); gap:18px; padding:18px; border:1px solid var(--border); border-radius:12px; background:rgba(16,23,34,.9); }
+        .proof-image { display:block; width:100%; max-height:440px; object-fit:contain; object-position:top; border:1px solid var(--border); border-radius:8px; background:#05060a; }
+        .proof-meta { display:grid; align-content:start; gap:8px; }
+        .proof-meta p { margin:0; color:var(--muted); font-size:13px; overflow-wrap:anywhere; }
+        .proof-meta strong { color:#fff; }
+        .review-note { width:100%; min-height:76px; resize:vertical; padding:10px; border:1px solid var(--border); border-radius:7px; background:#080d14; color:#fff; font:inherit; }
+        @media (max-width:640px) { body { width:min(100% - 24px,960px); padding-top:16px; } header { align-items:flex-start; flex-direction:column; } .review-card { grid-template-columns:1fr; padding:13px; } .proof-image { max-height:320px; } }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <h1>Revisar horas jugadas</h1>
+            <p class="muted">Las capturas solo son visibles aquí para administradores y para el propietario.</p>
+        </div>
+        <div class="actions">
+            <a class="btn secondary" href="Camos UEM.html">Volver a CAMO COD HQ</a>
+            <button class="secondary" id="signOut" type="button" hidden>Cerrar sesión</button>
+        </div>
+    </header>
+    <p id="status" role="status">Comprobando permisos...</p>
+    <section id="reviewPanel" hidden aria-label="Solicitudes para revisar">
+        <div class="actions" style="margin-bottom:14px">
+            <button id="refresh" type="button">Actualizar solicitudes</button>
+        </div>
+        <div class="review-list" id="reviewList"></div>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script>
+        (() => {
+            const config = window.CAMO_SUPABASE_CONFIG || {};
+            const client = config.url && config.anonKey && window.supabase
+                ? window.supabase.createClient(config.url, config.anonKey)
+                : null;
+            const status = document.querySelector('#status');
+            const panel = document.querySelector('#reviewPanel');
+            const list = document.querySelector('#reviewList');
+            const signOut = document.querySelector('#signOut');
+            const games = {
+                MW2007: 'Call of Duty 4: Modern Warfare',
+                MW2: 'Modern Warfare 2 (2009)',
+                BOI: 'Black Ops',
+                MW3: 'Modern Warfare 3 (2011)',
+                BOII: 'Black Ops II',
+                GHOSTS: 'Ghosts',
+                ADVANCED: 'Advanced Warfare',
+                BOIII: 'Black Ops III',
+                INFINITE: 'Infinite Warfare',
+                MWREMASTERED: 'Modern Warfare Remastered',
+                WWII: 'WWII',
+                BOIIII: 'Black Ops 4',
+                CODM: 'Call of Duty: Mobile',
+                MW2019: 'Modern Warfare (2019)',
+                WARZONE: 'Warzone',
+                MW2REMASTERED: 'Modern Warfare 2 Remastered',
+                COLDWAR: 'Black Ops Cold War',
+                VANGUARD: 'Vanguard',
+                MWII: 'Modern Warfare II (2022)',
+                MWIII: 'Modern Warfare III (2023)',
+                BO6: 'Black Ops 6',
+                BO7: 'Black Ops 7',
+                MW4: 'Modern Warfare 4'
+            };
+            const addText = (parent, tag, className, text) => {
+                const element = document.createElement(tag);
+                element.className = className;
+                element.textContent = text;
+                parent.appendChild(element);
+                return element;
+            };
+
+            const render = async () => {
+                status.textContent = 'Cargando solicitudes pendientes...';
+                const { data: submissions, error } = await client
+                    .from('playtime_submissions')
+                    .select('id, user_id, game_key, platform, device, hours, screenshot_path, created_at')
+                    .eq('status', 'pending')
+                    .order('created_at', { ascending: true })
+                    .limit(50);
+                if (error) throw new Error(`No se pudieron cargar las solicitudes: ${error.message}`);
+
+                list.replaceChildren();
+                if (!submissions?.length) {
+                    addText(list, 'p', 'muted', 'No hay solicitudes pendientes.');
+                    status.textContent = 'Bandeja actualizada.';
+                    return;
+                }
+
+                for (const submission of submissions) {
+                    const card = document.createElement('article');
+                    card.className = 'review-card';
+                    const imageCell = document.createElement('div');
+                    const { data: signedImage, error: imageError } = await client.storage
+                        .from('playtime-proofs')
+                        .createSignedUrl(submission.screenshot_path, 300);
+                    if (imageError) {
+                        addText(imageCell, 'p', 'muted', `No se pudo cargar la captura: ${imageError.message}`);
+                    } else {
+                        const image = document.createElement('img');
+                        image.className = 'proof-image';
+                        image.src = signedImage.signedUrl;
+                        image.alt = `Captura de prueba para ${games[submission.game_key] || submission.game_key}`;
+                        imageCell.appendChild(image);
+                    }
+
+                    const details = document.createElement('div');
+                    details.className = 'proof-meta';
+                    addText(details, 'p', '', `Jugador: ${submission.user_id}`);
+                    addText(details, 'p', '', `Juego: ${games[submission.game_key] || submission.game_key}`);
+                    addText(details, 'p', '', `Horas declaradas: ${submission.hours}`);
+                    addText(details, 'p', '', `Plataforma: ${submission.platform}`);
+                    addText(details, 'p', '', `Equipo: ${submission.device}`);
+                    addText(details, 'p', '', `Enviada: ${new Intl.DateTimeFormat('es-ES', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(submission.created_at))}`);
+                    const note = document.createElement('textarea');
+                    note.className = 'review-note';
+                    note.maxLength = 500;
+                    note.placeholder = 'Nota para el jugador (opcional, máximo 500 caracteres)';
+                    note.setAttribute('aria-label', 'Nota de revisión para el jugador');
+                    details.appendChild(note);
+
+                    const actions = document.createElement('div');
+                    actions.className = 'review-actions';
+                    const approve = document.createElement('button');
+                    approve.type = 'button';
+                    approve.textContent = 'Aprobar';
+                    const reject = document.createElement('button');
+                    reject.type = 'button';
+                    reject.className = 'reject';
+                    reject.textContent = 'Rechazar';
+                    actions.append(approve, reject);
+                    details.appendChild(actions);
+                    const review = async decision => {
+                        approve.disabled = true;
+                        reject.disabled = true;
+                        try {
+                            const { data: { user }, error: userError } = await client.auth.getUser();
+                            if (userError || !user) throw new Error('La sesión de administrador ha caducado.');
+                            const { data, error: reviewError } = await client
+                                .from('playtime_submissions')
+                                .update({
+                                    status: decision,
+                                    review_note: note.value.trim() || null,
+                                    reviewed_by: user.id,
+                                    reviewed_at: new Date().toISOString()
+                                })
+                                .eq('id', submission.id)
+                                .eq('status', 'pending')
+                                .select('id')
+                                .maybeSingle();
+                            if (reviewError) throw new Error(`No se pudo revisar la solicitud: ${reviewError.message}`);
+                            if (!data) throw new Error('La solicitud ya no está pendiente; actualiza la bandeja.');
+                            status.textContent = decision === 'approved'
+                                ? 'Captura aprobada y horas publicadas en el perfil.'
+                                : 'Captura rechazada. El propietario verá el estado en sus solicitudes.';
+                            await render();
+                        } catch (error) {
+                            status.textContent = error.message;
+                            approve.disabled = false;
+                            reject.disabled = false;
+                        }
+                    };
+                    approve.addEventListener('click', () => review('approved'));
+                    reject.addEventListener('click', () => review('rejected'));
+                    card.append(imageCell, details);
+                    list.appendChild(card);
+                }
+                status.textContent = `${submissions.length} solicitud${submissions.length === 1 ? '' : 'es'} pendiente${submissions.length === 1 ? '' : 's'}.`;
+            };
+
+            const init = async () => {
+                if (!client) throw new Error('Falta configurar Supabase.');
+                const { data: { user }, error: userError } = await client.auth.getUser();
+                if (userError || !user) throw new Error('Inicia sesión con una cuenta administradora.');
+                const { data: profile, error: profileError } = await client
+                    .from('profiles')
+                    .select('is_admin')
+                    .eq('user_id', user.id)
+                    .single();
+                if (profileError || !profile?.is_admin) throw new Error('Esta cuenta no tiene permisos de administrador.');
+                signOut.hidden = false;
+                panel.hidden = false;
+                await render();
+            };
+
+            document.querySelector('#refresh').addEventListener('click', () => {
+                render().catch(error => { status.textContent = error.message; });
+            });
+            signOut.addEventListener('click', async () => {
+                if (!client) return;
+                const { error } = await client.auth.signOut();
+                if (error) {
+                    status.textContent = `No se pudo cerrar la sesión: ${error.message}`;
+                    return;
+                }
+                panel.hidden = true;
+                signOut.hidden = true;
+                status.textContent = 'Sesión cerrada.';
+            });
+            init().catch(error => {
+                status.textContent = error.message;
+                panel.hidden = true;
+            });
+        })();
+    </script>
+</body>
+</html>

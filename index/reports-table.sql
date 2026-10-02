@@ -7,11 +7,77 @@ create table if not exists public.camo_reports (
     created_at timestamptz not null default now()
 );
 
+alter table public.camo_reports add column if not exists read_at timestamptz;
+alter table public.camo_reports add column if not exists status text not null default 'pending';
+alter table public.camo_reports drop constraint if exists camo_reports_status_check;
+alter table public.camo_reports
+    add constraint camo_reports_status_check
+    check (status in ('pending', 'reviewed', 'resolved'));
+alter table public.profiles add column if not exists is_admin boolean not null default false;
+
 alter table public.camo_reports enable row level security;
 
+revoke all on public.camo_reports from anon, authenticated;
 grant insert on public.camo_reports to anon, authenticated;
+grant select on public.camo_reports to authenticated;
+grant update (read_at, status) on public.camo_reports to authenticated;
 
 drop policy if exists "Anyone can submit camo reports" on public.camo_reports;
 create policy "Anyone can submit camo reports"
     on public.camo_reports for insert
     with check (user_id is null or user_id = auth.uid());
+
+drop policy if exists "Admins can read camo reports" on public.camo_reports;
+create policy "Admins can read camo reports"
+    on public.camo_reports for select
+    to authenticated
+    using (
+        exists (
+            select 1 from public.profiles
+            where user_id = auth.uid() and is_admin = true
+        )
+    );
+
+drop policy if exists "Admins can mark camo reports as read" on public.camo_reports;
+drop policy if exists "Admins can update camo report workflow" on public.camo_reports;
+create policy "Admins can update camo report workflow"
+    on public.camo_reports for update
+    to authenticated
+    using (
+        exists (
+            select 1 from public.profiles
+            where user_id = auth.uid() and is_admin = true
+        )
+    )
+    with check (
+        exists (
+            select 1 from public.profiles
+            where user_id = auth.uid() and is_admin = true
+        )
+    );
+
+create or replace function public.keep_profile_admin_server_managed()
+returns trigger
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+begin
+    if auth.uid() is not null then
+        if tg_op = 'INSERT' then
+            new.is_admin := false;
+        elsif new.is_admin is distinct from old.is_admin then
+            new.is_admin := old.is_admin;
+        end if;
+    end if;
+    return new;
+end;
+$$;
+
+revoke all on function public.keep_profile_admin_server_managed() from public;
+
+drop trigger if exists keep_profile_admin_server_managed on public.profiles;
+create trigger keep_profile_admin_server_managed
+    before insert or update on public.profiles
+    for each row
+    execute function public.keep_profile_admin_server_managed();

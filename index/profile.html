@@ -131,6 +131,33 @@
         .profile-editor select:disabled { opacity:.55; cursor:not-allowed; }
         .profile-editor .customization-row { display:flex; align-items:center; justify-content:space-between; gap:12px; }
         .profile-icon-option { width:34px; height:34px; object-fit:contain; vertical-align:middle; }
+        .playtime-section { margin:28px auto 0; padding:22px; border:1px solid rgba(6,182,212,.24); border-radius:12px; background:linear-gradient(135deg,rgba(6,182,212,.07),rgba(16,23,34,.92) 46%); }
+        .playtime-disclosure > summary { display:flex; align-items:center; justify-content:space-between; gap:14px; color:#fff; font-size:18px; font-weight:800; cursor:pointer; list-style:none; }
+        .playtime-disclosure > summary::-webkit-details-marker { display:none; }
+        .playtime-disclosure > summary::after { content:"＋"; flex:0 0 auto; color:var(--cyan); font-size:20px; }
+        .playtime-disclosure[open] > summary::after { content:"−"; }
+        .playtime-toggle-hint { margin-left:auto; color:var(--muted); font-size:12px; font-weight:500; }
+        .playtime-content { padding-top:8px; }
+        .playtime-intro,.playtime-note { color:var(--muted); font-size:13px; line-height:1.55; }
+        .playtime-intro { margin:8px 0 18px; }
+        .playtime-list { display:grid; gap:10px; }
+        .playtime-record { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 14px; padding:14px; border:1px solid var(--border); border-radius:9px; background:rgba(5,6,10,.42); }
+        .playtime-game { font-weight:800; }
+        .playtime-hours { color:var(--gold); font-weight:900; white-space:nowrap; }
+        .playtime-meta,.playtime-verified { color:var(--muted); font-size:11px; }
+        .playtime-verified { grid-column:1/-1; }
+        .playtime-form { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:18px; padding-top:18px; border-top:1px solid var(--border); }
+        .playtime-form h3,.playtime-form .playtime-note,.playtime-form .playtime-status,.playtime-form .playtime-preview,.playtime-form .playtime-submit { grid-column:1/-1; }
+        .playtime-form h3 { margin:0; font-size:16px; }
+        .playtime-form label { display:grid; gap:6px; color:var(--muted); font-size:12px; }
+        .playtime-form input,.playtime-form select { width:100%; min-width:0; padding:10px; border:1px solid var(--border); border-radius:7px; background:#080d14; color:#fff; font:inherit; }
+        .playtime-form input[type="file"] { font-size:11px; }
+        .playtime-form button { justify-self:start; }
+        .playtime-preview img { display:block; max-width:min(100%,420px); max-height:280px; margin-top:8px; object-fit:contain; border:1px solid var(--border); border-radius:8px; }
+        .playtime-status { min-height:20px; margin:0; color:var(--cyan); font-size:12px; }
+        .playtime-pending { margin-top:16px; }
+        .playtime-pending h3 { margin:0 0 8px; font-size:14px; }
+        @media (max-width:600px) { .playtime-section { padding:16px; } .playtime-form { grid-template-columns:1fr; } }
             .medals { display:flex; flex-wrap:wrap; gap:12px; margin-top:28px; }
             .medal { display:flex; align-items:center; gap:10px; padding:14px 16px; border:1px solid rgba(255,204,51,.35); border-radius:10px; background:rgba(255,204,51,.08); }
             .medal-icon { font-size:24px; }
@@ -195,6 +222,54 @@
 <body>
     <header><nav class="nav container"><a class="brand" href="Camos UEM.html"><span class="logo"><img src="../MW 2019/logo.png" alt="CAMO COD HQ"></span><span class="brand-text"><span class="site-name">CAMO COD HQ</span><small class="site-tag">Tu hub de camuflajes</small></span></a><a class="btn" href="leaderboard.html">Leaderboard</a></nav></header>
     <main class="container"><p class="eyebrow">Perfil de jugador</p><div class="profile-heading"><img class="profile-name-icon" id="profileNameIcon" alt="" hidden><img class="profile-rank-icon" id="profileRankIcon" alt="" hidden><h1 id="profileName">Cargando...</h1></div><section class="level-card" aria-label="Nivel del jugador"><div class="level-ring" id="levelRing"><svg viewBox="0 0 400 400" role="img" aria-label="Progreso de nivel"><path class="ring-sector" d="M200 200L200 57A143 143 0 0 1 334 200Z"></path><path class="ring-sector red" d="M200 200L334 200A143 143 0 0 1 200 343Z"></path><path class="ring-sector red" d="M200 200L200 343A143 143 0 0 1 66 200Z"></path><g id="ringTickMarks" aria-hidden="true"></g><circle class="ring-track" cx="200" cy="200" r="160"></circle><circle class="ring-segments" cx="200" cy="200" r="160"></circle>        <circle class="ring-progress" id="levelProgressRing" pathLength="100" cx="200" cy="200" r="160"></circle><circle class="ring-fine-outline" cx="200" cy="200" r="181"></circle><circle class="ring-inner" cx="200" cy="200" r="143"></circle><circle class="ring-inner-line" cx="200" cy="200" r="125"></circle><path class="ring-arrow" id="levelProgressArrow" d="M200 2 L191 -12 L200 -8 L209 -12 Z"></path></svg><div class="level-content"><span class="level-prestige" id="levelPrestige">Prestigio 0</span><img class="level-emblem" src="rank icon/leaderboards-rank-1.png" alt="Insignia de nivel"><span class="level-label">NIVEL</span><strong class="level-number" id="levelNumber">1</strong><span class="level-xp" id="levelXp">0 / 5.000 XP</span></div></div></section><section class="xp-guide" id="xpGuide" aria-label="Cómo ganar experiencia" hidden><div><h2>⚡ Cómo ganar XP</h2><p class="xp-guide-intro" id="xpGuideIntro"></p><ul class="xp-earning-list"><li><span>Completar un camuflaje nuevo</span><strong id="xpPerCamoValue"></strong></li><li><span>Usar una ficha de XP activa</span><strong>Multiplica la XP nueva</strong></li><li><span>Completar hitos de armas</span><strong>Fichas aleatorias</strong></li></ul><p class="xp-guide-intro" style="margin:12px 0 0">Las fichas de XP duran 15 min (x2), 30 min (x5) o 1 hora (x10). Los hitos conceden fichas; no suman XP directamente.</p></div><div class="xp-history"><h3>Historial de XP reciente</h3><ol class="xp-history-list" id="xpHistoryList" aria-live="polite"><li class="xp-history-empty">Cargando historial...</li></ol><p class="xp-history-empty" id="xpHistoryNote"></p></div></section><section class="summary"><div class="stat"><span class="stat-label">Posición global</span><div class="rank-stat"><img class="rank-stat-icon" id="profileRankStatIcon" alt="" hidden><strong class="stat-value" id="profileRank">-</strong></div></div><div class="stat"><span class="stat-label">Camuflajes completados</span><strong class="stat-value" id="profileCompleted">0 / 668</strong></div><div class="stat"><span class="stat-label">Progreso total</span><strong class="stat-value" id="profilePercent">0%</strong></div></section><div class="action-row"><button class="btn primary" id="shareProfileBtn" type="button">Compartir perfil</button></div><section class="profile-features" aria-label="Actividad y armas favoritas"><article class="feature-panel"><h2>🔥 Racha / progreso diario</h2><span class="feature-value" id="profileStreak">0 días</span><p id="profileStreakMessage">Completa progreso en días consecutivos para mantener tu racha.</p></article></section><section class="compare-panel" id="comparePanel" aria-label="Comparar con otro jugador"><div class="compare-header"><h2>Comparar con otro jugador</h2><label class="compare-select-wrap" for="comparePlayerSearch"><span>Jugador</span><input id="comparePlayerSearch" type="text" list="comparePlayerOptions" placeholder="Buscar jugador..." autocomplete="off"><datalist id="comparePlayerOptions"></datalist></label></div><div class="compare-grid"><article class="compare-card"><h3>Tu perfil</h3><p class="compare-name" id="compareCurrentName">Cargando...</p><ul class="compare-list"><li><span>Camuflajes</span><strong id="compareCurrentScore">0</strong></li><li><span>Posición</span><strong id="compareCurrentRank">-</strong></li><li><span>Progreso</span><strong id="compareCurrentPercent">0%</strong></li></ul></article><article class="compare-card"><h3>Jugador rival</h3><p class="compare-name" id="compareOpponentName">Sin selección</p><ul class="compare-list"><li><span>Camuflajes</span><strong id="compareOpponentScore">0</strong></li><li><span>Posición</span><strong id="compareOpponentRank">-</strong></li><li><span>Progreso</span><strong id="compareOpponentPercent">0%</strong></li></ul></div><p class="message" id="compareMessage" role="status">Selecciona otro jugador para comparar su progreso.</p></section>    <section class="profile-editor" id="profileEditor" aria-label="Personalizar perfil"><h2>Personalizar perfil</h2><label for="accentColor">Color del nombre <input id="accentColor" type="color" value="#06b6d4" title="Elegir cualquier color"></label><div class="customization-row"><label for="profileIcon">Icono del nombre</label><select id="profileIcon"><option value="">Sin icono</option><option value="rank icon/leaderboards-rank-1.png">Icono rango 1</option><option value="rank icon/leaderboards-rank-2.png">Icono rango 2</option><option value="rank icon/leaderboards-rank-3.png">Icono rango 3</option></select></div><div class="customization-row"><label for="callingCard">Calling card</label><select id="callingCard" disabled><option>Próximamente</option></select></div><button class="btn" id="saveProfileStyle" type="button">Guardar personalización</button><p class="message" id="profileStyleMessage" role="status"></p></section><section class="games" id="gameStats" aria-label="Estadísticas por juego"><p class="message">Cargando estadísticas...</p></section></main>
+    <section class="playtime-section container" id="playtimeSection" aria-labelledby="playtimeTitle">
+        <details class="playtime-disclosure">
+            <summary id="playtimeTitle"><span>Horas jugadas verificadas</span><span class="playtime-toggle-hint">Ver horas y añadir captura</span></summary>
+            <div class="playtime-content">
+        <p class="playtime-intro">Horas confirmadas mediante capturas. Los registros se muestran separados por plataforma para evitar sumar dos veces el mismo tiempo.</p>
+        <div class="playtime-list" id="playtimeTotals" aria-live="polite"><p class="message">Cargando horas verificadas...</p></div>
+        <div id="playtimeOwnerTools" hidden>
+            <form class="playtime-form" id="playtimeForm">
+                <h3>Añadir horas con una captura</h3>
+                <label for="playtimeScreenshot">Captura de pantalla (PNG o JPG; máximo 100 MB)
+                    <input id="playtimeScreenshot" type="file" accept=".png,.jpg,.jpeg,image/png,image/jpeg" required>
+                </label>
+                <button class="btn" id="playtimeReadButton" type="button">Leer captura</button>
+                <div class="playtime-preview" id="playtimePreview" hidden></div>
+                <label for="playtimeGame">Juego
+                    <select id="playtimeGame" required></select>
+                </label>
+                <label for="playtimeHours">Horas que aparecen en la captura
+                    <input id="playtimeHours" type="number" min="0" max="200000" step="0.01" required>
+                </label>
+                <label for="playtimePlatform">Plataforma / tienda
+                    <select id="playtimePlatform" required>
+                        <option value="">Seleccionar...</option>
+                        <option>Steam</option>
+                        <option>Xbox</option>
+                        <option>Battle.net</option>
+                        <option>PlayStation</option>
+                    </select>
+                </label>
+                <label for="playtimeDevice">Equipo / consola
+                    <select id="playtimeDevice" required>
+                        <option value="">Seleccionar...</option>
+                        <option>PC</option>
+                        <option>Xbox</option>
+                        <option>PlayStation</option>
+                    </select>
+                </label>
+                <p class="playtime-note">El lector OCR se ejecuta en este navegador. Revisa y corrige los datos detectados. La captura se sube de forma privada solo al enviar la solicitud y no se muestra en tu perfil.</p>
+                <p class="playtime-status" id="playtimeStatus" role="status"></p>
+                <button class="btn primary playtime-submit" type="submit">Enviar para revisión</button>
+            </form>
+            <div class="playtime-pending">
+                <h3>Mis solicitudes</h3>
+                <div class="playtime-list" id="playtimeSubmissions" aria-live="polite"><p class="message">Cargando solicitudes...</p></div>
+            </div>
+            </div>
+        </details>
+    </section>
     <div class="streak-modal" id="streakModal" role="dialog" aria-modal="true" aria-labelledby="streakModalTitle" hidden>
         <div class="streak-dialog">
             <button class="streak-close" id="streakModalClose" type="button" aria-label="Cerrar" onclick="window.CamoStreak && window.CamoStreak.close()">×</button>
@@ -213,6 +288,7 @@
     <script>
         const config = window.CAMO_SUPABASE_CONFIG || {};
         const client = config.url && config.anonKey ? window.supabase.createClient(config.url, config.anonKey) : null;
+        window.CAMO_SUPABASE_CLIENT = client;
         const userId = new URLSearchParams(location.search).get('user');
         window.CAMO_XP_USER_ID = userId;
         const availableGameTotals = {
@@ -609,6 +685,7 @@
             xpTokenPanel.hidden = !isOwner;
             xpTokenPanel.innerHTML = '<h2>⚡ Fichas temporales de XP</h2><p>Activa una ficha para multiplicar la XP nueva que ganes en cualquier juego. Las fichas usadas y el progreso anterior no se modifican.</p><p class="xp-token-status" id="xpTokenStatus" role="status"></p><div class="xp-token-list" id="xpTokenList"></div><p class="message" id="xpTokenMessage" role="status"></p>';
             actionRow.after(xpTokenPanel);
+            xpTokenPanel.after(document.querySelector('#playtimeSection'));
             const xpTokenTypes = window.CAMO_XP_TOKENS.types;
             const xpTokenStatus = xpTokenPanel.querySelector('#xpTokenStatus');
             const xpTokenList = xpTokenPanel.querySelector('#xpTokenList');
@@ -811,5 +888,6 @@
             document.querySelector('#gameStats').innerHTML = '<p class="message">No se pudieron cargar las estadísticas.</p>';
         });
     </script>
+    <script src="playtime.js"></script>
 </body>
 </html>

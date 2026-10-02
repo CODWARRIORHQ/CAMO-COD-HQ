@@ -13,6 +13,8 @@
     const authSignOut = document.querySelector('#authSignOut');
     const authEditProfile = document.querySelector('#authEditProfile');
     const adminNewsLink = document.querySelector('[data-admin-news]');
+    const adminReportsButton = document.querySelector('[data-admin-reports]');
+    const adminPlaytimeLink = document.querySelector('[data-admin-playtime]');
     const signOutButton = document.querySelector('[data-auth-signout]');
     const usernameField = document.querySelector('#authUsername');
     const usernameContainer = document.querySelector('#authUsernameField');
@@ -25,9 +27,16 @@
     if (!authButton || !authModal || !authForm) return;
 
     const updateAdminLink = async (user) => {
-        if (!adminNewsLink) return;
-        adminNewsLink.hidden = true;
-        if (!client || !user) return;
+        const setAdminAccess = (isAdmin) => {
+            if (adminNewsLink) adminNewsLink.hidden = !isAdmin;
+            if (adminReportsButton) adminReportsButton.hidden = !isAdmin;
+            if (adminPlaytimeLink) adminPlaytimeLink.hidden = !isAdmin;
+            window.dispatchEvent(new CustomEvent('camo-admin-access-updated', {
+                detail: { isAdmin }
+            }));
+        };
+        setAdminAccess(false);
+        if (!client || !user || (!adminNewsLink && !adminReportsButton && !adminPlaytimeLink)) return;
         const { data: profile, error } = await client
             .from('profiles')
             .select('is_admin')
@@ -37,7 +46,7 @@
             console.warn('No se pudo comprobar el acceso de administrador', error);
             return;
         }
-        adminNewsLink.hidden = profile?.is_admin !== true;
+        setAdminAccess(profile?.is_admin === true);
     };
 
     const setMessage = (message, isError = false) => {
@@ -171,10 +180,18 @@
         const email = authEmailField.value.trim();
         const username = usernameField.value.trim();
         const password = passwordField.value;
+        const emailRedirectTo = new URL('./Camos UEM.html', window.location.href).href;
         const result = isEditingProfile
             ? await client.auth.updateUser({ data: { username } })
             : isRegistering
-            ? await client.auth.signUp({ email, password, options: { data: { username } } })
+            ? await client.auth.signUp({
+                email,
+                password,
+                options: {
+                    data: { username },
+                    emailRedirectTo
+                }
+            })
             : await client.auth.signInWithPassword({ email, password });
 
         if (result.error) {

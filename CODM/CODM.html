@@ -16,6 +16,8 @@
             --accent: #7c3aed;
             --accent-2: #06b6d4;
             --ff: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+            --codm-tile-size: 52px;
+            --codm-tile-size-mobile: 44px;
         }
 
         body {
@@ -77,30 +79,126 @@
 
         /* --- ESTRUCTURA DE CATEGORÍAS --- */
         .category-group { 
-            margin-bottom: 50px; 
+            margin-bottom: 18px; 
         }
 
         .category-header { 
             width: 100%; 
-            text-align: center; 
-            margin: 20px 0; 
+            text-align: left; 
+            margin: 8px 0; 
         }
 
         .category-header h1 { 
-            font-size: 28px; 
-            font-weight: 900; 
-            letter-spacing: 2px; 
-            text-transform: uppercase; 
-            border-bottom: 2px solid var(--accent-orange); 
-            display: inline-block; 
-            padding-bottom: 5px; 
+            width: 100%;
+            margin: 0;
+            font-size: inherit;
         }
+
+        .category-toggle {
+            display: flex;
+            box-sizing: border-box;
+            width: 100%;
+            min-height: 54px;
+            align-items: center;
+            gap: 12px;
+            padding: 9px 14px;
+            border: 1px solid rgba(129,159,187,0.16);
+            border-left: 2px solid rgba(255,157,0,0.82);
+            border-radius: 8px;
+            color: inherit;
+            background:
+                linear-gradient(90deg, rgba(255,157,0,0.045), transparent 30%),
+                linear-gradient(110deg, rgba(16,34,55,0.97), rgba(9,21,36,0.96));
+            font: inherit;
+            text-align: left;
+            cursor: pointer;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.025);
+            transition: border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+        }
+
+        .category-toggle:hover {
+            border-color: rgba(255,192,77,0.36);
+            border-left-color: #ffd34e;
+            background:
+                linear-gradient(90deg, rgba(255,157,0,0.075), transparent 38%),
+                linear-gradient(110deg, rgba(20,41,65,0.99), rgba(10,24,40,0.98));
+            box-shadow: 0 5px 16px rgba(0,0,0,0.2), 0 0 14px rgba(255,157,0,0.045);
+        }
+        .category-toggle:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+        .category-toggle-index {
+            display: grid;
+            flex: 0 0 30px;
+            width: 30px;
+            height: 30px;
+            place-items: center;
+            border: 1px solid rgba(255,192,77,0.18);
+            border-radius: 6px;
+            color: #ffc04d;
+            background: rgba(255,157,0,0.055);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .category-toggle-label { min-width: 0; }
+        .category-toggle-title {
+            overflow: hidden;
+            color: #f2f5f8;
+            font-size: 17px;
+            font-weight: 850;
+            letter-spacing: 0.075em;
+            text-overflow: ellipsis;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .category-toggle-meta {
+            margin-left: auto;
+            padding: 5px 8px;
+            border: 1px solid rgba(143,168,191,0.12);
+            border-radius: 5px;
+            color: #9cabb9;
+            background: rgba(3,10,18,0.28);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .category-toggle-icon {
+            flex: 0 0 8px;
+            width: 8px;
+            height: 8px;
+            margin: 0 5px 4px 2px;
+            border-right: 2px solid #f4bd4f;
+            border-bottom: 2px solid #f4bd4f;
+            transform: rotate(45deg);
+            transition: transform 180ms ease, border-color 180ms ease;
+        }
+
+        .category-toggle:hover .category-toggle-icon { border-color: #ffe09a; }
+        .category-group.collapsed .category-toggle-icon { transform: rotate(-45deg); }
+        .category-group.collapsed .weapons-grid { display: none; }
+        .category-group.collapsed { margin-bottom: 12px; }
 
         .weapons-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 20px;
             width: 100%;
+        }
+
+        @media (max-width: 600px) {
+            .category-group { margin-bottom: 15px; }
+            .category-header { margin: 7px 0; }
+            .category-toggle { min-height: 48px; gap: 9px; padding: 8px 10px; }
+            .category-toggle-index { flex-basis: 26px; width: 26px; height: 26px; font-size: 9px; }
+            .category-toggle-title { font-size: 13px; letter-spacing: 0.06em; }
+            .category-toggle-meta { padding: 4px 6px; font-size: 8px; letter-spacing: 0.02em; }
+            .category-toggle-icon { flex-basis: 7px; width: 7px; height: 7px; }
         }
 
         .weapon-card,
@@ -131,17 +229,17 @@
 
         .codm-camo-tabs {
             display: flex;
-            gap: 4px;
+            gap: 5px;
             margin: 0 0 10px;
-            padding: 3px;
+            padding: 4px;
             overflow-x: auto;
             overflow-y: hidden;
             overscroll-behavior-x: contain;
             -webkit-overflow-scrolling: touch;
             touch-action: pan-x;
-            border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 6px;
-            background: rgba(255,255,255,0.025);
+            border: 1px solid rgba(135,168,196,0.16);
+            border-radius: 9px;
+            background: linear-gradient(110deg, rgba(7,16,27,0.72), rgba(255,255,255,0.035));
             scrollbar-width: none;
             -ms-overflow-style: none;
         }
@@ -155,9 +253,9 @@
         .codm-camo-tab {
             flex: 0 0 auto;
             border: 1px solid transparent;
-            border-radius: 4px;
-            padding: 5px 8px;
-            color: var(--muted);
+            border-radius: 6px;
+            padding: 6px 9px;
+            color: #c0cad5;
             background: transparent;
             font: inherit;
             font-size: 10px;
@@ -165,17 +263,18 @@
             letter-spacing: 0.02em;
             cursor: pointer;
             white-space: nowrap;
+            transition: color 160ms ease, border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
         }
 
         .codm-camo-tab:hover,
         .codm-camo-tab.active {
             color: #fff;
-            border-color: #ffc04d;
-            background: linear-gradient(180deg, rgba(255,157,0,0.3), rgba(255,157,0,0.12));
+            border-color: rgba(255,192,77,0.72);
+            background: linear-gradient(180deg, rgba(255,157,0,0.24), rgba(255,157,0,0.08));
         }
 
         .codm-camo-tab.active {
-            box-shadow: 0 0 0 1px rgba(255,157,0,0.22), inset 0 0 12px rgba(255,157,0,0.12);
+            box-shadow: inset 0 -2px 0 #ffc04d, 0 2px 8px rgba(255,157,0,0.12);
         }
 
         .codm-camo-tab:focus-visible,
@@ -240,8 +339,8 @@
         .codm-tournament-grid {
             display: grid;
             width: 100%;
-            grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
-            grid-auto-rows: 52px;
+            grid-template-columns: repeat(auto-fit, minmax(var(--codm-tile-size), 1fr));
+            grid-auto-rows: var(--codm-tile-size);
             gap: 4px;
             box-sizing: border-box;
             padding: 8px;
@@ -254,11 +353,91 @@
             display: none;
         }
 
+        .codm-boxes-grid {
+            grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
+            grid-auto-rows: auto;
+            gap: 8px;
+            padding: 10px;
+            border-color: rgba(255, 157, 0, 0.18);
+            background:
+                radial-gradient(ellipse at top, rgba(255, 157, 0, 0.08), transparent 62%),
+                linear-gradient(160deg, rgba(15, 20, 29, 0.96), rgba(5, 8, 14, 0.98));
+        }
+
+        .codm-box-item {
+            position: relative;
+            display: flex;
+            min-width: 0;
+            flex-direction: column;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 6px 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            background: linear-gradient(155deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.012) 56%, rgba(0, 0, 0, 0.28));
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045), 0 5px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+        }
+
+        .codm-zombie-card .codm-box-item {
+            width: min(150px, 100%);
+        }
+
+        .codm-box-item:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 185, 72, 0.72);
+            background: linear-gradient(155deg, rgba(255, 183, 66, 0.13), rgba(255, 255, 255, 0.025) 58%, rgba(0, 0, 0, 0.3));
+            box-shadow: 0 9px 20px rgba(0, 0, 0, 0.38), 0 0 16px rgba(255, 157, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+
+        .codm-box-skin {
+            width: 100%;
+            min-width: 0;
+            min-height: var(--codm-tile-size);
+            aspect-ratio: 1;
+            box-sizing: border-box;
+            border-color: rgba(255, 255, 255, 0.2);
+            border-radius: 7px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4), inset 0 0 14px rgba(0, 0, 0, 0.18);
+            transition: border-color 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+        }
+
+        .codm-box-item:hover .codm-box-skin {
+            border-color: rgba(255, 202, 112, 0.85);
+            filter: saturate(1.12) brightness(1.05);
+            box-shadow: 0 0 0 1px rgba(255, 157, 0, 0.25), 0 5px 14px rgba(0, 0, 0, 0.42);
+        }
+
+        .codm-box-name {
+            display: flex;
+            min-height: 24px;
+            align-items: center;
+            justify-content: center;
+            color: #f4f6fa;
+            font-size: 10px;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: 0.01em;
+            text-align: center;
+            text-wrap: balance;
+            overflow-wrap: break-word;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+            transition: color 180ms ease;
+        }
+
+        .codm-box-item:hover .codm-box-name {
+            color: #ffd27a;
+        }
+
+        .codm-special-skin.codm-box-skin:hover::before {
+            content: none;
+        }
+
         .codm-zombie-grid {
             display: grid;
             width: 100%;
-            grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
-            grid-auto-rows: 52px;
+            grid-template-columns: repeat(auto-fit, minmax(var(--codm-tile-size), 1fr));
+            grid-auto-rows: var(--codm-tile-size);
             gap: 4px;
             box-sizing: border-box;
             padding: 8px;
@@ -269,26 +448,15 @@
 
         .codm-tournament-grid.single-item {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            gap: 8px;
             width: 100%;
             min-height: 60px;
             margin: 0 auto;
             padding: 10px;
             box-sizing: border-box;
-        }
-
-        .single-zombie-skin {
-            width: 52px;
-            height: 52px;
-            max-width: 52px;
-            max-height: 52px;
-            min-width: 52px;
-            min-height: 52px;
-            display: block;
-            border-radius: 4px;
-            justify-self: center;
-            align-self: center;
         }
 
         .codm-zombie-grid[hidden] {
@@ -332,8 +500,9 @@
         .codm-zombie-skin {
             position: relative;
             container-type: inline-size;
-                    min-width: 44px;
-                    min-height: 44px;
+            width: 100%;
+            min-width: var(--codm-tile-size);
+            min-height: var(--codm-tile-size);
             aspect-ratio: 1 / 1;
             border: 1px solid var(--border-gray);
             border-radius: 4px;
@@ -341,6 +510,7 @@
             background-repeat: no-repeat;
             background-position: center;
             background-size: cover;
+            overflow: hidden;
             box-shadow: 0 0 0 1px rgba(255,255,255,0.04), inset 0 0 18px rgba(0,0,0,0.45);
         }
 
@@ -348,19 +518,20 @@
         .codm-zombie-skin::after {
             content: attr(data-title);
             position: absolute;
-            left: 2px;
-            right: 2px;
-            bottom: 2px;
+            left: 3px;
+            right: 3px;
+            bottom: 3px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #fff;
             background: rgba(0, 0, 0, 0.38);
+            border: 1px solid rgba(255,255,255,0.08);
             border-radius: 3px;
-            padding: 2px 3px;
-            font-size: 7px;
+            padding: 3px 4px;
+            font-size: 8px;
             font-weight: 800;
-            line-height: 1.1;
+            line-height: 1.15;
             text-align: center;
             z-index: 2;
         }
@@ -372,20 +543,20 @@
         .codm-special-skin:hover::before {
             content: attr(data-title);
             position: absolute;
-            left: 3px;
-            right: 3px;
-            bottom: 3px;
+            left: 4px;
+            right: 4px;
+            bottom: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.82);
             color: #ff9d00;
-            padding: clamp(2px, 7cqw, 4px) clamp(2px, 9cqw, 5px);
+            padding: clamp(3px, 8cqw, 6px) clamp(4px, 10cqw, 8px);
             border-radius: 4px;
             border: 1px solid rgba(255, 157, 0, 0.85);
-            font-size: clamp(6px, 18cqw, 10px);
+            font-size: clamp(7px, 18cqw, 10px);
             font-weight: 800;
-            line-height: 1;
+            line-height: 1.1;
             letter-spacing: 0.03em;
             text-align: center;
             white-space: normal;
@@ -663,9 +834,15 @@
         }
 
         .pct-count {
-            color: #d5d9df;
-            font-size: 10px;
+            color: #dbe4ed;
+            font-size: 11px;
             font-weight: 700;
+        }
+
+        .pct-text > span:last-child {
+            color: #ffd34e;
+            font-size: 11px;
+            font-weight: 800;
         }
 
         .bar-bg { 
@@ -686,18 +863,59 @@
             display: grid;
             width: 100%;
             max-width: 100%;
-            grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
-            grid-auto-rows: 52px;
+            grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
+            grid-auto-rows: auto;
             grid-auto-flow: row;
-            gap: 5px;
+            gap: 8px;
             background: transparent;
             border: 1px solid rgba(255,255,255,0.07);
             box-shadow: none;
-            padding: 4px;
-            border-radius: 8px;
+            padding: 10px;
+            border-radius: 10px;
             margin: 0 auto auto;
             justify-content: center;
             overflow-wrap: anywhere;
+        }
+
+        .codm-base-card {
+            display: flex;
+            min-width: 0;
+            flex-direction: column;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 6px 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            background: linear-gradient(155deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.012) 56%, rgba(0, 0, 0, 0.28));
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045), 0 5px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+        }
+
+        .codm-base-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 185, 72, 0.72);
+            background: linear-gradient(155deg, rgba(255, 183, 66, 0.13), rgba(255, 255, 255, 0.025) 58%, rgba(0, 0, 0, 0.3));
+            box-shadow: 0 9px 20px rgba(0, 0, 0, 0.38), 0 0 16px rgba(255, 157, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+
+        .codm-base-name {
+            display: flex;
+            min-height: 24px;
+            align-items: center;
+            justify-content: center;
+            color: #f4f6fa;
+            font-size: 10px;
+            font-weight: 800;
+            line-height: 1.15;
+            text-align: center;
+            text-wrap: balance;
+            overflow-wrap: break-word;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+            transition: color 180ms ease;
+        }
+
+        .codm-base-card:hover .codm-base-name {
+            color: #ffd27a;
         }
 
         .highlight {
@@ -732,8 +950,9 @@
         .skin {
             position: relative;
             container-type: inline-size;
+            width: 100%;
             aspect-ratio: 1/1;
-            min-height: 44px;
+            min-height: var(--codm-tile-size);
             min-width: 0;
             background-color: #1a1a1a;
             background-size: cover;
@@ -743,6 +962,25 @@
             cursor: pointer;
             box-shadow: 0 0 0 1px rgba(255,255,255,0.04), inset 0 0 18px rgba(0,0,0,0.45);
             transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+        }
+
+        .codm-base-card .skin {
+            flex: 0 0 auto;
+            min-height: 0;
+            border-color: rgba(255, 255, 255, 0.2);
+            border-radius: 7px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4), inset 0 0 14px rgba(0, 0, 0, 0.18);
+            transition: border-color 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+        }
+
+        .codm-base-card:hover .skin {
+            border-color: rgba(255, 202, 112, 0.85);
+            filter: saturate(1.12) brightness(1.05);
+            box-shadow: 0 0 0 1px rgba(255, 157, 0, 0.25), 0 5px 14px rgba(0, 0, 0, 0.42);
+        }
+
+        .codm-base-card .skin:hover::before {
+            content: none;
         }
 
         .skin:hover {
@@ -771,6 +1009,16 @@
             border-radius: 8px;
         }
 
+        .camo-collapsible .camo-toggle-row {
+            grid-template-columns: repeat(auto-fit, minmax(68px, 1fr));
+            gap: 8px;
+            padding: 10px;
+            border-color: rgba(255, 157, 0, 0.18);
+            background:
+                radial-gradient(ellipse at top, rgba(255, 157, 0, 0.08), transparent 62%),
+                linear-gradient(160deg, rgba(15, 20, 29, 0.96), rgba(5, 8, 14, 0.98));
+        }
+
         .camo-toggle-item {
             position: relative;
             display: inline-flex;
@@ -787,6 +1035,128 @@
             cursor: pointer;
             transition: background 0.2s, transform 0.2s, border-color 0.2s, color 0.2s;
             overflow: visible;
+        }
+
+        .camo-collapsible .camo-toggle-item {
+            display: flex;
+            height: auto;
+            min-width: 0;
+            min-height: 0;
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: flex-start;
+            gap: 7px;
+            padding: 7px 6px 8px;
+            overflow: visible;
+            border-color: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            color: #f4f6fa;
+            background: linear-gradient(155deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.012) 56%, rgba(0, 0, 0, 0.28));
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045), 0 5px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+        }
+
+        .camo-collapsible .camo-toggle-item:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 185, 72, 0.72);
+            color: #fff;
+            background: linear-gradient(155deg, rgba(255, 183, 66, 0.13), rgba(255, 255, 255, 0.025) 58%, rgba(0, 0, 0, 0.3));
+            box-shadow: 0 9px 20px rgba(0, 0, 0, 0.38), 0 0 16px rgba(255, 157, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+
+        .camo-collapsible .camo-toggle-item.active {
+            transform: translateY(-2px);
+            border-color: rgba(255, 192, 77, 0.95);
+            background: linear-gradient(155deg, rgba(255, 183, 66, 0.2), rgba(255, 255, 255, 0.035) 58%, rgba(0, 0, 0, 0.3));
+            box-shadow: 0 0 0 1px rgba(255, 157, 0, 0.3), 0 7px 18px rgba(0, 0, 0, 0.3), 0 0 16px rgba(255, 157, 0, 0.12);
+        }
+
+        .camo-collapsible .camo-toggle-item.completed {
+            opacity: 1;
+        }
+
+        .camo-collapsible .camo-toggle-item.completed img.camo-toggle-thumb {
+            filter: brightness(0.6);
+        }
+
+        .camo-collapsible .camo-toggle-item.completed:hover img.camo-toggle-thumb,
+        .camo-collapsible .camo-toggle-item.completed.active img.camo-toggle-thumb {
+            filter: brightness(0.6);
+        }
+
+        .camo-collapsible .camo-toggle-item::before {
+            content: '';
+            position: absolute;
+            inset: 8px 8px auto auto;
+            width: 18px;
+            height: 18px;
+            box-sizing: border-box;
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            background: rgba(8, 11, 15, 0.45);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.65), inset 0 1px 2px rgba(0, 0, 0, 0.45);
+            pointer-events: none;
+            z-index: 2;
+            transition: border-color 180ms ease, background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+        }
+
+        .camo-collapsible .camo-toggle-item.completed::before {
+            border-color: rgba(255, 229, 166, 0.95);
+            background: linear-gradient(145deg, #ffe7a3, #ffad24 72%, #e47700);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.55), 0 0 7px rgba(255, 157, 0, 0.35);
+        }
+
+        .camo-collapsible .camo-toggle-item img.camo-toggle-thumb {
+            position: relative;
+            inset: auto;
+            display: block;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1;
+            object-fit: cover;
+            opacity: 1;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 7px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4), inset 0 0 14px rgba(0, 0, 0, 0.18);
+            transition: border-color 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+        }
+
+        .camo-collapsible .camo-toggle-item:hover img.camo-toggle-thumb,
+        .camo-collapsible .camo-toggle-item.active img.camo-toggle-thumb {
+            border-color: rgba(255, 202, 112, 0.85);
+            filter: saturate(1.12) brightness(1.05);
+            box-shadow: 0 0 0 1px rgba(255, 157, 0, 0.25), 0 5px 14px rgba(0, 0, 0, 0.42);
+        }
+
+        .camo-category-name {
+            display: flex;
+            min-height: 24px;
+            align-items: center;
+            justify-content: center;
+            color: #f4f6fa;
+            font-size: 10px;
+            font-weight: 800;
+            line-height: 1.15;
+            text-align: center;
+            text-wrap: balance;
+            overflow-wrap: break-word;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+            transition: color 180ms ease;
+        }
+
+        .camo-collapsible .camo-toggle-item:hover .camo-category-name,
+        .camo-collapsible .camo-toggle-item.active .camo-category-name {
+            color: #ffd27a;
+        }
+
+        .camo-collapsible .camo-toggle-item .camo-toggle-text,
+        .camo-collapsible .camo-toggle-item.image-unavailable .camo-toggle-text {
+            display: none;
+        }
+
+        .camo-collapsible .camo-toggle-item.image-unavailable {
+            justify-content: center;
+            background: linear-gradient(145deg, #27313b, #121820 70%);
         }
 
         .camo-toggle-item img.camo-toggle-thumb {
@@ -836,6 +1206,7 @@
         }
 
         .camo-toggle-item.completed::after,
+        .camo-collapsible .camo-toggle-item.completed::after,
         .codm-dmz-panel .camo-toggle-item.dmz-completed::after {
             content: "✓";
             position: absolute;
@@ -854,6 +1225,24 @@
             pointer-events: none;
             box-shadow: 0 1px 4px rgba(0,0,0,0.65);
             z-index: 2;
+        }
+
+        .camo-collapsible .camo-toggle-item.completed::after {
+            content: "✓";
+            top: 8px;
+            right: 8px;
+            width: 18px;
+            height: 18px;
+            border: 0;
+            border-radius: 50%;
+            color: #17120a;
+            background: transparent;
+            font-size: 11px;
+            font-weight: 900;
+            line-height: 1;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+            box-shadow: none;
+            z-index: 3;
         }
 
         .codm-dmz-panel .camo-toggle-item::after {
@@ -1104,8 +1493,6 @@
         }
 
         .mastery-preview {
-            grid-column: span 2;
-            grid-row: span 2;
             height: 100%;
             border: 1px solid var(--accent-orange);
             background-size: cover;
@@ -1114,8 +1501,6 @@
         }
 
         .mastery-preview-2 {
-            grid-column: span 2;
-            grid-row: span 2;
             height: 100%;
             border: 1px solid #7c3aed;
             background-size: cover;
@@ -1124,8 +1509,6 @@
         }
 
         .mastery-preview-3 {
-            grid-column: span 2;
-            grid-row: span 2;
             height: 100%;
             border: 1px solid #06b6d4;
             background-size: cover;
@@ -1134,8 +1517,6 @@
         }
 
         .mastery-preview-4 {
-            grid-column: span 2;
-            grid-row: span 2;
             height: 100%;
             border: 1px solid #ff9d00;
             background-size: cover;
@@ -1143,13 +1524,31 @@
             background-repeat: no-repeat;
         }
 
-        .camo-section:not([data-current-category='11']) .skin.mastery-preview,
-        .camo-section:not([data-current-category='11']) .skin.mastery-preview-2,
-        .camo-section:not([data-current-category='11']) .skin.mastery-preview-3,
-        .camo-section:not([data-current-category='11']) .skin.mastery-preview-4 {
+        .camo-section:not([data-current-category='7']) .skin.mastery-preview,
+        .camo-section:not([data-current-category='7']) .skin.mastery-preview-2,
+        .camo-section:not([data-current-category='7']) .skin.mastery-preview-3,
+        .camo-section:not([data-current-category='7']) .skin.mastery-preview-4 {
             grid-column: span 1 !important;
             grid-row: span 1 !important;
             height: auto !important;
+        }
+
+        .camo-section[data-current-category='7'] .codm-base-card.mastery-preview,
+        .camo-section[data-current-category='7'] .codm-base-card.mastery-preview-2,
+        .camo-section[data-current-category='7'] .codm-base-card.mastery-preview-3,
+        .camo-section[data-current-category='7'] .codm-base-card.mastery-preview-4 {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .codm-base-card.large .skin {
+            grid-column: auto;
+            grid-row: auto;
+            width: 100%;
+            min-width: 0;
+            min-height: 0;
+            height: auto;
+            aspect-ratio: 1 / 1;
         }
 
         /* Estilos específicos para la tarjeta de filtro */
@@ -1248,6 +1647,58 @@
         /* Ocultar contenido al cerrar */
         .master-panel.closed .master-content { 
             display: none; 
+        }
+
+        .weapon-completion-summary {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            margin: 0 0 18px;
+        }
+
+        .weapon-completion-stat {
+            display: grid;
+            grid-template-columns: auto minmax(0, 1fr);
+            align-items: center;
+            gap: 2px 10px;
+            min-width: 0;
+            padding: 12px 14px;
+            border: 1px solid rgba(129,159,187,0.17);
+            border-radius: 10px;
+            background: linear-gradient(145deg, rgba(17,36,57,0.8), rgba(8,19,32,0.72));
+        }
+
+        .weapon-completion-value {
+            grid-row: span 2;
+            color: #f3f7fb;
+            font-size: 23px;
+            font-weight: 900;
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .weapon-completion-label {
+            color: #a9b8c7;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .weapon-completion-detail {
+            color: #75879a;
+            font-size: 10px;
+        }
+
+        .weapon-completion-stat.completed .weapon-completion-value { color: #ffd34e; }
+        .weapon-completion-stat.remaining .weapon-completion-value { color: #d5e0ea; }
+
+        @media (max-width: 480px) {
+            .weapon-completion-summary { gap: 6px; }
+            .weapon-completion-stat { grid-template-columns: 1fr; gap: 3px; padding: 10px 8px; text-align: center; }
+            .weapon-completion-value { grid-row: auto; font-size: 20px; }
+            .weapon-completion-label { font-size: 8px; letter-spacing: 0.04em; }
+            .weapon-completion-detail { font-size: 9px; }
         }
 
         @keyframes rgb-move {
@@ -1481,7 +1932,11 @@
             }
 
             .camo-section {
-                grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(var(--codm-tile-size-mobile), 1fr));
+            }
+
+            .camo-collapsible .camo-toggle-row {
+                grid-template-columns: repeat(auto-fit, minmax(62px, 1fr));
             }
 
             .camo-toggle-row {
@@ -1490,8 +1945,8 @@
 
             .skin,
             .camo-toggle-item {
-                min-width: 44px;
-                min-height: 44px;
+                min-width: var(--codm-tile-size-mobile);
+                min-height: var(--codm-tile-size-mobile);
             }
         }
 
@@ -1593,20 +2048,20 @@
             }
 
             .camo-section {
-                grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
-                gap: 4px;
+                grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
+                gap: 6px;
             }
 
-            .camo-section[data-current-category='11'] {
+            .camo-section[data-current-category='7'] {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
                 grid-auto-rows: auto;
             }
 
-            .camo-section[data-current-category='11'] .skin.large,
-            .camo-section[data-current-category='11'] .skin.mastery-preview,
-            .camo-section[data-current-category='11'] .skin.mastery-preview-2,
-            .camo-section[data-current-category='11'] .skin.mastery-preview-3,
-            .camo-section[data-current-category='11'] .skin.mastery-preview-4 {
+            .camo-section[data-current-category='7'] .skin.large,
+            .camo-section[data-current-category='7'] .skin.mastery-preview,
+            .camo-section[data-current-category='7'] .skin.mastery-preview-2,
+            .camo-section[data-current-category='7'] .skin.mastery-preview-3,
+            .camo-section[data-current-category='7'] .skin.mastery-preview-4 {
                 grid-column: span 1;
                 grid-row: span 1;
                 min-width: 0;
@@ -1615,10 +2070,15 @@
                 aspect-ratio: 1 / 1;
             }
 
+            .camo-section[data-current-category='7'] .codm-base-card.large {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+
             .skin,
             .camo-toggle-item {
-                min-width: 40px;
-                min-height: 40px;
+                min-width: var(--codm-tile-size-mobile);
+                min-height: var(--codm-tile-size-mobile);
             }
 
             .skin.checked::after {
@@ -1791,6 +2251,24 @@
             </div>
             <div class="global-progress-bar">
                 <div id="globalFill" class="global-fill"></div>
+            </div>
+        </div>
+
+        <div class="weapon-completion-summary" aria-label="Resumen de armas">
+            <div class="weapon-completion-stat">
+                <strong class="weapon-completion-value" id="weaponTotalCount">0</strong>
+                <span class="weapon-completion-label">Armas totales</span>
+                <span class="weapon-completion-detail">En seguimiento</span>
+            </div>
+            <div class="weapon-completion-stat completed">
+                <strong class="weapon-completion-value" id="weaponCompletedCount">0</strong>
+                <span class="weapon-completion-label">Completadas</span>
+                <span class="weapon-completion-detail">Todos sus camuflajes</span>
+            </div>
+            <div class="weapon-completion-stat remaining">
+                <strong class="weapon-completion-value" id="weaponRemainingCount">0</strong>
+                <span class="weapon-completion-label">Sin completar</span>
+                <span class="weapon-completion-detail">Aún en progreso</span>
             </div>
         </div>
 
@@ -2905,9 +3383,9 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../index/xp-config.js?v=20260930-xp-history"></script>
+<script src="../index/xp-config.js?v=20261014-repeatable-camo-xp"></script>
 <script src="../index/supabase-config.js"></script>
-<script src="camuflajes-codm-template.js?v=20260920-2"></script>
+<script src="camuflajes-codm-template.js?v=20261004-t24-tournament-image"></script>
 <script>
     // 1. VARIABLES GLOBALES DE FILTRADO
     let filtroCatActual = "all";
@@ -2958,26 +3436,16 @@
 
     function asignarCategorias(section) {
         const skins = Array.from(section.querySelectorAll('.skin'));
-        const skinsPerCat = 10;
-
-        // Reset categories
-        skins.forEach(s => delete s.dataset.category);
-
-        let idx = 0;
-        // Assign 1..10 => exactly up to 10 skins each (if available)
-        for (let cat = 1; cat <= 10; cat++) {
-            for (let i = 0; i < skinsPerCat; i++) {
-                if (skins[idx]) {
-                    skins[idx].dataset.category = String(cat);
-                    idx++;
-                }
+        skins.forEach((skin, index) => {
+            if (!skin.dataset.category) {
+                skin.dataset.category = String(index < 60 ? Math.floor(index / 10) + 1 : 7);
             }
-        }
-
-        // Remaining skins (if any) go to category 11
-        for (; idx < skins.length; idx++) {
-            skins[idx].dataset.category = '11';
-        }
+            if (!skin.dataset.progressIndex) {
+                skin.dataset.progressIndex = String(index < 60
+                    ? [0, 30, 40, 60, 10, 80][Math.floor(index / 10)] + index % 10
+                    : 100 + index - 60);
+            }
+        });
     }
 
     function obtenerSkinsDeSeguimiento(card) {
@@ -2992,8 +3460,8 @@
     }
 
     function oroDesbloqueado(card) {
-        const skins = Array.from(card.querySelectorAll('.skin'));
-        return skins.length >= 104 && skins.slice(0, 100).every(skin => skin.classList.contains('checked'));
+        const baseSkins = Array.from(card.querySelectorAll('.skin')).filter(skin => skin.dataset.category !== '7');
+        return baseSkins.length === 60 && baseSkins.every(skin => skin.classList.contains('checked'));
     }
 
     function platinoDesbloqueado(card) {
@@ -3059,24 +3527,29 @@
         const skins = Array.from(section.querySelectorAll('.skin'));
 
         // Limpiar clases grandes previas
-        skins.forEach(s => s.classList.remove('large'));
+        skins.forEach(s => {
+            s.classList.remove('large');
+            s.parentElement.classList.remove('large');
+        });
 
-        if (category !== '11') {
-            // Mostrar solo las skins reales de la categoría
+        if (category !== '7') {
+            // Mostrar solo las tarjetas reales de la categoría
             skins.forEach(skin => {
-                skin.style.display = (skin.dataset && skin.dataset.category === category) ? '' : 'none';
+                const visible = skin.dataset && skin.dataset.category === category;
+                skin.parentElement.style.display = visible ? '' : 'none';
             });
         } else {
-            // Categoría 11: mostrar solo las 5 últimas skins y en grande
-            const cat11 = skins.filter(s => s.dataset && s.dataset.category === '11');
-            const last5 = cat11.slice(-5);
+            // Completista: mostrar los cuatro camuflajes de maestría.
+            const completista = skins.filter(s => s.dataset && s.dataset.category === '7');
 
             // Ocultar todos
-            skins.forEach(skin => skin.style.display = 'none');
+            skins.forEach(skin => {
+                skin.parentElement.style.display = 'none';
+            });
 
-            // Mostrar y marcar grandes los últimos 5
-            last5.forEach(skin => {
-                skin.style.display = '';
+            completista.forEach(skin => {
+                skin.parentElement.style.display = '';
+                skin.parentElement.classList.add('large');
                 skin.classList.add('large');
             });
         }
@@ -3092,8 +3565,8 @@
             item.classList.remove('active');
             item.setAttribute('aria-pressed', 'false');
         });
-        section.querySelectorAll('.skin').forEach(skin => {
-            skin.style.display = 'none';
+        section.querySelectorAll('.codm-base-card').forEach(item => {
+            item.style.display = 'none';
         });
         section.classList.add('collapsed');
     }
@@ -3102,10 +3575,11 @@
     const SPECIAL_PROGRESS_KEY = 'camo-cod-hq-codm-special-progress';
     const MASTERY_KEY = 'camo-cod-hq-codm-mastery';
     const GAME_NAME = 'Mobile';
+    const XP_REPEAT_OWNER_ID = 'd2cebfd8-0247-4155-b6f4-28234ebdeab1';
     const XP_PER_CAMO = window.getXpPerCamo(GAME_NAME);
     let maestriasDesbloqueadas = {};
     let xpNotificationTimer;
-    const xpLedger = window.getXpClaimLedger(GAME_NAME);
+    let xpRewardSequence = 0;
 
     function contarCamuflajesCompletadosEnPantalla() {
         return document.querySelectorAll('.weapon-card .skin.checked, .weapon-card .codm-special-skin.checked').length;
@@ -3115,29 +3589,34 @@
         return window.getXpClaimLedger(GAME_NAME).claims.size;
     }
 
+    function puedeRepetirXpPorCamuflaje() {
+        return window.CAMO_XP_TOKENS.getUserId() === XP_REPEAT_OWNER_ID;
+    }
+
     function obtenerIdCamuflaje(skin) {
         const card = skin.closest('.weapon-card');
         const type = skin.classList.contains('codm-special-skin') ? 'special' : 'standard';
         const group = skin.dataset.specialGroup || '';
         const index = type === 'special'
             ? skin.dataset.specialIndex || ''
-            : Array.from(card?.querySelectorAll('.skin') || []).indexOf(skin);
+            : skin.dataset.progressIndex || Array.from(card?.querySelectorAll('.skin') || []).indexOf(skin);
         return `${card?.dataset.name || 'unknown'}:${type}:${group}:${index}`;
     }
 
-    function registrarXpDeCamuflajesMarcados() {
+    function registrarXpDeCamuflajesMarcados(nuevosCamuflajes, permitirRepeticion) {
         let gainedCamos = 0;
         let gainedXp = 0;
-        xpLedger.claims = window.getXpClaimLedger(GAME_NAME).claims;
-        document.querySelectorAll('.weapon-card .skin.checked, .weapon-card .codm-special-skin.checked').forEach(skin => {
+        nuevosCamuflajes.forEach(skin => {
             const id = obtenerIdCamuflaje(skin);
-            if (!xpLedger.claims.has(id)) {
-                const xp = window.CAMO_XP_TOKENS.awardCamoXp(GAME_NAME, id, XP_PER_CAMO);
-                if (!xp) return;
-                xpLedger.claims.add(id);
-                gainedCamos += 1;
-                gainedXp += xp;
+            let claimId = id;
+            if (permitirRepeticion) {
+                xpRewardSequence += 1;
+                claimId = `${id}:repeat:${Date.now()}:${xpRewardSequence}:${Math.random().toString(36).slice(2)}`;
             }
+            const xp = window.CAMO_XP_TOKENS.awardCamoXp(GAME_NAME, claimId, XP_PER_CAMO);
+            if (!xp) return;
+            gainedCamos += 1;
+            gainedXp += xp;
         });
         return { gainedCamos, gainedXp };
     }
@@ -3231,7 +3710,9 @@
 
             document.querySelectorAll('.weapon-card[data-name]').forEach(card => {
                 progreso[card.dataset.name] = Array.from(card.querySelectorAll('.skin'))
-                    .map((skin, index) => skin.classList.contains('checked') ? index : null)
+                    .map((skin, index) => skin.classList.contains('checked')
+                        ? Number(skin.dataset.progressIndex ?? index)
+                        : null)
                     .filter(index => index !== null);
             });
 
@@ -3364,7 +3845,7 @@
                 document.querySelectorAll('.weapon-card[data-name]').forEach(card => {
                     const indices = progreso[card.dataset.name] || [];
                     card.querySelectorAll('.skin').forEach((skin, index) => {
-                        skin.classList.toggle('checked', indices.includes(index));
+                        skin.classList.toggle('checked', indices.includes(Number(skin.dataset.progressIndex ?? index)));
                     });
 
                     const cardSpecial = especial[card.dataset.name] || {};
@@ -3493,9 +3974,11 @@
         document.querySelectorAll('.codm-special-skin[data-special-index]').forEach(skin => {
             skin.addEventListener('click', () => {
                 const completedBefore = contarCamuflajesCompletadosEnPantalla();
+                const wasChecked = skin.classList.contains('checked');
                 skin.classList.toggle('checked');
                 const completedAfter = contarCamuflajesCompletadosEnPantalla();
-                const reward = registrarXpDeCamuflajesMarcados();
+                const newlyChecked = !wasChecked && skin.classList.contains('checked') ? [skin] : [];
+                const reward = registrarXpDeCamuflajesMarcados(newlyChecked, puedeRepetirXpPorCamuflaje());
                 mostrarNotificacionXp(reward, completedBefore, completedAfter);
                 guardarProgresoEspecial();
                 actualizarProgresosEspeciales();
@@ -3513,7 +3996,7 @@
             document.querySelectorAll('.weapon-card[data-name]').forEach(card => {
                 const indices = progreso[card.dataset.name] || [];
                 card.querySelectorAll('.skin').forEach((skin, index) => {
-                    skin.classList.toggle('checked', indices.includes(index));
+                    skin.classList.toggle('checked', indices.includes(Number(skin.dataset.progressIndex ?? index)));
                 });
                 actualizarCategorias(card.querySelector('.camo-section'));
             });
@@ -3571,7 +4054,9 @@
         const progreso = {};
         document.querySelectorAll('.weapon-card[data-name]').forEach(card => {
             progreso[card.dataset.name] = Array.from(card.querySelectorAll('.skin'))
-                .map((skin, index) => skin.classList.contains('checked') ? index : null)
+                .map((skin, index) => skin.classList.contains('checked')
+                    ? Number(skin.dataset.progressIndex ?? index)
+                    : null)
                 .filter(index => index !== null);
         });
         return progreso;
@@ -3582,7 +4067,7 @@
         document.querySelectorAll('.weapon-card[data-name]').forEach(card => {
             const indices = progreso[card.dataset.name] || [];
             card.querySelectorAll('.skin').forEach((skin, index) => {
-                skin.classList.toggle('checked', indices.includes(index));
+                skin.classList.toggle('checked', indices.includes(Number(skin.dataset.progressIndex ?? index)));
             });
             actualizarCategorias(card.querySelector('.camo-section'));
         });
@@ -3657,7 +4142,7 @@
             camoLabel.querySelector('.camo-row-label-value').setAttribute('aria-live', 'polite');
 
             const buttons = [];
-            for (let i = 1; i <= 11; i++) {
+            for (let i = 1; i <= 7; i++) {
                 const item = document.createElement('div');
                 item.className = 'camo-toggle-item';
                 item.dataset.category = String(i);
@@ -3686,6 +4171,10 @@
                 fallbackText.textContent = String(i).padStart(2, '0');
                 fallbackText.setAttribute('aria-hidden', 'true');
                 item.appendChild(fallbackText);
+                const categoryName = document.createElement('span');
+                categoryName.className = 'camo-category-name';
+                categoryName.textContent = nombreCategoria;
+                item.appendChild(categoryName);
                 const seleccionarCategoria = (e) => {
                     e?.stopPropagation();
                     const isActive = item.classList.contains('active');
@@ -3744,6 +4233,48 @@
         skin.appendChild(tooltip);
     }
 
+    function inicializarGruposArmasPlegables() {
+        document.querySelectorAll('.category-group').forEach((group, index) => {
+            const heading = group.querySelector('.category-header h1');
+            const grid = group.querySelector('.weapons-grid');
+            if (!heading || !grid) return;
+
+            const gridId = `weapon-grid-${index + 1}`;
+            grid.id = gridId;
+            const toggle = document.createElement('button');
+            toggle.type = 'button';
+            toggle.className = 'category-toggle';
+            toggle.setAttribute('aria-controls', gridId);
+            toggle.setAttribute('aria-expanded', 'true');
+
+            const label = document.createElement('span');
+            label.className = 'category-toggle-label';
+            const title = document.createElement('span');
+            title.className = 'category-toggle-title';
+            title.textContent = heading.textContent.trim();
+            label.appendChild(title);
+            const indexBadge = document.createElement('span');
+            indexBadge.className = 'category-toggle-index';
+            indexBadge.setAttribute('aria-hidden', 'true');
+            indexBadge.textContent = String(index + 1).padStart(2, '0');
+            const meta = document.createElement('span');
+            meta.className = 'category-toggle-meta';
+            const weaponCount = grid.querySelectorAll('.weapon-card').length;
+            meta.textContent = `${weaponCount} ${weaponCount === 1 ? 'arma' : 'armas'}`;
+            const icon = document.createElement('span');
+            icon.className = 'category-toggle-icon';
+            icon.setAttribute('aria-hidden', 'true');
+            toggle.append(indexBadge, label, meta, icon);
+            heading.replaceChildren(toggle);
+
+            toggle.addEventListener('click', () => {
+                const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+                toggle.setAttribute('aria-expanded', String(!isExpanded));
+                group.classList.toggle('collapsed', isExpanded);
+            });
+        });
+    }
+
     function inicializarTabsCamuflajes() {
         const tabs = [
             ['base', 'Base'],
@@ -3791,40 +4322,60 @@
                     content.className = 'codm-special-content';
 
                     if (id === 'torneos') {
-                        content.className = 'codm-tournament-grid';
-                        for (let tournamentIndex = 0; tournamentIndex < 30; tournamentIndex++) {
+                        content.className = 'codm-tournament-grid codm-boxes-grid';
+                        for (let tournamentIndex = 0; tournamentIndex < 25; tournamentIndex++) {
+                            const item = document.createElement('div');
+                            item.className = 'codm-box-item';
                             const skin = document.createElement('div');
-                            skin.className = 'codm-tournament-skin codm-special-skin';
+                            skin.className = 'codm-tournament-skin codm-special-skin codm-box-skin';
                             skin.dataset.specialIndex = String(tournamentIndex);
                             skin.dataset.specialGroup = id;
-                            skin.dataset.title = `${window.CODM_REQUISITOS_ESPECIALES?.[id]?.[tournamentIndex] ?? 0} bajas`;
+                            skin.dataset.title = `T${tournamentIndex + 1}`;
                             const torneo = window.CODM_TORNEOS?.[tournamentIndex];
                             if (torneo?.ruta) {
                                 skin.style.backgroundImage = `url("${torneo.ruta}")`;
                             }
-                            agregarTooltipEspecial(skin);
-                            content.appendChild(skin);
+                            const label = document.createElement('span');
+                            label.className = 'codm-box-name';
+                            label.textContent = skin.dataset.title;
+                            item.append(skin, label);
+                            content.appendChild(item);
                         }
                     } else if (id === 'zombies') {
-                        content.className = 'codm-tournament-grid single-item';
+                        content.className = 'codm-tournament-grid single-item codm-zombie-card';
+                        const item = document.createElement('div');
+                        item.className = 'codm-box-item';
                         const skin = document.createElement('div');
-                        skin.className = 'codm-tournament-skin codm-special-skin single-zombie-skin';
+                        skin.className = 'codm-tournament-skin codm-special-skin codm-box-skin';
                         skin.dataset.specialIndex = '0';
                         skin.dataset.specialGroup = id;
-                        skin.dataset.title = `${window.CODM_REQUISITOS_ESPECIALES?.[id]?.[0] ?? 0} bajas`;
-                        agregarTooltipEspecial(skin);
-                        content.appendChild(skin);
+                        skin.dataset.title = 'Cristal de éter';
+                        if (window.CODM_ZOMBIE_IMAGE) {
+                            skin.style.backgroundImage = `url("${window.CODM_ZOMBIE_IMAGE}")`;
+                        }
+                        item.appendChild(skin);
+                        const name = document.createElement('span');
+                        name.className = 'codm-box-name';
+                        name.textContent = skin.dataset.title;
+                        item.appendChild(name);
+                        content.appendChild(item);
                     } else if (id === 'cajas') {
-                        content.className = 'codm-tournament-grid';
-                        for (let boxIndex = 0; boxIndex < 15; boxIndex++) {
+                        content.className = 'codm-tournament-grid codm-boxes-grid';
+                        (window.CODM_CAJAS_IMAGES || []).forEach(({ index: boxIndex, image, name }) => {
+                            const item = document.createElement('div');
+                            item.className = 'codm-box-item';
                             const skin = document.createElement('div');
-                            skin.className = 'codm-tournament-skin codm-special-skin';
+                            skin.className = 'codm-tournament-skin codm-special-skin codm-box-skin';
                             skin.dataset.specialIndex = String(boxIndex);
                             skin.dataset.specialGroup = id;
-                            skin.dataset.title = `${window.CODM_REQUISITOS_ESPECIALES?.[id]?.[boxIndex] ?? 0} bajas`;
-                            agregarTooltipEspecial(skin);
-                            content.appendChild(skin);
-                        }
+                            skin.dataset.title = name;
+                            skin.style.backgroundImage = `url("${image}")`;
+                            const label = document.createElement('span');
+                            label.className = 'codm-box-name';
+                            label.textContent = name;
+                            item.append(skin, label);
+                            content.appendChild(item);
+                        });
                     } else if (id === 'dmz') {
                         content.className = 'codm-dmz-panel';
                         const toggleRow = document.createElement('div');
@@ -3847,16 +4398,26 @@
                             toggleRow.appendChild(button);
 
                             const grid = document.createElement('div');
-                            grid.className = 'codm-tournament-grid';
+                            grid.className = 'codm-tournament-grid codm-boxes-grid';
                             grid.hidden = categoryIndex !== 1;
                             for (let camoIndex = 1; camoIndex <= 10; camoIndex++) {
+                                const item = document.createElement('div');
+                                item.className = 'codm-box-item';
                                 const skin = document.createElement('div');
-                                skin.className = 'codm-tournament-skin codm-special-skin';
+                                skin.className = 'codm-tournament-skin codm-special-skin codm-box-skin';
                                 skin.dataset.specialIndex = String((categoryIndex - 1) * 10 + camoIndex - 1);
                                 skin.dataset.specialGroup = id;
-                                skin.dataset.title = `${window.CODM_REQUISITOS_ESPECIALES?.[id]?.[(categoryIndex - 1) * 10 + camoIndex - 1] ?? 0} bajas`;
-                                agregarTooltipEspecial(skin);
-                                grid.appendChild(skin);
+                                const image = window.CODM_DMZ_IMAGES?.[categoryIndex - 1]?.[camoIndex - 1];
+                                const name = image
+                                    ? decodeURIComponent(image.split('/').pop()).replace(/-\d+\.png$/i, '').replace(/-/g, ' ')
+                                    : `Camuflaje ${camoIndex}`;
+                                skin.dataset.title = name;
+                                if (image) skin.style.backgroundImage = `url("${image}")`;
+                                const label = document.createElement('span');
+                                label.className = 'codm-box-name';
+                                label.textContent = name;
+                                item.append(skin, label);
+                                grid.appendChild(item);
                             }
                             categoryGrids.push(grid);
                         }
@@ -3955,6 +4516,7 @@
 
     // 4. INICIALIZACIÓN
     document.addEventListener('DOMContentLoaded', () => {
+        inicializarGruposArmasPlegables();
         if (typeof window.sincronizarCamuflajesEntreArmas === 'function') {
             window.sincronizarCamuflajesEntreArmas();
         }
@@ -4035,6 +4597,7 @@
                 const card = skin.closest('.weapon-card');
                 const skins = obtenerSkinsDeSeguimiento(card);
                 const index = skins.indexOf(skin);
+                const previouslyChecked = new Set(skins.filter(item => item.classList.contains('checked')));
 
                 const masteryIndex = ['mastery-preview', 'mastery-preview-2', 'mastery-preview-3', 'mastery-preview-4'].findIndex(className => skin.classList.contains(className));
                 if (masteryIndex >= 0 && !estadoMaestria(card)[masteryIndex]) {
@@ -4056,7 +4619,8 @@
                 actualizarBloqueoCompletista();
                 actualizarCategorias(card.querySelector('.camo-section'));
                 actualizarTodo();
-                const reward = registrarXpDeCamuflajesMarcados();
+                const newlyChecked = skins.filter(item => item.classList.contains('checked') && !previouslyChecked.has(item));
+                const reward = registrarXpDeCamuflajesMarcados(newlyChecked, puedeRepetirXpPorCamuflaje());
                 const claimedAfter = contarXpCobrada();
                 mostrarNotificacionXp(reward, claimedBefore, claimedAfter);
                 guardarProgreso();
@@ -4110,6 +4674,18 @@
             categoryLabel.textContent = `${shortCategoryName} · ${completed}/${categorySkins.length}`;
         }
     });
+
+    const totalWeapons = todasLasArmas.length;
+    const completedWeapons = Array.from(todasLasArmas).filter(card => {
+        const skins = card.querySelectorAll('.skin');
+        return skins.length > 0 && card.querySelectorAll('.skin.checked').length === skins.length;
+    }).length;
+    const weaponTotalCount = document.getElementById('weaponTotalCount');
+    const weaponCompletedCount = document.getElementById('weaponCompletedCount');
+    const weaponRemainingCount = document.getElementById('weaponRemainingCount');
+    if (weaponTotalCount) weaponTotalCount.textContent = totalWeapons.toLocaleString('es-ES');
+    if (weaponCompletedCount) weaponCompletedCount.textContent = completedWeapons.toLocaleString('es-ES');
+    if (weaponRemainingCount) weaponRemainingCount.textContent = (totalWeapons - completedWeapons).toLocaleString('es-ES');
 
     // B. Actualizar estadísticas por categoría (AR, SMG, etc.)
     let sumaProgresosGlobal = 0;

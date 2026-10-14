@@ -1,44 +1,158 @@
 (() => {
     // 1. Ruta hacia las imágenes específicas de CODM
     const rutaCamuflaje = (categoria, nombre) => `camuflajes/${categoria}/${encodeURI(nombre)}`;
-    const rutaTorneo = nombre => `camuflajes/${encodeURI(nombre)}`;
-    const nombresTorneos = ['Oro_codm.png', ...Array(29).fill('')];
+    const archivosCamuflaje = {
+        arena: [
+            'Serpiente_del_desierto-1.png',
+            'Comando-2.png',
+            'Descuartizar-3.png',
+            'Serpiente-marroqui-4.png',
+            'Repiqueteo-5.png',
+            'Lago-de-china-6.png',
+            'Traje-diplomatico-7.png',
+            'Valla-metalica-8.png',
+            'Anochecer-9.png',
+            'Granada-de-humo-10.png'
+        ],
+        dragon: [
+            'H2O-1.png',
+            'Mugre-2.png',
+            'Musgo-3.png',
+            'Marcado-4.png',
+            'Maximo-negro-5.png',
+            'Asfalto-6.png',
+            'Escena-del-crimen-7.png',
+            'Rosa-neon-8.png',
+            'Pionero-9.png',
+            'Follaje-10.png'
+        ],
+        astilla: [
+            'Tundra-1.png',
+            'Sotobosque-2.png',
+            'Escarcha-3.png',
+            'Ice-breaker-4.png',
+            'Ruinas-5.png',
+            'Espuma-de-mar-artico-6.png',
+            'Angulos-7.png',
+            'Luz-otoñal-8.png',
+            'Abstraccion-artica-9.png',
+            'Bordes-afilados-10.png'
+        ],
+        tigre: [
+            'Zona-descuidada-1.png',
+            'Avalancha-2.png',
+            'Bosque-humedo-3.png',
+            'Abominable-4.png',
+            'Velo-descolorido-5.png',
+            'Bestia-salvaje-6.png',
+            'Rayas-de-tigre-7.png',
+            'Gato-del-desierto-8.png',
+            'Tigre-rojo-9.png',
+            'Tigre-azul-10.png'
+        ],
+        selva: [
+            'Pantano-1.png',
+            'Bosque-moderno-2.png',
+            'Desertico-hibrido-3.png',
+            'Baile-sobre-arena-4.png',
+            'Cienaga-5.png',
+            'Maleza-asesina-6.png',
+            'Verde-del-warcom-7.png',
+            'Azul-del-warcom-8.png',
+            'Helada-nocturna-9.png',
+            'Dosel-10.png'
+        ],
+        reptil: [
+            'Piton-1.png',
+            'Serpiente-de-cascabel-2.png',
+            'Komodo-3.png',
+            'Iguana-azul-4.png',
+            'Chupacabras-5.png',
+            'Piton-rosa-6.png',
+            'Anaconda-7.png',
+            'Serpiente-toro-8.png',
+            'Gecko-9.png',
+            'Culebra-10.png'
+        ],
+        completista: [
+            'Oro.png',
+            'Platino.png',
+            'Damasco.png',
+            'Diamante.png'
+        ]
+    };
+    const obtenerArchivoCamuflaje = (categoria, index) => archivosCamuflaje[categoria]?.[index] || `${categoria}_${index + 1}.png`;
+    const nombresTorneos = [
+        'Red-sprite-T1.png',
+        'Glacial-ripple-T2.png',
+        'Policromatico-T3.png',
+        'Magma-abrasador-T4.png',
+        'Golden-emeral-T5.png',
+        'Fluorescente-T6.png',
+        'Pixelated-aggression-T7.png',
+        'Making-waves-T8.png',
+        'Patron-de-asalto-T9.png',
+        'Icelocked-T10.png',
+        'Opalescence-T11.png',
+        'Oportunidad-dorada-12.png',
+        'Futurista-T13.png',
+        'Carmine-T14.png',
+        'Mystic-burst-T15.png',
+        'Nephrite-T16.png',
+        'Shimmer-T17.png',
+        'Ivory-T18.png',
+        'Gambito-hundido-T19.png',
+        'Scorch melt-T20.png',
+        'T-3 Infused-T21.png',
+        'Rime-T22.png',
+        'Victoria-de-griffin-T23.png',
+        'Tinte-blanco-T24.png',
+        'Mercurial-T25.png'
+    ];
     const requisitosEspeciales = {
-        torneos: Array(30).fill(0),
+        torneos: Array(25).fill(0),
         zombies: [0],
-        cajas: Array(15).fill(0),
+        cajas: Array(10).fill(0),
         dmz: Array(20).fill(0)
     };
+    const imagenesCajas = [
+        'Aurora-de-ensueño-1.png',
+        'Power-nova-2.png',
+        'Ocean-waves-3.png',
+        'Psychic-distorsion-4.png',
+        'Scorh-melt-5.png',
+        'Gilded-mist-6.png',
+        'Incandescente-7.png',
+        'Amatista-fundida-8.png',
+        'Incendio-forestal-9.png'
+    ].map(nombre => {
+        const numero = Number(nombre.match(/-(\d+)\.png$/)?.[1]);
+        return {
+            index: numero - 1,
+            image: `camuflajes/cajas especiales/${encodeURI(nombre)}`,
+            name: nombre.replace(/-\d+\.png$/i, '').replace(/-/g, ' ')
+        };
+    });
+    const imagenesDMZ = [
+        ['Flujo-crepuscular-1.png', 'Flujo-berenjena-2.png', 'Flujo-del-sol-violeta-3.png', 'Flujo-boreal-4.png', 'Flujo-amatista-5.png', 'Flujo-de-aguas-profundas-6.png', 'Flujo-del-naufrago-7.png', 'Flujo-de-hoja-ambar-8.png', 'Flujo-ultravioleta-9.png', 'Flujo-de-crepusculo-malva-10.png']
+            .map(nombre => `camuflajes/DMZ-T1/${encodeURI(nombre)}`),
+        ['Turquoise-1.png', 'Fluorite-2.png', 'Ruby-3.png', 'Topaz-4.png', 'Emerald-5.png', 'Sapphire-6.png', 'Larimar-7.png', 'Gold-8.png', 'Amethyst-9.png', 'Ametrine-10.png']
+            .map(nombre => `camuflajes/DMZ-T2/${encodeURI(nombre)}`)
+    ];
+    const imagenZombies = 'camuflajes/zombies/Cristal-de-eter.png';
 
-    // 2. Definición de categorías e imágenes de CODM (sustituye las cadenas por los nombres reales de tus fotos)
+    // 2. Las imágenes deben guardarse como camuflajes/<carpeta>/<carpeta>_<número>.png
     const categorias = [
-        ['spray', ['Serpiente_del_Desierto_MW2019.png', 'Comando_MW2019.png', 'Rip NTear_MW2019.png', 'Serpiente_marroquí_MW2019.png', 'Golpeteo_MW2019.png', 'Lago_China_MW2019.png', 'Traje_de_rayas_MW2019.png', 'Eslabón_de_cadena_MW2019.png', 'Nightfall_MW2019.png', 'Humo_MW2019.png']],
-        ['bosque', ['Pantano_MW2019.png', 'Bosque_moderno_MW2019.png', 'Híbrido_del_Desierto_MW2019.png', 'Danza_de_la_Arena_MW2019.png', 'Marismas_MW2019.png', 'Kill_Brush_MW2019.png', 'Verdes_de_WARCOM_MW2019.png', 'WARCOM_Blues_MW2019.png', 'Nightfrost_MW2019.png', 'Dosel_MW2019.png']],
-        ['digital', ['Urban_Digital_MW2019.png', 'Jungle_Digital_MW2019.png', 'Arctic_Digital_MW2019.png', 'Forest_Digital_MW2019.png', 'Marsh_Digital_MW2019.png', 'Bark_Digital_MW2019.png', 'Blue_Digital_MW2019.png', 'Classic_Digital_MW2019.png', 'Desert_Digital_MW2019.png', 'Green_Digital_MW2019.png']],
-        ['dragon', ['H20_MW2019.png', 'Tierra_MW2019.png', 'Moss_MW2019.png', 'Etiquetado_MW2019.png', 'Black_Top_MW2019.png', 'Asfalto_MW2019.png', 'Escena_del_crimen_MW2019.png', 'Neón_Rosa_MW2019.png', 'Pionero_MW2019.png', 'Follaje_MW2019.png']],
-        ['escindida', ['Tundra_MW2019.png', 'Sotobosque_MW2019.png', 'Congelación_MW2019.png', 'Rompehielos_MW2019.png', 'Ruinas_MW2019.png', 'Espuma_de_Mar_Ártico_MW2019.png', 'Ángulos_MW2019.png', 'Deslumbramiento_de_otoño_MW2019.png', 'Resumen_Ártico_MW2019.png', 'Aristas_afilados_MW2019.png']],
-        ['topo', ['Fuera_de_la_red_MW2019.png', 'Mares_nocturnos_MW2019.png', 'Operaciones_en_Marsh_MW2019.png', 'Forestación_MW2019.png', 'Fósforo_MW2019.png', 'Senderos_vectoriales_MW2019.png', 'Viaje_Topo_MW2019.png', 'Estéril_MW2019.png', 'Desaparecidos_MW2019.png', 'Tormenta_de_Arena_MW2019.png']],
-        ['tiger', ['Cubierto_de_maleza_MW2019.png', 'Deslizamiento_de_tierra_MW2019.png', 'Bosque_Húmedo_MW2019.png', 'Abominable_MW2019.png', 'Velo_desvaído_MW2019.png', 'Bestia_Salvaje_MW2019.png', 'Rayas_de_tigre_MW2019.png', 'Gato_del_Desierto_MW2019.png', 'Tigre_Rojo_MW2019.png', 'Tigre_Azul_MW2019.png']],
-        ['rayas', ['Praderas_MW2019.png','Melena _de_los_Tigres_MW2019.png','El_Kan_MW2019.png','Savannah_MW2019.png','Zebra_MW2019.png','Bluegrass_MW2019.png','Africa_MW2019.png','Nu_Wave_Zebra_MW2019.png','Greengrass_MW2019.png','Cebra_Rosa_MW2019.png']],
-        ['reptil', ['Python_MW2019.png','Serpiente_de_cascabel_MW2019.png','Komodo_MW2019.png','Iguana_azul_MW2019.png', 'Chupacabras_MW2019.png', 'Pitón_Rosa_MW2019.png', 'Anaconda_MW2019.png', 'Serpiente_toro_MW2019.png', 'Gecko_MW2019.png', 'Serpiente_de_liga_MW2019.png']],
-        ['calaveras', ['Necropolis_MW2019.png', 'Excavador_de_cadáveres_MW2019.png', 'Osario_MW2019.png', 'Apariciones_MW2019.png', 'Fantasma_MW2019.png', 'Espectro_del_Bosque_MW2019.png', 'Hemofílico_MW2019.png', 'Engaños_MW2019.png', 'Cthulhu_MW2019.png', 'Lichyard_MW2019.png']],
-        ['completista', ['Oro_MW2019.png', 'Platino_MW2019.png', 'Damasco_MW2019.png', 'Diamante_CODM.png']]
+        ['arena', 'Arena', 0, 0, 10],
+        ['dragon', 'Dragon', 30, 30, 10],
+        ['astilla', 'Astilla', 40, 40, 10],
+        ['tigre', 'Tigre', 60, 60, 10],
+        ['selva', 'Selva', 10, 10, 10],
+        ['reptil', 'Reptil', 80, 80, 10],
+        ['completista', 'Completista', 100, null, 4]
     ];
 
-    // 3. Nombres descriptivos de los desafíos de CODM
-    const nombresCategorias = [
-        'Spray (Bajas Normales)',
-        'Bosque (Tiros A La Cabeza)',
-        'Digital (Bajas Agachado)',
-        'Dragón (Bajas Desde La Cadera)',
-        'Escindida (Bajas Con Tiros Lejanos)',
-        'Topo (Bajas Con El Arma Apollada)',
-        'Tigre (Bajas Con Todos Los Accesorios Equipados)',
-        'Rayas (Bajas Poco Despues De Recargar)',
-        'Reptil (Bajas Sin Ningun Accesorio Equipado)',
-        'Calaveras (3 Bajas Sin Morir)',
-        'Completista'
-    ];
+    const nombresCategorias = categorias.map(([, nombre]) => nombre);
 
     // 4. Bajas o requisitos por camuflaje según CODM
     const bajasPorCamuflaje = [
@@ -55,14 +169,16 @@
     ];
 
     const nombresCompletista = ['Oro', 'Platino', 'Damasco', 'Diamante'];
-    const camuflajes = categorias.flatMap(([categoria, nombres], categoriaIndex) => nombres.map((nombre, index) => ({
-        title: categoriaIndex === 10 ? nombresCompletista[index] : `${bajasPorCamuflaje[categoriaIndex * 10 + index]} bajas`,
-        image: rutaCamuflaje(categoria, nombre),
-        className: categoriaIndex === 10 ? `mastery-preview${index ? `-${index + 1}` : ''}` : ''
+    const camuflajes = categorias.flatMap(([categoria, , progressStart, requirementStart, cantidad], categoriaIndex) => Array.from({ length: cantidad }, (_, index) => ({
+        title: requirementStart === null ? nombresCompletista[index] : `${bajasPorCamuflaje[requirementStart + index]} bajas`,
+        image: rutaCamuflaje(categoria, obtenerArchivoCamuflaje(categoria, index)),
+        categoryIndex: categoriaIndex + 1,
+        progressIndex: progressStart + index,
+        className: requirementStart === null ? `mastery-preview${index ? `-${index + 1}` : ''}` : ''
     })));
 
-    const imagenesCategorias = categorias.reduce((imagenes, [categoria, nombres], index) => {
-        imagenes[`data-toggle${index + 1}`] = rutaCamuflaje(categoria, nombres[0]);
+    const imagenesCategorias = categorias.reduce((imagenes, [categoria], index) => {
+        imagenes[`data-toggle${index + 1}`] = rutaCamuflaje(categoria, obtenerArchivoCamuflaje(categoria, 0));
         return imagenes;
     }, {});
 
@@ -70,12 +186,28 @@
     window.sincronizarCamuflajesEntreArmas = () => {
         document.querySelectorAll('.weapon-card[data-name] .camo-section').forEach(seccion => {
             Object.entries(imagenesCategorias).forEach(([atributo, valor]) => seccion.setAttribute(atributo, valor));
-            seccion.replaceChildren(...camuflajes.map(({ title, image, className }) => {
+            seccion.replaceChildren(...camuflajes.map(({ title, image, categoryIndex, progressIndex, className }) => {
+                const item = document.createElement('div');
+                item.className = `codm-base-card${className ? ` ${className}` : ''}`;
+                item.dataset.category = String(categoryIndex);
+
                 const skin = document.createElement('div');
                 skin.className = `skin${className ? ` ${className}` : ''}`;
                 skin.dataset.title = title;
+                skin.title = title;
+                skin.dataset.category = String(categoryIndex);
+                skin.dataset.progressIndex = String(progressIndex);
                 skin.style.backgroundImage = `url("${image.replace(/"/g, '\\"')}")`;
-                return skin;
+
+                const name = document.createElement('span');
+                name.className = 'codm-base-name';
+                name.textContent = decodeURIComponent(image.split('/').pop())
+                    .replace(/\.(png|jpe?g|webp)$/i, '')
+                    .replace(/-\d+$/, '')
+                    .replace(/[-_]/g, ' ');
+
+                item.append(skin, name);
+                return item;
             }));
         });
     };
@@ -84,8 +216,11 @@
     window.CODM_CAMUFLAJES = camuflajes;
     window.CODM_NOMBRES_CATEGORIAS = nombresCategorias;
     window.CODM_REQUISITOS_ESPECIALES = requisitosEspeciales;
+    window.CODM_CAJAS_IMAGES = imagenesCajas;
+    window.CODM_DMZ_IMAGES = imagenesDMZ;
+    window.CODM_ZOMBIE_IMAGE = imagenZombies;
     window.CODM_TORNEOS = nombresTorneos.map(nombre => ({
         nombre,
-        ruta: nombre ? rutaTorneo(nombre) : ''
+        ruta: nombre ? `camuflajes/torneo/${encodeURI(nombre)}` : ''
     }));
 })();

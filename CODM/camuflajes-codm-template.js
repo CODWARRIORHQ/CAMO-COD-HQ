@@ -1,6 +1,15 @@
 (() => {
     // 1. Ruta hacia las imágenes específicas de CODM
-    const rutaCamuflaje = (categoria, nombre) => `camuflajes/${categoria}/${encodeURI(nombre)}`;
+    const carpetasCamuflaje = {
+        arena: 'ARENA',
+        dragon: 'DRAGON',
+        astilla: 'ASTILLA',
+        tigre: 'TIGRE',
+        selva: 'SELVA',
+        reptil: 'REPTIL',
+        completista: 'completista'
+    };
+    const rutaCamuflaje = (categoria, nombre) => `camuflajes/${carpetasCamuflaje[categoria] || categoria}/${encodeURI(nombre)}`;
     const archivosCamuflaje = {
         arena: [
             'Serpiente_del_desierto-1.png',
@@ -141,7 +150,7 @@
     ];
     const imagenZombies = 'camuflajes/zombies/Cristal-de-eter.png';
 
-    // 2. Las imágenes deben guardarse como camuflajes/<carpeta>/<carpeta>_<número>.png
+    // 2. Categorías y rutas de imágenes de camuflajes
     const categorias = [
         ['arena', 'Arena', 0, 0, 10],
         ['dragon', 'Dragon', 30, 30, 10],
